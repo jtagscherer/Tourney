@@ -1,0 +1,113 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{tabto}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\renewcommand{\contentsname}{Inhaltsverzeichnis}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{center}
+		\vspace*{1cm}
+
+		\Huge
+		\textbf{Tourney}\\
+		Analysenotizen
+
+		\vspace{0.5cm}
+		\LARGE
+		Softwarepraktikum\\
+		\Large
+		Wintersemester 2014/2015
+
+		\vspace{1.5cm}
+
+		\large
+		\textbf{Jonas Auer (2860992)\\
+				 Fabian Biester (2859084)\\
+				 Jan Tagscherer (2893134)}
+
+		\vfill
+
+		\includegraphics[width=0.4\textwidth]{Logo.png}
+
+		\vspace{1.5cm}
+
+		\Large
+		Universität Stuttgart\\
+		28.10.2014
+	\end{center}
+\end{titlepage}
+
+\newpage
+
+\section{Ablauf eines Events}
+
+\begin{itemize}
+	\item Beteiligte Personen: Administratoren, Turnierordner (TO), Spieler
+	\item Voranmeldung von teilnehmenden Spielern, Registrieren von Bezahlungen
+	\item Registrieren von anwesenden Spielern, Vergeben von Startnummern, Zuordnung zu Turnieren auf dem Event
+	\item Verteilen der Spieler auf Turniere und Tische mit Paarungen, Festhalten von Ergebnissen mit Laufzetteln
+	\item Spielen des Turniers mit den jeweiligen Regeln unter Aufsicht der TOs
+	\item Rückmeldung der Ergebnisse an den Administrator und Ausgabe der Abschlusstabelle
+\end{itemize}
+
+\section{Ist-Zustand}
+
+\begin{itemize}
+	\item Festhalten der vorangemeldeten Spieler und deren Bezahlungsstatus in Excel-Tabellen
+	\item Anmeldung der anwesenden Spieler und Vergeben von Startnummern an nur einem Arbeitsplatz möglich, manuelles Eintragen an Hand der Tabelle
+	\item Bei Start eines Turniers erneute Anmeldung beim TO nötig
+	\item Ausrufen der Paarungen der einzelnen Turniere, TOs bestimmen Paarungen von Hand und halten Turnierergebnisse mit verschiedener Software oder analog fest
+	\item Endergebnisse werden an den Administrator übergeben, der diese wiederum händisch übertragen muss
+	\item Insgesamt hoher Zeitaufwand und schwere Organisation durch das Ausrufen der Paarungen und die Heterogenität bei der Erfassung von Ergebnissen durch die TOs
+\end{itemize}
+
+\newpage
+\section{Soll-Zustand}
+
+\begin{itemize}
+	\item Modulare Erstellung von Turnierregeln, Cut-Off des Paarungssystems festlegbar (meist Top 16, Top 8 oder Top 4 Spieler)
+	\item Anlegen eines Events mit mehreren Turnieren über das Administrationsmodul, Ablegen von Informationen über Turniertyp, Ort und Leitung
+	\item Voranmeldung von Spielern, Vermerk des Bezahlungsstatus' und Zuordnung zu Turnieren findet über die Software statt
+	\item Persönliche Informationen pro Spieler: Name, Nickname, evtl. Mail-Adresse
+	\item Laden der vorangemeldeten Spieler bei Beginn der Veranstaltung und Freischalten bei Anwesenheit oder Anmelden eines neuen Spielers, an mehreren Arbeitsplätzen möglich
+	\item Direktes Vergeben von Startnummern, die während des Events bestehen bleiben
+	\item Projizieren der stattfindenden Turniere und der jeweiligen Räume über einen Beamer
+	\item Übertragen der Daten zu einem Turnier an den jeweiligen TO per Wechseldatenträger
+	\item Software legt abhängig von den Spielregeln und eingetragenen Ergebnissen früherer Runden Paarungen fest
+	\item Stattfindende Paarungen (Pro Spieler Name, Startnummer und Tischnummer) und Rundentimer können per Beamer projiziert werden
+	\item Turnierergebnisse werden nach Ende über einen Wechseldatenträger vom TO wieder zurück zum Administrator übertragen und dort gesammelt
+	\item Administrator hat die Möglichkeit, Ergebnistabellen und stattgefundene Paarungen der einzelnen Turniere eines Events auszugeben und auszudrucken
+\end{itemize}
+
+\newpage
+\section{Weitere Anforderungen an die Software}
+
+\begin{itemize}
+	\item Sprache der Software: Primär deutsch, englische Lokalisierung optional
+	\item Mengengerüst: Bis zu 128 Spieler pro Turnier realistisch
+	\item Mitliefern von Regelmodulen für "Android Netrunner", "Lords of War", "Star Wars: The Card Game", "X-Wing" und "A Game of Thrones"
+	\item Von der Software festgelegte Turnierplatzierungen müssen manuell angepasst werden können
+	\item Spieler sollten gewarnt werden, wenn sie an zeitlich überlappenden Turnieren teilzunehmen versuchen
+	\item Einrichten eines passwortgesicherten Administratorkontos beim ersten Start der Software, über das auch Konten von TOs für Events angelegt und passwortgeschützt werden können
+	\item Beim Anlegen eines neuen Turniers sollen entsprechende mögliche Anzahlen von Spielern vorgeschlagen werden
+	\item Kommt es zu einem Losverfahren, soll es die Möglichkeiten geben, manuell oder automatisch zu würfeln
+	\item Festlegen der angezeigten Informationen bei einer Projektion während den Turnierrunden
+	\item Vorschläge bei der Suche von Spielern während der Anmeldung
+	\item Vergeben von Freilosen bei ungeraden Spielerzahlen an den schlechtesten Spieler, allerdings wenn möglich nicht mehrfach an gleichen Spieler
+	\item Berücksichtigen von Super-Freilosen
+	\item Event- und turnierübergreifende Disqualifikation von Spieler möglich, Nachholen von Paarungen im Ermessen des TOs möglich
+	\item Warnung bei fehlender Paarung wenn eine neue Runde gestartet wird
+	\item Kontrolle der Anwesenheit bei Turnierstart und Verändern der Turnierzuordnungen eines Spielers während des Events möglich
+	\item Direktes Wechseln in den Turniermodus bei kleineren Events möglich
+	\item Unterstützte Paarungssysteme: Schweizer System, Modifiziertes Schweizer System, K.O.-System, Doppel-K.O.-System, Jeder-gegen-jeden, frei editierbar
+\end{itemize}
+
+\end{document}
