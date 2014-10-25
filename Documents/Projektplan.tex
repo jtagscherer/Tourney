@@ -70,6 +70,13 @@ Momentan werden die Tuniere von der Turnierorganisation noch von Hand organisier
 
 \subsection{Projektüberblick}
 
+Bei \textbf{Tourney} handelt es sich um eine plattformunabhängige Anwendung, die die Durch-führung von Spielturnieren durch Automatisierung der folgenden aufwändigen Vorgängen vereinfacht:
+\begin{itemize}
+	\item Voranmeldung und Freischaltung von Spielern bei Anwesenheit
+	\item Verteilen der angemeldeten Spieler auf Turniere und Durchführen der Spiele an Hand in der Software definierten modularen Regeln
+	\item Rückgabe der Turnierausgänge an den Administrationsteil des Programms und Auswertung derselben
+\end{itemize}
+
 \section{Leistungen der Vertragspartner}
 
 \subsection{Lieferumfang}
@@ -93,6 +100,11 @@ Zum Lieferumfang des finalen Produkts gehören:
 
 \subsection{Leistungen des Auftraggebers}
 
+\begin{itemize}
+	\item Erstellen eines Konzeptpapiers, das die Anforderungen an das Programm umreißt
+	\item Bereitstellen von Spielregeln für die geforderten mitgelieferten Module
+\end{itemize}
+
 \section{Anforderungen an die Umgebung}
 
 \subsection{Infrastruktur}
@@ -100,19 +112,55 @@ Zum Lieferumfang des finalen Produkts gehören:
 An den Austragungsorten der Turniere ist eine dauerhafte Netzwerkanbindung nicht zu gewährleisten. Die Kommunikation zwischen den Geräten der beteiligten Organisatoren stellt sich dadurch als kompliziert heraus. Optimal wäre eine dauerhafte WLAN-Anbindung, allerdings wird aus Gründen der Zuverlässigkeit und Verfügbarkeit primär auf den Austausch von Daten über Massenspeichergeräten, wie zum Beispiel USB-Sticks, gesetzt.\\
 Da viele verschiedene Geräte an dem Prozess beteiligt sind und diese zum Teil auf unterschiedliche Betriebssysteme setzen, müssen die Daten in einem platformunabhängigen Format bereitgestellt werden.
 
-\subsection{Leistungen Dritter im Unternehmen}
-
 \section{Entwicklungsprozess}
 
 \subsection{Phasen der Entwicklung}
 
+Die Entwicklung der Anwendung findet in den folgenden Phasen statt:
+\begin{itemize}
+	\item \textbf{Analyse}:
+	\begin{itemize}
+		\item Erstellen eines Fragenkatalogs
+		\item Durchführung der Kundenbefragung
+		\item Strukturieren der Anforderungen
+		\item Erstellen des Projektplans
+	\end{itemize}
+	\item \textbf{Spezifikation der Anforderungen}:
+	\begin{itemize}
+		\item Ordnen, Dokumentieren, Prüfen, Ergänzen und Korrigieren der Anforderungen
+	\end{itemize}
+	\item \textbf{Architekturentwurf}:
+	\begin{itemize}
+		\item Spezifizieren der Module und deren Interaktion
+	\end{itemize}
+	\item \textbf{Codierung und Modultest}
+	\item \textbf{Integration der Module}
+	\item \textbf{Systemtest}
+	\item \textbf{Abnahme}:
+	\begin{itemize}
+		\item Präsentation der fertigen Software
+	\end{itemize}
+\end{itemize}
+
 \subsection{Dokumentationsplan}
+
+Während des Projekts werden die folgenden Dokumente erstellt und gegebenenfalls aktualisiert:
+\begin{itemize}
+	\item Strukturierte Analysenotizen aus der Kundenbefragung
+	\item Projektplanung
+	\item Spezifikation
+	\item Benutzerhandbuch
+	\item Aufwandsprotokolle
+	\item Testplan, Testdaten und Testprotokoll
+\end{itemize}
 
 \subsection{Prüfung und Qualitätssicherung}
 
 \section{Richtlinien für die Entwicklung}
 
 \subsection{Konfigurationsmanagement}
+
+Die Konfigurationsverwaltung findet mit Git in einem privaten Repository statt, das von BitBucket gehostet wird.
 
 \subsection{Design- und Programmierrichtlinien}
 
@@ -125,7 +173,6 @@ Zur Erstellung von Dokumenten und des eigentlichen Programms kommen eine Reihe v
 
 \begin{itemize}
 	\item \textbf{Eclipse} - Entwicklungsumgebung
-	\item \textbf{GanttProject} - Gantt-Diagramme
 	\item \textbf{GTD-Manager} - Termindrift-Diagramme
 	\item \textbf{PearReview} - Review-Organisation und -Protokollierung
 	\item \textbf{Pencil} - UI-Prototyp
@@ -133,6 +180,7 @@ Zur Erstellung von Dokumenten und des eigentlichen Programms kommen eine Reihe v
 	\item \textbf{CodeCover} - Durchführung von Glass-Box-Tests
 	\item \textbf{Testsuite-Management} - Testfallverwaltung
 	\item \textbf{Tulip} - Use-Case-Editor
+	\item \textbf{Google Sheets} - Aufwandserfassung
 \end{itemize}
 
 \section{Entwicklungsplan}
