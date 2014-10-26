@@ -1,10 +1,7 @@
 \documentclass[11pt]{article}
 
 \usepackage[utf8]{inputenc}
-\usepackage{tabto}
-\usepackage[fleqn]{amsmath}
-\usepackage{amssymb}
-\usepackage{eurosym}
+\usepackage{color}
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{hyperref}
@@ -156,6 +153,16 @@ Während des Projekts werden die folgenden Dokumente erstellt und gegebenenfalls
 
 \subsection{Prüfung und Qualitätssicherung}
 
+Während der Entwicklung wird der Qualität der Software ein hoher Stellenwert beigemessen, sowohl in Hinsicht auf Zuverlässigkeit, Benutzbarkeit als auch Informationssicherheit. Um hohe Qualitätsstandards zu ermöglichen werden die folgenden Maßnahmen ergriffen:
+\begin{itemize}
+	\item Einhalten von Standards wie den Java Code Conventions
+	\item Fortlaufende Dokumentation des Programmcodes während der Entwicklung
+	\item Umfassendes Refactoring zur Verbesserung von schlecht strukturiertem Code
+	\item Reviews und eventuelle Korrektur erstellter Dokumente
+	\item Modultests zur Prüfung einzelner Komponenten
+	\item Systemtests zur Verifikation der Software
+\end{itemize}
+
 \section{Richtlinien für die Entwicklung}
 
 \subsection{Konfigurationsmanagement}
@@ -164,8 +171,8 @@ Die Konfigurationsverwaltung findet mit Git in einem privaten Repository statt, 
 
 \subsection{Design- und Programmierrichtlinien}
 
-Der Fokus der Entwicklung liegt auf der intuitiven Bediunung des Programms. Die Software soll auch ohne das Handbuch gelesen zu haben eindeutig zu verstehen sein.\\
-Im Hinblick auf den Programmcode wird Wert auf hohe Qualität gelegt. Dazu zählen die Einhaltung der [[Java Code Conventions hier eintragen]], sowie eine konsequente Dokumentation im Code mit Kommentaren und klarer Benennung von Bezeichnern in englischer Sprache.
+Der Fokus der Entwicklung liegt auf der intuitiven Bedienung des Programms. Die Software soll auch ohne das Handbuch gelesen zu haben eindeutig zu verstehen sein.\\
+Im Hinblick auf den Programmcode wird Wert auf hohe Qualität gelegt. Dazu zählen die Einhaltung der \textbf{\textcolor{red}{[[Java Code Conventions hier eintragen]]}}, sowie eine konsequente Dokumentation im Code mit Kommentaren und klarer Benennung von Bezeichnern in englischer Sprache.
 
 \subsection{Eingesetzte Werkzeuge}
 
@@ -230,6 +237,51 @@ Zur Erstellung von Dokumenten und des eigentlichen Programms kommen eine Reihe v
 \section{Projektorganisation}
 
 \subsection{Ansprechpartner und Beteiligte}
+
+\begin{itemize}
+	\item[] \textbf{Kunde}:\\
+	\\
+	\vbox{\hfill\parbox{14.5cm}{
+		Heidelberger Spieleverlag\\
+		Dr. August-Stumpf-Strasse 7-9\\
+		74731 Walldürn\\
+		Deutschland
+	}}
+	\\
+	\item[] \textbf{Team 31}:\\
+	\\
+	\vbox{\hfill\parbox{14.5cm}{
+		Jonas Auer\\
+		Matrikelnummer 2860992\\
+		\textbf{\textcolor{red}{[[Mail-Adresse]]}}\\
+		
+		Fabian Biester\\
+		Matrikelnummer 2859084\\
+		\textbf{\textcolor{red}{[[Mail-Adresse]]}}\\
+		
+		Jan Tagscherer\\
+		Matrikelnummer 2893134\\
+		\href{mailto:st111459@stud.uni-stuttgart.de}{st111459@stud.uni-stuttgart.de}
+	}}
+	\\
+	\item[] \textbf{Tutor}:\\
+	\\
+	\vbox{\hfill\parbox{14.5cm}{
+		Nicolas Mauch
+	}}
+	\\
+	\item[] \textbf{Betreuer}:\\
+	\\
+	\vbox{\hfill\parbox{14.5cm}{
+		Jan-Peter Ostberg\\
+		Institute of Softwaretechnology\\
+		Universitätsstraße 38\\
+		70569 Stuttgart\\
+		Deutschland\\
+		\href{mailto:jan-peter.ostberg@informatik.uni-stuttgart.de}{jan-peter.ostberg@informatik.uni-stuttgart.de}
+	}}
+	\\
+\end{itemize}
 
 \section{Versionshistorie}
 
