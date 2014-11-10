@@ -98,20 +98,54 @@ Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument 
 	\item[] \textbf{Kapitel 4} charakterisiert Nutzer und für die Software relevante Personengruppen.
 	\item[] \textbf{Kapitel 5} enthält Skizzen als Prototyp der geplanten Benutzeroberfläche.
 	\item[] \textbf{Kapitel 6} umfasst grundlegende Anwendungsfälle, die bei der Benutzung der Software auftreten können und die die Interaktion der Nutzer mit dem Programm umreißen.
-	\item[] \textbf{Kapitel 7} umschließt ein Begriffslexikon, indem alle wichtigen Fachbegriffe und Abkürzungen geklärt werden.
+	\item[] \textbf{Kapitel 7} umschließt ein Begriffslexikon, in dem alle wichtigen Fachbegriffe und Abkürzungen geklärt werden.
 \end{itemize}
 
 \section{Allgemeine Beschreibung}
 
 \subsection{Einbettung}
 
+Bisher wurden keine Softwarelösungen zur Organisation von Spielturnieren eingesetzt. Deshalb muss \textbf{Tourney} in keine bestehenden Systeme eingebettet werden.
+
 \subsection{Einschränkungen bei der Entwicklung}
+
+Aufgrund der geforderten Plattformunabhängigkeit wird die Software in der Programmiersprache Java entwickelt. Dabei können die Versionen 1.7 oder 1.8 verwendet werden.
+
+Zusätzlich können die folgenden Bibliotheken verwendet werden:
+\begin{itemize}
+	\item Grafische Benutzeroberfläche mit \textbf{Swing} oder \textbf{JavaFX}
+	\item Datenbankeinbindung durch \textbf{H2} in Verbindung mit \textbf{JDBC}
+	\item Erstellen von PDF-Dokumenten mit \textbf{iText}
+\end{itemize}
 
 \subsection{Grundlegende Produktfunktionen}
 
+Die Software soll grundsätzlich die folgende Funktionalität haben, die in Kapitel 3 ausführ-licher beschrieben wird:
+\begin{itemize}
+	\item Modulare Erstellung von Regelmodulen für konkrete Spielturniere
+	\item Planung von Events und Festlegen von stattfindenden Turnieren
+	\item Verwalten von Spielerlisten in Hinsicht auf Voranmeldung, Anmeldung bei Anwesenheit und Bezahlstatus
+	\item Durchführung und Auswertung von Turnieren anhand spezifizierten Regeln und An-zeigen von Paarungen über eine Projektion
+	\item Zusammenführen und Ausgeben der Turnierresultate am Administrationsrechner
+	\item Verteilen von relevanten Datenbanken zum kollaborativen Arbeiten während Anmeldungen und an die Turnierordner mit jeweils anschließendem Zusammenfügen der Daten
+\end{itemize}
+
 \subsection{Benutzermerkmale}
 
+Die Nutzer von \textbf{Tourney} sollten zur erfolgreichen Bedienung keine besonderen Kenntnisse besitzen müssen. Insbesondere sollte die Oberfläche so selbsterklärend sein, dass dies auch ohne Lesen des Handbuchs möglich ist. Die Benutzer besitzen hierbei für gewöhnlich zwar Fachkenntnis in Bezug auf die Spielturniere, allerdings sollte kein besonderes technisches Wissen vorausgesetzt werden. Vielmehr sollte die Software so intuitiv zu bedienen sein, dass für keinen Nutzer ein Hindernis entsteht.
+
+Desweiteren kann nicht davon ausgegangen werden, dass sowohl die Arbeitsplätze von Administratoren als auch Turnierordnern ausreichend abgesichert sind. Deshalb sollten relevante Daten über Passwörter zusätzlich gesichert sein.
+
+Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgängig-Funktion vorgebeugt werden.
+
 \subsection{Annahmen und Abhängigkeiten}
+
+Um die Software erfolgreich entwickeln und betreiben zu können muss von den folgenden externen Einflussfaktoren ausgegangen werden:
+\begin{itemize}
+	\item Die erforderliche Hardware zur Ausführung des Programms und Massenspeichergeräte zur Datenübertragung müssen zur Laufzeit bereitgestellt werden.
+	\item Die Turnierregeln dürfen sich nicht so stark ändern, dass die modulare Regelerstellung nicht mehr relevant ist. In diesem Fall kann eine korrekte Ergebnisauswertung nicht mehr garantiert werden.
+	\item Aufgrund des engen zeitlichen Rahmens dürfen in späten Projektphasen keine fundamentalen Änderungen an den Anforderungen mehr erfolgen.
+\end{itemize}
 
 \section{Spezifische Anforderungen}
 
@@ -167,6 +201,10 @@ Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument 
 	\item Version 1.0 (05.11.2014)
 	\begin{itemize}
 		\item Grundstruktur der Spezifikation erstellt
+	\end{itemize}
+	\item Version 1.1 (10.11.2014)
+	\begin{itemize}
+		\item Kapitel 1 und 2 formuliert
 	\end{itemize}
 \end{itemize}
 
