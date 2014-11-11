@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project type="tulip" version="2.0.1">
+  <id>1</id>
+  <name>Tourney</name>
+  <description>&lt;p style="margin-top: 0"&gt; Programm zum erstellen und verwalten von TCG Tunieren &lt;/p&gt;</description>
+  <systemName>System</systemName>
+  <priorities>
+    <priority>Niedrig</priority>
+    <priority>Mittel</priority>
+    <priority>Hoch</priority>
+  </priorities>
+  <levels>
+    <level>Technische Details</level>
+    <level>Benutzersicht</level>
+    <level>Übersicht</level>
+  </levels>
+  <actorsFolder>
+    <name>Akteure</name>
+    <id>5</id>
+    <children>
+      <actor>
+        <id>17</id>
+        <name>Admin</name>
+        <description>&lt;p style="margin-top: 0"&gt; &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+      <actor>
+        <id>10</id>
+        <name>Spieler</name>
+        <description>&lt;p style="margin-top: 0"&gt; &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+      <actor>
+        <id>7</id>
+        <name>TO</name>
+        <description>&lt;p resolver="NamedStyle:default {name=default,}" margin-top="0"&gt; verwaltet Tuniermodul &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+      <actor>
+        <id>6</id>
+        <name>Anmeldung</name>
+        <description>&lt;p style="margin-top: 0"&gt; Tr&amp;#228;gt spieler in datenbank ein &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+    </children>
+  </actorsFolder>
+  <usabilityPatternsFolder>
+    <name>Usability Patterns</name>
+    <id>4</id>
+  </usabilityPatternsFolder>
+  <useCasesFolder>
+    <name>Use Cases</name>
+    <id>3</id>
+    <children>
+      <useCase>
+        <id>15</id>
+        <name>Event erstellen</name>
+        <useCaseId>1</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt; Es kann mit der Voranmeldung gestartet werden, daher das Event is fertig erstellt mit allen notwendigen Daten &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt; Es wird das Event erstellt und mit den vorhanden Daten modifiziert &lt;/p&gt;</description>
+        <priority>Hoch</priority>
+        <level>Benutzersicht</level>
+        <created>10-11-2014 18:17</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>11-11-2014 17:20</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung wurde gestartet</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Startet das Erstellen des Events durch Drücken des Buttons "Event erstellen"</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Öffnet den Dialog für das Erstellen der Events</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Gibt Startdatum, Enddatum, Titel und öffnet das Fenster um die Tuniere hinzuzufügen. </description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Erstellt Datenbank für Vorabanmeldung.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Vorabanmeldung kann gestartet werden</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>3</associatedStep>
+            <name>3a</name>
+            <preConditions>
+              <preCondition>
+                <description>Standard Module sind nicht vorhanden.</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3a1</stepNumber>
+                <actorId/>
+                <description>Gibt eine Meldung aus, dass die Standard Module nicht gefunden wurde und verweißt auf das Erstellen eines neuen Tuniermoduls</description>
+                <references/>
+                <attributes/>
+              </step>
+              <step>
+                <stepNumber>3a2</stepNumber>
+                <actorId>17</actorId>
+                <description>Erstellt ein Tuniermodul (siehe Use Case x Tuniermodul erstellen)</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description/>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+          <extensionScenario>
+            <associatedStep>3a2</associatedStep>
+            <name>3a2a</name>
+            <preConditions>
+              <preCondition>
+                <description>Schließt Dialog ohne ein neues Tuniermodul zu erstellen</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3a2a1</stepNumber>
+                <actorId/>
+                <description>Geht in Zustand Y über</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Zustand Y</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>23</id>
+        <name>Bestehendes Event laden</name>
+        <useCaseId>2</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt; Bestehendes Event aus dem gespeicherten Zustand laden. &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt; L&amp;#228;dt das gespeicherte Event inklusive Tuniermodul Zust&amp;#228;nden, Fortschritt im Tunier. Fragt das Passwort ab, falls gesetzt bei der Initialisierung. &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>10-11-2014 20:42</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>11-11-2014 17:20</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Programm ist gestartet</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Drückt den 'Event laden' Buttion</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Öffnet den File Browser </description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Wählt die zu ladende Date aus der Verzeichnisstruktur aus und drückt laden.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Lädt den gespeicherten Zustand des Events.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Gespeicherte Zustand des Events ist geladen und benutzbar.</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>27</id>
+        <name>Optionen Sprache anzeigen/ändern</name>
+        <useCaseId>3</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt; Die aktuellen Optionen des Programms wie Sprache zu &amp;#228;ndern oder anzuzeigen &lt;/p&gt;</goal>
+        <description/>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>10-11-2014 21:02</created>
+        <author/>
+        <lastUpdate>11-11-2014 17:20</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Programm wurde gestartet</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Öffnet die Optionen, indem auf den Optionen Button drückt.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Öffnet Optionen Fenster, zeigt aktuelle Spracheneinstellung an.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Wählt andere Sprache aus.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Stellt die Sprache auf die ausgewählte Sprache um.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description/>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>3</associatedStep>
+            <name>3a</name>
+            <preConditions>
+              <preCondition>
+                <description>Will sich die Optionen nur anzeigen lassen nicht verändern.</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3a1</stepNumber>
+                <actorId/>
+                <description>Es wird nichts verändert</description>
+                <references/>
+                <attributes/>
+              </step>
+              <step>
+                <stepNumber>3a2</stepNumber>
+                <actorId>17</actorId>
+                <description>Drückt den 'Zurück' Button</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description/>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>30</id>
+        <name>Optionen Passwort ändern</name>
+        <useCaseId>4</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Das gesetzte Passwort f&amp;#252;r diesen Client &amp;#228;ndern oder ein neues Passwort 
+          setzten.
+          &lt;/p&gt;</goal>
+        <description/>
+        <priority>Niedrig</priority>
+        <level>Technische Details</level>
+        <created>11-11-2014 12:50</created>
+        <author/>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description/>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps/>
+          <postConditions>
+            <postCondition>
+              <description/>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>32</id>
+        <name>Tuniermodule hinzufügen</name>
+        <useCaseId>5</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Ein neues Tuniermodul zu erstellen
+          &lt;/p&gt;</goal>
+        <description/>
+        <priority>Niedrig</priority>
+        <level>Technische Details</level>
+        <created>11-11-2014 16:58</created>
+        <author/>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description/>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps/>
+          <postConditions>
+            <postCondition>
+              <description/>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+    </children>
+  </useCasesFolder>
+  <useCaseDiagramsFolder>
+    <name>Use-Case-Diagramme</name>
+    <id>2</id>
+  </useCaseDiagramsFolder>
+</project>

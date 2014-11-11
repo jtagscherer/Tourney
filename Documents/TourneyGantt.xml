@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE project SYSTEM "gtdmanager.dtd">
+<project vendor-id="Gruppe 5" version="1.3.2">
+<name>Tourney</name>
+<property name="view" value="0"/>
+<property name="fontsize" value="11"/>
+<property name="zoomfactor" value="100"/>
+<property name="export-width" value="21.0"/>
+<property name="export-height" value="29.7"/>
+<property name="export-dpi" value="150.0"/>
+<property name="export-standartsize" value="DIN A4"/>
+<instance>
+<name>Tourney</name>
+<creation-date date="26" month="10" year="2014"/>
+<start-date date="14" month="10" year="2014"/>
+<end-date date="23" month="1" year="2015"/>
+<activity id="-785639208">
+<name>M1</name>
+<short-name>M1</short-name>
+<start-date date="14" month="10" year="2014"/>
+<end-date date="14" month="10" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="1236333571" type="begin-begin"/>
+<dependency activity-id="-727437784" type="begin-end"/>
+<activity id="1236333571">
+<name>Start des Projekts</name>
+<short-name>Start</short-name>
+<start-date date="14" month="10" year="2014"/>
+<end-date date="14" month="10" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-785639208" type="begin-begin"/>
+</activity>
+</activity>
+<activity id="-727437784">
+<name>M2</name>
+<short-name>M2</short-name>
+<start-date date="14" month="10" year="2014"/>
+<end-date date="28" month="10" year="2014"/>
+<property name="keep-length" value="true"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-785639208" type="end-begin"/>
+<dependency activity-id="62425233" type="end-end"/>
+<dependency activity-id="14164886" type="end-end"/>
+<dependency activity-id="1098842167" type="begin-end"/>
+<activity id="-2137168108">
+<name>Kundenbefragung I</name>
+<short-name>Q&amp;A I</short-name>
+<start-date date="17" month="10" year="2014"/>
+<end-date date="17" month="10" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="62425233" type="begin-end"/>
+</activity>
+<activity id="62425233">
+<name>Analysenotizen erstellen</name>
+<short-name>Analy</short-name>
+<start-date date="17" month="10" year="2014"/>
+<end-date date="28" month="10" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-2137168108" type="end-begin"/>
+<dependency activity-id="-727437784" type="end-end"/>
+</activity>
+<activity id="-875300931">
+<name>Kundenbefragung II</name>
+<short-name>Q&amp;AII</short-name>
+<start-date date="21" month="10" year="2014"/>
+<end-date date="21" month="10" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="14164886" type="begin-end"/>
+</activity>
+<activity id="14164886">
+<name>Projektplna erstellen</name>
+<short-name>ProjP</short-name>
+<start-date date="21" month="10" year="2014"/>
+<end-date date="28" month="10" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-875300931" type="end-begin"/>
+<dependency activity-id="-727437784" type="end-end"/>
+</activity>
+</activity>
+<activity id="1098842167">
+<name>M3</name>
+<short-name>M3</short-name>
+<start-date date="28" month="10" year="2014"/>
+<end-date date="14" month="11" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-727437784" type="end-begin"/>
+<dependency activity-id="1029412659" type="end-end"/>
+<dependency activity-id="1526040348" type="begin-end"/>
+<activity id="1029412659">
+<name>Spezifikation erstellen</name>
+<short-name>Spezi</short-name>
+<start-date date="28" month="10" year="2014"/>
+<end-date date="14" month="11" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="344680704" type="end-end"/>
+<dependency activity-id="1098842167" type="end-end"/>
+<activity id="344680704">
+<name>UI Prototyp erstellen</name>
+<short-name>UI Pr</short-name>
+<start-date date="28" month="10" year="2014"/>
+<end-date date="14" month="11" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="1029412659" type="end-end"/>
+</activity>
+</activity>
+</activity>
+<activity id="1526040348">
+<name>M4</name>
+<short-name>M4</short-name>
+<start-date date="14" month="11" year="2014"/>
+<end-date date="28" month="11" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="1098842167" type="end-begin"/>
+<dependency activity-id="1233037402" type="end-end"/>
+<dependency activity-id="971801869" type="begin-end"/>
+<activity id="1233037402">
+<name>Spezifikation korrigieren</name>
+<short-name>Rev S</short-name>
+<start-date date="14" month="11" year="2014"/>
+<end-date date="28" month="11" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="1526040348" type="end-end"/>
+</activity>
+</activity>
+<activity id="971801869">
+<name>M5</name>
+<short-name>M5</short-name>
+<start-date date="28" month="11" year="2014"/>
+<end-date date="12" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="1526040348" type="end-begin"/>
+<dependency activity-id="302388443" type="end-end"/>
+<dependency activity-id="875439148" type="begin-end"/>
+<activity id="302388443">
+<name>Entwurf erstellen</name>
+<short-name>Entwu</short-name>
+<start-date date="28" month="11" year="2014"/>
+<end-date date="12" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="971801869" type="end-end"/>
+</activity>
+</activity>
+<activity id="875439148">
+<name>M6</name>
+<short-name>M6</short-name>
+<start-date date="12" month="12" year="2014"/>
+<end-date date="31" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="971801869" type="end-begin"/>
+<dependency activity-id="2116123602" type="end-end"/>
+<dependency activity-id="-613314697" type="end-end"/>
+<dependency activity-id="8721388" type="begin-end"/>
+<activity id="2116123602">
+<name>Alpha Impl</name>
+<short-name>Alpha</short-name>
+<start-date date="12" month="12" year="2014"/>
+<end-date date="31" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-1557557457" type="end-end"/>
+<dependency activity-id="2008576525" type="end-end"/>
+<dependency activity-id="1156990914" type="end-end"/>
+<dependency activity-id="875439148" type="end-end"/>
+<activity id="1156990914">
+<name>BackEnd Impl</name>
+<short-name>BackE</short-name>
+<start-date date="12" month="12" year="2014"/>
+<end-date date="31" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="2116123602" type="end-end"/>
+</activity>
+<activity id="-1557557457">
+<name>Datenbank erstellen</name>
+<short-name>Datab</short-name>
+<start-date date="12" month="12" year="2014"/>
+<end-date date="31" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="2116123602" type="end-end"/>
+</activity>
+<activity id="2008576525">
+<name>GUI erstellen</name>
+<short-name>GUI </short-name>
+<start-date date="12" month="12" year="2014"/>
+<end-date date="31" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="2116123602" type="end-end"/>
+</activity>
+</activity>
+<activity id="-613314697">
+<name>Systemtestplan erstellen</name>
+<short-name>Syste</short-name>
+<start-date date="12" month="12" year="2014"/>
+<end-date date="31" month="12" year="2014"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="875439148" type="end-end"/>
+</activity>
+</activity>
+<activity id="8721388">
+<name>M7</name>
+<short-name>M7</short-name>
+<start-date date="31" month="12" year="2014"/>
+<end-date date="12" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-152958934" type="end-end"/>
+<dependency activity-id="-370329470" type="end-end"/>
+<dependency activity-id="-873589613" type="begin-end"/>
+<dependency activity-id="875439148" type="end-begin"/>
+<activity id="-152958934">
+<name>Beta Impl</name>
+<short-name>Beta</short-name>
+<start-date date="31" month="12" year="2014"/>
+<end-date date="12" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="851599210" type="end-end"/>
+<dependency activity-id="801326778" type="end-end"/>
+<dependency activity-id="2076387468" type="end-end"/>
+<dependency activity-id="8721388" type="end-end"/>
+<activity id="851599210">
+<name>BackEnd</name>
+<short-name>BackE</short-name>
+<start-date date="31" month="12" year="2014"/>
+<end-date date="12" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-152958934" type="end-end"/>
+</activity>
+<activity id="801326778">
+<name>Datenbank</name>
+<short-name>Datab</short-name>
+<start-date date="31" month="12" year="2014"/>
+<end-date date="12" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-152958934" type="end-end"/>
+</activity>
+<activity id="2076387468">
+<name>GUI</name>
+<short-name>GUI</short-name>
+<start-date date="31" month="12" year="2014"/>
+<end-date date="12" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-152958934" type="end-end"/>
+</activity>
+</activity>
+<activity id="-370329470">
+<name>Modultest</name>
+<short-name>MTest</short-name>
+<start-date date="31" month="12" year="2014"/>
+<end-date date="12" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="8721388" type="end-end"/>
+</activity>
+</activity>
+<activity id="-873589613">
+<name>M8</name>
+<short-name>M8</short-name>
+<start-date date="12" month="1" year="2015"/>
+<end-date date="23" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="929400850" type="end-end"/>
+<dependency activity-id="572359373" type="end-end"/>
+<dependency activity-id="8721388" type="end-begin"/>
+<activity id="929400850">
+<name>Release Candidate</name>
+<short-name>RC</short-name>
+<start-date date="12" month="1" year="2015"/>
+<end-date date="23" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="798333615" type="end-end"/>
+<dependency activity-id="-1688782484" type="end-end"/>
+<dependency activity-id="1524486729" type="end-end"/>
+<dependency activity-id="-873589613" type="end-end"/>
+<activity id="798333615">
+<name>BackEnd</name>
+<short-name>BackE</short-name>
+<start-date date="12" month="1" year="2015"/>
+<end-date date="23" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="929400850" type="end-end"/>
+</activity>
+<activity id="-1688782484">
+<name>Datenbank</name>
+<short-name>DataB</short-name>
+<start-date date="12" month="1" year="2015"/>
+<end-date date="23" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="929400850" type="end-end"/>
+</activity>
+<activity id="1524486729">
+<name>GUI</name>
+<short-name>GUI</short-name>
+<start-date date="12" month="1" year="2015"/>
+<end-date date="23" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="929400850" type="end-end"/>
+</activity>
+</activity>
+<activity id="572359373">
+<name>Systemtest Protokoll</name>
+<short-name>SystP</short-name>
+<start-date date="12" month="1" year="2015"/>
+<end-date date="23" month="1" year="2015"/>
+<property name="keep-length" value="false"/>
+<property name="move-dependencies" value="true"/>
+<dependency activity-id="-873589613" type="end-end"/>
+</activity>
+</activity>
+</instance>
+</project>
