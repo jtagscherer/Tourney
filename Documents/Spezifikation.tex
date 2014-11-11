@@ -4,6 +4,7 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{geometry}
+\usepackage{tabularx}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -177,9 +178,19 @@ Um die Software erfolgreich entwickeln und betreiben zu können muss von den fol
 
 \subsection{Administrator}
 
+Der Administrator hat übergreifenden Zugriff über die erstellten Datensätze. Er kann Events erstellen, Turniere hinzufügen und verwaltet Spieleranmeldungen. Diese Daten kann er teilweise auch im Nachhinein bei Bedarf abändern. Zudem kann der Administrator Auszüge aus den erstellten Datensätzen an weitere Benutzer weitergeben, einerseits um Anmeldungen an mehreren Arbeitsplätzen vorzunehmen, andererseits um Spielerlisten und Turniereigenschaften an die Turnierordner zu übergeben. Nach diesen Vorgängen werden die erhobenen Daten wieder beim Administrator zusammengefügt.
+
+Beim Administrator handelt es sich um den Organisator des Events. Auch bei dieser Person werden keine besonderen technischen Kenntnisse vorausgesetzt.
+
 \subsection{Turnierordner}
 
+Turnierordner haben die Aufgabe, tatsächlich anwesende Spieler bei den jeweiligen einzelnen Turnieren zu erfassen und dann die Spiele durchzuführen. Dabei werden von der Software Paarungen vorgeschlagen und nach dem Spielende die Resultate eingetragen. Diese Daten lassen sich auch später noch manuell abändern. Zudem kann der Turnierordner Spieler disqualifizieren. Für diese Vorgänge werden die vom Administrator übertragenen Daten verwendet.
+
+Ein Turnierordner ist zumeist eine Person mit guten Kenntnissen der Spielregeln und sollte die Verantwortung über die Datensätze übernehmen können.
+
 \subsection{Spieler}
+
+Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktion mit der Software durch, sondern sollen sich über Ausgaben und Projektionen über Paarungen und Spielstände informieren können. Dazu müssen diese leicht verständlich und weithin lesbar sein.
 
 \section{Benutzeroberfläche}
 
@@ -189,7 +200,44 @@ Um die Software erfolgreich entwickeln und betreiben zu können muss von den fol
 
 \subsection{Übersicht über die Anwendungsfälle}
 
-\subsection{...}
+\subsection{Anwendungsfälle des Administrators}
+
+\subsubsection{Event erstellen}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & ... \\
+	\hline
+	\textbf{Akteure} &
+		\begin{enumerate}
+			\item ...
+			\item ...
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Vorbedingung} & ... \\
+	\hline
+	\textbf{Normalablauf} &
+		\begin{enumerate}
+			\item ...
+			\item ...
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & ... \\
+	\hline
+	\textbf{Sonderfälle} &
+		\begin{enumerate}
+			\item ...
+			\item ...
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung im Sonderfall} & ... \\
+	\hline
+\end{tabularx}
+
+\subsection{Anwendungsfälle der Turnierordner}
 
 \section{Anhang}
 
@@ -204,7 +252,11 @@ Um die Software erfolgreich entwickeln und betreiben zu können muss von den fol
 	\end{itemize}
 	\item Version 1.1 (10.11.2014)
 	\begin{itemize}
-		\item Kapitel 1 und 2 formuliert
+		\item Kapitel 1 und 2 hinzugefügt
+	\end{itemize}
+	\item Version 1.2 (11.11.2014)
+	\begin{itemize}	
+		\item Kapitel 4 hinzugefügt
 	\end{itemize}
 \end{itemize}
 
