@@ -58,11 +58,11 @@
         <useCaseId>1</useCaseId>
         <goal>&lt;p style="margin-top: 0"&gt; Es kann mit der Voranmeldung gestartet werden, daher das Event is fertig erstellt mit allen notwendigen Daten &lt;/p&gt;</goal>
         <description>&lt;p style="margin-top: 0"&gt; Es wird das Event erstellt und mit den vorhanden Daten modifiziert &lt;/p&gt;</description>
-        <priority>Hoch</priority>
+        <priority>Niedrig</priority>
         <level>Benutzersicht</level>
         <created>10-11-2014 18:17</created>
         <author>Fabian Biester</author>
-        <lastUpdate>11-11-2014 17:20</lastUpdate>
+        <lastUpdate>12-11-2014 21:41</lastUpdate>
         <primaryActorId>17</primaryActorId>
         <actors>
           <actorId>17</actorId>
@@ -71,7 +71,10 @@
           <name/>
           <preConditions>
             <preCondition>
-              <description>Anwendung wurde gestartet</description>
+              <description>Anwendung wurde gestartet.</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung wurde entsperrt, falls nötig.</description>
             </preCondition>
           </preConditions>
           <attributes/>
@@ -79,7 +82,7 @@
             <step>
               <stepNumber>1</stepNumber>
               <actorId>17</actorId>
-              <description>Startet das Erstellen des Events durch Drücken des Buttons "Event erstellen"</description>
+              <description>Nutzer startet das Erstellen des Events durch Drücken des Buttons "Event erstellen"</description>
               <references/>
               <attributes/>
             </step>
@@ -93,7 +96,7 @@
             <step>
               <stepNumber>3</stepNumber>
               <actorId>17</actorId>
-              <description>Gibt Startdatum, Enddatum, Titel und öffnet das Fenster um die Tuniere hinzuzufügen. </description>
+              <description>Nutzer gibt Startdatum, Enddatum, Titel und öffnet das Fenster um die Tuniere hinzuzufügen. </description>
               <references/>
               <attributes/>
             </step>
@@ -104,10 +107,34 @@
               <references/>
               <attributes/>
             </step>
+            <step>
+              <stepNumber>5</stepNumber>
+              <actorId/>
+              <description>Öffnet Dialog um Speicherort des Event zu bestimmen.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>6</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer wählt den Speicherort aus.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>7</stepNumber>
+              <actorId/>
+              <description>Speichert das Event an dem vogegebenen Ort.</description>
+              <references/>
+              <attributes/>
+            </step>
           </steps>
           <postConditions>
             <postCondition>
               <description>Vorabanmeldung kann gestartet werden</description>
+            </postCondition>
+            <postCondition>
+              <description>Event wurde gespeichert.</description>
             </postCondition>
           </postConditions>
         </mainScenario>
@@ -136,10 +163,17 @@
                 <references/>
                 <attributes/>
               </step>
+              <step>
+                <stepNumber>3a3</stepNumber>
+                <actorId>17</actorId>
+                <description>Der Nutzer fügt dieses daraufhin dem Event hinzu.</description>
+                <references/>
+                <attributes/>
+              </step>
             </steps>
             <postConditions>
               <postCondition>
-                <description/>
+                <description>Das Event enthält nun ein oder mehrere Tuniere.</description>
               </postCondition>
             </postConditions>
           </extensionScenario>
@@ -167,6 +201,30 @@
               </postCondition>
             </postConditions>
           </extensionScenario>
+          <extensionScenario>
+            <associatedStep>7</associatedStep>
+            <name>7a</name>
+            <preConditions>
+              <preCondition>
+                <description>Ungenügende Berechtigung im Ziel Ordner zu schreiben</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>7a1</stepNumber>
+                <actorId/>
+                <description>Gibt eine Warnung aus das die ungenügende Schreibberechtigungen vorhanden sind.</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Nutzer wurde infomiert das er ein neues Speicherziel wählen muss oder seine Änderungen werden nicht gespeichert.</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
         </extensions>
       </useCase>
       <useCase>
@@ -179,7 +237,7 @@
         <level>Benutzersicht</level>
         <created>10-11-2014 20:42</created>
         <author>Fabian Biester</author>
-        <lastUpdate>11-11-2014 17:20</lastUpdate>
+        <lastUpdate>12-11-2014 12:19</lastUpdate>
         <primaryActorId>17</primaryActorId>
         <actors>
           <actorId>17</actorId>
@@ -189,6 +247,9 @@
           <preConditions>
             <preCondition>
               <description>Programm ist gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung is entsperrt falls nötig.</description>
             </preCondition>
           </preConditions>
           <attributes/>
@@ -239,8 +300,8 @@
         <priority>Niedrig</priority>
         <level>Benutzersicht</level>
         <created>10-11-2014 21:02</created>
-        <author/>
-        <lastUpdate>11-11-2014 17:20</lastUpdate>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 12:21</lastUpdate>
         <primaryActorId>17</primaryActorId>
         <actors>
           <actorId>17</actorId>
@@ -321,21 +382,47 @@
               </postCondition>
             </postConditions>
           </extensionScenario>
+          <extensionScenario>
+            <associatedStep>3</associatedStep>
+            <name>3b</name>
+            <preConditions>
+              <preCondition>
+                <description>Eingestellte Option ist dieselbe Sprache wie die aktuell dargestellte.</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3b1</stepNumber>
+                <actorId/>
+                <description>Belässt aktuelle Spracheinstellung.</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Programm wird in der eingestellten Sprache angezeigt.</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
         </extensions>
       </useCase>
       <useCase>
         <id>30</id>
         <name>Optionen Passwort ändern</name>
         <useCaseId>4</useCaseId>
-        <goal>&lt;p style="margin-top: 0"&gt;
-          Das gesetzte Passwort f&amp;#252;r diesen Client &amp;#228;ndern oder ein neues Passwort 
-          setzten.
-          &lt;/p&gt;</goal>
-        <description/>
+        <goal>&lt;p style="margin-top: 0"&gt; Es soll ein neues Passwort gesetzt werden oder ein bestehendes ge&amp;#228;ndert. &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Nutzer m&amp;#246;chte seine Anwendung mit einem Passwort sichern oder das 
+          bestehende Passwort &amp;#228;ndern.
+          &lt;/p&gt;</description>
         <priority>Niedrig</priority>
-        <level>Technische Details</level>
+        <level>Benutzersicht</level>
         <created>11-11-2014 12:50</created>
-        <author/>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 12:31</lastUpdate>
+        <primaryActorId>17</primaryActorId>
         <actors>
           <actorId>17</actorId>
         </actors>
@@ -343,31 +430,489 @@
           <name/>
           <preConditions>
             <preCondition>
-              <description/>
+              <description>Anwendung ist gestartet.</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwedung ist entsperrt, falls nötig.</description>
             </preCondition>
           </preConditions>
           <attributes/>
-          <steps/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer drückt den 'Optionen' Button.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Öffnet Optionen Fenster.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer drückt den 'Passwort ändern'' Button.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Öffnet Dialog in dem die Passwortänderung vollzogen wird.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>5</stepNumber>
+              <actorId>17</actorId>
+              <description>Gibt das alte Passwort falls möglich. Danach 2x das neue Passwort.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>6</stepNumber>
+              <actorId/>
+              <description>Ändert das Passwort um die Anwendung zu sperren.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
           <postConditions>
             <postCondition>
-              <description/>
+              <description>Anwendung wird mit dem neuen Passwort nach dem sperren, entsperrt.</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>4</associatedStep>
+            <name>4a</name>
+            <preConditions>
+              <preCondition>
+                <description>Es wurde noch kein Passwort gesetzt.</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>4a1</stepNumber>
+                <actorId/>
+                <description>Der Dialog enthält nur die Felder: 'Neues Passwort' ; 'Neues Passwort wiederholen';</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Der Nutzer muss nicht das nicht vorhandene Passwort eingeben.</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+          <extensionScenario>
+            <associatedStep>6</associatedStep>
+            <name>6a</name>
+            <preConditions>
+              <preCondition>
+                <description>Nutzer hat das 'Neues Passwort' Feld leer gelassen.</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>6a1</stepNumber>
+                <actorId/>
+                <description>Das Passwort wird auf &lt;nichts&gt; gesetzt.</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Nutzer kann Anwendung nicht mehr sperren.</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>34</id>
+        <name>Tuniermodul hinzufügen</name>
+        <useCaseId>5</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Der Nutzer will eine Tuniervariante erstellen.
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Es wird ein neues Tuniermodul erstellt das weitgehend frei modifizierbar 
+          ist und nachher als Vorlage f&amp;#252;r andere Events dienen kann.
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 11:58</created>
+        <author/>
+        <lastUpdate>12-11-2014 12:10</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Tourney ist geöffnet.</description>
+            </preCondition>
+            <preCondition>
+              <description>Der Nutzer befindet sich auf der Startseite oder beim erstellen eines Events in der Phase, in der die Tuniere hinzugefügt werden.</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer drückt auf den 'Tuniervorlage erstellen' Button.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Es öffnet sich ein Fenster, indem der Nutzer die spezifischen Einstellungen für das Tunier einstellen kann.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Stellt die Einstellung ein und drückt daraufhin auf 'Speichern' Button.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Das Programm speichert die Einstellungen im Programm Verzeichnis.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Nutzer hat eine neue Vorlage für Tuniere erstellt und kann diese in den Events verwenden.</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>4</associatedStep>
+            <name>4a</name>
+            <preConditions>
+              <preCondition>
+                <description>Die Vorlage kann nicht gespeichert werden.</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>4a1</stepNumber>
+                <actorId/>
+                <description>Zeigt eine Warnung an, dass die Änderungen nicht gespeichert werden können.</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Der Nutzer weiß das seine Änderung nicht gespeichert wurde</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>38</id>
+        <name>Voranmeldung</name>
+        <useCaseId>6</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Die Vorabanmeldung zu erfassen und zu speichern bis zum Event.
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Nutzer hat von verschiedenen Spielern Voranmeldungen erhalten und 
+          m&amp;#246;chte diese in das Event eintragen.
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 12:10</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 14:39</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung wurde gestartet.</description>
+            </preCondition>
+            <preCondition>
+              <description>Der Nutzer hat ein Event erstellt und befindet sich in der Phase Voranmeldung.</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwendung ist entsperrt.</description>
+            </preCondition>
+            <preCondition>
+              <description>Der übermittelte Datensatz ist vollständig.</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Drückt den 'Spieler eintragen' Button.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Öffnet die Maske um die Daten einzutragen.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Trägt den Teilnehmer in die Maske ein. (Name, Vorname, optional (Email, Forenname), Tuniere an denen er teilnehmen möchte)</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Überprüft ob alle Angaben korrekt sind. Und trägt diese in die Datendank ein.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Teilnehmer ist in Datenbank eingetragen</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>4</associatedStep>
+            <name>4a</name>
+            <preConditions>
+              <preCondition>
+                <description>Getätigte Eingabe ist inkorrekt.</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>4a1</stepNumber>
+                <actorId/>
+                <description>Gibzt eine Fehlermeldung aus. Lässt Nutzer die Eingaben nochmal überprüfen und verändern.</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Eingabe ist korrekt.</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>51</id>
+        <name>Reguläre Anmeldung</name>
+        <useCaseId>7</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Der Spieler soll in Datenbank eingetragen sein und f&amp;#252;r die einzelenen 
+          Tuniere
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Spieler meldet sich bei der Anmeldung f&amp;#252;r verschiedene Tuniere an. Dies 
+          wird dann in die Datenbank geschrieben.
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 14:39</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 15:07</lastUpdate>
+        <primaryActorId>6</primaryActorId>
+        <actors>
+          <actorId>6</actorId>
+          <actorId>10</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Antworten wurde gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Der Admin hat ein Event erstellt.</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anmeldung hat dieses Event importiert.</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung ist entsperrt</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event befindet sich in der Phase Anmeldung</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>10</actorId>
+              <description>Gibt der Anmeldung die erforderlichen Daten zum Anmelden.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId>6</actorId>
+              <description>Gibt Daten in dafür Vorgesehene Maske ein.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId/>
+              <description>Trägt die Daten in die Datenbank ein.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Spieler befindet sich in der Event Datenbank.</description>
             </postCondition>
           </postConditions>
         </mainScenario>
         <extensions/>
       </useCase>
       <useCase>
-        <id>32</id>
-        <name>Tuniermodule hinzufügen</name>
-        <useCaseId>5</useCaseId>
+        <id>53</id>
+        <name>Anwesenheit bestätigen</name>
+        <useCaseId>8</useCaseId>
         <goal>&lt;p style="margin-top: 0"&gt;
-          Ein neues Tuniermodul zu erstellen
+          Die Anwesenheit der Vorangemeldeten Spieler zu best&amp;#228;tigen und die 
+          Bezahlung der Geb&amp;#252;hr abzuwickeln.
           &lt;/p&gt;</goal>
-        <description/>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Vorangemeldete Spieler gibt seinen Namen/ E-Mail der Anmeldung diese 
+          Sucht daraufhin in der Datenbank nach dem Namen und best&amp;#228;tigt ihn, dass 
+          dieser hier ist und bezahlt hat.
+          &lt;/p&gt;</description>
         <priority>Niedrig</priority>
-        <level>Technische Details</level>
-        <created>11-11-2014 16:58</created>
-        <author/>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 15:07</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 15:43</lastUpdate>
+        <primaryActorId>6</primaryActorId>
+        <actors>
+          <actorId>10</actorId>
+          <actorId>6</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung muss gestartet sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung muss entsperrt sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss erstellt worden sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss sich in der Phase 'Anmeldung' befinden.</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss von der Anmeldung importiert worden sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Spieler muss in der Datenbank enthalten sein.</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>10</actorId>
+              <description>Gibt der Anmeldung Name/ E-Mail.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId>6</actorId>
+              <description>Drückt den 'Vorabanmeldung verifizieren' Button.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId/>
+              <description>Öffnet die Maske in der Name/ E-Mail eingegeben wird.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId>6</actorId>
+              <description>Gibt NameK/ E-Mail ein setzt Häkchen(Anwesenheit, Bezahlt) und drückt 'Verifizieren'.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>5</stepNumber>
+              <actorId/>
+              <description>Ändert Datenbank eintrag des Spielers fügt ihm dem Tunier/eren hinzu.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Spieler ist verifiziert und in den Tunieren hinzugefügt.</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>55</id>
+        <name>Tunier Exportieren</name>
+        <useCaseId>9</useCaseId>
+        <goal>&lt;p style="margin-top: 0" align="left"&gt;
+          Tunier wird als Datei exportiert.
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Das Tunier soll an den TO(Tunierorganisator) weiter gegeben werden, 
+          dieser kann das einzelnen Tunier.
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 15:43</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 17:27</lastUpdate>
+        <primaryActorId>17</primaryActorId>
         <actors>
           <actorId>17</actorId>
         </actors>
@@ -375,14 +920,313 @@
           <name/>
           <preConditions>
             <preCondition>
-              <description/>
+              <description>Anwendung muss gestartet sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung muss entsperrt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Ein Event muss erstellt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss in der Phase 'Tuniere Exportieren' sein.</description>
             </preCondition>
           </preConditions>
           <attributes/>
-          <steps/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Drückt den Button 'Tunier exportieren'.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Öffnet das Fenster zum auswählen wohin das Tunier exportiert werden soll.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Exportiert das Tunier.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
           <postConditions>
             <postCondition>
-              <description/>
+              <description>Tunier muss exportiert </description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>57</id>
+        <name>TO Tunier importieren</name>
+        <useCaseId>10</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Das Tunier zu importieren.
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der TO bekommt die Datei des Tunieres importiert diese und f&amp;#252;hrt dann 
+          das Tunier durch.
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 17:51</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 18:47</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Die Anwendung muss gestartet sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwendung muss entsperrt sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Das exportierte Tuniermodul muss vorhanden sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Nutzer muss auf der Startseite sein.</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>7</actorId>
+              <description>Drückt den Button 'Tunier importieren'.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Öffnet den File Browser um das Tunier zu importieren.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>7</actorId>
+              <description>Wählt die exportierte Tunier Datei aus.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Importiert das Tunier.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Das Tunier muss importiert sein.</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>59</id>
+        <name>Anwesenheit der Spieler beim Tunierbeginn</name>
+        <useCaseId>11</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Anwesenheit der Spieler beim Tunierbegin feststellen.
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Damit der TO die Anwesenheit der einzelnen Spieler zu &amp;#252;berpr&amp;#252;fen, damit 
+          die Paarungen bestimmt werden k&amp;#246;nnen.
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 18:50</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 19:49</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung muss gestartet sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung muss entsperrt sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Tunier muss geladen sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Tunier mus in der Phase 'Anwesenheit kontorllieren' sein.</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId/>
+              <description>Zeigt eine Liste von Spielern die an diesem Tunier teilnehmen.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId>7</actorId>
+              <description>Verifiziert die Anwesenheit der einzelnen Spieler.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId/>
+              <description>Löscht jeden nicht verifizierten Spieler mit einer Warnung.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Nur Spieler die verifiziert sind in der Tunier Datenbank.</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>61</id>
+        <name>Spielergebnis eintragen</name>
+        <useCaseId>12</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Das Ergebnis einer Paarung eintragen.
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der TO tr&amp;#228;gt bei einer Paarung die Punktzahl ein. Und die Secund&amp;#228;r/ 
+          Terti&amp;#228;r Wertung ein
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 19:51</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 20:22</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Die Anwendung ist gestarted.</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwengund ist entsperrt.</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Tunier muss in einer Runde sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Tunier muss importiert sein.</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>7</actorId>
+              <description>Der Nutzer wählt die Paarung aus die er bewerten will.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Zeigt die voreingestelllten Ausgangsmöglichkeiten an.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>7</actorId>
+              <description>Nutzer wählt eine davon aus oder gibt die Wertungen manuell ein.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Paarung muss bewertet sein.</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>63</id>
+        <name>Manuell Paarungen ändern</name>
+        <useCaseId>13</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Computergenerierte Paarungen von Hand zu &amp;#228;ndern.
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der TO kann die Computergenerierten Paarungen auch von Hand &amp;#228;ndern.
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 20:39</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 21:28</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Die Anwendung muss aktiv sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwendung muss entsperrt sein.</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Tunier muss vor einer Runde sein, es darf noch keine Wertung eingetragen sein.</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>7</actorId>
+              <description>TO wählt die zwei zu tauschende Spieler aus und wählt tauschen aus.</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Tauscht die ausgewählten Spieler.</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Die getauschten Paarungen sollen gespeichert werden.</description>
             </postCondition>
           </postConditions>
         </mainScenario>
@@ -393,5 +1237,237 @@
   <useCaseDiagramsFolder>
     <name>Use-Case-Diagramme</name>
     <id>2</id>
+    <children>
+      <useCaseDiagram>
+        <id>33</id>
+        <name>Tourney</name>
+        <description>&lt;p style="margin-top: 0"&gt;
+          
+          &lt;/p&gt;</description>
+        <diagramData>
+          <model>
+            <name>TO</name>
+            <type>ACTOR</type>
+            <reference>7</reference>
+            <position>
+              <x>254</x>
+              <y>35</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>TO Tunier importieren (10)</name>
+            <type>USE_CASE</type>
+            <reference>57</reference>
+            <position>
+              <x>429</x>
+              <y>9</y>
+            </position>
+            <size>
+              <width>190</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Anwesenheit der Spieler beim Tunierbeginn (11)</name>
+            <type>USE_CASE</type>
+            <reference>59</reference>
+            <position>
+              <x>852</x>
+              <y>7</y>
+            </position>
+            <size>
+              <width>343</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Spielergebnis eintragen (12)</name>
+            <type>USE_CASE</type>
+            <reference>61</reference>
+            <position>
+              <x>635</x>
+              <y>7</y>
+            </position>
+            <size>
+              <width>202</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Manuell Paarungen ändern (13)</name>
+            <type>USE_CASE</type>
+            <reference>63</reference>
+            <position>
+              <x>425</x>
+              <y>110</y>
+            </position>
+            <size>
+              <width>226</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Admin</name>
+            <type>ACTOR</type>
+            <reference>17</reference>
+            <position>
+              <x>249</x>
+              <y>201</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>Event erstellen (1)</name>
+            <type>USE_CASE</type>
+            <reference>15</reference>
+            <position>
+              <x>474</x>
+              <y>220</y>
+            </position>
+            <size>
+              <width>133</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Bestehendes Event laden (2)</name>
+            <type>USE_CASE</type>
+            <reference>23</reference>
+            <position>
+              <x>634</x>
+              <y>208</y>
+            </position>
+            <size>
+              <width>208</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Optionen Sprache anzeigen/ändern (3)</name>
+            <type>USE_CASE</type>
+            <reference>27</reference>
+            <position>
+              <x>454</x>
+              <y>304</y>
+            </position>
+            <size>
+              <width>280</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Optionen Passwort ändern (4)</name>
+            <type>USE_CASE</type>
+            <reference>30</reference>
+            <position>
+              <x>773</x>
+              <y>305</y>
+            </position>
+            <size>
+              <width>217</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Tuniermodul hinzufügen (5)</name>
+            <type>USE_CASE</type>
+            <reference>34</reference>
+            <position>
+              <x>873</x>
+              <y>213</y>
+            </position>
+            <size>
+              <width>196</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Voranmeldung (6)</name>
+            <type>USE_CASE</type>
+            <reference>38</reference>
+            <position>
+              <x>1019</x>
+              <y>299</y>
+            </position>
+            <size>
+              <width>127</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Anmeldung</name>
+            <type>ACTOR</type>
+            <reference>6</reference>
+            <position>
+              <x>254</x>
+              <y>379</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>Spieler</name>
+            <type>ACTOR</type>
+            <reference>10</reference>
+            <position>
+              <x>255</x>
+              <y>558</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>Reguläre Anmeldung (7)</name>
+            <type>USE_CASE</type>
+            <reference>51</reference>
+            <position>
+              <x>457</x>
+              <y>587</y>
+            </position>
+            <size>
+              <width>174</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Anwesenheit bestätigen (8)</name>
+            <type>USE_CASE</type>
+            <reference>53</reference>
+            <position>
+              <x>454</x>
+              <y>428</y>
+            </position>
+            <size>
+              <width>199</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Tunier Exportieren (9)</name>
+            <type>USE_CASE</type>
+            <reference>55</reference>
+            <position>
+              <x>1079</x>
+              <y>212</y>
+            </position>
+            <size>
+              <width>159</width>
+              <height>64</height>
+            </size>
+          </model>
+        </diagramData>
+      </useCaseDiagram>
+    </children>
   </useCaseDiagramsFolder>
 </project>
