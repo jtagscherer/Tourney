@@ -4,7 +4,7 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{geometry}
-\usepackage{tabularx}
+\usepackage{ltablex}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -164,15 +164,33 @@ Um die Software erfolgreich entwickeln und betreiben zu können muss von den fol
 
 \subsubsection{Bedienbarkeit}
 
+Zur Bedienung von \textbf{Tourney} sowohl als Administrator als auch als Turnierordner werden keine weitreichenden technischen Kenntnisse gefordert. Entsprechend sollte die Software sich gegenüber Nutzereingaben möglichst defensiv verhalten und auf fehlerhafte Eingaben verständlich aufmerksam machen. Weitere nutzerseitige Fehler werden durch eine Rückgängig-Funktion abgefangen.
+
+Das Bedienkonzept zielt auf eine intuitive Interaktion ab, die auch ohne das Lesen eines Handbuchs möglich ist. Dazu müssen alle Module und zeitliche Abläufe konsistent und übersichtlich gekapselt werden. Alle Elemente der Oberfläche sollten eindeutig bezeichnet sein ohne dass dies überladen wirkt.
+
+Kritische Aktionen wie das Löschen von Daten müssen durch Dialoge bestätigt werden.
+
 \subsubsection{Erweiterbarkeit}
+
+Um eine hohe Änderbarkeit und Erweiterbarkeit zu gewährleisten werden große Teile der Software modular gestaltet, etwa die Abtrennung von Administrator- und Turniermodul oder die Verwendung änderbarer Regelmodulen.
+
+Auch interne Komponenten der Software werden in abgeschlossene Einheiten mit hohem Zusammenhalt und geringer Kopplung gegliedert. Desweiteren sollen Redundanzen so gut wie möglich vermieden werden.
+
+Eine umfangreiche Dokumentation auch durch Kommentierung im Code und die konsistente Anwendung der \href{http://www.oracle.com/technetwork/java/codeconvtoc-136057.html}{\textbf{Code Conventions for the Java\texttrademark\ Programming Language}} stellen eine hohe Lesbarkeit zur späteren Anpassung sicher.
 
 \subsubsection{Sicherheit}
 
+Da keine Schnittstellen mit einem externen Netzwerk bestehen und die Daten über Massenspeichergeräte übertragen werden, müssen diese nicht in besonderem Maße verschlüsselt werden. Allerdings sollte die unrechtmäßige Manipulation der Datensätze verhindert werden, indem diese durch Passwörter sowohl auf Seiten der Administratoren als auch der Turnierordner gesichert werden. Zudem können diese Personen ihre jeweiligen Arbeits-plätze bei vorübergehender Abwesenheit sperren.
+
 \subsubsection{Zuverlässigkeit}
+
+Die Software übernimmt in der Turnier- und Eventorganisation eine zentrale Rolle. Kommt es während dem Betrieb zu einem längerfristigen Ausfall oder Datenverlust, kann das geplante Event nicht ohne erheblichen Mehraufwand und erneutes Erfassen der erforderlichen Daten durchgeführt werden. Zu derartigen Problemen sollte es also keinesfalls kommen.
+
+Ein kurzfristiger Ausfall ist in diesem Sinne also nicht besonders kritisch, wenn er nur zu geringen Verzögerungen führt, sollte aber in Anbetracht der Nutzerfreundlichkeit bestmöglich vermieden werden.
 
 \subsubsection{Portabilität}
 
-\subsubsection{...}
+Da die Software mit der Programmiersprache Java und unter Verzicht auf native Schnittstellen entwickelt wird ist eine umfassende Portabilität mit einer Vielzahl von Plattformen gegeben.
 
 \section{Benutzerprofile}
 
@@ -204,39 +222,6 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \subsubsection{Event erstellen}
 
-\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
-	\hline
-	\textbf{Ziel} & ... \\
-	\hline
-	\textbf{Akteure} &
-		\begin{enumerate}
-			\item ...
-			\item ...
-		\end{enumerate}
-	\\
-	\hline
-	\textbf{Vorbedingung} & ... \\
-	\hline
-	\textbf{Normalablauf} &
-		\begin{enumerate}
-			\item ...
-			\item ...
-		\end{enumerate}
-	\\
-	\hline
-	\textbf{Nachbedingung} & ... \\
-	\hline
-	\textbf{Sonderfälle} &
-		\begin{enumerate}
-			\item ...
-			\item ...
-		\end{enumerate}
-	\\
-	\hline
-	\textbf{Nachbedingung im Sonderfall} & ... \\
-	\hline
-\end{tabularx}
-
 \subsection{Anwendungsfälle der Turnierordner}
 
 \section{Anhang}
@@ -257,6 +242,10 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\item Version 1.2 (11.11.2014)
 	\begin{itemize}	
 		\item Kapitel 4 hinzugefügt
+	\end{itemize}
+	\item Version 1.3 (12.11.2014)
+	\begin{itemize}
+		\item Kapitel 3.2 hinzugefügt
 	\end{itemize}
 \end{itemize}
 
