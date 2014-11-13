@@ -1,0 +1,1472 @@
+<?xml version="10" encoding="UTF-8"?>
+<project type="tulip" version="201">
+  <id>1</id>
+  <name>Tourney</name>
+  <description>&lt;p style="margin-top: 0"&gt; Programm zum Erstellen und Verwalten von TCG-Turnieren &lt;/p&gt;</description>
+  <systemName>System</systemName>
+  <priorities>
+    <priority>Niedrig</priority>
+    <priority>Mittel</priority>
+    <priority>Hoch</priority>
+  </priorities>
+  <levels>
+    <level>Technische Details</level>
+    <level>Benutzersicht</level>
+    <level>&amp;#220;bersicht</level>
+  </levels>
+  <actorsFolder>
+    <name>Akteure</name>
+    <id>5</id>
+    <children>
+      <actor>
+        <id>17</id>
+        <name>Administrator</name>
+        <description>&lt;p style="margin-top: 0"&gt; &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+      <actor>
+        <id>10</id>
+        <name>Spieler</name>
+        <description>&lt;p style="margin-top: 0"&gt; &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+      <actor>
+        <id>7</id>
+        <name>Turnierordner</name>
+        <description>&lt;p resolver="NamedStyle:default {name=default,}" margin-top="0"&gt; Verwaltet Turniermodul &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+      <actor>
+        <id>6</id>
+        <name>Anmeldung</name>
+        <description>&lt;p style="margin-top: 0"&gt; Tr&amp;#228;gt Spieler in Datenbank ein &lt;/p&gt;</description>
+        <human>true</human>
+      </actor>
+    </children>
+  </actorsFolder>
+  <usabilityPatternsFolder>
+    <name>Usability Patterns</name>
+    <id>4</id>
+  </usabilityPatternsFolder>
+  <useCasesFolder>
+    <name>Use Cases</name>
+    <id>3</id>
+    <children>
+      <useCase>
+        <id>15</id>
+        <name>Event erstellen</name>
+        <useCaseId>1</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt; Es kann mit der Voranmeldung begonnen werden, daher ist das Event mit allen notwendigen Daten fertig erstellt &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt; Es wird das Event erstellt und mit den vorhanden Daten modifiziert &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>10-11-2014 18:17</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 21:41</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung wurde gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung wurde falls n&amp;#246;tig entsperrt</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer startet das Erstellen des Events durch Dr&amp;#252;cken des Buttons "Event erstellen"</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet den Dialog f&amp;#252;r das Erstellen der Events</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer vergibt Startdatum, Enddatum, Titel und &amp;#246;ffnet das Fenster um die Turniere hinzuzuf&amp;#252;gen</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Erstellt Datenbank f&amp;#252;r Vorabanmeldung</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>5</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet Dialog um Speicherort des Event zu bestimmen</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>6</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer w&amp;#228;hlt den Speicherort aus</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>7</stepNumber>
+              <actorId/>
+              <description>Speichert das Event an dem vogegebenen Ort</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Vorabanmeldung kann gestartet werden</description>
+            </postCondition>
+            <postCondition>
+              <description>Event wurde gespeichert</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>3</associatedStep>
+            <name>3a</name>
+            <preConditions>
+              <preCondition>
+                <description>Standard-Module sind nicht vorhanden</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3a1</stepNumber>
+                <actorId/>
+                <description>Gibt eine Meldung aus, dass die Standard-Module nicht gefunden wurden und verweist auf das Erstellen eines neuen Turniermoduls</description>
+                <references/>
+                <attributes/>
+              </step>
+              <step>
+                <stepNumber>3a2</stepNumber>
+                <actorId>17</actorId>
+                <description>Erstellt ein Turniermodul (siehe Use Case 5: Turniermodul erstellen)</description>
+                <references/>
+                <attributes/>
+              </step>
+              <step>
+                <stepNumber>3a3</stepNumber>
+                <actorId>17</actorId>
+                <description>Der Nutzer f&amp;#252;gt dieses daraufhin dem Event hinzu</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Das Event enth&amp;#228;lt nun ein oder mehrere Turniere</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+          <extensionScenario>
+            <associatedStep>3a2</associatedStep>
+            <name>3a2a</name>
+            <preConditions>
+              <preCondition>
+                <description>Schlie&amp;#223;t Dialog ohne ein neues Turniermodul zu erstellen</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3a2a1</stepNumber>
+                <actorId/>
+                <description>Geht in Zustand Y &amp;#252;ber</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Zustand Y</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+          <extensionScenario>
+            <associatedStep>7</associatedStep>
+            <name>7a</name>
+            <preConditions>
+              <preCondition>
+                <description>Ungen&amp;#252;gende Berechtigung um in den Zielordner zu schreiben</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>7a1</stepNumber>
+                <actorId/>
+                <description>Gibt eine Warnung aus, dass eine ungen&amp;#252;gende Schreibberechtigung vorhanden ist</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Nutzer wurde infomiert, dass er ein neues Speicherziel w&amp;#228;hlen muss oder seine &amp;#196;nderungen werden nicht gespeichert</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>23</id>
+        <name>Bestehendes Event laden</name>
+        <useCaseId>2</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt; Bestehendes Event aus dem gespeicherten Zustand laden &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt; L&amp;#228;dt das gespeicherte Event inklusive Turniermodulen, Zust&amp;#228;nden und Fortschritt im Turnier Fragt gegebenenfalls ein gesetztes Passwort ab &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>10-11-2014 20:42</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 12:19</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Programm ist gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung ist entsperrt falls n&amp;#246;tig</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Dr&amp;#252;ckt den 'Event laden'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet den File Browser</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>W&amp;#228;hlt die zu ladende Datei aus der Verzeichnisstruktur aus und dr&amp;#252;ckt laden</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>L&amp;#228;dt den gespeicherten Zustand des Events</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Der gespeicherte Zustand des Events ist geladen und benutzbar</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>27</id>
+        <name>Optionen, Sprache anzeigen/&amp;#228;ndern</name>
+        <useCaseId>3</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt; Die aktuellen Optionen des Programms wie Sprache zu &amp;#228;ndern oder anzuzeigen &lt;/p&gt;</goal>
+        <description/>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>10-11-2014 21:02</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 12:21</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Programm wurde gestartet</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>&amp;#214;ffnet die Optionen durch Bet&amp;#228;tigen des Optionen-Buttons</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet das Optionen-Fenster, zeigt aktuelle Spracheneinstellung an</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>W&amp;#228;hlt andere Sprache aus</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Stellt die Sprache auf die ausgew&amp;#228;hlte Sprache um</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description/>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>3</associatedStep>
+            <name>3a</name>
+            <preConditions>
+              <preCondition>
+                <description>Will sich die Optionen nur anzeigen lassen und nicht ver&amp;#228;ndern</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3a1</stepNumber>
+                <actorId/>
+                <description>Es wird nichts ver&amp;#228;ndert</description>
+                <references/>
+                <attributes/>
+              </step>
+              <step>
+                <stepNumber>3a2</stepNumber>
+                <actorId>17</actorId>
+                <description>Dr&amp;#252;ckt den 'Zur&amp;#252;ck'-Button</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description/>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+          <extensionScenario>
+            <associatedStep>3</associatedStep>
+            <name>3b</name>
+            <preConditions>
+              <preCondition>
+                <description>Eingestellte Option ist dieselbe Sprache wie die aktuell ausgew&amp;#228;hlte</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>3b1</stepNumber>
+                <actorId/>
+                <description>Bel&amp;#228;sst aktuelle Spracheinstellung</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Programm wird in der eingestellten Sprache angezeigt</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>30</id>
+        <name>Optionen, Passwort &amp;#228;ndern</name>
+        <useCaseId>4</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt; Es soll ein neues Passwort gesetzt werden oder ein bestehendes ge&amp;#228;ndert werden &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Nutzer m&amp;#246;chte seine Anwendung mit einem Passwort sichern oder das 
+          bestehende Passwort &amp;#228;ndern
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>11-11-2014 12:50</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 12:31</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung ist gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung ist falls n&amp;#246;tig entsperrt</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer dr&amp;#252;ckt den 'Optionen'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet Optionen-Fenster</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer dr&amp;#252;ckt den 'Passwort &amp;#228;ndern'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet Dialog, in dem die Passwort&amp;#228;nderung vollzogen wird</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>5</stepNumber>
+              <actorId>17</actorId>
+              <description>Gibt altes Passwort falls vorhanden und danach 2 Mal das neue Passwort ein</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>6</stepNumber>
+              <actorId/>
+              <description>&amp;#196;ndert das Passwort um die Anwendung zu sperren</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Anwendung wird nach der &amp;#196;nderung mit dem neuen Passwort entsperrt</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>4</associatedStep>
+            <name>4a</name>
+            <preConditions>
+              <preCondition>
+                <description>Es wurde noch kein Passwort gesetzt</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>4a1</stepNumber>
+                <actorId/>
+                <description>Der Dialog enth&amp;#228;lt nur die Felder: 'Neues Passwort', 'Neues Passwort wiederholen';</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Der Nutzer muss das nicht vorhandene Passwort nicht eingeben</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+          <extensionScenario>
+            <associatedStep>6</associatedStep>
+            <name>6a</name>
+            <preConditions>
+              <preCondition>
+                <description>Nutzer hat das 'Neues Passwort' Feld leer gelassen</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>6a1</stepNumber>
+                <actorId/>
+                <description>Das Passwort wird entfernt</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Nutzer kann Anwendung nicht mehr sperren</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>34</id>
+        <name>Turniermodul hinzuf&amp;#252;gen</name>
+        <useCaseId>5</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Der Nutzer will eine Turniervariante erstellen
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Es wird ein neues Turniermodul erstellt, das weitgehend frei modifizierbar 
+          ist und nachher als Vorlage f&amp;#252;r andere Events dienen kann
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 11:58</created>
+        <author/>
+        <lastUpdate>12-11-2014 12:10</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Tourney ist ge&amp;#246;ffnet</description>
+            </preCondition>
+            <preCondition>
+              <description>Der Nutzer befindet sich auf der Startseite oder beim Erstellen eines Events in der Phase, in der die Turniere hinzugef&amp;#252;gt werden</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Nutzer dr&amp;#252;ckt auf den 'Turniervorlage erstellen' Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Es &amp;#246;ffnet sich ein Fenster, in dem der Nutzer die spezifischen Einstellungen f&amp;#252;r das Turnier vornehmen kann</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Stellt die Einstellung ein und dr&amp;#252;ckt daraufhin den 'Speichern'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Das Programm speichert die Einstellungen im Programmverzeichnis</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Nutzer hat eine neue Vorlage f&amp;#252;r Turniere erstellt und kann diese in den Events verwenden</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>4</associatedStep>
+            <name>4a</name>
+            <preConditions>
+              <preCondition>
+                <description>Die Vorlage kann nicht gespeichert werden</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>4a1</stepNumber>
+                <actorId/>
+                <description>Zeigt eine Warnung an, dass die &amp;#196;nderungen nicht gespeichert werden k&amp;#246;nnen</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Der Nutzer wei&amp;#223;, dass seine &amp;#196;nderung nicht gespeichert wurde</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>38</id>
+        <name>Voranmeldung</name>
+        <useCaseId>6</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Voranmeldungen vor dem Event erfassen und speichern
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Nutzer hat von mindestens einem Spieler Voranmeldungen erhalten und 
+          m&amp;#246;chte diese in das Event eintragen
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 12:10</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 14:39</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung wurde gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Der Nutzer hat ein Event erstellt und befindet sich in der Phase Voranmeldung</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwendung ist entsperrt</description>
+            </preCondition>
+            <preCondition>
+              <description>Der &amp;#252;bermittelte Datensatz ist vollst&amp;#228;ndig</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Dr&amp;#252;ckt den 'Spieler eintragen'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet die Maske um die Daten einzutragen</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Tr&amp;#228;gt den Teilnehmer in die Maske ein (Name, Vorname, Turniere an denen er teilnehmen m&amp;#246;chte, optional E-Mail-Adresse und Vorname)</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>&amp;#220;berpr&amp;#252;ft, ob alle Angaben korrekt sind und tr&amp;#228;gt diese in die Datendank ein</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Teilnehmer ist in Datenbank eingetragen</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions>
+          <extensionScenario>
+            <associatedStep>4</associatedStep>
+            <name>4a</name>
+            <preConditions>
+              <preCondition>
+                <description>Get&amp;#228;tigte Eingabe ist inkorrekt</description>
+              </preCondition>
+            </preConditions>
+            <attributes/>
+            <steps>
+              <step>
+                <stepNumber>4a1</stepNumber>
+                <actorId/>
+                <description>Gibt eine Fehlermeldung aus und l&amp;#228;sst Nutzer die Eingaben nochmal &amp;#252;berpr&amp;#252;fen und ver&amp;#228;ndern</description>
+                <references/>
+                <attributes/>
+              </step>
+            </steps>
+            <postConditions>
+              <postCondition>
+                <description>Eingabe ist korrekt</description>
+              </postCondition>
+            </postConditions>
+          </extensionScenario>
+        </extensions>
+      </useCase>
+      <useCase>
+        <id>51</id>
+        <name>Regul&amp;#228;re Anmeldung</name>
+        <useCaseId>7</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Der Spieler soll in die Datenbank eingetragen sein und f&amp;#252;r die einzelnen 
+          Turniere registriert sein
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Spieler meldet sich bei der Anmeldung f&amp;#252;r verschiedene Turniere an. Dies 
+          wird dann in die Datenbank geschrieben
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 14:39</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 15:07</lastUpdate>
+        <primaryActorId>6</primaryActorId>
+        <actors>
+          <actorId>6</actorId>
+          <actorId>10</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung wurde gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Der Administrator hat ein Event erstellt</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anmeldung hat dieses Event importiert</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung ist entsperrt</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event befindet sich in der Phase Anmeldung</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>10</actorId>
+              <description>Gibt der Anmeldung die erforderlichen Daten zum Anmelden</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId>6</actorId>
+              <description>Gibt Daten in daf&amp;#252;r vorgesehene Maske ein</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId/>
+              <description>Tr&amp;#228;gt die Daten in die Datenbank ein</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Spieler befindet sich in der Event-Datenbank</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>53</id>
+        <name>Anwesenheit best&amp;#228;tigen</name>
+        <useCaseId>8</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Die Anwesenheit der vorangemeldeten Spieler zu best&amp;#228;tigen und die 
+          Bezahlung der Geb&amp;#252;hr abzuwickeln
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der vorangemeldete Spieler gibt seinen Namen/E-Mail-Adresse der Anmeldung. Diese 
+          sucht daraufhin in der Datenbank nach dem Namen und best&amp;#228;tigt, dass 
+          dieser anwesend ist und bezahlt hat
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 15:07</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 15:43</lastUpdate>
+        <primaryActorId>6</primaryActorId>
+        <actors>
+          <actorId>10</actorId>
+          <actorId>6</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung muss gestartet sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung muss entsperrt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss erstellt worden sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss sich in der Phase 'Anmeldung' befinden</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss von der Anmeldung importiert worden sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Spieler muss in der Datenbank enthalten sein</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>10</actorId>
+              <description>Gibt der Anmeldung Name/E-Mail-Adresse</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId>6</actorId>
+              <description>Dr&amp;#252;ckt den 'Voranmeldung verifizieren'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet die Maske, in der Name und E-Mail-Adresse eingegeben werden</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId>6</actorId>
+              <description>Gibt Name und E-Mail-Adresse ein und setzt Haken (Anwesenheit, bezahlt) und bet&amp;#228;tigt 'Verifizieren'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>5</stepNumber>
+              <actorId/>
+              <description>&amp;#196;ndert Datenbankeintrag des Spielers und f&amp;#252;gt ihn dem Turnier/den Turnieren hinzu</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Spieler ist verifiziert und den Turnieren hinzugef&amp;#252;gt</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>55</id>
+        <name>Turnier exportieren</name>
+        <useCaseId>9</useCaseId>
+        <goal>&lt;p style="margin-top: 0" align="left"&gt;
+          Turnier wird als Datei exportiert
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Das Turnier soll an den Turnierorganisator weitergegeben werden, 
+          dieser kann das einzelne Turnier importieren
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 15:43</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 17:27</lastUpdate>
+        <primaryActorId>17</primaryActorId>
+        <actors>
+          <actorId>17</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung muss gestartet sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung muss entsperrt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Ein Event muss erstellt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Event muss in der Phase 'Turniere exportieren' sein</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>17</actorId>
+              <description>Dr&amp;#252;ckt den Button 'Turnier exportieren'</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet das Fenster zum Ausw&amp;#228;hlen des Speicherorts f&amp;#252;r das exportierte Turnier</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>17</actorId>
+              <description>Exportiert das Turnier</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Turnier muss exportiert sein</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>57</id>
+        <name>Turnierordner: Turnier importieren</name>
+        <useCaseId>10</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Das Turnier soll importiert sein
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Turnierordner bekommt die Datei des Turniers und importiert dieses
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 17:51</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 18:47</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Die Anwendung muss gestartet sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwendung muss entsperrt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Das exportierte Turniermodul muss vorhanden sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Nutzer muss auf der Startseite sein</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>7</actorId>
+              <description>Dr&amp;#252;ckt den Button 'Turnier importieren'</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>&amp;#214;ffnet den File Browser um das Turnier zu importieren</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>7</actorId>
+              <description>W&amp;#228;hlt die exportierte Turnier-Datei aus</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>4</stepNumber>
+              <actorId/>
+              <description>Importiert das Turnier</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Das Turnier muss importiert sein</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>59</id>
+        <name>Anwesenheit der Spieler beim Turnierbeginn</name>
+        <useCaseId>11</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Anwesenheit der Spieler beim Turnierbeginn feststellen
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Turnierordner &amp;#252;berpr&amp;#252;ft die Anwesenheit der einzelnen Spieler, damit 
+          die Paarungen bestimmt werden k&amp;#246;nnen
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 18:50</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 19:49</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Anwendung muss gestartet sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Anwendung muss entsperrt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Turnier muss geladen sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Turnier mus in der Phase 'Anwesenheit kontrollieren' sein</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId/>
+              <description>Zeigt eine Liste von Spielern an, die an diesem Turnier teilnehmen</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId>7</actorId>
+              <description>Verifiziert die Anwesenheit der einzelnen Spieler</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId/>
+              <description>L&amp;#246;scht jeden nicht verifizierten Spieler mit einer Warnung</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Nur verifizierte Spieler befinden sich in der Turnier-Datenbank</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>61</id>
+        <name>Spielergebnis eintragen</name>
+        <useCaseId>12</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Das Ergebnis einer Paarung eintragen
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Turnierordner tr&amp;#228;gt bei einer Paarung die Punktzahl und gegebenenfalls Sekund&amp;#228;r/ 
+          Terti&amp;#228;rwertungen ein
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 19:51</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 20:22</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Die Anwendung ist gestartet</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwengung ist entsperrt</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Turnier muss in einer laufenden Runde sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Turnier muss importiert sein</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>7</actorId>
+              <description>Der Nutzer w&amp;#228;hlt die Paarung aus, die er bewerten will</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Zeigt die voreingestellten Ausgangsm&amp;#246;glichkeiten an</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>3</stepNumber>
+              <actorId>7</actorId>
+              <description>Nutzer w&amp;#228;hlt eine davon aus oder gibt die Wertungen manuell ein</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Paarung muss bewertet sein</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+      <useCase>
+        <id>63</id>
+        <name>Manuell Paarungen &amp;#228;ndern</name>
+        <useCaseId>13</useCaseId>
+        <goal>&lt;p style="margin-top: 0"&gt;
+          Computergenerierte Paarungen ist von Hand ge&amp;#228;ndert
+          &lt;/p&gt;</goal>
+        <description>&lt;p style="margin-top: 0"&gt;
+          Der Turnierordner kann die computergenerierten Paarungen auch von Hand &amp;#228;ndern
+          &lt;/p&gt;</description>
+        <priority>Niedrig</priority>
+        <level>Benutzersicht</level>
+        <created>12-11-2014 20:39</created>
+        <author>Fabian Biester</author>
+        <lastUpdate>12-11-2014 21:28</lastUpdate>
+        <primaryActorId>7</primaryActorId>
+        <actors>
+          <actorId>7</actorId>
+        </actors>
+        <mainScenario>
+          <name/>
+          <preConditions>
+            <preCondition>
+              <description>Die Anwendung muss aktiv sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Die Anwendung muss entsperrt sein</description>
+            </preCondition>
+            <preCondition>
+              <description>Das Turnier muss vor einer Runde sein, es darf noch keine Wertung eingetragen sein</description>
+            </preCondition>
+          </preConditions>
+          <attributes/>
+          <steps>
+            <step>
+              <stepNumber>1</stepNumber>
+              <actorId>7</actorId>
+              <description>Turnierordner w&amp;#228;hlt die zwei zu tauschenden Spieler aus und bet&amp;#228;tigt den 'Tauschen'-Button</description>
+              <references/>
+              <attributes/>
+            </step>
+            <step>
+              <stepNumber>2</stepNumber>
+              <actorId/>
+              <description>Tauscht die ausgew&amp;#228;hlten Spieler</description>
+              <references/>
+              <attributes/>
+            </step>
+          </steps>
+          <postConditions>
+            <postCondition>
+              <description>Die getauschten Paarungen sollen gespeichert werden</description>
+            </postCondition>
+          </postConditions>
+        </mainScenario>
+        <extensions/>
+      </useCase>
+    </children>
+  </useCasesFolder>
+  <useCaseDiagramsFolder>
+    <name>Use-Case-Diagramme</name>
+    <id>2</id>
+    <children>
+      <useCaseDiagram>
+        <id>33</id>
+        <name>Tourney</name>
+        <description>&lt;p style="margin-top: 0"&gt;
+          
+          &lt;/p&gt;</description>
+        <diagramData>
+          <model>
+            <name>TO</name>
+            <type>ACTOR</type>
+            <reference>7</reference>
+            <position>
+              <x>254</x>
+              <y>35</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>TO Turnier importieren (10)</name>
+            <type>USE_CASE</type>
+            <reference>57</reference>
+            <position>
+              <x>429</x>
+              <y>9</y>
+            </position>
+            <size>
+              <width>190</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Anwesenheit der Spieler beim Turnierbeginn (11)</name>
+            <type>USE_CASE</type>
+            <reference>59</reference>
+            <position>
+              <x>852</x>
+              <y>7</y>
+            </position>
+            <size>
+              <width>343</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Spielergebnis eintragen (12)</name>
+            <type>USE_CASE</type>
+            <reference>61</reference>
+            <position>
+              <x>635</x>
+              <y>7</y>
+            </position>
+            <size>
+              <width>202</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Manuell Paarungen &amp;#228;ndern (13)</name>
+            <type>USE_CASE</type>
+            <reference>63</reference>
+            <position>
+              <x>425</x>
+              <y>110</y>
+            </position>
+            <size>
+              <width>226</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Admin</name>
+            <type>ACTOR</type>
+            <reference>17</reference>
+            <position>
+              <x>249</x>
+              <y>201</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>Event erstellen (1)</name>
+            <type>USE_CASE</type>
+            <reference>15</reference>
+            <position>
+              <x>474</x>
+              <y>220</y>
+            </position>
+            <size>
+              <width>133</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Bestehendes Event laden (2)</name>
+            <type>USE_CASE</type>
+            <reference>23</reference>
+            <position>
+              <x>634</x>
+              <y>208</y>
+            </position>
+            <size>
+              <width>208</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Optionen Sprache anzeigen/&amp;#228;ndern (3)</name>
+            <type>USE_CASE</type>
+            <reference>27</reference>
+            <position>
+              <x>454</x>
+              <y>304</y>
+            </position>
+            <size>
+              <width>280</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Optionen Passwort &amp;#228;ndern (4)</name>
+            <type>USE_CASE</type>
+            <reference>30</reference>
+            <position>
+              <x>773</x>
+              <y>305</y>
+            </position>
+            <size>
+              <width>217</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Turniermodul hinzuf&amp;#252;gen (5)</name>
+            <type>USE_CASE</type>
+            <reference>34</reference>
+            <position>
+              <x>873</x>
+              <y>213</y>
+            </position>
+            <size>
+              <width>196</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Voranmeldung (6)</name>
+            <type>USE_CASE</type>
+            <reference>38</reference>
+            <position>
+              <x>1019</x>
+              <y>299</y>
+            </position>
+            <size>
+              <width>127</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Anmeldung</name>
+            <type>ACTOR</type>
+            <reference>6</reference>
+            <position>
+              <x>254</x>
+              <y>379</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>Spieler</name>
+            <type>ACTOR</type>
+            <reference>10</reference>
+            <position>
+              <x>255</x>
+              <y>558</y>
+            </position>
+            <size>
+              <width>64</width>
+              <height>128</height>
+            </size>
+          </model>
+          <model>
+            <name>Regul&amp;#228;re Anmeldung (7)</name>
+            <type>USE_CASE</type>
+            <reference>51</reference>
+            <position>
+              <x>457</x>
+              <y>587</y>
+            </position>
+            <size>
+              <width>174</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Anwesenheit best&amp;#228;tigen (8)</name>
+            <type>USE_CASE</type>
+            <reference>53</reference>
+            <position>
+              <x>454</x>
+              <y>428</y>
+            </position>
+            <size>
+              <width>199</width>
+              <height>64</height>
+            </size>
+          </model>
+          <model>
+            <name>Turnier Exportieren (9)</name>
+            <type>USE_CASE</type>
+            <reference>55</reference>
+            <position>
+              <x>1079</x>
+              <y>212</y>
+            </position>
+            <size>
+              <width>159</width>
+              <height>64</height>
+            </size>
+          </model>
+        </diagramData>
+      </useCaseDiagram>
+    </children>
+  </useCaseDiagramsFolder>
+</project>
