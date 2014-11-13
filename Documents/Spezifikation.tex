@@ -154,11 +154,69 @@ Um die Software erfolgreich entwickeln und betreiben zu können muss von den fol
 
 \subsubsection{Mengengerüst}
 
+Bei den momentan stattfindenden Turnieren sind Teilnehmerzahlen von bis zu 128 Spielern realistisch. Da die Aufgaben der Software relativ leicht auf höhere Spielerzahlen skalierbar ist wird jedoch bei der Entwicklung darauf abgezielt, die Unterstützung von bis zu 1024 teilnehmende Spielern zu gewährleisten.
+
 \subsubsection{Leistungsanforderungen}
 
-\subsubsection{Externe Schnittstellen}
+Die Software muss für die vorgesehenen Anwendungsfälle keine aufwändigen Operationen durchführen. Deshalb sollten Ladezeiten auf ein Minimum reduziert sein, das eine flüssige Bedienung und Nutzerführung zulässt.
 
-\subsubsection{...}
+\subsubsection{Verwalten von Events}
+
+Die Grundfunktion von \textbf{Tourney} ist das Verwalten von Events. Dazu soll ein Administrator ein neues Event inklusive Name, Ort und Datum hinzufügen können. Diesen Events werden dann Turniere zugeordnet, die mit Hilfe von erstellten Turniermodulen erstellt werden. Zusätzlich können Parameter wie Turniername oder geplante Spielerzahl eingestellt werden.
+
+Daraufhin soll eine Voranmeldung vorgenommen werden können, bei der Spieler mit E-Mail-Adresse, Vor-, Zuname und eventuell Nutzername bereits vor Beginn des Events registriert werden können.
+
+Die gesamten Datensätze werden persistent gespeichert und können bei Bedarf jederzeit geöffnet werden.
+
+\subsubsection{Export und Import interner Daten zur Weitergabe}
+
+Um kooperative Arbeit zwischen mehreren Arbeitsplätzen zur ermöglichen müssen Auszüge aus der Datenbank eines Events weitergegeben werden können. Dazu stellt \textbf{Tourney} Funktionen zum Im- und Export der nötigen Daten einer Eventphase bereit, die dann mit Massenspeichergeräten transportiert werden können.
+
+Damit lassen sich relevante Turnierdaten an die Turnierordner und Eventdaten zur Anmeldung an mehreren Rechnern verteilen.
+
+\subsubsection{Anmeldung von Spielern}
+
+Bei Beginn eines Events können anwesende Spieler angemeldet werden. Es sollen sowohl vorangemeldete Spieler gesucht und registriert als auch neue Spieler dem Event hinzugefügt und angemeldet werden können. Dabei werden den Spielern direkt eindeutige Startnummern zugewiesen und mitgeteilt. Außerdem soll eingestellt werden können, ob ein Spieler bereits bezahlt hat.
+
+Diese Anmeldung lässt sich auf beliebig viele Arbeitsplätze verteilen. Die Daten werden nach Abschluss der Arbeiten wieder am Administrationsrechner zusammengefügt.
+
+Nach der Anmeldung können die Daten für die einzelnen Turniere entweder zu Turnierordnern verteilt oder die Turniere direkt vom Administrator gestartet werden.
+
+\subsubsection{Datenerfassung während eines Turnierablaufs}
+
+Vor dem Turnierbeginn hat der Turnierordner die Möglichkeit, die Anwesenheit von Spielern beim Turnier zu überprüfen und abwesende Spieler von der Spielerliste zu entfernen.
+
+Während des Turniers schlägt \textbf{Tourney} automatisch die nächsten Paarungen entsprechend des verwendeten Regelmoduls vor. Dies kann vom Turnierordner allerdings manuell verändert werden. Nach einer Runde können die Ergebnisse vom Turnierordner eingegeben werden.
+
+Alle erfassten Daten über den Turnierablauf werden gespeichert und können zu einer Eventübersicht am Administrationsrechner zusammengefügt werden.
+
+\subsubsection{Automatisierte Resultats- und Paarungsberechnung}
+
+Während eines Turniers werden zukünftige Paarungen und Turnierresultate nach Eingabe von Rundenergebnissen anhand des verwendeten Regelmoduls automatisch berechnet.
+
+\subsubsection{Darstellung der Turnierergebnisse}
+
+Dem Turnierordner und den Spielern werden während eines Turniers die aktuellen Runde mit einem Rundentimer und vorläufigen Ergebnisse in übersichtlicher Form repräsentiert. Diese Darstellung ist für den Turnierordner interaktiv, den Spielern wird sie als Projektion dargestellt, deren Informationsgehalt vom Turnierordner bestimmt werden kann.
+
+\subsubsection{Verwalten von Turniermodulen}
+
+Ein Administrator kann Regelmodule verwalten, die global über Events hinweg existieren und zur Erstellung konkreter Turniere angewendet werden können. Hierzu lassen sich Name des Moduls, Rundenausgänge und zugehörige Punkte, Rundenzeiten und Sekundär- und Tertiärwertungen für die Tabellenstärke spezifizieren. Zusätzlich lässt sich angeben, nach wie vielen Runden ein Cut-Off auf welche Anzahl der besten Spieler erfolgt und welche Paarungssysteme vor und nach dem Cut-Off verwendet werden sollen. Zur Verfügung stehen hierbei das Schweizer System, das modifizierte Schweizer System, das K.O.-System, das Doppel-K.O.-System und ein Jeder-gegen-Jeden-System.
+
+\subsubsection{Sichern von Konten durch Passwörter}
+
+Um unrechtmäßige Manipulation von Daten zu verhindern können Benutzer ihre Arbeits-plätze mit einem Passwort absichern, das in den Einstellungen gewählt werden kann. Die Software lässt sich dann nur nach Eingabe des Passworts starten und bei Bedarf während der Benutzung sperren.
+
+\subsubsection{Anpassen der Einstellungen}
+
+Die Einstellungen können vom Hauptmenü aus erreicht werden. Hier können die folgenden Optionen angepasst werden:
+\begin{itemize}
+	\item Verwendete Sprache
+	\item Passwort des Arbeitsplatzes
+\end{itemize}
+
+\subsubsection{Export der Spielergebnisse eines Events}
+
+Wenn die Resultate aus den einzelnen Turnieren wieder beim Administrator zusammengefügt wurden, können die Ergebnistabellen als PDF-Datei exportiert werden.
 
 \subsection{Qualitätsanforderungen}
 
@@ -168,11 +226,11 @@ Zur Bedienung von \textbf{Tourney} sowohl als Administrator als auch als Turnier
 
 Das Bedienkonzept zielt auf eine intuitive Interaktion ab, die auch ohne das Lesen eines Handbuchs möglich ist. Dazu müssen alle Module und zeitliche Abläufe konsistent und übersichtlich gekapselt werden. Alle Elemente der Oberfläche sollten eindeutig bezeichnet sein ohne dass dies überladen wirkt.
 
-Kritische Aktionen wie das Löschen von Daten müssen durch Dialoge bestätigt werden.
+Kritische Aktionen wie das Löschen von Daten müssen durch Dialoge bestätigt werden. Bei fehlerhaften Eingaben von Daten wie etwa Spielernamen werden vorhandene ähnliche Einträge vorgeschlagen.
 
 \subsubsection{Erweiterbarkeit}
 
-Um eine hohe Änderbarkeit und Erweiterbarkeit zu gewährleisten werden große Teile der Software modular gestaltet, etwa die Abtrennung von Administrator- und Turniermodul oder die Verwendung änderbarer Regelmodulen.
+Um eine hohe Änderbarkeit und Erweiterbarkeit zu gewährleisten werden große Teile der Software modular gestaltet, etwa die Abtrennung von Administrator- und Turniermodul oder die Verwendung änderbarer Regelmodulen. Auch Sprachlokalisierungen können mit speziellen Dateien komponentenweise hinzugefügt werden.
 
 Auch interne Komponenten der Software werden in abgeschlossene Einheiten mit hohem Zusammenhalt und geringer Kopplung gegliedert. Desweiteren sollen Redundanzen so gut wie möglich vermieden werden.
 
@@ -300,7 +358,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Bestehendes Event laden}
+\subsubsection{Bestehendes Event laden}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -331,7 +389,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Optionen (Sprache anzeigen und ändern)}
+\subsubsection{Optionen (Sprache anzeigen und ändern)}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -391,7 +449,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Optionen (Passwort ändern)}
+\subsubsection{Optionen (Passwort ändern)}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -453,7 +511,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Turniermodul hinzufügen}
+\subsubsection{Turniermodul hinzufügen}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -499,7 +557,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Voranmeldung von Spielern}
+\subsubsection{Voranmeldung von Spielern}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -545,7 +603,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Reguläre Anmeldung eines Spielers}
+\subsubsection{Reguläre Anmeldung eines Spielers}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -577,7 +635,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Anwesenheit eines vorangemeldeten Spielers bestätigen}
+\subsubsection{Anwesenheit eines vorangemeldeten Spielers bestätigen}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -612,7 +670,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Turnier exportieren}
+\subsubsection{Turnier exportieren}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -643,7 +701,9 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Turnier durch Turnierordner importieren}
+\subsection{Anwendungsfälle der Turnierordner}
+
+\subsubsection{Turnier durch Turnierordner importieren}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -674,7 +734,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Anwesenheit der Spieler bei Turnierbeginn}
+\subsubsection{Anwesenheit der Spieler bei Turnierbeginn}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -705,7 +765,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Spielergebnis eintragen}
+\subsubsection{Spielergebnis eintragen}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -736,7 +796,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Manuell Paarungen ändern}
+\subsubsection{Manuell Paarungen ändern}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -765,11 +825,11 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 \end{tabularx}
 
-\subsection{Anwendungsfälle der Turnierordner}
-
 \section{Anhang}
 
 \subsection{Begriffslexikon}
+
+Turnierordner = TO = Turnierorganisator
 
 \subsection{Versionshistorie}
 
@@ -788,7 +848,12 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\end{itemize}
 	\item Version 1.3 (12.11.2014)
 	\begin{itemize}
-		\item Kapitel 3.2 hinzugefügt
+		\item Kapitel 3.2 (Qualitative Anforderungen) hinzugefügt
+	\end{itemize}
+	\item Version 1.4 (13.11.2014)
+	\begin{itemize}
+		\item Kapitel 6 (Anwendungsfälle) hinzugefügt
+		\item Kapitel 3.1 (Funktionale Anforderungen) hinzugefügt
 	\end{itemize}
 \end{itemize}
 
