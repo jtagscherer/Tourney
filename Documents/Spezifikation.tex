@@ -218,9 +218,552 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \subsection{Übersicht über die Anwendungsfälle}
 
+\includegraphics[width=\textwidth]{UseCaseDiagram.png}
+
 \subsection{Anwendungsfälle des Administrators}
 
 \subsubsection{Event erstellen}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Es kann mit der Voranmeldung begonnen werden, daher ist das Event mit allen notwendigen Daten fertig erstellt \\
+	\hline
+	\textbf{Akteure} & Administrator \\
+	\hline
+	\textbf{Beschreibung} & Es wird das Event erstellt und mit den vorhanden Daten modifiziert \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Anwendung wurde gestartet, Anwendung wurde falls nötig entsperrt \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Administrator: Nutzer startet das Erstellen des Events durch Drücken des Buttons "Event erstellen"
+			\item[2.] System: Öffnet den Dialog für das Erstellen der Events
+			\item[3.] Administrator: Nutzer vergibt Startdatum, Enddatum, Titel und öffnet das Fenster um die Turniere hinzuzufügen
+			\newline
+			Sonderfall für Alternativablauf 3a: Standard-Module sind nicht vorhanden
+			\item[4.] System: Erstellt Datenbank für Vorabanmeldung
+			\item[5.] System: Öffnet Dialog um Speicherort des Event zu bestimmen
+			\item[6.] Administrator: Nutzer wählt den Speicherort aus
+			\item[7.] System: Speichert das Event an dem vogegebenen Ort
+			\newline
+			Sonderfall für Alternativablauf 7a: Ungenügende Berechtigung um in den Zielordner zu schreiben
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Vorabanmeldung kann gestartet werden, Event wurde gespeichert \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 3a}} \\
+	\hline
+	\textbf{Vorbedingung} & Standard-Module sind nicht vorhanden \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[3a1.] System: Gibt eine Meldung aus, dass die Standard-Module nicht gefunden wurden und verweist auf das Erstellen eines neuen Turniermoduls
+			\item[3a2.] Administrator: Erstellt ein Turniermodul (siehe Use Case 5: Turniermodul erstellen)
+			\newline
+			Sonderfall für Alternativablauf 3a2a: Schließt Dialog ohne ein neues Turniermodul zu erstellen
+			\item[3a3.] Administrator: Der Nutzer fügt dieses daraufhin dem Event hinzu
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Das Event enthält nun ein oder mehrere Turniere \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 3a2a}} \\
+	\hline
+	\textbf{Vorbedingung} & Schließt Dialog ohne ein neues Turniermodul zu erstellen \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[3a2a1.] System: Geht in Zustand Y über
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Zustand Y \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 7a}} \\
+	\hline
+	\textbf{Vorbedingung} & Ungenügende Berechtigung um in den Zielordner zu schreiben \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[7a1.] System: Gibt eine Warnung aus, dass eine ungenügende Schreibberechtigung vorhanden ist
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Nutzer wurde infomiert, dass er ein neues Speicherziel wählen muss oder seine Änderungen werden nicht gespeichert \\
+	\hline
+\end{tabularx}
+
+\subsection{Bestehendes Event laden}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Bestehendes Event aus dem gespeicherten Zustand laden \\
+	\hline
+	\textbf{Akteure} & Administrator \\
+	\hline
+	\textbf{Beschreibung} & Lädt das gespeicherte Event inklusive Turniermodulen, Zuständen und Fortschritt im Turnier Fragt gegebenenfalls ein gesetztes Passwort ab \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Programm ist gestartet, Anwendung ist entsperrt falls nötig \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Administrator: Drückt den 'Event laden'-Button
+			\item[2.] System: Öffnet den File Browser
+			\item[3.] Administrator: Wählt die zu ladende Datei aus der Verzeichnisstruktur aus und drückt laden
+			\item[4.] System: Lädt den gespeicherten Zustand des Events
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Der gespeicherte Zustand des Events ist geladen und benutzbar \\
+	\hline
+\end{tabularx}
+
+\subsection{Optionen (Sprache anzeigen und ändern)}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Die aktuellen Optionen des Programms wie Sprache zu ändern oder anzuzeigen \\
+	\hline
+	\textbf{Akteure} & Administrator \\
+	\hline
+	\textbf{Beschreibung} &  \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Programm wurde gestartet \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Administrator: Öffnet die Optionen durch Betätigen des Optionen-Buttons
+			\item[2.] System: Öffnet das Optionen-Fenster, zeigt aktuelle Spracheneinstellung an
+			\item[3.] Administrator: Wählt andere Sprache aus
+			\newline
+			Sonderfall für Alternativablauf 3a: Will sich die Optionen nur anzeigen lassen und nicht verändern
+			\newline
+			Sonderfall für Alternativablauf 3b: Eingestellte Option ist dieselbe Sprache wie die aktuell ausgewählte
+			\item[4.] System: Stellt die Sprache auf die ausgewählte Sprache um
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} &  \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 3a}} \\
+	\hline
+	\textbf{Vorbedingung} & Will sich die Optionen nur anzeigen lassen und nicht verändern \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[3a1.] System: Es wird nichts verändert
+			\item[3a2.] Administrator: Drückt den 'Zurück'-Button
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} &  \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 3b}} \\
+	\hline
+	\textbf{Vorbedingung} & Eingestellte Option ist dieselbe Sprache wie die aktuell ausgewählte \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[3b1.] System: Belässt aktuelle Spracheinstellung
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Programm wird in der eingestellten Sprache angezeigt \\
+	\hline
+\end{tabularx}
+
+\subsection{Optionen (Passwort ändern)}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Es soll ein neues Passwort gesetzt werden oder ein bestehendes geändert werden \\
+	\hline
+	\textbf{Akteure} & Administrator \\
+	\hline
+	\textbf{Beschreibung} & Der Nutzer möchte seine Anwendung mit einem Passwort sichern oder das 
+          bestehende Passwort ändern \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Anwendung ist gestartet, Anwendung ist falls nötig entsperrt \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Administrator: Nutzer drückt den 'Optionen'-Button
+			\item[2.] System: Öffnet Optionen-Fenster
+			\item[3.] Administrator: Nutzer drückt den 'Passwort ändern'-Button
+			\item[4.] System: Öffnet Dialog, in dem die Passwortänderung vollzogen wird
+			\newline
+			Sonderfall für Alternativablauf 4a: Es wurde noch kein Passwort gesetzt
+			\item[5.] Administrator: Gibt altes Passwort falls vorhanden und danach 2 Mal das neue Passwort ein
+			\item[6.] System: Ändert das Passwort um die Anwendung zu sperren
+			\newline
+			Sonderfall für Alternativablauf 6a: Nutzer hat das 'Neues Passwort' Feld leer gelassen
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Anwendung wird nach der Änderung mit dem neuen Passwort entsperrt \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 4a}} \\
+	\hline
+	\textbf{Vorbedingung} & Es wurde noch kein Passwort gesetzt \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[4a1.] System: Der Dialog enthält nur die Felder: 'Neues Passwort', 'Neues Passwort wiederholen';
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Der Nutzer muss das nicht vorhandene Passwort nicht eingeben \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 6a}} \\
+	\hline
+	\textbf{Vorbedingung} & Nutzer hat das 'Neues Passwort' Feld leer gelassen \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[6a1.] System: Das Passwort wird entfernt
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Nutzer kann Anwendung nicht mehr sperren \\
+	\hline
+\end{tabularx}
+
+\subsection{Turniermodul hinzufügen}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Der Nutzer will eine Turniervariante erstellen \\
+	\hline
+	\textbf{Akteure} & Administrator \\
+	\hline
+	\textbf{Beschreibung} & Es wird ein neues Turniermodul erstellt, das weitgehend frei modifizierbar 
+          ist und nachher als Vorlage für andere Events dienen kann \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Tourney ist geöffnet, Der Nutzer befindet sich auf der Startseite oder beim Erstellen eines Events in der Phase, in der die Turniere hinzugefügt werden \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Administrator: Nutzer drückt auf den 'Turniervorlage erstellen' Button
+			\item[2.] System: Es öffnet sich ein Fenster, in dem der Nutzer die spezifischen Einstellungen für das Turnier vornehmen kann
+			\item[3.] Administrator: Stellt die Einstellung ein und drückt daraufhin den 'Speichern'-Button
+			\item[4.] System: Das Programm speichert die Einstellungen im Programmverzeichnis
+			\newline
+			Sonderfall für Alternativablauf 4a: Die Vorlage kann nicht gespeichert werden
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Nutzer hat eine neue Vorlage für Turniere erstellt und kann diese in den Events verwenden \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 4a}} \\
+	\hline
+	\textbf{Vorbedingung} & Die Vorlage kann nicht gespeichert werden \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[4a1.] System: Zeigt eine Warnung an, dass die Änderungen nicht gespeichert werden können
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Der Nutzer weiß, dass seine Änderung nicht gespeichert wurde \\
+	\hline
+\end{tabularx}
+
+\subsection{Voranmeldung von Spielern}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Voranmeldungen vor dem Event erfassen und speichern \\
+	\hline
+	\textbf{Akteure} & Administrator \\
+	\hline
+	\textbf{Beschreibung} & Der Nutzer hat von mindestens einem Spieler Voranmeldungen erhalten und 
+          möchte diese in das Event eintragen \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Anwendung wurde gestartet, Der Nutzer hat ein Event erstellt und befindet sich in der Phase Voranmeldung, Die Anwendung ist entsperrt, Der übermittelte Datensatz ist vollständig \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Administrator: Drückt den 'Spieler eintragen'-Button
+			\item[2.] System: Öffnet die Maske um die Daten einzutragen
+			\item[3.] Administrator: Trägt den Teilnehmer in die Maske ein (Name, Vorname, Turniere an denen er teilnehmen möchte, optional E-Mail-Adresse und Vorname)
+			\item[4.] System: Überprüft, ob alle Angaben korrekt sind und trägt diese in die Datendank ein
+			\newline
+			Sonderfall für Alternativablauf 4a: Getätigte Eingabe ist inkorrekt
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Teilnehmer ist in Datenbank eingetragen \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Alternativablauf 4a}} \\
+	\hline
+	\textbf{Vorbedingung} & Getätigte Eingabe ist inkorrekt \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[4a1.] System: Gibt eine Fehlermeldung aus und lässt Nutzer die Eingaben nochmal überprüfen und verändern
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Eingabe ist korrekt \\
+	\hline
+\end{tabularx}
+
+\subsection{Reguläre Anmeldung eines Spielers}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Der Spieler soll in die Datenbank eingetragen sein und für die einzelnen 
+          Turniere registriert sein \\
+	\hline
+	\textbf{Akteure} & Anmeldung, Spieler \\
+	\hline
+	\textbf{Beschreibung} & Spieler meldet sich bei der Anmeldung für verschiedene Turniere an. Dies 
+          wird dann in die Datenbank geschrieben \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Anwendung wurde gestartet, Der Administrator hat ein Event erstellt, Die Anmeldung hat dieses Event importiert, Anwendung ist entsperrt, Das Event befindet sich in der Phase Anmeldung \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Spieler: Gibt der Anmeldung die erforderlichen Daten zum Anmelden
+			\item[2.] Anmeldung: Gibt Daten in dafür vorgesehene Maske ein
+			\item[3.] System: Trägt die Daten in die Datenbank ein
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Spieler befindet sich in der Event-Datenbank \\
+	\hline
+\end{tabularx}
+
+\subsection{Anwesenheit eines vorangemeldeten Spielers bestätigen}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Die Anwesenheit der vorangemeldeten Spieler zu bestätigen und die 
+          Bezahlung der Gebühr abzuwickeln \\
+	\hline
+	\textbf{Akteure} & Spieler, Anmeldung \\
+	\hline
+	\textbf{Beschreibung} & Der vorangemeldete Spieler gibt seinen Namen/E-Mail-Adresse der Anmeldung. Diese 
+          sucht daraufhin in der Datenbank nach dem Namen und bestätigt, dass 
+          dieser anwesend ist und bezahlt hat \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Das Event muss erstellt worden sein, Das Event muss sich in der Phase 'Anmeldung' befinden, Das Event muss von der Anmeldung importiert worden sein, Spieler muss in der Datenbank enthalten sein \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Spieler: Gibt der Anmeldung Name/E-Mail-Adresse
+			\item[2.] Anmeldung: Drückt den 'Voranmeldung verifizieren'-Button
+			\item[3.] System: Öffnet die Maske, in der Name und E-Mail-Adresse eingegeben werden
+			\item[4.] Anmeldung: Gibt Name und E-Mail-Adresse ein und setzt Haken (Anwesenheit, bezahlt) und betätigt 'Verifizieren'-Button
+			\item[5.] System: Ändert Datenbankeintrag des Spielers und fügt ihn dem Turnier/den Turnieren hinzu
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Spieler ist verifiziert und den Turnieren hinzugefügt \\
+	\hline
+\end{tabularx}
+
+\subsection{Turnier exportieren}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Turnier ist als Datei exportiert \\
+	\hline
+	\textbf{Akteure} & Administrator \\
+	\hline
+	\textbf{Beschreibung} & Das Turnier soll an den Turnierorganisator weitergegeben werden, 
+          dieser kann das einzelne Turnier importieren \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Ein Event muss erstellt sein, Das Event muss in der Phase 'Turniere exportieren' sein \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Administrator: Drückt den Button 'Turnier exportieren'
+			\item[2.] System: Öffnet das Fenster zum Auswählen des Speicherorts für das exportierte Turnier
+			\item[3.] Administrator: Exportiert das Turnier
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Turnier muss exportiert sein \\
+	\hline
+\end{tabularx}
+
+\subsection{Turnier durch Turnierordner importieren}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Das Turnier soll importiert sein \\
+	\hline
+	\textbf{Akteure} & Turnierordner \\
+	\hline
+	\textbf{Beschreibung} & Der Turnierordner bekommt die Datei des Turniers und importiert dieses \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Die Anwendung muss gestartet sein, Die Anwendung muss entsperrt sein, Das exportierte Turniermodul muss vorhanden sein, Nutzer muss auf der Startseite sein \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Turnierordner: Drückt den Button 'Turnier importieren'
+			\item[2.] System: Öffnet den File Browser um das Turnier zu importieren
+			\item[3.] Turnierordner: Wählt die exportierte Turnier-Datei aus
+			\item[4.] System: Importiert das Turnier
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Das Turnier muss importiert sein \\
+	\hline
+\end{tabularx}
+
+\subsection{Anwesenheit der Spieler bei Turnierbeginn}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Anwesenheit der Spieler beim Turnierbeginn feststellen \\
+	\hline
+	\textbf{Akteure} & Turnierordner \\
+	\hline
+	\textbf{Beschreibung} & Der Turnierordner überprüft die Anwesenheit der einzelnen Spieler, damit 
+          die Paarungen bestimmt werden können \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Turnier muss geladen sein, Turnier mus in der Phase 'Anwesenheit kontrollieren' sein \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] System: Zeigt eine Liste von Spielern an, die an diesem Turnier teilnehmen
+			\item[2.] Turnierordner: Verifiziert die Anwesenheit der einzelnen Spieler
+			\item[3.] System: Löscht jeden nicht verifizierten Spieler mit einer Warnung
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Nur verifizierte Spieler befinden sich in der Turnier-Datenbank \\
+	\hline
+\end{tabularx}
+
+\subsection{Spielergebnis eintragen}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Das Ergebnis einer Paarung eintragen \\
+	\hline
+	\textbf{Akteure} & Turnierordner \\
+	\hline
+	\textbf{Beschreibung} & Der Turnierordner trägt bei einer Paarung die Punktzahl und gegebenenfalls Sekundär/ 
+          Tertiärwertungen ein \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Die Anwendung ist gestartet, Die Anwengung ist entsperrt, Das Turnier muss in einer laufenden Runde sein, Das Turnier muss importiert sein \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Turnierordner: Der Nutzer wählt die Paarung aus, die er bewerten will
+			\item[2.] System: Zeigt die voreingestellten Ausgangsmöglichkeiten an
+			\item[3.] Turnierordner: Nutzer wählt eine davon aus oder gibt die Wertungen manuell ein
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Paarung muss bewertet sein \\
+	\hline
+\end{tabularx}
+
+\subsection{Manuell Paarungen ändern}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Ziel} & Computergenerierte Paarungen ist von Hand geändert \\
+	\hline
+	\textbf{Akteure} & Turnierordner \\
+	\hline
+	\textbf{Beschreibung} & Der Turnierordner kann die computergenerierten Paarungen auch von Hand ändern \\
+	\hline
+	\textbf{Ebene} & Benutzersicht \\
+	\hline
+	\textbf{Priorität} & Niedrig \\
+	\hline
+	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
+	\hline
+	\textbf{Vorbedingung} & Die Anwendung muss aktiv sein, Die Anwendung muss entsperrt sein, Das Turnier muss vor einer Runde sein, es darf noch keine Wertung eingetragen sein \\
+	\hline
+	\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] Turnierordner: Turnierordner wählt die zwei zu tauschenden Spieler aus und betätigt den 'Tauschen'-Button
+			\item[2.] System: Tauscht die ausgewählten Spieler
+		\end{enumerate}
+	\\
+	\hline
+	\textbf{Nachbedingung} & Die getauschten Paarungen sollen gespeichert werden \\
+	\hline
+\end{tabularx}
 
 \subsection{Anwendungsfälle der Turnierordner}
 
