@@ -88,7 +88,7 @@ Die Software wird im Rahmen des Softwarepraktikums im Wintersemester 2014/2015 a
 
 \subsection{Fachbegriffe und Abkürzungen}
 
-Relevante Fachbegriffe und deren Abkürzungen sind in der Spezifikation \textit{kursiv} markiert und werden im Begriffslexikon geklärt, das diesem Dokument anhängt.
+Relevante Fachbegriffe und deren Abkürzungen, die in der Spezifikation vorkommen, werden im Begriffslexikon geklärt, das diesem Dokument anhängt.
 
 \subsection{Übersicht und Aufbau des Dokuments}
 
@@ -270,7 +270,83 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \section{Benutzeroberfläche}
 
-\subsection{...}
+\subsection{Startfenster}
+
+\fbox{\includegraphics[width=\textwidth]{UIMockup/MainMenu.jpg}}
+
+\vspace{1cm}
+
+Im Hauptmenü hat der Nutzer die Möglichkeit zwischen verschiedenen Pfaden in der Benutzerführung zu wählen.
+
+Entscheidet sich der Nutzer dazu, ein neues Event zu erstellen oder ein bestehendes zu öffnen springt die Software zur Darstellung der jeweils relevanten Projektphase.
+
+Bei Betätigung des mittleren Knopfs erscheint eine veränderbare Auflistung aller bisher vorhandenen Regelmodule.
+
+Will der Nutzer die Einstellung durch Betätigen des rechten Knopfs ändern öffnet sich das dafür vorgesehene Fenster.
+
+\subsection{Einstellungen}
+
+\fbox{\includegraphics[width=\textwidth]{UIMockup/Settings.jpg}}
+
+\vspace{1cm}
+
+In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügbarer Sprachen ausgewählt und ein Passwort zur Sicherung des aktuellen Arbeitsplatzes festgelegt werden.
+
+\subsection{Erstellung eines Events}
+
+\fbox{\includegraphics[width=\textwidth]{UIMockup/EventSetup.jpg}}
+
+\vspace{1cm}
+
+Die folgenden vier Fenster können erreicht werden, wenn ein neues Turnier erstellt oder ein vorhandenes bearbeitet oder durchgeführt werden soll. Die Fenster haben eine Reihe Knöpfen am oberen Rand gemein, die von links nach rechts die folgenden Funktionen ausführen:
+\begin{itemize}
+	\item Schließen des Fensters und Rückkehr zum Hauptmenü
+	\item Speichern der Änderungen am aktuellen Event
+	\item Rückgängig machen der letzten Eingabe
+	\item Die letzte Änderung wiederherstellen
+	\item Die Turnierergebnisse als PDF-Datei exportieren
+	\item Daten für die kollaborative Anmeldung oder Turnierdurchführung exportieren
+	\item Daten von anderen Arbeitsplätzen aus der Anmeldung oder Turnierdurchführung importieren und zusammenfügen
+	\item Den benutzten Arbeitsplatz mit dem festgelegten Passwort sperren
+	\item Die Einstellungen aufrufen
+\end{itemize}
+Zudem befindet sich unter diesen Knöpfen eine Leiste mit Projektphasen, die den Fortschritt in der Planung anzeigt und mit der zwischen den Phasen gewechselt werden kann.
+
+In den allgemeinen Event-Einstellungen können mit den Bedienelementen links Titel, Veranstaltungsort und Zeitraum festgelegt werden, der aus einem Kalender ausgewählt werden kann.
+
+Im rechten Teil des Fensters wird eine Liste aller hinzugefügten Turniere angezeigt, die durch die Knöpfe ganz rechts bearbeitet werden kann.
+
+\subsection{Registrieren von Voranmeldungen}
+
+\fbox{\includegraphics[width=\textwidth]{UIMockup/PreRegistration.jpg}}
+
+\vspace{1cm}
+
+Der Abschitt mit den Voranmeldungen bietet die Möglichkeit, eine Liste aller vorhandenen Voranmeldungen mit angemeldeten Turnieren und Bezahlstatus anzuzeigen und Einträge mit den Knöpfen rechts hinzuzufügen, zu löschen oder zu bearbeiten.
+
+\subsection{Registrieren von Anmeldungen}
+
+\fbox{\includegraphics[width=\textwidth]{UIMockup/Registration.jpg}}
+
+\vspace{1cm}
+
+In der Anmeldungs-Phase können vorangemeldete Spieler mit den Bedienelementen in der oberen Hälfte gesucht und zu den angemeldeten Spielern hinzugefügt werden.
+
+\subsection{Turnierdurchführung}
+
+\fbox{\includegraphics[width=\textwidth]{UIMockup/TournamentExecution.jpg}}
+
+\vspace{1cm}
+
+In der Durchführung eines einzelnen Turniers können stattfindende Paarungen angezeigt werden und mit den Knöpfen auf der rechten Seite diese verändert und Ergebnisse eingetragen werden.
+
+\subsection{Erstellung von Turniermodulen}
+
+\fbox{\includegraphics[width=\textwidth]{UIMockup/TournamentModulesList.jpg}}
+
+\vspace{1cm}
+
+Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erstellten Regelmodule anzusehen und mit den Knöpfen auf der rechten Seite neue Einträge hinzuzufügen oder vorhandene zu löschen oder zu bearbeiten.
 
 \section{Anwendungsfälle}
 
@@ -825,17 +901,19 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Turnierorganisator synonym: TO \\ 
+	\textbf{Begriff} & Turnierorganisator \\ 
+	\hline
+	\textbf{Synonyme} & TO, Turnierordner \\
 	\hline
 	\textbf{Bedeutung} & Der Turnierorganisator ist die Person, die das Turnier ausrichtet, die Spieleausgänge einträgt und das Turniergeschehen überwacht\\
 	\hline
-	\textbf{Abgrenzung} & Der Turnierorganisator ist selbst kein Spieler oder falls doch, ein zweiter Turnierorganisator anwesend ist\\
+	\textbf{Abgrenzung} & Der Turnierorganisator ist selbst für gewöhnlich bei größeren Turnieren kein Spieler\\
 	\hline
 	\textbf{Gültigkeit} & Der Turnierorganisator ist solange gültig wie das Turnier läuft\\
 	\hline
 	\textbf{Bezeichnung} & Der Turnierorganisator ist für den Ablauf des Turniers verantwortlich\\
 	\hline
-	\textbf{Unklarheiten} &  \\
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} &  Administrator, Spieler, Anmeldung, Turnier
 	\\
@@ -844,17 +922,19 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Administrator synonym: Admin\\
+	\textbf{Begriff} & Administrator\\
 	\hline
-	\textbf{Bedeutung} & Der Administrator erstellt das Event und ist für die Durchführung des gesamten Events verantwortlich, ob dieses nun ein oder mehrer Turniere umfasst\\
+	\textbf{Synonyme} & Admin\\
 	\hline
-	\textbf{Abgrenzung} & Der Administrator ist nicht für die Durchführung der einzelnen Turniere verantwortlich, außer wenn er auch noch die Positionen der Turnierorganisators und der Anmeldung übernimmt, z.B.: auf kleinen Events die nur ein Turnier umfassen\\
+	\textbf{Bedeutung} & Der Administrator erstellt das Event und ist für die Durchführung des gesamten Events verantwortlich, ob dieses nun ein oder mehrere Turniere umfasst\\
 	\hline
-	\textbf{Gültigkeit} & Der Administrator ist solange gültig bis das Event vorbei ist\\
+	\textbf{Abgrenzung} & Der Administrator ist nicht für die Durchführung der einzelnen Turniere verantwortlich, außer wenn er auch noch die Positionen des Turnierorganisators und der Anmeldung übernimmt, was zum Beispiel auf kleinen Events mit nur einem Turnier der Fall sein kann\\
 	\hline
-	\textbf{Bezeichnung} & Der Administrator kümmert sich um den reibungslosen Ablauf des Events.\\
+	\textbf{Gültigkeit} & Der Administrator ist vom Beginn der Eventerstellung bis zum Ende des Events oder gegebenenfalls der Ausgabe der Turnierergebnisse gültig\\
 	\hline
-	\textbf{Unklarheiten} & Die Rolle des Administrator ist nicht immer klar, da er auf kleinen Events mehr als nur eine Rolle inne haben kann.\\
+	\textbf{Bezeichnung} & Der Administrator kümmert sich um den reibungslosen Ablauf des Events\\
+	\hline
+	\textbf{Unklarheiten} & Die Rolle des Administrator ist nicht immer klar, da er auf kleinen Events mehr als nur eine Rolle inne haben kann\\
 	\hline
 	\textbf{Querverweise} &  Turnierorganisator, Spieler, Anmeldung, Event\\
 	\hline
@@ -864,15 +944,17 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Anmeldung\\
 	\hline
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
+	\hline
 	\textbf{Bedeutung} & Die Anmeldung kann aus einer oder mehreren Personen bestehen, diese nimmt die Anmeldungen der Spieler vor Ort am Event auf und trägt sie dann in die Datenbank ein\\
 	\hline
-	\textbf{Abgrenzung} & Die Anmeldung hat mit der Organisation des Turniers nichts zu tun sie ist nur für das Eintragen der Daten zuständig\\
+	\textbf{Abgrenzung} & Die Anmeldung hat mit der Organisation des Turniers nichts zu tun, sie ist nur für das Eintragen der Daten zuständig\\
 	\hline
-	\textbf{Gültigkeit} & Die Anmeldung ist mit dem Beginn der ersten Turniere ausgelaufen. \\
+	\textbf{Gültigkeit} & Die Anmeldung ist mit dem Beginn der ersten Turniere ausgelaufen\\
 	\hline
-	\textbf{Bezeichnung} & Die Anemldung trägt die Spieler in die Datenbank ein.\\
+	\textbf{Bezeichnung} & Die Anmeldung trägt die Spieler in die Datenbank ein\\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Unklarheiten} & Bei kleineren Events kann der Administrator die Aufgaben der Anmeldung übernehmen \\
 	\hline
 	\textbf{Querverweise} &  Turnierorganisator, Spieler, Administrator\\
 	\hline
@@ -882,7 +964,9 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Spieler\\
 	\hline
-	\textbf{Bedeutung} & Der Spieler nimmt aktiv am Turnier teil.\\
+	\textbf{Synonyme} & Teilnehmer \\
+	\hline
+	\textbf{Bedeutung} & Der Spieler nimmt aktiv am Turnier teil\\
 	\hline
 	\textbf{Abgrenzung} & Der Spieler hat nichts mit der Organisation des Turniers oder des Events zu tun\\
 	\hline
@@ -890,7 +974,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Bezeichnung} & Ein Spieler ist ein Teilnehmer des Turniers\\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turnierorganisator, Administrator, Anmeldung, Turnier, Event \\
 	\hline
@@ -898,7 +982,9 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Anwendung synonym Programm, Tourney\\
+	\textbf{Begriff} & Anwendung\\
+	\hline
+	\textbf{Synonyme} & Programm, \textbf{Tourney}\\
 	\hline
 	\textbf{Bedeutung} & Die Anwendung wird als Tourney bezeichnet\\
 	\hline
@@ -908,7 +994,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Bezeichnung} & Die Anwendung ist durch die Benutzer und Funktionen gekennzeichnet\\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Administrator, Anmeldung, Spieler \\
 	\hline
@@ -918,15 +1004,17 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Turnier\\
 	\hline
+	\textbf{Synonyme} & Spielturnier \\
+	\hline
 	\textbf{Bedeutung} & Der Ablauf der einzelnen Runden\\
 	\hline
-	\textbf{Abgrenzung} & Das Turnier besteht im Gegensatz zum Event nur aus einem Spieltyp\\
+	\textbf{Abgrenzung} & Das Turnier besteht im Gegensatz zum Event aus nur einem Spieltyp\\
 	\hline
-	\textbf{Gültigkeit} & Das Turnier ist gültig bis ein Sieger ermittelt wurde\\
+	\textbf{Gültigkeit} & Das Turnier ist gültig bis alle Turnierergebnisse ermittelt wurden\\
 	\hline
-	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp der gespielt wird bis ein Sieger feststeht\\
+	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp, der gespielt wird bis ein Sieger feststeht\\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
 	\hline
@@ -936,35 +1024,19 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Startnummer\\
 	\hline
-	\textbf{Bedeutung} & Die eindeutige Nummer, mit denen Spieler in einem Turnier identifiziert werden\\
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Abgrenzung} & \\
+	\textbf{Bedeutung} & Die eindeutige Nummer, mit denen Spieler in einem Turnier Event-übergreifend identifiziert werden\\
 	\hline
-	\textbf{Gültigkeit} & Die Startnummer wird den Spielern bei der Anmeldung beim Ersten von ihnen besuchten Turnier zugewiesen und bleibt für das komplette Event gleich\\
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Gültigkeit} & Die Startnummer wird den Spielern bei der Anmeldung zum Event zu- und mitgeteilt und bleibt für die komplette Veranstaltung gleich\\
 	\hline
 	\textbf{Bezeichnung} & Die Startnummer ist eine pro Event eindeutige Ganzzahl\\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Spieler, Anmeldung \\
-	\hline
-\end{tabularx}
-	
-\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
-	\hline
-	\textbf{Begriff} & Turnier\\
-	\hline
-	\textbf{Bedeutung} & Der Ablauf der einzelnen Runden\\
-	\hline
-	\textbf{Abgrenzung} & Das Turnier besteht im Gegensatz zum Event nur aus einem Spieltyp\\
-	\hline
-	\textbf{Gültigkeit} & Das Turnier ist gültig bis ein Sieger ermittelt wurde\\
-	\hline
-	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp der gespielt wird bis ein Sieger feststeht\\
-	\hline
-	\textbf{Unklarheiten} & \\
-	\hline
-	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
 	\hline
 \end{tabularx}
 
@@ -972,15 +1044,17 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Cut-Off\\
 	\hline
-	\textbf{Bedeutung} & Als Cut-Off wird der Übergang zwischen den verschiedenen Verfahren zum Generieren von Paarungen innerhalb des Turniers bezeichnet. Cut-Offs werden in den jeweiligen Turniermodulen festgeletgt.\\
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Abgrenzung} & \\
+	\textbf{Bedeutung} & Als Cut-Off wird der Übergang zwischen den verschiedenen Verfahren zum Generieren von Paarungen innerhalb des Turniers bezeichnet. Cut-Offs werden in den jeweiligen Turniermodulen festgelegt.\\
 	\hline
-	\textbf{Gültigkeit} & \\
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Bezeichnung} & \\
+	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turniermodul, Paarung \\
 	\hline
@@ -990,17 +1064,19 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Paarung\\
 	\hline
-	\textbf{Bedeutung} & Das Zusammentreffen mehrer Parteien indem gewählten Spiel\\
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Abgrenzung} & \\
+	\textbf{Bedeutung} & Das Zusammentreffen mehrer Parteien in dem gewählten Spiel\\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Gültigkeit} & Solange noch kein Ergebnis erhalten wurde ist die Paarung gültig\\
 	\hline
-	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler die gegeneinander einen Spieltyp spielen\\
+	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler, die gegeneinander einen Spieltyp spielen\\
 	\hline 
-	\textbf{Unklarheiten} & \\
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Querverweise} &  Turnier\\
+	\textbf{Querverweise} &  Turnier, Spieler\\
 	\hline
 \end{tabularx}
 
@@ -1008,15 +1084,17 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Event\\
 	\hline
-	\textbf{Bedeutung} & Ein Event enthält ein oder mehrere Turniere und deren gemeinsamkeiten wie Datum, Ort\\
+	\textbf{Synonyme} & Veranstaltung \\
 	\hline
-	\textbf{Abgrenzung} & Ein Event enthält ein oder mehrere Turniere, während das Turnier die einzelnen Spiele enthält\\
+	\textbf{Bedeutung} & Ein Event enthält ein oder mehrere Turniere und deren gemeinsamkeiten wie Datum oder Ort\\
 	\hline
-	\textbf{Gültigkeit} & Das Event ist gültig für die Dauer der Turniere die an ihm stattfinden\\
+	\textbf{Abgrenzung} & Ein Event enthält ein oder mehrere Turniere während das Turnier die einzelnen Spielpaarungen enthält\\
 	\hline
-	\textbf{Bezeichnung} & \\
+	\textbf{Gültigkeit} & Das Event ist gültig für die Dauer der Turniere, die an ihm statt-finden\\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turnier, Admin\\
 	\hline
@@ -1026,15 +1104,17 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Spielresultat\\
 	\hline
-	\textbf{Bedeutung} & Ergebnis einer Paarung. Kann je nach Turniermodul aus mehreren Wertungen bestehen.\\
+	\textbf{Synonyme} & Spielergebnis \\
+	\hline
+	\textbf{Bedeutung} & Ergebnis einer Paarung. Kann je nach Turniermodul aus mehreren Wertungen bestehen\\
 	\hline
 	\textbf{Abgrenzung} & Das Spielresultat bezieht sich ausschließlich auf einzelne Paarungen und nicht auf die Gesamtwertung der beteiligten Spieler\\
 	\hline
-	\textbf{Gültigkeit} & \\
+	\textbf{Gültigkeit} & Ein Spielresultat ist so lange gültig, wie es für den weiteren Ablauf des Turniers oder Bestenlisten relevant ist \\
 	\hline
-	\textbf{Bezeichnung} & \\
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Paarung, Turniermodul\\
 	\hline
@@ -1044,15 +1124,17 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Datenbank\\
 	\hline
-	\textbf{Bedeutung} & Eine Ansammlung von Daten. Wird hier als Speicherort aller zu Events gehörenden Daten verwendet, dazu zählen unter Anderem Turniere, angemeldete Spieler und Spielresultate.\\
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Abgrenzung} & \\
+	\textbf{Bedeutung} & Eine Ansammlung von Daten. Wird hier als Speicherort aller zu Events gehörenden Daten verwendet, dazu zählen unter anderem Turniere, angemeldete Spieler und Spielresultate\\
 	\hline
-	\textbf{Gültigkeit} & \\
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Bezeichnung} & \\
+	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Event, Turnier, Spieler, Spielresultat\\
 	\hline
@@ -1062,15 +1144,17 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Begriff} & Turniermodul\\
 	\hline
-	\textbf{Bedeutung} & Turniermodule legen den Ablauf des Turniers fest. Darunter fallen unterschiedliche Wertungen, nach denen Gewinner bestimmt werden können, Methoden zur Generierung von Paarungen, sowie die Definition von Cut-Offs.\\
+	\textbf{Synonyme} & Regelmodul\\
 	\hline
-	\textbf{Abgrenzung} & \\
+	\textbf{Bedeutung} & Turniermodule legen den Ablauf des Turniers fest. Darunter fallen unterschiedliche Wertungen, nach denen Gewinner bestimmt werden können, Methoden zur Generierung von Paarungen sowie die Definition von Cut-Offs\\
 	\hline
-	\textbf{Gültigkeit} & \\
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Bezeichnung} & \\
+	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \\
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turnier, Paarung, Cut-Off\\
 	\hline
@@ -1097,8 +1181,10 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\end{itemize}
 	\item Version 1.4 (13.11.2014)
 	\begin{itemize}
-		\item Kapitel 6 (Anwendungsfälle) hinzugefügt
 		\item Kapitel 3.1 (Funktionale Anforderungen) hinzugefügt
+		\item Kapitel 5 (Benutzeroberfläche) hinzugefügt
+		\item Kapitel 6 (Anwendungsfälle) hinzugefügt
+		\item Kapitel 7 (Begriffslexikon) hinzugefügt
 	\end{itemize}
 \end{itemize}
 
