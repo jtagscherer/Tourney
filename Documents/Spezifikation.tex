@@ -102,17 +102,19 @@ Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument 
 	\item[] \textbf{Kapitel 7} umschließt ein Begriffslexikon, in dem alle wichtigen Fachbegriffe und Abkürzungen geklärt werden.
 \end{itemize}
 
+\newpage
+
 \section{Allgemeine Beschreibung}
 
 \subsection{Einbettung}
 
-Bisher wurden keine Softwarelösungen zur Organisation von Spielturnieren eingesetzt. Deshalb muss \textbf{Tourney} in keine bestehenden Systeme eingebettet werden.
+Bisher wurden keine Softwarelösungen zur Organisation von Spielturnieren eingesetzt. Des-halb muss \textbf{Tourney} in keine bestehenden Systeme eingebettet werden.
 
 \subsection{Einschränkungen bei der Entwicklung}
 
 Aufgrund der geforderten Plattformunabhängigkeit wird die Software in der Programmiersprache Java entwickelt. Dabei können die Versionen 1.7 oder 1.8 verwendet werden.
 
-Zusätzlich können die folgenden Bibliotheken verwendet werden:
+Zusätzlich können die folgenden Bibliotheken eingesetzt werden:
 \begin{itemize}
 	\item Grafische Benutzeroberfläche mit \textbf{Swing} oder \textbf{JavaFX}
 	\item Datenbankeinbindung durch \textbf{H2} in Verbindung mit \textbf{JDBC}
@@ -131,6 +133,8 @@ Die Software soll grundsätzlich die folgende Funktionalität haben, die in Kapi
 	\item Verteilen von relevanten Datenbanken zum kollaborativen Arbeiten während Anmeldungen und an die Turnierordner mit jeweils anschließendem Zusammenfügen der Daten
 \end{itemize}
 
+\newpage
+
 \subsection{Benutzermerkmale}
 
 Die Nutzer von \textbf{Tourney} sollten zur erfolgreichen Bedienung keine besonderen Kenntnisse besitzen müssen. Insbesondere sollte die Oberfläche so selbsterklärend sein, dass dies auch ohne Lesen des Handbuchs möglich ist. Die Benutzer besitzen hierbei für gewöhnlich zwar Fachkenntnis in Bezug auf die Spielturniere, allerdings sollte kein besonderes technisches Wissen vorausgesetzt werden. Vielmehr sollte die Software so intuitiv zu bedienen sein, dass für keinen Nutzer ein Hindernis entsteht.
@@ -144,9 +148,11 @@ Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgäng
 Um die Software erfolgreich entwickeln und betreiben zu können muss von den folgenden externen Einflussfaktoren ausgegangen werden:
 \begin{itemize}
 	\item Die erforderliche Hardware zur Ausführung des Programms und Massenspeichergeräte zur Datenübertragung müssen zur Laufzeit bereitgestellt werden.
-	\item Die Turnierregeln dürfen sich nicht so stark ändern, dass die modulare Regelerstellung nicht mehr relevant ist. In diesem Fall kann eine korrekte Ergebnisauswertung nicht mehr garantiert werden.
+	\item Die Turnierregeln dürfen sich nicht so stark ändern, dass die modulare Regelerstellung ihre Relevanz verliert. In diesem Fall kann eine korrekte Ergebnisauswertung nicht mehr garantiert werden.
 	\item Aufgrund des engen zeitlichen Rahmens dürfen in späten Projektphasen keine fundamentalen Änderungen an den Anforderungen mehr erfolgen.
 \end{itemize}
+
+\newpage
 
 \section{Spezifische Anforderungen}
 
@@ -154,7 +160,7 @@ Um die Software erfolgreich entwickeln und betreiben zu können muss von den fol
 
 \subsubsection{Mengengerüst}
 
-Bei den momentan stattfindenden Turnieren sind Teilnehmerzahlen von bis zu 128 Spielern realistisch. Da die Aufgaben der Software relativ leicht auf höhere Spielerzahlen skalierbar ist wird jedoch bei der Entwicklung darauf abgezielt, die Unterstützung von bis zu 1024 teilnehmende Spielern zu gewährleisten.
+Bei den momentan stattfindenden Turnieren sind Teilnehmerzahlen von bis zu 128 Spielern realistisch. Da die Aufgaben der Software relativ leicht auf höhere Spielerzahlen skalierbar sind wird jedoch bei der Entwicklung darauf abgezielt, die Unterstützung von bis zu 1024 teilnehmenden Spielern zu gewährleisten.
 
 \subsubsection{Leistungsanforderungen}
 
@@ -173,6 +179,8 @@ Die gesamten Datensätze werden persistent gespeichert und können bei Bedarf je
 Um kooperative Arbeit zwischen mehreren Arbeitsplätzen zur ermöglichen müssen Auszüge aus der Datenbank eines Events weitergegeben werden können. Dazu stellt \textbf{Tourney} Funktionen zum Im- und Export der nötigen Daten einer Eventphase bereit, die dann mit Massenspeichergeräten transportiert werden können.
 
 Damit lassen sich relevante Turnierdaten an die Turnierordner und Eventdaten zur Anmeldung an mehreren Rechnern verteilen.
+
+\newpage
 
 \subsubsection{Anmeldung von Spielern}
 
@@ -196,7 +204,9 @@ Während eines Turniers werden zukünftige Paarungen und Turnierresultate nach E
 
 \subsubsection{Darstellung der Turnierergebnisse}
 
-Dem Turnierordner und den Spielern werden während eines Turniers die aktuellen Runde mit einem Rundentimer und vorläufigen Ergebnisse in übersichtlicher Form repräsentiert. Diese Darstellung ist für den Turnierordner interaktiv, den Spielern wird sie als Projektion dargestellt, deren Informationsgehalt vom Turnierordner bestimmt werden kann.
+Dem Turnierordner und den Spielern werden während eines Turniers die aktuelle Runde mit einem Rundentimer und vorläufigen Ergebnisse in übersichtlicher Form repräsentiert. Diese Darstellung ist für den Turnierordner interaktiv, den Spielern wird sie als Projektion dargestellt, deren Informationsgehalt vom Turnierordner bestimmt werden kann.
+
+\newpage
 
 \subsubsection{Verwalten von Turniermodulen}
 
@@ -218,19 +228,21 @@ Die Einstellungen können vom Hauptmenü aus erreicht werden. Hier können die f
 
 Wenn die Resultate aus den einzelnen Turnieren wieder beim Administrator zusammengefügt wurden, können die Ergebnistabellen als PDF-Datei exportiert werden.
 
+\newpage
+
 \subsection{Qualitätsanforderungen}
 
 \subsubsection{Bedienbarkeit}
 
-Zur Bedienung von \textbf{Tourney} sowohl als Administrator als auch als Turnierordner werden keine weitreichenden technischen Kenntnisse gefordert. Entsprechend sollte die Software sich gegenüber Nutzereingaben möglichst defensiv verhalten und auf fehlerhafte Eingaben verständlich aufmerksam machen. Weitere nutzerseitige Fehler werden durch eine Rückgängig-Funktion abgefangen.
+Zur Bedienung von \textbf{Tourney} sowohl als Administrator als auch als Turnierordner werden keine weitreichenden technischen Kenntnisse gefordert. Entsprechend sollte die Software sich gegenüber Nutzereingaben möglichst defensiv verhalten und auf fehlerhafte Eingaben verständlich aufmerksam machen. Weitere nutzerseitige Fehler werden durch eine Rück-gängig-Funktion abgefangen.
 
-Das Bedienkonzept zielt auf eine intuitive Interaktion ab, die auch ohne das Lesen eines Handbuchs möglich ist. Dazu müssen alle Module und zeitliche Abläufe konsistent und übersichtlich gekapselt werden. Alle Elemente der Oberfläche sollten eindeutig bezeichnet sein ohne dass dies überladen wirkt.
+Das Bedienkonzept zielt auf eine intuitive Interaktion ab, die auch ohne das Lesen eines Handbuchs möglich ist. Dazu müssen alle Module und zeitliche Abläufe konsistent und übersichtlich gekapselt werden. Alle Elemente der Oberfläche sollten eindeutig bezeichnet sein, ohne dass dies überladen wirkt.
 
 Kritische Aktionen wie das Löschen von Daten müssen durch Dialoge bestätigt werden. Bei fehlerhaften Eingaben von Daten wie etwa Spielernamen werden vorhandene ähnliche Einträge vorgeschlagen.
 
 \subsubsection{Erweiterbarkeit}
 
-Um eine hohe Änderbarkeit und Erweiterbarkeit zu gewährleisten werden große Teile der Software modular gestaltet, etwa die Abtrennung von Administrator- und Turniermodul oder die Verwendung änderbarer Regelmodulen. Auch Sprachlokalisierungen können mit speziellen Dateien komponentenweise hinzugefügt werden.
+Um eine hohe Änderbarkeit und Erweiterbarkeit zu gewährleisten werden große Teile der Software modular gestaltet, etwa die Abtrennung von Administrator- und Turniermodul oder die Verwendung änderbarer Regelmodule. Ebenso können Sprachlokalisierungen mit speziellen Dateien komponentenweise hinzugefügt werden.
 
 Auch interne Komponenten der Software werden in abgeschlossene Einheiten mit hohem Zusammenhalt und geringer Kopplung gegliedert. Desweiteren sollen Redundanzen so gut wie möglich vermieden werden.
 
@@ -238,7 +250,9 @@ Eine umfangreiche Dokumentation auch durch Kommentierung im Code und die konsist
 
 \subsubsection{Sicherheit}
 
-Da keine Schnittstellen mit einem externen Netzwerk bestehen und die Daten über Massenspeichergeräte übertragen werden, müssen diese nicht in besonderem Maße verschlüsselt werden. Allerdings sollte die unrechtmäßige Manipulation der Datensätze verhindert werden, indem diese durch Passwörter sowohl auf Seiten der Administratoren als auch der Turnierordner gesichert werden. Zudem können diese Personen ihre jeweiligen Arbeits-plätze bei vorübergehender Abwesenheit sperren.
+Da keine Schnittstellen mit einem externen Netzwerk bestehen und die Daten über Massenspeichergeräte übertragen werden müssen diese nicht in besonderem Maße verschlüsselt werden. Allerdings sollte die unrechtmäßige Manipulation der Datensätze verhindert werden, indem diese durch Passwörter sowohl auf Seiten der Administratoren als auch der Turnierordner gesichert werden. Zudem können diese Personen ihre jeweiligen Arbeits-plätze bei vorübergehender Abwesenheit sperren.
+
+\newpage
 
 \subsubsection{Zuverlässigkeit}
 
@@ -249,6 +263,8 @@ Ein kurzfristiger Ausfall ist in diesem Sinne also nicht besonders kritisch, wen
 \subsubsection{Portabilität}
 
 Da die Software mit der Programmiersprache Java und unter Verzicht auf native Schnittstellen entwickelt wird ist eine umfassende Portabilität mit einer Vielzahl von Plattformen gegeben.
+
+\newpage
 
 \section{Benutzerprofile}
 
@@ -266,7 +282,9 @@ Ein Turnierordner ist zumeist eine Person mit guten Kenntnissen der Spielregeln 
 
 \subsection{Spieler}
 
-Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktion mit der Software durch, sondern sollen sich über Ausgaben und Projektionen über Paarungen und Spielstände informieren können. Dazu müssen diese leicht verständlich und weithin lesbar sein.
+Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktion mit der Software aus, sondern sollen sich über Ausgaben und Projektionen über Paarungen und Spielstände informieren können. Dazu müssen diese leicht verständlich und weithin lesbar sein.
+
+\newpage
 
 \section{Benutzeroberfläche}
 
@@ -298,7 +316,8 @@ In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügba
 
 \vspace{1cm}
 
-Die folgenden vier Fenster können erreicht werden, wenn ein neues Turnier erstellt oder ein vorhandenes bearbeitet oder durchgeführt werden soll. Die Fenster haben eine Reihe Knöpfen am oberen Rand gemein, die von links nach rechts die folgenden Funktionen ausführen:
+Die folgenden vier Fenster können erreicht werden, wenn ein neues Turnier erstellt oder ein vorhandenes bearbeitet oder durchgeführt werden soll. Die Fenster haben eine Reihe von Knöpfen am oberen Rand gemein, die von links nach rechts die folgenden Funktionen ausführen:
+\newpage
 \begin{itemize}
 	\item Schließen des Fensters und Rückkehr zum Hauptmenü
 	\item Speichern der Änderungen am aktuellen Event
@@ -338,7 +357,7 @@ In der Anmeldungs-Phase können vorangemeldete Spieler mit den Bedienelementen i
 
 \vspace{1cm}
 
-In der Durchführung eines einzelnen Turniers können stattfindende Paarungen angezeigt werden und mit den Knöpfen auf der rechten Seite diese verändert und Ergebnisse eingetragen werden.
+In der Durchführung eines einzelnen Turniers können stattfindende Paarungen angezeigt und diese mit den Knöpfen auf der rechten Seite verändert und Ergebnisse eingetragen werden.
 
 \subsection{Erstellung von Turniermodulen}
 
@@ -353,8 +372,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 \subsection{Übersicht über die Anwendungsfälle}
 
 \includegraphics[width=\textwidth]{UseCaseDiagram.png}
-
-\subsection{Anwendungsfälle des Administrators}
 
 \subsection{Anwendungsfälle des Administrators}
 
@@ -379,7 +396,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Administrator: Nutzer startet das Erstellen des Events durch Drücken des Buttons "Event erstellen"
+			\item[1.] Administrator: Beginnt das Erstellen eines neuen Events
 			\item[2.] System: Öffnet den Dialog für das Erstellen der Events
 			\item[3.] Administrator: Nutzer vergibt Startdatum, Enddatum, Titel und öffnet das Fenster um die Turniere hinzuzufügen
 			\newline
@@ -437,6 +454,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \subsubsection{Bestehendes Event laden}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
@@ -467,6 +486,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Nachbedingung} & Der gespeicherte Zustand des Events ist geladen und benutzbar \\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \subsubsection{Optionen (Sprache anzeigen und ändern)}
 
@@ -590,6 +611,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \subsubsection{Turniermodul hinzufügen}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
@@ -634,6 +657,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Nachbedingung} & Der Nutzer weiß, dass seine Änderung nicht gespeichert wurde \\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \subsubsection{Voranmeldung von Spielern}
 
@@ -680,7 +705,9 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
-\subsubsection{Reguläre Anmeldung eines Spielers}
+\newpage
+
+\subsubsection{Reguläre Anmeldung von Spielern}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -709,6 +736,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Nachbedingung} & Spieler befindet sich in der Event-Datenbank \\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \subsubsection{Anwesenheit eines vorangemeldeten Spielers bestätigen}
 
@@ -742,6 +771,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \subsubsection{Turnier exportieren}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
@@ -772,9 +803,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \subsection{Anwendungsfälle der Turnierordner}
 
-\subsubsection{Turnier durch Turnierordner importieren}
+\subsubsection{Turnier importieren}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -805,7 +838,9 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
-\subsubsection{Anwesenheit der Spieler bei Turnierbeginn}
+\newpage
+
+\subsubsection{Anwesenheit der Spieler bei Turnierbeginn feststellen}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -834,6 +869,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Nachbedingung} & Nur verifizierte Spieler befinden sich in der Turnier-Datenbank \\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \subsubsection{Spielergebnis eintragen}
 
@@ -866,6 +903,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \subsubsection{Manuell Paarungen ändern}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
@@ -894,6 +933,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Nachbedingung} & Die getauschten Paarungen sollen gespeichert werden \\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \section{Anhang}
 
@@ -939,6 +980,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} &  Turnierorganisator, Spieler, Anmeldung, Event\\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1000,6 +1043,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Turnier\\
@@ -1059,6 +1104,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Turniermodul, Paarung \\
 	\hline
 \end{tabularx}
+
+\newpage
 	
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1120,6 +1167,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Datenbank\\
@@ -1159,6 +1208,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Turnier, Paarung, Cut-Off\\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \subsection{Versionshistorie}
 
