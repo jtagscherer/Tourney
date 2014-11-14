@@ -280,9 +280,13 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \subsection{Anwendungsfälle des Administrators}
 
+\subsection{Anwendungsfälle des Administrators}
+
 \subsubsection{Event erstellen}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{ID} & 1 \\
 	\hline
 	\textbf{Ziel} & Es kann mit der Voranmeldung begonnen werden, daher ist das Event mit allen notwendigen Daten fertig erstellt \\
 	\hline
@@ -291,8 +295,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\textbf{Beschreibung} & Es wird das Event erstellt und mit den vorhanden Daten modifiziert \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
-	\hline
-	\textbf{Priorität} & Niedrig \\
+
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
@@ -362,6 +365,8 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 2 \\
+	\hline
 	\textbf{Ziel} & Bestehendes Event aus dem gespeicherten Zustand laden \\
 	\hline
 	\textbf{Akteure} & Administrator \\
@@ -370,17 +375,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
-	\textbf{Priorität} & Niedrig \\
-	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
 	\textbf{Vorbedingung} & Programm ist gestartet, Anwendung ist entsperrt falls nötig \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Administrator: Drückt den 'Event laden'-Button
+			\item[1.] Administrator: Will neues Event laden
 			\item[2.] System: Öffnet den File Browser
-			\item[3.] Administrator: Wählt die zu ladende Datei aus der Verzeichnisstruktur aus und drückt laden
+			\item[3.] Administrator: Wählt die zu ladende Datei aus der Verzeichnisstruktur aus und bestätigt Auswahl
 			\item[4.] System: Lädt den gespeicherten Zustand des Events
 		\end{enumerate}
 	\\
@@ -393,6 +396,8 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 3 \\
+	\hline
 	\textbf{Ziel} & Die aktuellen Optionen des Programms wie Sprache zu ändern oder anzuzeigen \\
 	\hline
 	\textbf{Akteure} & Administrator \\
@@ -401,16 +406,14 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
-	\textbf{Priorität} & Niedrig \\
-	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
 	\textbf{Vorbedingung} & Programm wurde gestartet \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Administrator: Öffnet die Optionen durch Betätigen des Optionen-Buttons
-			\item[2.] System: Öffnet das Optionen-Fenster, zeigt aktuelle Spracheneinstellung an
+			\item[1.] Administrator: Öffnet die Optionen
+			\item[2.] System: Öffnet das Optionen-Fenster, zeigt aktuelle Spracheinstellung an
 			\item[3.] Administrator: Wählt andere Sprache aus
 			\newline
 			Sonderfall für Alternativablauf 3a: Will sich die Optionen nur anzeigen lassen und nicht verändern
@@ -429,7 +432,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\textbf{Ablauf} &
 		\begin{enumerate}
 			\item[3a1.] System: Es wird nichts verändert
-			\item[3a2.] Administrator: Drückt den 'Zurück'-Button
+			\item[3a2.] Administrator: Verlässt Optionen-Menü
 		\end{enumerate}
 	\\
 	\hline
@@ -453,6 +456,8 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 4 \\
+	\hline
 	\textbf{Ziel} & Es soll ein neues Passwort gesetzt werden oder ein bestehendes geändert werden \\
 	\hline
 	\textbf{Akteure} & Administrator \\
@@ -462,24 +467,22 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
-	\textbf{Priorität} & Niedrig \\
-	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
 	\textbf{Vorbedingung} & Anwendung ist gestartet, Anwendung ist falls nötig entsperrt \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Administrator: Nutzer drückt den 'Optionen'-Button
+			\item[1.] Administrator: Will Optionen betrachten
 			\item[2.] System: Öffnet Optionen-Fenster
-			\item[3.] Administrator: Nutzer drückt den 'Passwort ändern'-Button
+			\item[3.] Administrator: Wählt Option aus, um das Passwort zu ändern
 			\item[4.] System: Öffnet Dialog, in dem die Passwortänderung vollzogen wird
 			\newline
 			Sonderfall für Alternativablauf 4a: Es wurde noch kein Passwort gesetzt
-			\item[5.] Administrator: Gibt altes Passwort falls vorhanden und danach 2 Mal das neue Passwort ein
+			\item[5.] Administrator: Gibt altes Passwort falls vorhanden und danach zwei Mal das neue Passwort ein
 			\item[6.] System: Ändert das Passwort um die Anwendung zu sperren
 			\newline
-			Sonderfall für Alternativablauf 6a: Nutzer hat das 'Neues Passwort' Feld leer gelassen
+			Sonderfall für Alternativablauf 6a: Nutzer hat kein neues Passwort eingegeben
 		\end{enumerate}
 	\\
 	\hline
@@ -491,7 +494,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[4a1.] System: Der Dialog enthält nur die Felder: 'Neues Passwort', 'Neues Passwort wiederholen';
+			\item[4a1.] System: Der Dialog enthält nur die Eingabemöglichkeiten für das neue Passwort und dessen Bestätigung
 		\end{enumerate}
 	\\
 	\hline
@@ -499,7 +502,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 6a}} \\
 	\hline
-	\textbf{Vorbedingung} & Nutzer hat das 'Neues Passwort' Feld leer gelassen \\
+	\textbf{Vorbedingung} & Nutzer hat kein neues Passwort eingegeben \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -515,16 +518,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 5 \\
+	\hline
 	\textbf{Ziel} & Der Nutzer will eine Turniervariante erstellen \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
-	\textbf{Beschreibung} & Es wird ein neues Turniermodul erstellt, das weitgehend frei modifizierbar 
-          ist und nachher als Vorlage für andere Events dienen kann \\
+	\textbf{Beschreibung} & Es wird ein neues Turniermodul erstellt, das weitgehend frei modifizierbar ist und nachher als Vorlage für andere Events dienen kann \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
-	\hline
-	\textbf{Priorität} & Niedrig \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
@@ -532,10 +534,10 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Administrator: Nutzer drückt auf den 'Turniervorlage erstellen' Button
-			\item[2.] System: Es öffnet sich ein Fenster, in dem der Nutzer die spezifischen Einstellungen für das Turnier vornehmen kann
-			\item[3.] Administrator: Stellt die Einstellung ein und drückt daraufhin den 'Speichern'-Button
-			\item[4.] System: Das Programm speichert die Einstellungen im Programmverzeichnis
+			\item[1.] Administrator: Wählt aus, dass er eine neue Turniervorlage erstellen will
+			\item[2.] System: Es öffnet sich ein Dialog, in dem der Nutzer die spezifischen Einstellungen für das Turnier vornehmen kann
+			\item[3.] Administrator: Stellt die Einstellung ein und speichert die Änderungen
+			\item[4.] System: Speichert die Einstellungen im Programmverzeichnis
 			\newline
 			Sonderfall für Alternativablauf 4a: Die Vorlage kann nicht gespeichert werden
 		\end{enumerate}
@@ -561,16 +563,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 6 \\
+	\hline
 	\textbf{Ziel} & Voranmeldungen vor dem Event erfassen und speichern \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
-	\textbf{Beschreibung} & Der Nutzer hat von mindestens einem Spieler Voranmeldungen erhalten und 
-          möchte diese in das Event eintragen \\
+	\textbf{Beschreibung} & Der Nutzer hat von mindestens einem Spieler Voranmeldungen erhalten und möchte diese in das Event eintragen \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
-	\hline
-	\textbf{Priorität} & Niedrig \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
@@ -578,8 +579,8 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Administrator: Drückt den 'Spieler eintragen'-Button
-			\item[2.] System: Öffnet die Maske um die Daten einzutragen
+			\item[1.] Administrator: Wählt Option aus, um einen neuen Spieler hinzuzufügen
+			\item[2.] System: Öffnet die Eingabemaske um die Daten einzutragen
 			\item[3.] Administrator: Trägt den Teilnehmer in die Maske ein (Name, Vorname, Turniere an denen er teilnehmen möchte, optional E-Mail-Adresse und Vorname)
 			\item[4.] System: Überprüft, ob alle Angaben korrekt sind und trägt diese in die Datendank ein
 			\newline
@@ -595,7 +596,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[4a1.] System: Gibt eine Fehlermeldung aus und lässt Nutzer die Eingaben nochmal überprüfen und verändern
+			\item[4a1.] System: Gibt eine Fehlermeldung aus und lässt den Nutzer die Eingaben nochmal überprüfen und verändern
 		\end{enumerate}
 	\\
 	\hline
@@ -607,17 +608,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Ziel} & Der Spieler soll in die Datenbank eingetragen sein und für die einzelnen 
-          Turniere registriert sein \\
+	\textbf{ID} & 7 \\
 	\hline
-	\textbf{Akteure} & Anmeldung, Spieler \\
+	\textbf{Ziel} & Der Spieler soll in die Datenbank eingetragen und für die einzelnen Turniere registriert sein \\
 	\hline
-	\textbf{Beschreibung} & Spieler meldet sich bei der Anmeldung für verschiedene Turniere an. Dies 
-          wird dann in die Datenbank geschrieben \\
+	\textbf{Akteure} & Anmeldung (Hauptakteur), Spieler \\
+	\hline
+	\textbf{Beschreibung} & Spieler meldet sich bei der Anmeldung für verschiedene Turniere an. Dies wird dann in die Datenbank geschrieben \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
-	\hline
-	\textbf{Priorität} & Niedrig \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
@@ -639,18 +638,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Ziel} & Die Anwesenheit der vorangemeldeten Spieler zu bestätigen und die 
-          Bezahlung der Gebühr abzuwickeln \\
+	\textbf{ID} & 8 \\
 	\hline
-	\textbf{Akteure} & Spieler, Anmeldung \\
+	\textbf{Ziel} & Die Anwesenheit der vorangemeldeten Spieler bestätigen und den Bezahlstatus der Gebühr registrieren \\
 	\hline
-	\textbf{Beschreibung} & Der vorangemeldete Spieler gibt seinen Namen/E-Mail-Adresse der Anmeldung. Diese 
-          sucht daraufhin in der Datenbank nach dem Namen und bestätigt, dass 
-          dieser anwesend ist und bezahlt hat \\
+	\textbf{Akteure} & Anmeldung (Hauptakteur), Spieler \\
+	\hline
+	\textbf{Beschreibung} & Der vorangemeldete Spieler gibt seinen Namen und seine E-Mail-Adresse der Anmeldung. Diese sucht daraufhin in der Datenbank nach dem Namen und bestätigt, dass dieser anwesend ist und bezahlt hat \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
-	\hline
-	\textbf{Priorität} & Niedrig \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
@@ -658,10 +654,10 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Spieler: Gibt der Anmeldung Name/E-Mail-Adresse
-			\item[2.] Anmeldung: Drückt den 'Voranmeldung verifizieren'-Button
-			\item[3.] System: Öffnet die Maske, in der Name und E-Mail-Adresse eingegeben werden
-			\item[4.] Anmeldung: Gibt Name und E-Mail-Adresse ein und setzt Haken (Anwesenheit, bezahlt) und betätigt 'Verifizieren'-Button
+			\item[1.] Spieler: Gibt der Anmeldung Name und E-Mail-Adresse
+			\item[2.] Anmeldung: Wählt Option, um die Voranmeldung zu verifizieren
+			\item[3.] System: Öffnet die Maske, in der Name und E-Mail-Adresse eingegeben werden können
+			\item[4.] Anmeldung: Gibt Name und E-Mail-Adresse ein, bestätigt gegebenenfalls Anwesenheit und Bezahlstatus und gibt Auftrag zur Verifikation
 			\item[5.] System: Ändert Datenbankeintrag des Spielers und fügt ihn dem Turnier/den Turnieren hinzu
 		\end{enumerate}
 	\\
@@ -674,16 +670,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 9 \\
+	\hline
 	\textbf{Ziel} & Turnier ist als Datei exportiert \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
-	\textbf{Beschreibung} & Das Turnier soll an den Turnierorganisator weitergegeben werden, 
-          dieser kann das einzelne Turnier importieren \\
+	\textbf{Beschreibung} & Das Turnier soll an den Turnierorganisator weitergegeben werden, dieser kann das einzelne Turnier importieren \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
-	\hline
-	\textbf{Priorität} & Niedrig \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
@@ -691,7 +686,7 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Administrator: Drückt den Button 'Turnier exportieren'
+			\item[1.] Administrator: Wählt Option, um Turniere zu exportieren
 			\item[2.] System: Öffnet das Fenster zum Auswählen des Speicherorts für das exportierte Turnier
 			\item[3.] Administrator: Exportiert das Turnier
 		\end{enumerate}
@@ -707,6 +702,8 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 10 \\
+	\hline
 	\textbf{Ziel} & Das Turnier soll importiert sein \\
 	\hline
 	\textbf{Akteure} & Turnierordner \\
@@ -715,15 +712,13 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
-	\textbf{Priorität} & Niedrig \\
-	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
 	\textbf{Vorbedingung} & Die Anwendung muss gestartet sein, Die Anwendung muss entsperrt sein, Das exportierte Turniermodul muss vorhanden sein, Nutzer muss auf der Startseite sein \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Turnierordner: Drückt den Button 'Turnier importieren'
+			\item[1.] Turnierordner: Wählt Option um ein Turnier zu importieren
 			\item[2.] System: Öffnet den File Browser um das Turnier zu importieren
 			\item[3.] Turnierordner: Wählt die exportierte Turnier-Datei aus
 			\item[4.] System: Importiert das Turnier
@@ -738,16 +733,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 11 \\
+	\hline
 	\textbf{Ziel} & Anwesenheit der Spieler beim Turnierbeginn feststellen \\
 	\hline
 	\textbf{Akteure} & Turnierordner \\
 	\hline
-	\textbf{Beschreibung} & Der Turnierordner überprüft die Anwesenheit der einzelnen Spieler, damit 
-          die Paarungen bestimmt werden können \\
+	\textbf{Beschreibung} & Der Turnierordner überprüft die Anwesenheit der einzelnen Spieler, damit die Paarungen bestimmt werden können \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
-	\hline
-	\textbf{Priorität} & Niedrig \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
@@ -769,6 +763,8 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 12 \\
+	\hline
 	\textbf{Ziel} & Das Ergebnis einer Paarung eintragen \\
 	\hline
 	\textbf{Akteure} & Turnierordner \\
@@ -778,17 +774,15 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
-	\textbf{Priorität} & Niedrig \\
-	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Die Anwendung ist gestartet, Die Anwengung ist entsperrt, Das Turnier muss in einer laufenden Runde sein, Das Turnier muss importiert sein \\
+	\textbf{Vorbedingung} & Die Anwendung ist gestartet, die Anwendung ist entsperrt, das Turnier muss in einer laufenden Runde sein, das Turnier muss importiert sein \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Turnierordner: Der Nutzer wählt die Paarung aus, die er bewerten will
+			\item[1.] Turnierordner: Wählt die Paarung aus, die er bewerten will
 			\item[2.] System: Zeigt die voreingestellten Ausgangsmöglichkeiten an
-			\item[3.] Turnierordner: Nutzer wählt eine davon aus oder gibt die Wertungen manuell ein
+			\item[3.] Turnierordner: Wählt eine davon aus oder gibt die Wertungen manuell ein
 		\end{enumerate}
 	\\
 	\hline
@@ -800,6 +794,8 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{ID} & 13 \\
+	\hline
 	\textbf{Ziel} & Computergenerierte Paarungen ist von Hand geändert \\
 	\hline
 	\textbf{Akteure} & Turnierordner \\
@@ -808,15 +804,13 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
-	\textbf{Priorität} & Niedrig \\
-	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Die Anwendung muss aktiv sein, Die Anwendung muss entsperrt sein, Das Turnier muss vor einer Runde sein, es darf noch keine Wertung eingetragen sein \\
+	\textbf{Vorbedingung} & Die Anwendung muss aktiv sein, die Anwendung muss entsperrt sein, das Turnier muss vor einer Runde sein, es darf noch keine Wertung eingetragen sein \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[1.] Turnierordner: Turnierordner wählt die zwei zu tauschenden Spieler aus und betätigt den 'Tauschen'-Button
+			\item[1.] Turnierordner: Wählt die zwei zu tauschenden Spieler aus und wählt Option zum Tausch
 			\item[2.] System: Tauscht die ausgewählten Spieler
 		\end{enumerate}
 	\\
@@ -922,6 +916,24 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{Begriff} & Turnier\\
+	\hline
+	\textbf{Bedeutung} & Der Ablauf der einzelnen Runden\\
+	\hline
+	\textbf{Abgrenzung} & Das Turnier besteht im Gegensatz zum Event nur aus einem Spieltyp\\
+	\hline
+	\textbf{Gültigkeit} & Das Turnier ist gültig bis ein Sieger ermittelt wurde\\
+	\hline
+	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp der gespielt wird bis ein Sieger feststeht\\
+	\hline
+	\textbf{Unklarheiten} & \\
+	\hline
+	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
+	\hline
+\end{tabularx}
+	
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
 	\textbf{Begriff} & Startnummer\\
 	\hline
 	\textbf{Bedeutung} & Die eindeutige Nummer, mit denen Spieler in einem Turnier identifiziert werden\\
@@ -935,6 +947,24 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\textbf{Unklarheiten} & \\
 	\hline
 	\textbf{Querverweise} & Spieler, Anmeldung \\
+	\hline
+\end{tabularx}
+	
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Turnier\\
+	\hline
+	\textbf{Bedeutung} & Der Ablauf der einzelnen Runden\\
+	\hline
+	\textbf{Abgrenzung} & Das Turnier besteht im Gegensatz zum Event nur aus einem Spieltyp\\
+	\hline
+	\textbf{Gültigkeit} & Das Turnier ist gültig bis ein Sieger ermittelt wurde\\
+	\hline
+	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp der gespielt wird bis ein Sieger feststeht\\
+	\hline
+	\textbf{Unklarheiten} & \\
+	\hline
+	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
 	\hline
 \end{tabularx}
 
@@ -952,7 +982,97 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 	\hline
 	\textbf{Unklarheiten} & \\
 	\hline
-	\textbf{Querverweise} & Turniermodul \\
+	\textbf{Querverweise} & Turniermodul, Paarung \\
+	\hline
+\end{tabularx}
+	
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Paarung\\
+	\hline
+	\textbf{Bedeutung} & Das Zusammentreffen mehrer Parteien indem gewählten Spiel\\
+	\hline
+	\textbf{Abgrenzung} & \\
+	\hline
+	\textbf{Gültigkeit} & Solange noch kein Ergebnis erhalten wurde ist die Paarung gültig\\
+	\hline
+	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler die gegeneinander einen Spieltyp spielen\\
+	\hline 
+	\textbf{Unklarheiten} & \\
+	\hline
+	\textbf{Querverweise} &  Turnier\\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Event\\
+	\hline
+	\textbf{Bedeutung} & Ein Event enthält ein oder mehrere Turniere und deren gemeinsamkeiten wie Datum, Ort\\
+	\hline
+	\textbf{Abgrenzung} & Ein Event enthält ein oder mehrere Turniere, während das Turnier die einzelnen Spiele enthält\\
+	\hline
+	\textbf{Gültigkeit} & Das Event ist gültig für die Dauer der Turniere die an ihm stattfinden\\
+	\hline
+	\textbf{Bezeichnung} & \\
+	\hline
+	\textbf{Unklarheiten} & \\
+	\hline
+	\textbf{Querverweise} & Turnier, Admin\\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Spielresultat\\
+	\hline
+	\textbf{Bedeutung} & Ergebnis einer Paarung. Kann je nach Turniermodul aus mehreren Wertungen bestehen.\\
+	\hline
+	\textbf{Abgrenzung} & Das Spielresultat bezieht sich ausschließlich auf einzelne Paarungen und nicht auf die Gesamtwertung der beteiligten Spieler\\
+	\hline
+	\textbf{Gültigkeit} & \\
+	\hline
+	\textbf{Bezeichnung} & \\
+	\hline
+	\textbf{Unklarheiten} & \\
+	\hline
+	\textbf{Querverweise} & Paarung, Turniermodul\\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Datenbank\\
+	\hline
+	\textbf{Bedeutung} & Eine Ansammlung von Daten. Wird hier als Speicherort aller zu Events gehörenden Daten verwendet, dazu zählen unter Anderem Turniere, angemeldete Spieler und Spielresultate.\\
+	\hline
+	\textbf{Abgrenzung} & \\
+	\hline
+	\textbf{Gültigkeit} & \\
+	\hline
+	\textbf{Bezeichnung} & \\
+	\hline
+	\textbf{Unklarheiten} & \\
+	\hline
+	\textbf{Querverweise} & Event, Turnier, Spieler, Spielresultat\\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Turniermodul\\
+	\hline
+	\textbf{Bedeutung} & Turniermodule legen den Ablauf des Turniers fest. Darunter fallen unterschiedliche Wertungen, nach denen Gewinner bestimmt werden können, Methoden zur Generierung von Paarungen, sowie die Definition von Cut-Offs.\\
+	\hline
+	\textbf{Abgrenzung} & \\
+	\hline
+	\textbf{Gültigkeit} & \\
+	\hline
+	\textbf{Bezeichnung} & \\
+	\hline
+	\textbf{Unklarheiten} & \\
+	\hline
+	\textbf{Querverweise} & Turnier, Paarung, Cut-Off\\
 	\hline
 \end{tabularx}
 
