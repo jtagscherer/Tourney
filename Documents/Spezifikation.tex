@@ -94,6 +94,7 @@ Relevante Fachbegriffe und deren Abkürzungen, die in der Spezifikation vorkomme
 
 Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument in die nachfolgenden Kapitel gegliedert:
 \begin{itemize}
+	\item[] \textbf{Kapitel 1} enthält die formalen Grundlagen der Spezifikation.
 	\item[] \textbf{Kapitel 2} gibt einen groben Überblick über grundlegende Funktionen, über die die Software verfügen soll, in welchem Umfeld und von welchen Nutzern sie eingesetzt wird und welche Einschränkungen und Annahmen bei der Entwicklung eingegangen werden.
 	\item[] \textbf{Kapitel 3} beschreibt die konkreten Anforderungen, die vom Auftraggeber an die Software gestellt werden. Dabei werden zwischen funktionalen und qualitativen Anforderungen unterschieden.
 	\item[] \textbf{Kapitel 4} charakterisiert Nutzer und für die Software relevante Personengruppen.
@@ -141,7 +142,7 @@ Die Nutzer von \textbf{Tourney} sollten zur erfolgreichen Bedienung keine besond
 
 Desweiteren kann nicht davon ausgegangen werden, dass sowohl die Arbeitsplätze von Administratoren als auch Turnierordnern ausreichend abgesichert sind. Deshalb sollten relevante Daten über Passwörter zusätzlich gesichert sein.
 
-Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgängig-Funktion vorgebeugt werden.
+Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgängig-Funktion vorgebeugt werden. Desweiteren kann der Nutzer jede seiner Aktionen rückgängig machen, ohne irgendwelche Nachteile fürchten zu müssen.
 
 \subsection{Annahmen und Abhängigkeiten}
 
@@ -184,11 +185,11 @@ Damit lassen sich relevante Turnierdaten an die Turnierordner und Eventdaten zur
 
 \subsubsection{Anmeldung von Spielern}
 
-Bei Beginn eines Events können anwesende Spieler angemeldet werden. Es sollen sowohl vorangemeldete Spieler gesucht und registriert als auch neue Spieler dem Event hinzugefügt und angemeldet werden können. Dabei werden den Spielern direkt eindeutige Startnummern zugewiesen und mitgeteilt. Außerdem soll eingestellt werden können, ob ein Spieler bereits bezahlt hat.
+Bei Beginn eines Events können anwesende Spieler angemeldet werden. Es sollen sowohl vorangemeldete Spieler gesucht und registriert als auch neue Spieler dem Event hinzugefügt und angemeldet werden können. Die Suche wird fortlaufend beim Eingeben des Namen ausgeführt und als Liste angezeigt. Dabei werden den Spielern direkt eindeutige Startnummern zugewiesen und mitgeteilt. Außerdem soll eingestellt werden können, ob ein Spieler bereits bezahlt hat.
 
-Diese Anmeldung lässt sich auf beliebig viele Arbeitsplätze verteilen. Die Daten werden nach Abschluss der Arbeiten wieder am Administrationsrechner zusammengefügt.
+Diese Anmeldung lässt sich auf beliebig viele Arbeitsplätze verteilen. Die Daten werden nach Abschluss der Arbeiten wieder am Administrationsrechner zusammengefügt. Die Zusammenführung wird über die eindeutige Identifikationsnummer möglich gemacht, somit kann der Eventteilnehmer eindeutig identifiziert werden, falls das Programm einen doppelten Teilnehmer identifizieren sollte, meldet es dies dem Benutzer über einen Dialog.
 
-Nach der Anmeldung können die Daten für die einzelnen Turniere entweder zu Turnierordnern verteilt oder die Turniere direkt vom Administrator gestartet werden.
+Nach der Anmeldung können die Daten für die einzelnen Turniere entweder zu Turnierordnern über einen USB-Stick verteilt oder die Turniere direkt vom Administrator gestartet werden.
 
 \subsubsection{Datenerfassung während eines Turnierablaufs}
 
@@ -250,7 +251,7 @@ Eine umfangreiche Dokumentation auch durch Kommentierung im Code und die konsist
 
 \subsubsection{Sicherheit}
 
-Da keine Schnittstellen mit einem externen Netzwerk bestehen und die Daten über Massenspeichergeräte übertragen werden müssen diese nicht in besonderem Maße verschlüsselt werden. Allerdings sollte die unrechtmäßige Manipulation der Datensätze verhindert werden, indem diese durch Passwörter sowohl auf Seiten der Administratoren als auch der Turnierordner gesichert werden. Zudem können diese Personen ihre jeweiligen Arbeits-plätze bei vorübergehender Abwesenheit sperren.
+Da keine Schnittstellen mit einem externen Netzwerk bestehen und die Daten über Massenspeichergeräte übertragen werden, müssen diese nicht in besonderem Maße verschlüsselt werden. Allerdings sollte die unrechtmäßige Manipulation der Datensätze verhindert werden, indem diese durch Passwörter sowohl auf Seiten der Administratoren als auch der Turnierordner gesichert werden. Zudem können diese Personen ihre jeweiligen Arbeits-plätze bei vorübergehender Abwesenheit sperren.
 
 \newpage
 
@@ -308,7 +309,7 @@ Will der Nutzer die Einstellung durch Betätigen des rechten Knopfs ändern öff
 
 \vspace{1cm}
 
-In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügbarer Sprachen ausgewählt und ein Passwort zur Sicherung des aktuellen Arbeitsplatzes festgelegt werden.
+In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügbarer Sprachen(Deutsch/Englisch) ausgewählt und ein Passwort zur Sicherung des aktuellen Arbeitsplatzes festgelegt werden, dies ist beim ersten Start nicht gesetzt.
 
 \subsection{Erstellung eines Events}
 
@@ -466,7 +467,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
-	\textbf{Beschreibung} & Lädt das gespeicherte Event inklusive Turniermodulen, Zuständen und Fortschritt im Turnier Fragt gegebenenfalls ein gesetztes Passwort ab \\
+	\textbf{Beschreibung} & Lädt das gespeicherte Event inklusive Turniermodulen, Zuständen und Fortschritt im Turnier. Fragt gegebenenfalls ein gesetztes Passwort ab. \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
