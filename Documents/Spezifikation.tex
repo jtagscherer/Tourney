@@ -435,11 +435,12 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\item[3a2a1.] System: Geht in Zustand Y über
+			\item[3a2a1.] System: Zeigt bestehende Turniermodule aus denen der Administrator eines oder mehrere dem Event hinzufügen kann.
+			\item[3a2a2.] Admin: Wählt eines aus und fügt dies dem Event hinzu siehe 3.
 		\end{enumerate}
 	\\
 	\hline
-	\textbf{Nachbedingung} & Zustand Y \\
+	\textbf{Nachbedingung} & Mindestens ein Turnier ist dem Event hinzugefügt. \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 7a}} \\
 	\hline
@@ -851,7 +852,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Akteure} & Turnierordner \\
 	\hline
-	\textbf{Beschreibung} & Der Turnierordner überprüft die Anwesenheit der einzelnen Spieler, damit die Paarungen bestimmt werden können \\
+	\textbf{Beschreibung} & Der Turnierordner überprüft die Anwesenheit der einzelnen Spieler, damit die Paarungen bestimmt werden können. Die Startnummer im Turnier ist dieselbe wie in                 der Eventdatenbank.                                         \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
@@ -943,27 +944,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Turnierorganisator \\ 
-	\hline
-	\textbf{Synonyme} & TO, Turnierordner \\
-	\hline
-	\textbf{Bedeutung} & Der Turnierorganisator ist die Person, die das Turnier ausrichtet, die Spieleausgänge einträgt und das Turniergeschehen überwacht\\
-	\hline
-	\textbf{Abgrenzung} & Der Turnierorganisator ist selbst für gewöhnlich bei größeren Turnieren kein Spieler\\
-	\hline
-	\textbf{Gültigkeit} & Der Turnierorganisator ist solange gültig wie das Turnier läuft\\
-	\hline
-	\textbf{Bezeichnung} & Der Turnierorganisator ist für den Ablauf des Turniers verantwortlich\\
-	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
-	\hline
-	\textbf{Querverweise} &  Administrator, Spieler, Anmeldung, Turnier
-	\\
-	\hline
-\end{tabularx}
-
-\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
-	\hline
 	\textbf{Begriff} & Administrator\\
 	\hline
 	\textbf{Synonyme} & Admin\\
@@ -982,8 +962,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
-\newpage
-
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Anmeldung\\
@@ -1001,26 +979,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Unklarheiten} & Bei kleineren Events kann der Administrator die Aufgaben der Anmeldung übernehmen \\
 	\hline
 	\textbf{Querverweise} &  Turnierorganisator, Spieler, Administrator\\
-	\hline
-\end{tabularx}
-
-\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
-	\hline
-	\textbf{Begriff} & Spieler\\
-	\hline
-	\textbf{Synonyme} & Teilnehmer \\
-	\hline
-	\textbf{Bedeutung} & Der Spieler nimmt aktiv am Turnier teil\\
-	\hline
-	\textbf{Abgrenzung} & Der Spieler hat nichts mit der Organisation des Turniers oder des Events zu tun\\
-	\hline
-	\textbf{Gültigkeit} & Nachdem der Spieler seine Spiele gespielt hat erlischt seine Gültigkeit\\
-	\hline
-	\textbf{Bezeichnung} & Ein Spieler ist ein Teilnehmer des Turniers\\
-	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
-	\hline
-	\textbf{Querverweise} & Turnierorganisator, Administrator, Anmeldung, Turnier, Event \\
 	\hline
 \end{tabularx}
 
@@ -1048,46 +1006,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Turnier\\
-	\hline
-	\textbf{Synonyme} & Spielturnier \\
-	\hline
-	\textbf{Bedeutung} & Der Ablauf der einzelnen Runden\\
-	\hline
-	\textbf{Abgrenzung} & Das Turnier besteht im Gegensatz zum Event aus nur einem Spieltyp\\
-	\hline
-	\textbf{Gültigkeit} & Das Turnier ist gültig bis alle Turnierergebnisse ermittelt wurden\\
-	\hline
-	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp, der gespielt wird bis ein Sieger feststeht\\
-	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
-	\hline
-	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
-	\hline
-\end{tabularx}
-	
-\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
-	\hline
-	\textbf{Begriff} & Startnummer\\
-	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
-	\hline
-	\textbf{Bedeutung} & Die eindeutige Nummer, mit denen Spieler in einem Turnier Event-übergreifend identifiziert werden\\
-	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
-	\hline
-	\textbf{Gültigkeit} & Die Startnummer wird den Spielern bei der Anmeldung zum Event zu- und mitgeteilt und bleibt für die komplette Veranstaltung gleich\\
-	\hline
-	\textbf{Bezeichnung} & Die Startnummer ist eine pro Event eindeutige Ganzzahl\\
-	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
-	\hline
-	\textbf{Querverweise} & Spieler, Anmeldung \\
-	\hline
-\end{tabularx}
-
-\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
-	\hline
 	\textbf{Begriff} & Cut-Off\\
 	\hline
 	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
@@ -1106,25 +1024,23 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
-\newpage
-	
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Spielpaarung\\
+	\textbf{Begriff} & Datenbank\\
 	\hline
-	\textbf{Synonyme} & Paarung\\
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Bedeutung} & Das Zusammentreffen mehrer Parteien in dem gewählten Spiel\\
+	\textbf{Bedeutung} & Eine Ansammlung von Daten. Wird hier als Speicherort aller zu Events gehörenden Daten verwendet, dazu zählen unter anderem Turniere, angemeldete Spieler und Spielresultate\\
 	\hline
 	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Gültigkeit} & Solange noch kein Ergebnis erhalten wurde ist die Paarung gültig\\
+	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler, die gegeneinander an demselben Tisch ein Spiel mit dem gleichen Regelsatzt spielen\\
-	\hline 
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Querverweise} &  Turnier, Spieler\\
+	\textbf{Querverweise} & Event, Turnier, Spieler, Spielresultat\\
 	\hline
 \end{tabularx}
 
@@ -1145,6 +1061,48 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turnier, Admin\\
+	\hline
+\end{tabularx}
+
+\newpage
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Spieler\\
+	\hline
+	\textbf{Synonyme} & Teilnehmer \\
+	\hline
+	\textbf{Bedeutung} & Der Spieler nimmt aktiv am Turnier teil\\
+	\hline
+	\textbf{Abgrenzung} & Der Spieler hat nichts mit der Organisation des Turniers oder des Events zu tun\\
+	\hline
+	\textbf{Gültigkeit} & Nachdem der Spieler seine Spiele gespielt hat erlischt seine Gültigkeit\\
+	\hline
+	\textbf{Bezeichnung} & Ein Spieler ist ein Teilnehmer des Turniers\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Querverweise} & Turnierorganisator, Administrator, Anmeldung, Turnier, Event \\
+	\hline
+\end{tabularx}
+	
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Spielpaarung\\
+	\hline
+	\textbf{Synonyme} & Paarung\\
+	\hline
+	\textbf{Bedeutung} & Das Zusammentreffen mehrer Parteien in dem gewählten Spiel\\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Gültigkeit} & Solange noch kein Ergebnis erhalten wurde ist die Paarung gültig\\
+	\hline
+	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler, die gegeneinander an demselben Tisch ein Spiel mit dem gleichen Regelsatzt spielen\\
+	\hline 
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Querverweise} &  Turnier, Spieler\\
 	\hline
 \end{tabularx}
 
@@ -1172,21 +1130,41 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Datenbank\\
+	\textbf{Begriff} & Startnummer\\
 	\hline
 	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Bedeutung} & Eine Ansammlung von Daten. Wird hier als Speicherort aller zu Events gehörenden Daten verwendet, dazu zählen unter anderem Turniere, angemeldete Spieler und Spielresultate\\
+	\textbf{Bedeutung} & Die eindeutige Nummer, mit denen Spieler in einem Turnier Event-übergreifend identifiziert werden\\
 	\hline
 	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Gültigkeit} & Die Startnummer wird den Spielern bei der Anmeldung zum Event zu- und mitgeteilt und bleibt für die komplette Veranstaltung gleich\\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Bezeichnung} & Die Startnummer ist eine pro Event eindeutige Ganzzahl\\
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Event, Turnier, Spieler, Spielresultat\\
+	\textbf{Querverweise} & Spieler, Anmeldung \\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Turnier\\
+	\hline
+	\textbf{Synonyme} & Spielturnier \\
+	\hline
+	\textbf{Bedeutung} & Der Ablauf der einzelnen Runden\\
+	\hline
+	\textbf{Abgrenzung} & Das Turnier besteht im Gegensatz zum Event aus nur einem Spieltyp\\
+	\hline
+	\textbf{Gültigkeit} & Das Turnier ist gültig bis alle Turnierergebnisse ermittelt wurden\\
+	\hline
+	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp, der gespielt wird bis ein Sieger feststeht\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
 	\hline
 \end{tabularx}
 
@@ -1207,6 +1185,29 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turnier, Paarung, Cut-Off\\
+	\hline
+\end{tabularx}
+
+\newpage
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Turnierorganisator \\ 
+	\hline
+	\textbf{Synonyme} & TO, Turnierordner \\
+	\hline
+	\textbf{Bedeutung} & Der Turnierorganisator ist die Person, die das Turnier ausrichtet, die Spieleausgänge einträgt und das Turniergeschehen überwacht\\
+	\hline
+	\textbf{Abgrenzung} & Der Turnierorganisator ist selbst für gewöhnlich bei größeren Turnieren kein Spieler\\
+	\hline
+	\textbf{Gültigkeit} & Der Turnierorganisator ist solange gültig wie das Turnier läuft\\
+	\hline
+	\textbf{Bezeichnung} & Der Turnierorganisator ist für den Ablauf des Turniers verantwortlich\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Querverweise} &  Administrator, Spieler, Anmeldung, Turnier
+	\\
 	\hline
 \end{tabularx}
 
