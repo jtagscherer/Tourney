@@ -496,11 +496,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{ID} & 3 \\
 	\hline
-	\textbf{Ziel} & Die aktuellen Optionen des Programms wie Sprache zu ändern oder anzuzeigen \\
+	\textbf{Ziel} & Die aktuelle eingestellte Sprache anzeigen oder diese verändern. \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
-	\textbf{Beschreibung} &  \\
+	\textbf{Beschreibung} & Der Nutzer möchte die eingestellte Sprache anzeigen oder aus den vorhandenen Sprachen eine andere auswählen. \\
 	\hline
 	\textbf{Ebene} & Benutzersicht \\
 	\hline
@@ -512,7 +512,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\begin{enumerate}
 			\item[1.] Administrator: Öffnet die Optionen
 			\item[2.] System: Öffnet das Optionen-Fenster, zeigt aktuelle Spracheinstellung an
-			\item[3.] Administrator: Wählt andere Sprache aus
+			\item[3.] Administrator: Wählt andere Sprache (Englisch/Deutsch) aus
 			\newline
 			Sonderfall für Alternativablauf 3a: Will sich die Optionen nur anzeigen lassen und nicht verändern
 			\newline
@@ -588,7 +588,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 4a}} \\
 	\hline
-	\textbf{Vorbedingung} & Es wurde noch kein Passwort gesetzt \\
+	\textbf{Vorbedingung} & Das aktuelle Passwort ist nicht vorhanden. \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -596,7 +596,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\end{enumerate}
 	\\
 	\hline
-	\textbf{Nachbedingung} & Der Nutzer muss das nicht vorhandene Passwort nicht eingeben \\
+	\textbf{Nachbedingung} & Das vom Nutzer gewählte Passwort wird nun zum entsperren benötigt. \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 6a}} \\
 	\hline
@@ -683,8 +683,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\begin{enumerate}
 			\item[1.] Administrator: Wählt Option aus, um einen neuen Spieler hinzuzufügen
 			\item[2.] System: Öffnet die Eingabemaske um die Daten einzutragen
-			\item[3.] Administrator: Trägt den Teilnehmer in die Maske ein (Name, Vorname, Turniere an denen er teilnehmen möchte, optional E-Mail-Adresse und Vorname)
-			\item[4.] System: Überprüft, ob alle Angaben korrekt sind und trägt diese in die Datendank ein
+			\item[3.] Administrator: Trägt den Teilnehmer in die Maske ein (Name, Vorname, Turniere an denen er teilnehmen möchte und optional E-Mail-Adresse)
+			\item[4.] System: Überprüft, ob alle Angaben korrekt sind und trägt diese in die Datenbank ein
 			\newline
 			Sonderfall für Alternativablauf 4a: Getätigte Eingabe ist inkorrekt
 		\end{enumerate}
@@ -716,7 +716,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Ziel} & Der Spieler soll in die Datenbank eingetragen und für die einzelnen Turniere registriert sein \\
 	\hline
-	\textbf{Akteure} & Anmeldung (Hauptakteur), Spieler \\
+	\textbf{Akteure} & Anmeldung (Hauptakteur) \\
 	\hline
 	\textbf{Beschreibung} & Spieler meldet sich bei der Anmeldung für verschiedene Turniere an. Dies wird dann in die Datenbank geschrieben \\
 	\hline
@@ -748,7 +748,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Ziel} & Die Anwesenheit der vorangemeldeten Spieler bestätigen und den Bezahlstatus der Gebühr registrieren \\
 	\hline
-	\textbf{Akteure} & Anmeldung (Hauptakteur), Spieler \\
+	\textbf{Akteure} & Anmeldung (Hauptakteur) \\
 	\hline
 	\textbf{Beschreibung} & Der vorangemeldete Spieler gibt seinen Namen und seine E-Mail-Adresse der Anmeldung. Diese sucht daraufhin in der Datenbank nach dem Namen und bestätigt, dass dieser anwesend ist und bezahlt hat \\
 	\hline
@@ -790,7 +790,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Ein Event muss erstellt sein, Das Event muss in der Phase 'Turniere exportieren' sein \\
+	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Ein Event muss erstellt sein, Das Event muss in der Phase 'Turniere exportieren' sein. \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -857,7 +857,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Turnier muss geladen sein, Turnier mus in der Phase 'Anwesenheit kontrollieren' sein \\
+	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Turnier muss geladen sein, Turnier muss in der Phase 'Anwesenheit kontrollieren' sein \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -1110,9 +1110,9 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Paarung\\
+	\textbf{Begriff} & Spielpaarung\\
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Synonyme} & Paarung\\
 	\hline
 	\textbf{Bedeutung} & Das Zusammentreffen mehrer Parteien in dem gewählten Spiel\\
 	\hline
@@ -1120,7 +1120,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Gültigkeit} & Solange noch kein Ergebnis erhalten wurde ist die Paarung gültig\\
 	\hline
-	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler, die gegeneinander einen Spieltyp spielen\\
+	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler, die gegeneinander an demselben Tisch ein Spiel mit dem gleichen Regelsatzt spielen\\
 	\hline 
 	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
@@ -1134,7 +1134,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Synonyme} & Veranstaltung \\
 	\hline
-	\textbf{Bedeutung} & Ein Event enthält ein oder mehrere Turniere und deren gemeinsamkeiten wie Datum oder Ort\\
+	\textbf{Bedeutung} & Ein Event enthält ein oder mehrere Turniere und deren Gemeinsamkeiten wie Datum oder Ort\\
 	\hline
 	\textbf{Abgrenzung} & Ein Event enthält ein oder mehrere Turniere während das Turnier die einzelnen Spielpaarungen enthält\\
 	\hline
