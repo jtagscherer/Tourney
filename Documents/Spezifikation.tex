@@ -296,11 +296,9 @@ Die Spieler sind die größte Nutzergruppe. Sie führen keine direkte Interaktio
 \vspace{1cm}
 
 Im Hauptmenü hat der Nutzer die Möglichkeit zwischen verschiedenen Pfaden in der Benutzerführung zu wählen.
-
 Entscheidet sich der Nutzer dazu, ein neues Event zu erstellen oder ein bestehendes zu öffnen springt die Software zur Darstellung der jeweils relevanten Projektphase.
 
 Bei Betätigung des mittleren Knopfs erscheint eine veränderbare Auflistung aller bisher vorhandenen Regelmodule.
-
 Will der Nutzer die Einstellung durch Betätigen des rechten Knopfs ändern öffnet sich das dafür vorgesehene Fenster.
 
 \subsection{Einstellungen}
@@ -379,7 +377,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 \subsubsection{Event erstellen}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
-	\hline
+	\hline 
 	\textbf{ID} & 1 \\
 	\hline
 	\textbf{Ziel} & Es kann mit der Voranmeldung begonnen werden, daher ist das Event mit allen notwendigen Daten fertig erstellt \\
@@ -413,7 +411,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Nachbedingung} & Vorabanmeldung kann gestartet werden, Event wurde gespeichert \\
 	\hline
-	\multicolumn{2}{| c |}{\textbf{Alternativablauf 3a}} \\
+	\multicolumn{2}{|  c |}{\textbf{Alternativablauf 3a}} \\
 	\hline
 	\textbf{Vorbedingung} & Standard-Module sind nicht vorhanden \\
 	\hline
@@ -946,7 +944,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Administrator\\
 	\hline
-	\textbf{Synonyme} & Admin\\
+	\textbf{Synonyme} & Admin, Be-/Nutzer\\
 	\hline
 	\textbf{Bedeutung} & Der Administrator erstellt das Event und ist für die Durchführung des gesamten Events verantwortlich, ob dieses nun ein oder mehrere Turniere umfasst\\
 	\hline
@@ -966,7 +964,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Anmeldung\\
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Synonyme} & Be-/Nutzer\\
 	\hline
 	\textbf{Bedeutung} & Die Anmeldung kann aus einer oder mehreren Personen bestehen, diese nimmt die Anmeldungen der Spieler vor Ort am Event auf und trägt sie dann in die Datenbank ein\\
 	\hline
@@ -981,6 +979,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} &  Turnierorganisator, Spieler, Administrator\\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1001,8 +1001,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Administrator, Anmeldung, Spieler \\
 	\hline
 \end{tabularx}
-
-\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1044,6 +1042,28 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Doppeltes KO System\\ 
+	\hline
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--}\\
+	\hline 
+	\textbf{Bedeutung} & Grundstruktur ist dieselbe wie beim normalen KO System, allerdings spielen die Verlierer gegeneinander, bis nur noch einer der Verlierer übrig ist, dieser spielt dann gegen den Gewinner der Gewinnerrunde.\\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Querverweise} & KO System, Schweizer System\\
+	\hline
+\end{tabularx}
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Event\\
@@ -1064,7 +1084,47 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & KO System\\ 
+	\hline
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--}\\
+	\hline 
+	\textbf{Bedeutung} & In einer Runde spielt die Tisch immer dieselbe Anzahl an Runden der Spieler, mit den meisten gewonnen Runden, kommt weiter. Daraufhin spielen die Sieger der einzelnen Tische gegeneinander bis ein Sieger feststeht.\\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Querverweise} & Doppeltes KO System, Schweizer System\\
+	\hline
+\end{tabularx}
+
 \newpage
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Schweizer System\\ 
+	\hline
+	\textbf{Synonyme} & \multicolumn{1}{|c|}{--}\\
+	\hline 
+	\textbf{Bedeutung} & \\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--}\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\hline
+	\textbf{Querverweise} & Doppeltes KO System, KO System\\
+	\hline
+\end{tabularx}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1106,6 +1166,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Spielresultat\\
@@ -1125,8 +1187,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Paarung, Turniermodul\\
 	\hline
 \end{tabularx}
-
-\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1168,6 +1228,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Turniermodul\\
@@ -1188,14 +1250,12 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
-\newpage
-
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Turnierorganisator \\ 
+	\textbf{Begriff} & Turnierorganisator\\ 
 	\hline
-	\textbf{Synonyme} & TO, Turnierordner \\
-	\hline
+	\textbf{Synonyme} & TO, Turnierordner, Be-/Nutzer\\
+	\hline 
 	\textbf{Bedeutung} & Der Turnierorganisator ist die Person, die das Turnier ausrichtet, die Spieleausgänge einträgt und das Turniergeschehen überwacht\\
 	\hline
 	\textbf{Abgrenzung} & Der Turnierorganisator ist selbst für gewöhnlich bei größeren Turnieren kein Spieler\\
@@ -1206,8 +1266,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
 	\hline
-	\textbf{Querverweise} &  Administrator, Spieler, Anmeldung, Turnier
-	\\
+	\textbf{Querverweise} &  Administrator, Spieler, Anmeldung, Turnier\\
 	\hline
 \end{tabularx}
 
