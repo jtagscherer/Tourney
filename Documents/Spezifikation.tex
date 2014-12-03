@@ -382,7 +382,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline 
 	\textbf{ID} & 1 \\
 	\hline
-	\textbf{Ziel} & Es kann mit der Voranmeldung begonnen werden, daher ist das Event mit allen notwendigen Daten fertig erstellt \\
+	\textbf{Ziel} & Das Event ist mit allen notwendigen Daten fertig erstellt und es kann mit der Voranmeldung begonnen werden \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
@@ -440,7 +440,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Ablauf} &
 		\begin{enumerate}
 			\leftskip=0.2cm
-			\item[3a2a1.] System: Zeigt bestehende Turniermodule aus denen der Administrator eines oder mehrere dem Event hinzufügen kann.
+			\item[3a2a1.] System: Zeigt bestehende Turniermodule aus denen der Administrator eines oder mehrere dem Event hinzufügen kann
 			\item[3a2a2.] Admin: Wählt eines aus und fügt dies dem Event hinzu siehe 3.
 		\end{enumerate}
 	\\
@@ -524,7 +524,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Ablauf} &
 		\begin{enumerate}
 			\item[1.] Administrator: Öffnet die Optionen
-			\item[2.] System: Öffnet das Optionen-Fenster, zeigt aktuelle Spracheinstellung an
+			\item[2.] System: Öffnet das Optionen-Fenster, zeigt aktuelle Sprach-einstellung an
 			\item[3.] Administrator: Wählt andere Sprache (Englisch/Deutsch) aus
 			\newline
 			Sonderfall für Alternativablauf 3a: Will sich die Optionen nur anzeigen lassen und nicht verändern
@@ -534,7 +534,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\end{enumerate}
 	\\
 	\hline
-	\textbf{Nachbedingung} &  \\
+	\textbf{Nachbedingung} & 
+	Alle Oberflächen der Nutzerschnittstelle werden in der ausgewählten Sprache angezeigt \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 3a}} \\
 	\hline
@@ -547,7 +548,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\end{enumerate}
 	\\
 	\hline
-	\textbf{Nachbedingung} &  \\
+	\textbf{Nachbedingung} & 
+	Die Darstellungssprache der Benutzeroberfläche wurde nicht geändert \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 3b}} \\
 	\hline
@@ -913,7 +915,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & , , , 
+	\textbf{Vorbedingung} &
 	\begin{itemize}
 		\item Anwendung muss gestartet sein
 		\item Anwendung muss falls nötig entsperrt sein
@@ -1039,9 +1041,10 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Anmeldung\\
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{c|}{--} \\
+	\textbf{Synonyme} & Anmeldungsbeauftragter, Anmeldungsassistent \\
 	\hline
-	\textbf{Bedeutung} & Die Anmeldung kann aus einer oder mehreren Personen bestehen, diese nimmt die Anmeldungen der Spieler vor Ort am Event auf und trägt sie dann in die Datenbank ein\\
+	\textbf{Bedeutung} & Die Anmeldung kann aus einer oder mehreren Personen bestehen, diese nimmt die Anmeldungen der Spieler vor Ort am Event auf und trägt sie dann in die Datenbank ein. \\
+	& Die Anmeldung ist die Person, die Spieler anmeldet und nicht der Vorgang des Anmeldens. \\
 	\hline
 	\textbf{Abgrenzung} & Die Anmeldung hat mit der Organisation des Turniers nichts zu tun, sie ist nur für das Eintragen der Daten zuständig\\
 	\hline
@@ -1069,7 +1072,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Gültigkeit} & Solange die Anwendung läuft ist diese gültig\\
 	\hline
-	\textbf{Bezeichnung} & Die Anwendung ist durch die Benutzer und Funktionen gekennzeichnet\\
+	\textbf{Bezeichnung} & Die Anwendung ist durch die Benutzer und Funktionen gekenn-zeichnet\\
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
@@ -1117,6 +1120,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Datenbank\\
@@ -1136,8 +1141,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Event, Turnier, Spieler, Spielresultat\\
 	\hline
 \end{tabularx}
-
-\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1179,6 +1182,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Jeder-gegen-Jeden-System\\ 
@@ -1219,8 +1224,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
-\newpage
-
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Modifiziertes Schweizer System\\ 
@@ -1240,6 +1243,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Schweizer System, Paarungssystem, Paarung\\
 	\hline
 \end{tabularx}
+
+\newpage
 	
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1300,6 +1305,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Turnierorganisator, Administrator, Anmeldung, Turnier, Event \\
 	\hline
 \end{tabularx}
+
+\newpage
 	
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1320,8 +1327,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} &  Turnier, Spieler, Paarungssystem\\
 	\hline
 \end{tabularx}
-
-\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1363,6 +1368,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Turnier\\
@@ -1382,8 +1389,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
 	\hline
 \end{tabularx}
-
-\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
