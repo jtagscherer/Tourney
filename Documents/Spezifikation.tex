@@ -92,9 +92,9 @@ Relevante Fachbegriffe und deren Abkürzungen, die in der Spezifikation vorkomme
 
 \subsection{Übersicht und Aufbau des Dokuments}
 
-Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument in die nachfolgenden Kapitel gegliedert:
+Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument in die folgenden Kapitel gegliedert:
 \begin{itemize}
-	\item[] \textbf{Kapitel 1} enthält die formalen Grundlagen der Spezifikation.
+	\item[] \textbf{Kapitel 1} enthält die formalen Grundlagen, den Leserkreis der Spezifikation und gibt einen groben Überblick über Nutzer und Einsatzbereich der Software.
 	\item[] \textbf{Kapitel 2} gibt einen groben Überblick über grundlegende Funktionen, über die die Software verfügen soll, in welchem Umfeld und von welchen Nutzern sie eingesetzt wird und welche Einschränkungen und Annahmen bei der Entwicklung eingegangen werden.
 	\item[] \textbf{Kapitel 3} beschreibt die konkreten Anforderungen, die vom Auftraggeber an die Software gestellt werden. Dabei werden zwischen funktionalen und qualitativen Anforderungen unterschieden.
 	\item[] \textbf{Kapitel 4} charakterisiert Nutzer und für die Software relevante Personengruppen.
@@ -142,7 +142,7 @@ Die Nutzer von \textbf{Tourney} sollten zur erfolgreichen Bedienung keine besond
 
 Desweiteren kann nicht davon ausgegangen werden, dass sowohl die Arbeitsplätze von Administratoren als auch Turnierordnern ausreichend abgesichert sind. Deshalb sollten relevante Daten über Passwörter zusätzlich gesichert sein.
 
-Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgängig-Funktion vorgebeugt werden. Desweiteren kann der Nutzer jede seiner Aktionen rückgängig machen, ohne irgendwelche Nachteile fürchten zu müssen.
+Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgängig-Funktion vorgebeugt werden. Dazu werden Änderungen mit kleinen Schrittgrößen softwareübergreifend gespeichert und können durch Auswahl der jeweiligen Funktion rückgängig gemacht oder wiederhergestellt werden. Somit muss der Nutzer bei Änderungen in seinen gespeicherten Daten keinen versehentlichen Datenverlust befürchten.
 
 \subsection{Annahmen und Abhängigkeiten}
 
@@ -185,11 +185,13 @@ Damit lassen sich relevante Turnierdaten an die Turnierordner und Eventdaten zur
 
 \subsubsection{Anmeldung von Spielern}
 
-Bei Beginn eines Events können anwesende Spieler angemeldet werden. Es sollen sowohl vorangemeldete Spieler gesucht und registriert als auch neue Spieler dem Event hinzugefügt und angemeldet werden können. Die Suche wird fortlaufend beim Eingeben des Namen ausgeführt und als Liste angezeigt. Dabei werden den Spielern direkt eindeutige Startnummern zugewiesen und mitgeteilt. Außerdem soll eingestellt werden können, ob ein Spieler bereits bezahlt hat.
+Bei Beginn eines Events können anwesende Spieler angemeldet werden. Es sollen sowohl vorangemeldete Spieler gesucht und registriert als auch neue Spieler dem Event hinzugefügt und angemeldet werden können. Die Suche wird fortlaufend beim Eingeben des Namens ausgeführt und als Liste von möglichen bereits gespeicherten Spielern angezeigt, deren Spielerdaten denen des gesuchten Spielers ähnlich sind. Bei der Anmeldung werden den Spielern direkt eindeutige Startnummern zugewiesen und mitgeteilt. Außerdem soll eingestellt werden können, ob ein Spieler bereits bezahlt hat.
 
-Diese Anmeldung lässt sich auf beliebig viele Arbeitsplätze verteilen. Die Daten werden nach Abschluss der Arbeiten wieder am Administrationsrechner zusammengefügt. Die Zusammenführung wird über die eindeutige Identifikationsnummer möglich gemacht, somit kann der Eventteilnehmer eindeutig identifiziert werden, falls das Programm einen doppelten Teilnehmer identifizieren sollte, meldet es dies dem Benutzer über einen Dialog.
+Diese Anmeldung lässt sich auf beliebig viele Arbeitsplätze verteilen. Hierzu muss der Administrator bei der Verteilung die Anzahl der benutzten Arbeitsplätze zur Anmeldung festlegen. Mit dieser Information kann jeder Anmeldungsplatz eindeutige Startnummern vergeben, die dem Spieler direkt mitgeteilt werden und schließlich die Zusammenführung der Datensätze nach Abschluss der Arbeiten am Administrationsrechner ermöglichen.
 
-Nach der Anmeldung können die Daten für die einzelnen Turniere entweder zu Turnierordnern über einen USB-Stick verteilt oder die Turniere direkt vom Administrator gestartet werden.
+Über die Identifikationsnummer können Event-Teilnehmer nun eindeutig adressiert werden. Sollten sich mehrere Spieler mit sehr ähnlichen Datensätzen aus der Anmeldung finden, so wird der Administrator über diese möglichen Duplikate informiert und kann sie zu einem einzigen Eintrag verschmelzen.
+
+Nach der Anmeldung können die Daten für die einzelnen Turniere entweder zu Turnierordnern über USB-Sticks verteilt oder die Turniere direkt vom Administrator gestartet werden.
 
 \subsubsection{Datenerfassung während eines Turnierablaufs}
 
@@ -307,7 +309,7 @@ Will der Nutzer die Einstellung durch Betätigen des rechten Knopfs ändern öff
 
 \vspace{1cm}
 
-In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügbarer Sprachen(Deutsch/Englisch) ausgewählt und ein Passwort zur Sicherung des aktuellen Arbeitsplatzes festgelegt werden, dies ist beim ersten Start nicht gesetzt.
+In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügbarer Sprachen ausgewählt werden. Mit der Software werden zunächst ein deutsches und ein englisches Sprachmodul mitgeliefert. Zudem kann ein Passwort zur Sicherung des aktuellen Arbeitsplatzes festgelegt werden, das beim ersten Start noch nicht gesetzt ist.
 
 \subsection{Erstellung eines Events}
 
@@ -372,8 +374,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \includegraphics[width=\textwidth]{UseCaseDiagram.png}
 
-\newpage
-
 \subsection{Anwendungsfälle des Administrators}
 
 \subsubsection{Event erstellen}
@@ -382,7 +382,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline 
 	\textbf{ID} & 1 \\
 	\hline
-	\textbf{Ziel} & Das Event ist mit allen notwendigen Daten fertig erstellt und es kann mit der Voranmeldung begonnen werden \\
+	\textbf{Ziel} & Es kann mit der Voranmeldung begonnen werden, daher ist das Event mit allen notwendigen Daten fertig erstellt \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
@@ -393,11 +393,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} &
-	\begin{itemize}
-		\item Anwendung wurde gestartet
-		\item Anwendung wurde falls nötig entsperrt
-	\end{itemize} \\
+	\textbf{Vorbedingung} & Anwendung wurde gestartet, Anwendung wurde falls nötig entsperrt \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -439,8 +435,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
-			\leftskip=0.2cm
-			\item[3a2a1.] System: Zeigt bestehende Turniermodule aus denen der Administrator eines oder mehrere dem Event hinzufügen kann
+			\item[3a2a1.] System: Zeigt bestehende Turniermodule aus denen der Administrator eines oder mehrere dem Event hinzufügen kann.
 			\item[3a2a2.] Admin: Wählt eines aus und fügt dies dem Event hinzu siehe 3.
 		\end{enumerate}
 	\\
@@ -479,11 +474,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} &
-	\begin{itemize}
-		\item Programm ist gestartet
-		\item Anwendung ist falls nötig entsperrt
-	\end{itemize} \\
+	\textbf{Vorbedingung} & Programm ist gestartet, Anwendung ist entsperrt falls nötig \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -506,7 +497,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{ID} & 3 \\
 	\hline
-	\textbf{Ziel} & Die aktuelle eingestellte Sprache anzeigen oder diese verändern. \\
+	\textbf{Ziel} & Die aktuell eingestellte Sprache anzeigen oder verändern. \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
@@ -573,7 +564,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{ID} & 4 \\
 	\hline
-	\textbf{Ziel} & Es soll ein neues Passwort gesetzt werden oder ein bestehendes geändert werden \\
+	\textbf{Ziel} & Es soll ein neues Passwort gesetzt werden \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
@@ -609,7 +600,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 4a}} \\
 	\hline
-	\textbf{Vorbedingung} & Das aktuelle Passwort ist nicht vorhanden. \\
+	textbf{Vorbedingung} & Es ist kein aktuelles Passwort vorhanden. \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -617,7 +608,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\end{enumerate}
 	\\
 	\hline
-	\textbf{Nachbedingung} & Das vom Nutzer gewählte Passwort wird nun zum entsperren benötigt. \\
+	\textbf{Nachbedingung} & Das vom Nutzer gewählte Passwort wird nun zum Entsperren benötigt. \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 6a}} \\
 	\hline
@@ -651,11 +642,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} &
-	\begin{itemize}
-		\item Tourney ist geöffnet
-		\item Der Nutzer befindet sich auf der Startseite oder beim Erstellen eines Events in der Phase, in der die Turniere hinzugefügt werden
-	\end{itemize} \\
+	\textbf{Vorbedingung} & Tourney ist geöffnet, Der Nutzer befindet sich auf der Startseite oder beim Erstellen eines Events in der Phase, in der die Turniere hinzugefügt werden \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -1142,6 +1129,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Doppel-K.O.-System\\ 
@@ -1223,6 +1212,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Doppel-K.O.-System, Paarungssystem, Paarung\\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1328,6 +1319,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
 	\textbf{Begriff} & Spielresultat\\
@@ -1389,6 +1382,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
 	\hline
 \end{tabularx}
+
+\newpage
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
@@ -1457,6 +1452,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\item Kapitel 5 (Benutzeroberfläche) hinzugefügt
 		\item Kapitel 6 (Anwendungsfälle) hinzugefügt
 		\item Kapitel 7 (Begriffslexikon) hinzugefügt
+	\end{itemize}
+	\item Version 1.5 (03.12.2014): Beheben der Mängel, die im Review am 28.11.2014 festgestellt wurden
+	\begin{itemize}
+		\item Formfehler in Inhaltsverzeichnis, Einrücktiefe, Textformatierung, Reihenfolge von Elementen und Rechtschreibfehler behoben
+		\item Genauere Beschreibung einiger genannter Bestandteile der Software
+		\item Kapitel 6: Korrekturen in der Ausformulierung der Anwendungsfälle
+		\item Kapitel 7: Anpassungen im Begriffslexikon und konsequentes Verwenden der definierten Begriffe
 	\end{itemize}
 \end{itemize}
 
