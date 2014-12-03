@@ -92,9 +92,9 @@ Relevante Fachbegriffe und deren Abkürzungen, die in der Spezifikation vorkomme
 
 \subsection{Übersicht und Aufbau des Dokuments}
 
-Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument in die folgenden Kapitel gegliedert:
+Um die zu entwickelnde Software vollständig zu spezifizieren wird das Dokument in die nachfolgenden Kapitel gegliedert:
 \begin{itemize}
-	\item[] \textbf{Kapitel 1} enthält die formalen Grundlagen, den Leserkreis der Spezifikation und gibt einen groben Überblick über Nutzer und Einsatzbereich der Software.
+	\item[] \textbf{Kapitel 1} enthält die formalen Grundlagen der Spezifikation.
 	\item[] \textbf{Kapitel 2} gibt einen groben Überblick über grundlegende Funktionen, über die die Software verfügen soll, in welchem Umfeld und von welchen Nutzern sie eingesetzt wird und welche Einschränkungen und Annahmen bei der Entwicklung eingegangen werden.
 	\item[] \textbf{Kapitel 3} beschreibt die konkreten Anforderungen, die vom Auftraggeber an die Software gestellt werden. Dabei werden zwischen funktionalen und qualitativen Anforderungen unterschieden.
 	\item[] \textbf{Kapitel 4} charakterisiert Nutzer und für die Software relevante Personengruppen.
@@ -142,7 +142,7 @@ Die Nutzer von \textbf{Tourney} sollten zur erfolgreichen Bedienung keine besond
 
 Desweiteren kann nicht davon ausgegangen werden, dass sowohl die Arbeitsplätze von Administratoren als auch Turnierordnern ausreichend abgesichert sind. Deshalb sollten relevante Daten über Passwörter zusätzlich gesichert sein.
 
-Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgängig-Funktion vorgebeugt werden. Dazu werden Änderungen mit kleinen Schrittgrößen softwareübergreifend gespeichert und können durch Auswahl der jeweiligen Funktion rückgängig gemacht oder wiederhergestellt werden. Somit muss der Nutzer bei Änderungen in seinen gespeicherten Daten keinen versehentlichen Datenverlust befürchten.
+Zuletzt sollte versehentlichem Datenverlust durch eine übergreifende Rückgängig-Funktion vorgebeugt werden. Desweiteren kann der Nutzer jede seiner Aktionen rückgängig machen, ohne irgendwelche Nachteile fürchten zu müssen.
 
 \subsection{Annahmen und Abhängigkeiten}
 
@@ -185,13 +185,11 @@ Damit lassen sich relevante Turnierdaten an die Turnierordner und Eventdaten zur
 
 \subsubsection{Anmeldung von Spielern}
 
-Bei Beginn eines Events können anwesende Spieler angemeldet werden. Es sollen sowohl vorangemeldete Spieler gesucht und registriert als auch neue Spieler dem Event hinzugefügt und angemeldet werden können. Die Suche wird fortlaufend beim Eingeben des Namens ausgeführt und als Liste von möglichen bereits gespeicherten Spielern angezeigt, deren Spielerdaten denen des gesuchten Spielers ähnlich sind. Bei der Anmeldung werden den Spielern direkt eindeutige Startnummern zugewiesen und mitgeteilt. Außerdem soll eingestellt werden können, ob ein Spieler bereits bezahlt hat.
+Bei Beginn eines Events können anwesende Spieler angemeldet werden. Es sollen sowohl vorangemeldete Spieler gesucht und registriert als auch neue Spieler dem Event hinzugefügt und angemeldet werden können. Die Suche wird fortlaufend beim Eingeben des Namen ausgeführt und als Liste angezeigt. Dabei werden den Spielern direkt eindeutige Startnummern zugewiesen und mitgeteilt. Außerdem soll eingestellt werden können, ob ein Spieler bereits bezahlt hat.
 
-Diese Anmeldung lässt sich auf beliebig viele Arbeitsplätze verteilen. Hierzu muss der Administrator bei der Verteilung die Anzahl der benutzten Arbeitsplätze zur Anmeldung festlegen. Mit dieser Information kann jeder Anmeldungsplatz eindeutige Startnummern vergeben, die dem Spieler direkt mitgeteilt werden und schließlich die Zusammenführung der Datensätze nach Abschluss der Arbeiten am Administrationsrechner ermöglichen.
+Diese Anmeldung lässt sich auf beliebig viele Arbeitsplätze verteilen. Die Daten werden nach Abschluss der Arbeiten wieder am Administrationsrechner zusammengefügt. Die Zusammenführung wird über die eindeutige Identifikationsnummer möglich gemacht, somit kann der Eventteilnehmer eindeutig identifiziert werden, falls das Programm einen doppelten Teilnehmer identifizieren sollte, meldet es dies dem Benutzer über einen Dialog.
 
-Über die Identifikationsnummer können Event-Teilnehmer nun eindeutig adressiert werden. Sollten sich mehrere Spieler mit sehr ähnlichen Datensätzen aus der Anmeldung finden, so wird der Administrator über diese möglichen Duplikate informiert und kann sie zu einem einzigen Eintrag verschmelzen.
-
-Nach der Anmeldung können die Daten für die einzelnen Turniere entweder zu Turnierordnern über USB-Sticks verteilt oder die Turniere direkt vom Administrator gestartet werden.
+Nach der Anmeldung können die Daten für die einzelnen Turniere entweder zu Turnierordnern über einen USB-Stick verteilt oder die Turniere direkt vom Administrator gestartet werden.
 
 \subsubsection{Datenerfassung während eines Turnierablaufs}
 
@@ -213,7 +211,7 @@ Dem Turnierordner und den Spielern werden während eines Turniers die aktuelle R
 
 \subsubsection{Verwalten von Turniermodulen}
 
-Ein Administrator kann Regelmodule verwalten, die global über Events hinweg existieren und zur Erstellung konkreter Turniere angewendet werden können. Hierzu lassen sich Name des Moduls, Rundenausgänge und zugehörige Punkte, Rundenzeiten und Sekundär- und Tertiärwertungen für die Tabellenstärke spezifizieren. Zusätzlich lässt sich angeben, nach wie vielen Runden ein Cut-Off auf welche Anzahl der besten Spieler erfolgt und welche Paarungssysteme vor und nach dem Cut-Off verwendet werden sollen. Zur Verfügung stehen hierbei das Schweizer System, das modifizierte Schweizer System, das K.O.-System, das Doppel-K.O.-System und ein Jeder-gegen-Jeden-System.
+Ein Administrator kann Regelmodule verwalten, die global über Events hinweg existieren und zur Erstellung konkreter Turniere angewendet werden können. Hierzu lassen sich Name des Moduls, Rundenausgänge und zugehörige Punkte, Rundenzeiten und Sekundär- und Tertiärwertungen für die Tabellenstärke spezifizieren. Zusätzlich lässt sich angeben, nach wie vielen Runden ein Cut-Off auf welche Anzahl der besten Spieler erfolgt und welche Paarungssysteme vor und nach dem Cut-Off verwendet werden sollen. Zur Verfügung stehen hierbei das Schweizer System, das modifizierte Schweizer System, das K.O.-System, das Doppel-K.O.-System und das Jeder-gegen-Jeden-System.
 
 \subsubsection{Sichern von Konten durch Passwörter}
 
@@ -309,7 +307,7 @@ Will der Nutzer die Einstellung durch Betätigen des rechten Knopfs ändern öff
 
 \vspace{1cm}
 
-In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügbarer Sprachen ausgewählt werden. Mit der Software werden zunächst ein deutsches und ein englisches Sprachmodul mitgeliefert. Zudem kann ein Passwort zur Sicherung des aktuellen Arbeitsplatzes festgelegt werden, das beim ersten Start noch nicht gesetzt ist.
+In den Einstellungen kann die verwendete Systemsprache aus einer Liste verfügbarer Sprachen(Deutsch/Englisch) ausgewählt und ein Passwort zur Sicherung des aktuellen Arbeitsplatzes festgelegt werden, dies ist beim ersten Start nicht gesetzt.
 
 \subsection{Erstellung eines Events}
 
@@ -497,7 +495,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{ID} & 3 \\
 	\hline
-	\textbf{Ziel} & Die aktuell eingestellte Sprache anzeigen oder verändern. \\
+	\textbf{Ziel} & Die aktuelle eingestellte Sprache anzeigen oder diese verändern. \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
@@ -513,7 +511,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\begin{enumerate}
 			\item[1.] Administrator: Öffnet die Optionen
 			\item[2.] System: Öffnet das Optionen-Fenster, zeigt aktuelle Spracheinstellung an
-			\item[3.] Administrator: Wählt andere Sprache (Englisch oder Deutsch) aus
+			\item[3.] Administrator: Wählt andere Sprache (Englisch/Deutsch) aus
 			\newline
 			Sonderfall für Alternativablauf 3a: Will sich die Optionen nur anzeigen lassen und nicht verändern
 			\newline
@@ -557,7 +555,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{ID} & 4 \\
 	\hline
-	\textbf{Ziel} & Es soll ein neues Passwort gesetzt werden \\
+	\textbf{Ziel} & Es soll ein neues Passwort gesetzt werden oder ein bestehendes geändert werden \\
 	\hline
 	\textbf{Akteure} & Administrator \\
 	\hline
@@ -589,7 +587,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 4a}} \\
 	\hline
-	\textbf{Vorbedingung} & Es ist kein aktuelles Passwort vorhanden. \\
+	\textbf{Vorbedingung} & Das aktuelle Passwort ist nicht vorhanden. \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -597,7 +595,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\end{enumerate}
 	\\
 	\hline
-	\textbf{Nachbedingung} & Das vom Nutzer gewählte Passwort wird nun zum Entsperren benötigt. \\
+	\textbf{Nachbedingung} & Das vom Nutzer gewählte Passwort wird nun zum entsperren benötigt. \\
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Alternativablauf 6a}} \\
 	\hline
@@ -1000,7 +998,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Administrator, Anmeldung, Spieler \\
+	\textbf{Querverweise} & Benutzer \\
 	\hline
 \end{tabularx}
 
@@ -1020,7 +1018,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Administrator, Anmeldung, Anwendung, Turnierorganisator \\
+	\textbf{Querverweise} & Administrator, Anmeldung, Turnierorganisator, Anwendung\\
 	\hline
 \end{tabularx}
 
@@ -1040,7 +1038,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Turniermodul, Paarung \\
+	\textbf{Querverweise} & Turniermodul, Spielpaarung, Paarungssystem\\
 	\hline
 \end{tabularx}
 
@@ -1068,11 +1066,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Doppeltes KO System\\ 
+	\textbf{Begriff} & Doppel-K.O.-System\\ 
 	\hline
 	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
 	\hline 
-	\textbf{Bedeutung} & Grundstruktur ist dieselbe wie beim normalen KO System, allerdings spielen die Verlierer gegeneinander, bis nur noch einer der Verlierer übrig ist, dieser spielt dann gegen den Gewinner der Gewinnerrunde.\\
+	\textbf{Bedeutung} & Grundstruktur ist dieselbe wie beim normalen K.O.-System, allerdings spielen die Verlierer gegeneinander, bis nur noch einer der Verlierer übrig ist, dieser spielt dann gegen den Gewinner der Gewinnerrunde.\\
 	\hline
 	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--}\\
 	\hline
@@ -1082,7 +1080,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & KO System, Schweizer System\\
+	\textbf{Querverweise} & K.O.-System, Paarungssystem, Paarung\\
 	\hline
 \end{tabularx}
 
@@ -1108,7 +1106,27 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & KO System\\ 
+	\textbf{Begriff} & Jeder-gegen-Jeden-System\\ 
+	\hline
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
+	\hline 
+	\textbf{Bedeutung} & Die Paarungen werden so aufgestellt, dass jeder am Turnier teilnehmende Spieler gegen jeden anderen Teilnehmer spielt. Die Wertungen werden zusammengezählt und am Ende des Turniers gewinnt der Spieler mit der höchsten Wertung.\\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--}\\
+	\hline
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--}\\
+	\hline
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--}\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Querverweise} & Paarungssystem, Paarung\\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & K.O.-System\\ 
 	\hline
 	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
 	\hline 
@@ -1122,7 +1140,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Doppeltes KO System, Schweizer System\\
+	\textbf{Querverweise} & Doppel-K.O.-System, Paarungssystem, Paarung\\
 	\hline
 \end{tabularx}
 
@@ -1130,11 +1148,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
-	\textbf{Begriff} & Schweizer System\\ 
+	\textbf{Begriff} & Modifiziertes Schweizer System\\ 
 	\hline
 	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
 	\hline 
-	\textbf{Bedeutung} & \\
+	\textbf{Bedeutung} & Ähnlich wie das Schweizer System, nur werden die Spieler nach der Sortierung in Gruppen eingeteilt. Der beste Spieler jeder Gruppe spielt dann gegen den schlechtesten derselben Gruppe, der zweitbeste Spieler gegen den zweitschlechtesten und so weiter.\\
 	\hline
 	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--}\\
 	\hline
@@ -1144,7 +1162,47 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Doppeltes KO System, KO System\\
+	\textbf{Querverweise} & Schweizer System, Paarungssystem, Paarung\\
+	\hline
+\end{tabularx}
+	
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Paarungssystem\\
+	\hline
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Bedeutung} & Methode zur Berechnung von Paarungen im Turnier\\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Bezeichnung} & Oberbegriff für die unterstützen Systeme zur Erstellung von Paarungen: K.O.-System, Doppel-K.O.-System, Schweizer System, modifiertes Schweizer System und Jeder-gegen-Jeden-System \\
+	\hline 
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Querverweise} &  Paarung, K.O.-System, Doppel-K.O.-System, Schweizer System, modifiertes Schweizer System, Jeder-gegen-Jeden-System\\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
+	\textbf{Begriff} & Schweizer System\\ 
+	\hline
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
+	\hline 
+	\textbf{Bedeutung} & Alle Spieler werden nach ihrer Wertung sortiert. Spieler mit gleicher Wertung werden nach ihrer Startnummer geordnet. Der beste Spieler des Turniers spielt dann gegen den am besten platzierten Teilnehmer, gegen den er noch nicht gespielt hat. Der Führende der verbleibenden Spieler spielt wiederum gegen den am besten platzierten, gegen den dieser noch nicht gespielt hat. Die restlichen Spieler werden nach dem selben System ihren Paarungen zugewisen.\\
+	\hline
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--}\\
+	\hline
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--}\\
+	\hline
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--}\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Querverweise} & Modifiziertes Schweizer System, Paarungssystem, Paarung\\
 	\hline
 \end{tabularx}
 
@@ -1184,7 +1242,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline 
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} &  Turnier, Spieler\\
+	\textbf{Querverweise} &  Turnier, Spieler, Paarungssystem\\
 	\hline
 \end{tabularx}
 
@@ -1258,7 +1316,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Synonyme} & Regelmodul\\
 	\hline
-	\textbf{Bedeutung} & Turniermodule legen den Ablauf des Turniers fest. Darunter fallen unterschiedliche Wertungen, nach denen Gewinner bestimmt werden können, Methoden zur Generierung von Paarungen sowie die Definition von Cut-Offs\\
+	\textbf{Bedeutung} & Turniermodule legen den Ablauf des Turniers fest. Darunter fallen unterschiedliche Wertungen, nach denen Gewinner bestimmt werden können, Paarungssysteme, sowie die Definition von Cut-Offs\\
 	\hline
 	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--} \\
 	\hline
@@ -1268,7 +1326,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Turnier, Paarung, Cut-Off\\
+	\textbf{Querverweise} & Turnier, Paarung, Cut-Off, Paarungssystem\\
 	\hline
 \end{tabularx}
 
@@ -1319,13 +1377,6 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 		\item Kapitel 5 (Benutzeroberfläche) hinzugefügt
 		\item Kapitel 6 (Anwendungsfälle) hinzugefügt
 		\item Kapitel 7 (Begriffslexikon) hinzugefügt
-	\end{itemize}
-	\item Version 1.5 (03.12.2014): Beheben der Mängel, die im Review am 28.11.2014 festgestellt wurden
-	\begin{itemize}
-		\item Formfehler in Inhaltsverzeichnis, Einrücktiefe, Textformatierung, Reihenfolge von Elementen und Rechtschreibfehler behoben
-		\item Genauere Beschreibung einiger genannter Bestandteile der Software
-		\item Kapitel 6: Korrekturen in der Ausformulierung der Anwendungsfälle
-		\item Kapitel 7: Anpassungen im Begriffslexikon und konsequentes Verwenden der definierten Begriffe
 	\end{itemize}
 \end{itemize}
 
