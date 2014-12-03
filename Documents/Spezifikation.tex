@@ -944,7 +944,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Administrator\\
 	\hline
-	\textbf{Synonyme} & Admin, Be-/Nutzer\\
+	\textbf{Synonyme} & Admin\\
 	\hline
 	\textbf{Bedeutung} & Der Administrator erstellt das Event und ist für die Durchführung des gesamten Events verantwortlich, ob dieses nun ein oder mehrere Turniere umfasst\\
 	\hline
@@ -956,7 +956,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & Die Rolle des Administrator ist nicht immer klar, da er auf kleinen Events mehr als nur eine Rolle inne haben kann\\
 	\hline
-	\textbf{Querverweise} &  Turnierorganisator, Spieler, Anmeldung, Event\\
+	\textbf{Querverweise} &  Turnierorganisator, Spieler, Anmeldung, Event, Benutzer\\
 	\hline
 \end{tabularx}
 
@@ -964,7 +964,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Anmeldung\\
 	\hline
-	\textbf{Synonyme} & Be-/Nutzer\\
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Bedeutung} & Die Anmeldung kann aus einer oder mehreren Personen bestehen, diese nimmt die Anmeldungen der Spieler vor Ort am Event auf und trägt sie dann in die Datenbank ein\\
 	\hline
@@ -976,7 +976,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Unklarheiten} & Bei kleineren Events kann der Administrator die Aufgaben der Anmeldung übernehmen \\
 	\hline
-	\textbf{Querverweise} &  Turnierorganisator, Spieler, Administrator\\
+	\textbf{Querverweise} &  Turnierorganisator, Spieler, Administrator, Benutzer\\
 	\hline
 \end{tabularx}
 
@@ -996,7 +996,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Bezeichnung} & Die Anwendung ist durch die Benutzer und Funktionen gekennzeichnet\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Administrator, Anmeldung, Spieler \\
 	\hline
@@ -1004,19 +1004,39 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
 	\hline
+	\textbf{Begriff} & Benutzer\\
+	\hline
+	\textbf{Synonyme} & Nutzer\\
+	\hline
+	\textbf{Bedeutung} & Oberbegriff für alle Personen, die die Anwendung bedienen\\
+	\hline
+	\textbf{Abgrenzung} & Spieler sind im Sinne dieser Definition keine Benutzer \\
+	\hline
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Bezeichnung} & Benutzer sind alle Personen, die die Software verwenden\\
+	\hline
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
+	\hline
+	\textbf{Querverweise} & Administrator, Anmeldung, Anwendung, Turnierorganisator \\
+	\hline
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
+	\hline
 	\textbf{Begriff} & Cut-Off\\
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Bedeutung} & Als Cut-Off wird der Übergang zwischen den verschiedenen Verfahren zum Generieren von Paarungen innerhalb des Turniers bezeichnet. Cut-Offs werden in den jeweiligen Turniermodulen festgelegt.\\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turniermodul, Paarung \\
 	\hline
@@ -1026,17 +1046,17 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Datenbank\\
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Bedeutung} & Eine Ansammlung von Daten. Wird hier als Speicherort aller zu Events gehörenden Daten verwendet, dazu zählen unter anderem Turniere, angemeldete Spieler und Spielresultate\\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Event, Turnier, Spieler, Spielresultat\\
 	\hline
@@ -1048,17 +1068,17 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Doppeltes KO System\\ 
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
 	\hline 
 	\textbf{Bedeutung} & Grundstruktur ist dieselbe wie beim normalen KO System, allerdings spielen die Verlierer gegeneinander, bis nur noch einer der Verlierer übrig ist, dieser spielt dann gegen den Gewinner der Gewinnerrunde.\\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & KO System, Schweizer System\\
 	\hline
@@ -1076,11 +1096,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Gültigkeit} & Das Event ist gültig für die Dauer der Turniere, die an ihm statt-finden\\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} & Turnier, Admin\\
+	\textbf{Querverweise} & Turnier, Admin, Spielpaarung\\
 	\hline
 \end{tabularx}
 
@@ -1088,17 +1108,17 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & KO System\\ 
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
 	\hline 
 	\textbf{Bedeutung} & In einer Runde spielt die Tisch immer dieselbe Anzahl an Runden der Spieler, mit den meisten gewonnen Runden, kommt weiter. Daraufhin spielen die Sieger der einzelnen Tische gegeneinander bis ein Sieger feststeht.\\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Doppeltes KO System, Schweizer System\\
 	\hline
@@ -1110,17 +1130,17 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Schweizer System\\ 
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--}\\
 	\hline 
 	\textbf{Bedeutung} & \\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--}\\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--}\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Doppeltes KO System, KO System\\
 	\hline
@@ -1140,7 +1160,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Bezeichnung} & Ein Spieler ist ein Teilnehmer des Turniers\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turnierorganisator, Administrator, Anmeldung, Turnier, Event \\
 	\hline
@@ -1154,13 +1174,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Bedeutung} & Das Zusammentreffen mehrer Parteien in dem gewählten Spiel\\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Gültigkeit} & Solange noch kein Ergebnis erhalten wurde ist die Paarung gültig\\
 	\hline
 	\textbf{Bezeichnung} & Eine Paarungen sind mehrere Spieler, die gegeneinander an demselben Tisch ein Spiel mit dem gleichen Regelsatzt spielen\\
 	\hline 
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} &  Turnier, Spieler\\
 	\hline
@@ -1180,9 +1200,9 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Gültigkeit} & Ein Spielresultat ist so lange gültig, wie es für den weiteren Ablauf des Turniers oder Bestenlisten relevant ist \\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Paarung, Turniermodul\\
 	\hline
@@ -1192,17 +1212,17 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Startnummer\\
 	\hline
-	\textbf{Synonyme} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Synonyme} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Bedeutung} & Die eindeutige Nummer, mit denen Spieler in einem Turnier Event-übergreifend identifiziert werden\\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Gültigkeit} & Die Startnummer wird den Spielern bei der Anmeldung zum Event zu- und mitgeteilt und bleibt für die komplette Veranstaltung gleich\\
 	\hline
 	\textbf{Bezeichnung} & Die Startnummer ist eine pro Event eindeutige Ganzzahl\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Spieler, Anmeldung \\
 	\hline
@@ -1222,7 +1242,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Bezeichnung} & Das Turnier besteht aus einem Spieltyp, der gespielt wird bis ein Sieger feststeht\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Event, Turnierorganisator, Spieler \\
 	\hline
@@ -1238,13 +1258,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Bedeutung} & Turniermodule legen den Ablauf des Turniers fest. Darunter fallen unterschiedliche Wertungen, nach denen Gewinner bestimmt werden können, Methoden zur Generierung von Paarungen sowie die Definition von Cut-Offs\\
 	\hline
-	\textbf{Abgrenzung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Abgrenzung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Gültigkeit} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Gültigkeit} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Bezeichnung} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Bezeichnung} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
 	\textbf{Querverweise} & Turnier, Paarung, Cut-Off\\
 	\hline
@@ -1254,7 +1274,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Begriff} & Turnierorganisator\\ 
 	\hline
-	\textbf{Synonyme} & TO, Turnierordner, Be-/Nutzer\\
+	\textbf{Synonyme} & TO, Turnierordner\\
 	\hline 
 	\textbf{Bedeutung} & Der Turnierorganisator ist die Person, die das Turnier ausrichtet, die Spieleausgänge einträgt und das Turniergeschehen überwacht\\
 	\hline
@@ -1264,9 +1284,9 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Bezeichnung} & Der Turnierorganisator ist für den Ablauf des Turniers verantwortlich\\
 	\hline
-	\textbf{Unklarheiten} & \multicolumn{1}{|c|}{--} \\
+	\textbf{Unklarheiten} & \multicolumn{1}{c|}{--} \\
 	\hline
-	\textbf{Querverweise} &  Administrator, Spieler, Anmeldung, Turnier\\
+	\textbf{Querverweise} &  Administrator, Spieler, Anmeldung, Turnier, Benutzer\\
 	\hline
 \end{tabularx}
 
