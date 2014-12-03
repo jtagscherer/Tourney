@@ -374,6 +374,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 
 \includegraphics[width=\textwidth]{UseCaseDiagram.png}
 
+\newpage
+
 \subsection{Anwendungsfälle des Administrators}
 
 \subsubsection{Event erstellen}
@@ -393,7 +395,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung wurde gestartet, Anwendung wurde falls nötig entsperrt \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Anwendung wurde gestartet
+		\item Anwendung wurde falls nötig entsperrt
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -435,6 +441,7 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
+			\leftskip=0.2cm
 			\item[3a2a1.] System: Zeigt bestehende Turniermodule aus denen der Administrator eines oder mehrere dem Event hinzufügen kann.
 			\item[3a2a2.] Admin: Wählt eines aus und fügt dies dem Event hinzu siehe 3.
 		\end{enumerate}
@@ -474,7 +481,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Programm ist gestartet, Anwendung ist entsperrt falls nötig \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Programm ist gestartet
+		\item Anwendung ist falls nötig entsperrt
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -507,7 +518,10 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Programm wurde gestartet \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Programm wurde gestartet
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -551,6 +565,8 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 \end{tabularx}
 
+\newpage
+
 \subsubsection{Optionen (Passwort ändern)}
 
 \begin{tabularx}{\textwidth}{| p{0.2\textwidth} | p{0.7415\textwidth} |}
@@ -568,7 +584,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung ist gestartet, Anwendung ist falls nötig entsperrt \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Anwendung ist gestartet
+		\item Anwendung ist falls nötig entsperrt
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -631,7 +651,11 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Tourney ist geöffnet, Der Nutzer befindet sich auf der Startseite oder beim Erstellen eines Events in der Phase, in der die Turniere hinzugefügt werden \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Tourney ist geöffnet
+		\item Der Nutzer befindet sich auf der Startseite oder beim Erstellen eines Events in der Phase, in der die Turniere hinzugefügt werden
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -678,7 +702,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung wurde gestartet, Der Nutzer hat ein Event erstellt und befindet sich in der Phase Voranmeldung, Die Anwendung ist entsperrt, Der übermittelte Datensatz ist vollständig \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Anwendung wurde gestartet
+		\item Der Nutzer hat ein Event erstellt und befindet sich in der Phase "Voranmeldung"
+		\item Die Anwendung ist entsperrt
+		\item Der übermittelte Datensatz ist vollständig
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -725,7 +755,14 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung wurde gestartet, Der Administrator hat ein Event erstellt, Die Anmeldung hat dieses Event importiert, Anwendung ist entsperrt, Das Event befindet sich in der Phase Anmeldung \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Anwendung wurde gestartet
+		\item Der Administrator hat ein Event erstellt
+		\item Die Anmeldung hat dieses Event importiert
+		\item Anwendung ist falls nötig entsperrt
+		\item Das Event befindet sich in der Phase "Anmeldung"
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -757,7 +794,15 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Das Event muss erstellt worden sein, Das Event muss sich in der Phase 'Anmeldung' befinden, Das Event muss von der Anmeldung importiert worden sein, Spieler muss in der Datenbank enthalten sein \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Anwendung wurde gestartet sein
+		\item Anwendung ist falls nötig entsperrt
+		\item Das Event muss erstellt worden sein
+		\item Das Event muss sich in der Phase "Anmeldung" befinden
+		\item Das Event muss von der Anmeldung importiert worden sein
+		\item Der Spieler muss in der Datenbank enthalten sein
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -791,7 +836,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Ein Event muss erstellt sein, Das Event muss in der Phase 'Turniere exportieren' sein. \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Anwendung muss gestartet sein
+		\item Anwendung muss falls nötig entsperrt sein
+		\item Ein Event muss erstellt sein
+		\item Das Event muss sich in der Phase "Turniere exportieren" befinden
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -825,7 +876,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Die Anwendung muss gestartet sein, Die Anwendung muss entsperrt sein, Das exportierte Turniermodul muss vorhanden sein, Nutzer muss auf der Startseite sein \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Die Anwendung muss gestartet sein
+		\item Die Anwendung muss falls nötig entsperrt sein
+		\item Das exportierte Turniermodul muss vorhanden sein
+		\item Nutzer muss auf der Startseite sein
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -858,7 +915,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Anwendung muss gestartet sein, Anwendung muss entsperrt sein, Turnier muss geladen sein, Turnier muss in der Phase 'Anwesenheit kontrollieren' sein \\
+	\textbf{Vorbedingung} & , , , 
+	\begin{itemize}
+		\item Anwendung muss gestartet sein
+		\item Anwendung muss falls nötig entsperrt sein
+		\item Turnier muss geladen sein
+		\item Turnier muss sich in der Phase "Anwesenheit kontrollieren" befinden
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -891,7 +954,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Die Anwendung ist gestartet, die Anwendung ist entsperrt, das Turnier muss in einer laufenden Runde sein, das Turnier muss importiert sein \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Die Anwendung ist gestartet
+		\item Die Anwendung muss falls nötig entsperrt sein
+		\item Das Turnier muss importiert sein
+		\item Das Turnier muss in einer laufenden Runde sein
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
@@ -923,7 +992,13 @@ Das Fenster mit den Turniermodulen gibt die Möglichkeit, eine Liste aller erste
 	\hline
 	\multicolumn{2}{| c |}{\textbf{Normalablauf}} \\
 	\hline
-	\textbf{Vorbedingung} & Die Anwendung muss aktiv sein, die Anwendung muss entsperrt sein, das Turnier muss vor einer Runde sein, es darf noch keine Wertung eingetragen sein \\
+	\textbf{Vorbedingung} &
+	\begin{itemize}
+		\item Die Anwendung muss aktiv sein
+		\item Die Anwendung muss falls nötig entsperrt sein
+		\item Das Turnier muss vor einer Runde sein
+		\item Es darf noch keine Wertung eingetragen sein
+	\end{itemize} \\
 	\hline
 	\textbf{Ablauf} &
 		\begin{enumerate}
