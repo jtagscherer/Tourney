@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.custom.Component</type>
+    <coordinates>
+      <x>280</x>
+      <y>290</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Controller</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.Component</type>
+    <coordinates>
+      <x>440</x>
+      <y>70</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>View</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.Component</type>
+    <coordinates>
+      <x>610</x>
+      <y>290</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Model</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>350</x>
+      <y>140</y>
+      <w>170</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=-(()-[^]&gt;
+bg=default
+layer=1</panel_attributes>
+    <additional_attributes>150;30;30;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>550</x>
+      <y>140</y>
+      <w>180</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=-(()-[^]&gt;
+bg=default
+layer=1</panel_attributes>
+    <additional_attributes>30;30;160;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>450</x>
+      <y>310</y>
+      <w>180</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-(()-[&lt;]&gt;
+bg=default
+layer=1</panel_attributes>
+    <additional_attributes>30;30;160;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.Component</type>
+    <coordinates>
+      <x>280</x>
+      <y>480</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Gespeicherte
+Daten</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>350</x>
+      <y>360</y>
+      <w>50</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=-(()-[^]&gt;
+bg=default
+layer=1</panel_attributes>
+    <additional_attributes>30;30;30;120</additional_attributes>
+  </element>
+</diagram>
