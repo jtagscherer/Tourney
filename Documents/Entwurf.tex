@@ -59,13 +59,39 @@
 
 \section{Einleitung}
 
+Dieser Entwurf bietet den Entwicklern von \textbf{Tourney} einen Überblick über die Architektur der Software. Dadurch wird ein Grundgerüst bereitgestellt, das die geplante Implementierung ermöglicht.
+
 \subsection{Zweck des Software-Systems}
+
+In diesem Entwurf wird die Architektur von \textbf{Tourney} beschrieben. Dabei handelt es sich um Software, die die bisher händisch erfolgte Organisation von Spielturnieren des Heidelberger Spieleverlags übernehmen und vereinfachen soll. Dazu soll das Programm die Organisatoren durch den kompletten Prozess der Turnierplanung begleiten und sie bei den typischen Aufgaben wie der Teilnehmerverwaltung und der eigentlichen Durchführung der Turniere unterstützen.
+
+Besonderer Wert wird hierbei auf eine intuitive Bedienung gelegt, die mit möglichst wenig Aufwand zum Ziel führt.
 
 \subsection{Leserkreis des Entwurfs}
 
+Zum Leserkreis dieses Entwurfsdokuments gehören die folgenden Personengruppen:
+\begin{itemize}
+	\item Die Entwickler der Software
+	\item Die für die Wartung oder Weiterentwicklung zuständigen Software-Ingenieure
+	\item Die Betreuer
+\end{itemize}
+
 \subsection{Angewandte Entwurfsprinzipien}
 
+Der Entwurf von \textbf{Tourney} findet im Top-Down-Prinzip statt. Hierzu wird die geforderte Gesamtfunktionalität des Systems betrachtet und dann zur Erfüllung dieser notwendige Aufgaben auf Komponenten und schließlich Klassen verteilt.
+
+\textbf{[WEITERE ENTWURFSPRINZIPIEN]}
+
 \subsection{Überblick über den Entwurf}
+
+Das Entwurfsdokument wird in die folgenden Kapitel gegliedert:
+\begin{itemize}
+	\item[] \textbf{Kapitel 1} gibt einen groben Überblick über das zu entwickelnde Softwaresystem und das hierzu erstellte Entwurfsdokument.
+	\item[] \textbf{Kapitel 2} umfasst die Architektur, die die Software in überschaubare Komponenten gliedert. Diese werden dazu in einem Komponentendiagramm dargestellt.
+	\item[] \textbf{Kapitel 3} beschreibt die in der Architektur definierten Komponenten je nach Bedarf über Klassendiagramme zur Schnittstelle, Sequenzdiagramme zum Protokoll und Zustands- und Aktivitätsdiagrammen zum Verhalten im Detail.
+	\item[] \textbf{Kapitel 4} charakterisiert externe Schnittstellen und die verwendete Methodik zur persistenten Datenspeicherung.
+	\item[] \textbf{Kapitel 5} enthält die Versionshistorie zu diesem Dokument.
+\end{itemize}
 
 \section{Architektur des Systems}
 
@@ -111,6 +137,10 @@
 	\item Version 1.0 (06.12.2014)
 	\begin{itemize}
 		\item Grundstruktur des Entwurfs erstellt
+	\end{itemize}
+	\item Version 1.1 (07.12.2014)
+	\begin{itemize}
+		\item Kapitel 1 hinzugefügt
 	\end{itemize}
 \end{itemize}
 
