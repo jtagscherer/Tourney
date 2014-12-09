@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="13.1">
+<diagram program="umlet" version="13.0">
   <help_text>// Uncomment the following line to change the fontsize and font:
 // fontsize=14
 // fontfamily=SansSerif //possible: SansSerif,Serif,Monospaced
@@ -23,14 +23,14 @@
 
 
 // This text will be stored with each diagram;  use it for notes.</help_text>
-  <zoom_level>10</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>510</x>
+      <x>459</x>
       <y>0</y>
-      <w>100</w>
-      <h>30</h>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>EntryPoint
 </panel_attributes>
@@ -39,10 +39,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
-      <y>70</y>
-      <w>180</w>
-      <h>30</h>
+      <x>423</x>
+      <y>63</y>
+      <w>162</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>MainWindowController</panel_attributes>
     <additional_attributes/>
@@ -50,10 +50,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>150</x>
-      <y>70</y>
-      <w>210</w>
-      <h>30</h>
+      <x>135</x>
+      <y>63</y>
+      <w>189</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>EventCreationViewController</panel_attributes>
     <additional_attributes/>
@@ -61,10 +61,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>480</x>
-      <y>150</y>
-      <w>160</w>
-      <h>30</h>
+      <x>432</x>
+      <y>135</y>
+      <w>144</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>PhaseViewController</panel_attributes>
     <additional_attributes/>
@@ -72,10 +72,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>740</x>
-      <y>150</y>
-      <w>180</w>
-      <h>30</h>
+      <x>666</x>
+      <y>135</y>
+      <w>162</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>OptionsViewController</panel_attributes>
     <additional_attributes/>
@@ -83,10 +83,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>20</x>
-      <y>240</y>
-      <w>210</w>
-      <h>30</h>
+      <x>18</x>
+      <y>216</y>
+      <w>189</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>EventSetupPhaseController</panel_attributes>
     <additional_attributes/>
@@ -94,10 +94,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>240</x>
-      <y>240</y>
-      <w>230</w>
-      <h>30</h>
+      <x>216</x>
+      <y>216</y>
+      <w>207</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>PreRegistrationPhaseController</panel_attributes>
     <additional_attributes/>
@@ -105,10 +105,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>480</x>
-      <y>240</y>
-      <w>210</w>
-      <h>30</h>
+      <x>432</x>
+      <y>216</y>
+      <w>189</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>RegistrationPhaseController</panel_attributes>
     <additional_attributes/>
@@ -116,10 +116,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>700</x>
-      <y>240</y>
-      <w>280</w>
-      <h>30</h>
+      <x>630</x>
+      <y>216</y>
+      <w>252</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>TournamentExecutionPhaseController</panel_attributes>
     <additional_attributes/>
@@ -127,10 +127,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>20</y>
-      <w>30</w>
-      <h>70</h>
+      <x>495</x>
+      <y>18</y>
+      <w>27</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -138,10 +138,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>90</y>
-      <w>30</w>
-      <h>80</h>
+      <x>495</x>
+      <y>81</y>
+      <w>27</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
@@ -149,10 +149,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>80</y>
-      <w>120</w>
-      <h>100</h>
+      <x>576</x>
+      <y>72</y>
+      <w>108</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>100.0;80.0;10.0;10.0</additional_attributes>
@@ -160,10 +160,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>70</y>
-      <w>140</w>
-      <h>30</h>
+      <x>315</x>
+      <y>63</y>
+      <w>126</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
@@ -171,10 +171,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>160</x>
-      <y>170</y>
-      <w>390</w>
-      <h>90</h>
+      <x>144</x>
+      <y>153</y>
+      <w>351</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;370.0;10.0</additional_attributes>
@@ -182,10 +182,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>170</y>
-      <w>220</w>
-      <h>90</h>
+      <x>315</x>
+      <y>153</y>
+      <w>198</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;200.0;10.0</additional_attributes>
@@ -193,10 +193,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>560</x>
-      <y>170</y>
-      <w>40</w>
-      <h>90</h>
+      <x>504</x>
+      <y>153</y>
+      <w>36</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>20.0;70.0;10.0;10.0</additional_attributes>
@@ -204,10 +204,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
-      <y>170</y>
-      <w>210</w>
-      <h>90</h>
+      <x>522</x>
+      <y>153</y>
+      <w>189</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>190.0;70.0;10.0;10.0</additional_attributes>
@@ -215,10 +215,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>630</x>
-      <y>160</y>
-      <w>130</w>
-      <h>30</h>
+      <x>567</x>
+      <y>144</y>
+      <w>117</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>110.0;10.0;10.0;10.0</additional_attributes>
@@ -226,10 +226,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>310</y>
-      <w>160</w>
-      <h>30</h>
+      <x>684</x>
+      <y>279</y>
+      <w>144</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>PairingViewController</panel_attributes>
     <additional_attributes/>
@@ -237,10 +237,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>830</x>
-      <y>260</y>
-      <w>30</w>
-      <h>70</h>
+      <x>747</x>
+      <y>234</y>
+      <w>27</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -249,9 +249,9 @@
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>150</y>
-      <w>270</w>
-      <h>30</h>
+      <y>135</y>
+      <w>243</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>TournamentModuleEditorController</panel_attributes>
     <additional_attributes/>
@@ -259,10 +259,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>260</x>
-      <y>80</y>
-      <w>230</w>
-      <h>100</h>
+      <x>234</x>
+      <y>72</y>
+      <w>207</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;80.0;210.0;10.0</additional_attributes>
@@ -270,10 +270,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>120</x>
-      <y>170</y>
-      <w>30</w>
-      <h>90</h>
+      <x>108</x>
+      <y>153</y>
+      <w>27</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
@@ -281,10 +281,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>920</x>
-      <y>70</y>
-      <w>180</w>
-      <h>30</h>
+      <x>828</x>
+      <y>63</y>
+      <w>162</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>LockScreenController</panel_attributes>
     <additional_attributes/>
@@ -292,10 +292,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>70</y>
-      <w>300</w>
-      <h>30</h>
+      <x>576</x>
+      <y>63</y>
+      <w>270</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>280.0;10.0;10.0;10.0</additional_attributes>
@@ -303,10 +303,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>480</y>
-      <w>100</w>
-      <h>30</h>
+      <x>405</x>
+      <y>432</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>Event</panel_attributes>
     <additional_attributes/>
@@ -314,10 +314,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
-      <y>560</y>
-      <w>100</w>
-      <h>30</h>
+      <x>540</x>
+      <y>504</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>Tournament</panel_attributes>
     <additional_attributes/>
@@ -325,10 +325,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>250</x>
-      <y>560</y>
-      <w>160</w>
-      <h>30</h>
+      <x>225</x>
+      <y>504</y>
+      <w>144</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>TournamentModule</panel_attributes>
     <additional_attributes/>
@@ -336,10 +336,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>700</x>
-      <y>480</y>
-      <w>100</w>
-      <h>30</h>
+      <x>630</x>
+      <y>432</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>Player</panel_attributes>
     <additional_attributes/>
@@ -347,10 +347,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>890</x>
-      <y>480</y>
-      <w>100</w>
-      <h>30</h>
+      <x>801</x>
+      <y>432</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>Pairing</panel_attributes>
     <additional_attributes/>
@@ -358,10 +358,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>780</x>
-      <y>560</y>
-      <w>150</w>
-      <h>30</h>
+      <x>702</x>
+      <y>504</y>
+      <w>135</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>TournamentRound</panel_attributes>
     <additional_attributes/>
@@ -369,10 +369,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>580</x>
-      <y>640</y>
-      <w>130</w>
-      <h>30</h>
+      <x>522</x>
+      <y>576</y>
+      <w>117</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>PairingGenerator</panel_attributes>
     <additional_attributes/>
@@ -380,10 +380,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>500</y>
-      <w>100</w>
-      <h>90</h>
+      <x>468</x>
+      <y>450</y>
+      <w>90</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-&gt;
 stores
@@ -395,10 +395,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>500</y>
-      <w>100</w>
-      <h>90</h>
+      <x>360</x>
+      <y>450</y>
+      <w>90</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 contains
@@ -409,10 +409,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>560</y>
-      <w>220</w>
-      <h>50</h>
+      <x>360</x>
+      <y>504</y>
+      <w>198</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 utilizes
@@ -423,10 +423,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>480</y>
-      <w>180</w>
-      <h>50</h>
+      <x>486</x>
+      <y>432</y>
+      <w>162</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=*
@@ -437,10 +437,10 @@ stores</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>790</x>
-      <y>480</y>
-      <w>120</w>
-      <h>50</h>
+      <x>711</x>
+      <y>432</y>
+      <w>108</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 stores
@@ -451,10 +451,10 @@ m2=*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>850</x>
-      <y>500</y>
-      <w>100</w>
-      <h>80</h>
+      <x>765</x>
+      <y>450</y>
+      <w>90</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 contains
@@ -465,10 +465,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>560</y>
-      <w>110</w>
-      <h>50</h>
+      <x>621</x>
+      <y>504</y>
+      <w>99</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 manages
@@ -479,22 +479,22 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>580</y>
-      <w>60</w>
-      <h>80</h>
+      <x>567</x>
+      <y>522</y>
+      <w>45</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 uses</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+    <additional_attributes>20.0;60.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>380</y>
-      <w>100</w>
-      <h>30</h>
+      <x>405</x>
+      <y>342</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>EventHistory</panel_attributes>
     <additional_attributes/>
@@ -502,24 +502,24 @@ uses</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
-      <y>400</y>
-      <w>110</w>
-      <h>100</h>
+      <x>414</x>
+      <y>360</y>
+      <w>81</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=1
 m2=*
 remembers</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+    <additional_attributes>40.0;80.0;40.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1290</x>
-      <y>240</y>
-      <w>390</w>
-      <h>300</h>
+      <x>1161</x>
+      <y>216</y>
+      <w>351</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>UndoManager
 --
@@ -545,10 +545,10 @@ remembers</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1880</x>
-      <y>410</y>
-      <w>220</w>
-      <h>130</h>
+      <x>1692</x>
+      <y>369</y>
+      <w>198</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>UndoNode
 --
@@ -563,10 +563,10 @@ remembers</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1890</x>
-      <y>240</y>
-      <w>200</w>
-      <h>80</h>
+      <x>1701</x>
+      <y>216</y>
+      <w>180</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Interface&gt;&gt;
 UndoAction
@@ -578,10 +578,10 @@ UndoAction
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1770</x>
-      <y>100</y>
-      <w>190</w>
-      <h>80</h>
+      <x>1593</x>
+      <y>90</y>
+      <w>171</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>PropertyUndoAction&lt;T&gt;
 --
@@ -593,10 +593,10 @@ UndoAction
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2020</x>
-      <y>100</y>
-      <w>180</w>
-      <h>80</h>
+      <x>1818</x>
+      <y>90</y>
+      <w>162</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>ListUndoAction&lt;T&gt;
 --
@@ -606,10 +606,10 @@ UndoAction
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1860</x>
-      <y>170</y>
-      <w>150</w>
-      <h>90</h>
+      <x>1674</x>
+      <y>153</y>
+      <w>135</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>130.0;70.0;130.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
@@ -617,10 +617,10 @@ UndoAction
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1980</x>
-      <y>170</y>
-      <w>150</w>
-      <h>90</h>
+      <x>1782</x>
+      <y>153</y>
+      <w>135</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;10.0;40.0;130.0;40.0;130.0;10.0</additional_attributes>
@@ -628,24 +628,24 @@ UndoAction
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1980</x>
-      <y>310</y>
-      <w>110</w>
-      <h>120</h>
+      <x>1755</x>
+      <y>279</y>
+      <w>81</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 undoAction
 m1=1
 m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+    <additional_attributes>40.0;10.0;40.0;100.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2090</x>
-      <y>410</y>
-      <w>70</w>
-      <h>80</h>
+      <x>1881</x>
+      <y>369</y>
+      <w>63</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 prev</panel_attributes>
@@ -654,10 +654,10 @@ prev</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2090</x>
-      <y>470</y>
-      <w>70</w>
-      <h>80</h>
+      <x>1881</x>
+      <y>423</y>
+      <w>63</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 next</panel_attributes>
@@ -666,10 +666,10 @@ next</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1670</x>
-      <y>490</y>
-      <w>230</w>
-      <h>50</h>
+      <x>1503</x>
+      <y>441</y>
+      <w>207</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 headNode, currentNode
@@ -680,10 +680,10 @@ m2=1</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1280</x>
-      <y>70</y>
-      <w>930</w>
-      <h>480</h>
+      <x>1152</x>
+      <y>63</y>
+      <w>837</w>
+      <h>432</h>
     </coordinates>
     <panel_attributes>undo
 --
@@ -693,10 +693,10 @@ bg=#f5f5f5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>190</x>
-      <y>1530</y>
-      <w>180</w>
-      <h>40</h>
+      <x>171</x>
+      <y>1377</y>
+      <w>162</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>&lt;&lt;entity&gt;&gt;
 TournamentModule</panel_attributes>
@@ -705,54 +705,84 @@ TournamentModule</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>570</x>
-      <y>1210</y>
-      <w>390</w>
-      <h>120</h>
+      <x>513</x>
+      <y>864</y>
+      <w>360</w>
+      <h>333</h>
     </coordinates>
     <panel_attributes>&lt;&lt;entity&gt;&gt;
 Event
 --
-- includedTournaments: ListProperty&lt;Tournament&gt;</panel_attributes>
+- includedTournaments: ListProperty&lt;Tournament&gt;
+- registeredPlayers: ListProperty&lt;Player&gt;
+- name: StringProperty
+- startDate: ObjectProperty&lt;LocalDate&gt;
+- endDate: ObjectProperty&lt;LocalDate&gt;
+- location: StringProperty
+- administrators: ListProperty&lt;EventAdministrator&gt;
+- 
+--
++ getIncludedTournaments(): List&lt;Tournament&gt;
++ setIncludedTournaments(value: List&lt;Tournament&gt;)
++ getRegisteredPlayers(): List&lt;Player&gt;
++ setRegisteredPlayers(value: List&lt;Player&gt;)
++ getName(): String
++ setName(value: String)
++ getStartDate(): LocalDate
++ setStartDate(value: LocalDate)
++ getLocation(): String
++ setLocation(value: String)
++ getAdministrators(): ListProperty&lt;EventAdministrator&gt;
++ setAdministrators(value: ListProperty&lt;EventAdministrator&gt;)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>570</x>
-      <y>1450</y>
-      <w>350</w>
-      <h>130</h>
+      <x>513</x>
+      <y>1305</y>
+      <w>315</w>
+      <h>225</h>
     </coordinates>
     <panel_attributes>&lt;&lt;entity&gt;&gt;
 Tournament
 --
 - registeredPlayers: ListProperty&lt;Player&gt;
 - attendantPlayers: ListProperty&lt;Player&gt;
---</panel_attributes>
+- rounds: ListProperty&lt;TournamentRound&gt;
+- name: StringProperty
+--
++ getRegisteredPlayer(): List&lt;Player&gt;
++ setRegisteredPlayer(value: List&lt;Player&gt;)
++ getAttendantPlayers(): List&lt;Player&gt;
++ setAttendantPlayers(value: List&lt;Player&gt;)
++ getRounds(): List&lt;TournamentRound&gt;
++ setRounds(value: List&lt;TournamentRound&gt;)
++ getName(): String
++ setName(value: String)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>1320</y>
-      <w>90</w>
-      <h>150</h>
+      <x>630</x>
+      <y>1188</y>
+      <w>63</w>
+      <h>135</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;
 contains
 m1=*
 m2=1</panel_attributes>
-    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+    <additional_attributes>30.0;130.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>1510</y>
-      <w>230</w>
-      <h>70</h>
+      <x>324</x>
+      <y>1359</y>
+      <w>207</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 utilizes
@@ -763,61 +793,55 @@ m2=*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>950</x>
-      <y>1270</y>
-      <w>320</w>
-      <h>50</h>
+      <x>864</x>
+      <y>1143</y>
+      <w>459</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;
 has
 m1=*
 m2=1..*</panel_attributes>
-    <additional_attributes>300.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>490.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>650</x>
-      <y>1690</y>
-      <w>160</w>
-      <h>40</h>
+      <x>900</x>
+      <y>1593</y>
+      <w>351</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>RoundGenerator</panel_attributes>
+    <panel_attributes>RoundGenerator
+--
+_+ generateRound(value: Tournament): TournamentRound_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>1570</y>
-      <w>50</w>
-      <h>140</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-has
-m1=1
-m2=1</panel_attributes>
-    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1050</x>
-      <y>1500</y>
-      <w>150</w>
-      <h>40</h>
+      <x>945</x>
+      <y>1350</y>
+      <w>288</w>
+      <h>135</h>
     </coordinates>
     <panel_attributes>&lt;&lt;entity&gt;&gt;
-TournamentRound</panel_attributes>
+TournamentRound
+--
+- pairings: ListProperty&lt;Pairing&gt;
+--
++ getPairings(): List&lt;Pairing&gt;
++ setPairings(value: List&lt;Pairing&gt;)
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>910</x>
-      <y>1500</y>
-      <w>160</w>
-      <h>50</h>
+      <x>819</x>
+      <y>1350</y>
+      <w>144</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
 stores
@@ -828,86 +852,91 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1410</x>
-      <y>1390</y>
-      <w>100</w>
-      <h>160</h>
+      <x>1422</x>
+      <y>1260</y>
+      <w>81</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;
 consists of
 m1=2..*
 m2=*</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+    <additional_attributes>40.0;10.0;40.0;160.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>1530</y>
-      <w>340</w>
-      <h>200</h>
+      <x>972</x>
+      <y>1476</y>
+      <w>72</w>
+      <h>135</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-    
-       generates
+generates
 m1=  *
 m2=1</panel_attributes>
-    <additional_attributes>320.0;10.0;10.0;180.0</additional_attributes>
+    <additional_attributes>40.0;10.0;30.0;130.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1250</x>
-      <y>1190</y>
-      <w>330</w>
-      <h>210</h>
+      <x>1305</x>
+      <y>1071</y>
+      <w>297</w>
+      <h>198</h>
     </coordinates>
     <panel_attributes>&lt;&lt;entity&gt;&gt;
 Player
 --
-- firstName: StringProperty
-- lastName: StringProperty
 - nickName: StringProperty
-- mailAdress: StringProperty
 - startingNumber: StringProperty
 - payed: BooleanProperty
 - disqualified: BooleanProperty
---</panel_attributes>
+--
++ getNickName(): String
++ setNickName(value: String)
++ getStartingNumber(): String
++ setStartingNumber(value: String)
++ isPayed(): boolean
++ setPayed(value: boolean)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1350</x>
-      <y>1530</y>
-      <w>130</w>
-      <h>40</h>
+      <x>1395</x>
+      <y>1404</y>
+      <w>225</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>&lt;&lt;entity&gt;&gt;
-Pairing</panel_attributes>
+Pairing
+--
+- oppenents: ListProperty&lt;Player&gt;
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1190</x>
-      <y>1510</y>
-      <w>180</w>
-      <h>70</h>
+      <x>1224</x>
+      <y>1359</y>
+      <w>189</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
 contains
 m1=1..*
 m2=1</panel_attributes>
-    <additional_attributes>160.0;40.0;10.0;10.0</additional_attributes>
+    <additional_attributes>190.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>280</x>
-      <y>1000</y>
-      <w>180</w>
-      <h>40</h>
+      <x>252</x>
+      <y>954</y>
+      <w>162</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>XMLManager</panel_attributes>
     <additional_attributes/>
@@ -915,34 +944,34 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>1030</y>
-      <w>160</w>
-      <h>520</h>
+      <x>225</x>
+      <y>981</y>
+      <w>99</w>
+      <h>414</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 saves and loads</panel_attributes>
-    <additional_attributes>10.0;500.0;50.0;10.0</additional_attributes>
+    <additional_attributes>30.0;440.0;70.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
-      <y>1030</y>
-      <w>250</w>
-      <h>200</h>
+      <x>369</x>
+      <y>981</y>
+      <w>162</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 saves and loads</panel_attributes>
-    <additional_attributes>230.0;180.0;10.0;10.0</additional_attributes>
+    <additional_attributes>160.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1300</x>
-      <y>800</y>
-      <w>310</w>
-      <h>170</h>
+      <x>1368</x>
+      <y>567</y>
+      <w>279</w>
+      <h>153</h>
     </coordinates>
     <panel_attributes>PreferencesManager
 --
@@ -960,10 +989,10 @@ saves and loads</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1030</x>
-      <y>850</y>
-      <w>150</w>
-      <h>80</h>
+      <x>1692</x>
+      <y>612</y>
+      <w>135</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enumeration&gt;&gt;
 Language
@@ -975,12 +1004,104 @@ ENGLISH</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1170</x>
-      <y>880</y>
-      <w>150</w>
-      <h>30</h>
+      <x>1638</x>
+      <y>639</y>
+      <w>72</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
-    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>522</y>
+      <w>297</w>
+      <h>189</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+Person
+--
+- firstName: StringProperty
+- lastName: StringProperty
+- mailAdress: StringProperty
+--
++ getFirstName(): String
++ setFirstName(value: String)
++ getLastName(): String
++ setLastName(value: String)
++ getMailAdresse(): String
++ setMailAdresse(value: String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1008</x>
+      <y>702</y>
+      <w>144</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>891</x>
+      <y>900</y>
+      <w>297</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+EventAdministrator
+--
+- phoneNumber: StringProperty
+--
++ getPhoneNumber(): String
++ setPhoneNumber(value: String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1143</x>
+      <y>702</y>
+      <w>396</w>
+      <h>387</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;420.0;410.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>864</x>
+      <y>981</y>
+      <w>198</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+has
+m1=*
+m2=1..*</panel_attributes>
+    <additional_attributes>200.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>414</x>
+      <y>738</y>
+      <w>162</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>RoundTimer
+--
+- git --rekt
+
+--
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
