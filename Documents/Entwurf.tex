@@ -166,7 +166,9 @@ Bei der Entwicklung werden an einigen Stellen die folgenden bewährten Entwurfsm
 
 Die Speicherung von Daten findet über das \textit{XML}-Dateiformat statt und wird von der Klasse \textit{FileManager} übernommen. Diese bietet statische Methoden, die relevante Objektgeflechte speichern und aus validen Dateien laden kann.
 
-Je nach Zweck der Speicherung werden die folgenden Dateistrukturierungen verwendet und in \textit{Zip}-Dateien mit der Dateiendung \textit{.tmf} zusammengefasst.
+Es werden die folgenden Dateistrukturierungen verwendet und in \textit{Zip}-Dateien mit der Dateiendung \textit{.tmf} zusammengefasst. Ein solches Dateipaket beschreibt ein komplettes Event mit allen seinen Turnieren und Teilnehmern.
+
+Je nachdem ob das komplette Event auf einem Administrationsrechner gespeichert werden soll oder ob Spielerdaten an einen weiteren Anmeldungsplatz oder Turnierdaten an den Arbeitsplatz eines Turnierordners weitergegeben oder dort gespeichert werden soll werden nur die jeweils relevanten Auszüge aus den Dateien genutzt. Zudem lässt die Software über die Benutzeroberfläche keine Änderungen an Daten zu, die ein Nicht-Administrator nicht bearbeiten darf, da diese beim Zusammenfügen am Administrationsrechner schließlich nicht beachtet werden.
 
 \subsubsection{Event}
 
@@ -280,6 +282,7 @@ Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier, wobei im Da
 					\begin{umlscheme}
 						\item player 1
 						\vspace{0.1cm}
+						\item[] \umlbullet{} id
 						\item[] \umlbullet{} scores
 						\vspace{0.1cm}
 						\item[] \hspace{0.4cm} \umlbullet{} score 1
@@ -295,6 +298,8 @@ Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier, wobei im Da
 \end{umlscheme}}}
 
 \subsection{Externer Zugriff}
+
+Auf dem Gebiet des Turniermanagements wie es von \textbf{Tourney} durchgeführt wird sind keine zu bedenkenden Systeme vorhanden. Alle Eingaben finden über die Benutzeroberfläche statt und Ergebnisse werden nur direkt an den Nutzer ausgegeben. Daher erfolgt weder auf externe Daten noch auf \textbf{Tourney} von externer Seite ein Zugriff und derartige Schnittstellen müssen nicht eingeplant werden.
 
 \section{Versionshistorie}
 
