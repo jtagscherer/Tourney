@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.0">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>555</x>
+      <y>185</y>
+      <w>195</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>UndoManager
+--
+-undoAvailableProperty: BooleanProperty
+-redoAvailableProperty: BooleanProperty
+-isPerformingAction: boolean
+--
++UndoManager() &lt;&lt;Constructor&gt;&gt;
++undoAvailable(): boolean
+-setUndoAvailable(value: boolean)
++undoAvailableProperty(): ReadOnlyBooleanProperty
++redoAvailable(): boolean
+-setRedoAvailable(value: boolean)
++redoAvailableProperty(): ReadOnlyBooleanProperty
++undo()
++redo()
++&lt;T&gt; registerUndoProperty(property: Property&lt;T&gt;)
+-&lt;T&gt; propertyChangeListener(
+      observableValue: ObservableValue&lt;T&gt;,
+      oldValue: T, newValue: T)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>795</x>
+      <y>185</y>
+      <w>110</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>UndoNode
+--
+~UndoNode() &lt;&lt;Constructor&gt;&gt;
+~hasNext(): boolean
+~getNext(): UndoNode
+~getPrev(): UndoNode
+~setNext(next: UndoNode)
+~getAction(): UndoAction</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>960</x>
+      <y>195</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+UndoAction
+--
++undo()
++redo()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>895</x>
+      <y>290</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>PropertyUndoAction&lt;T&gt;
+--
+-property: Property&lt;T&gt;
+-oldValue: T
+-newValue: T</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>925</x>
+      <y>345</y>
+      <w>175</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>ListUndoAction&lt;T&gt;
+--
+- list: ObservableList&lt;T&gt;
+- changes: ArrayList&lt;ListChange&lt;T&gt;&gt;
+--
+~ ListUndoAction(change: Change&lt;T&gt;) &lt;&lt;Constructor&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>940</x>
+      <y>230</y>
+      <w>80</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>140.0;10.0;140.0;70.0;10.0;70.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1005</x>
+      <y>230</y>
+      <w>15</w>
+      <h>125</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>900</x>
+      <y>210</y>
+      <w>70</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+undoAction
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>825</x>
+      <y>245</y>
+      <w>35</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+prev</panel_attributes>
+    <additional_attributes>50.0;10.0;50.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>795</x>
+      <y>245</y>
+      <w>35</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+next</panel_attributes>
+    <additional_attributes>50.0;10.0;50.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>745</x>
+      <y>220</y>
+      <w>60</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+headNode
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>550</x>
+      <y>170</y>
+      <w>555</w>
+      <h>285</h>
+    </coordinates>
+    <panel_attributes>Model
+--
+bg=#f5f5f5
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>745</x>
+      <y>200</y>
+      <w>60</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+currentNode
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>715</x>
+      <y>345</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/ListChange&lt;T&gt;/
+--
+- list: ObservableList&lt;T&gt;
+- value: T
+--
+~ ListChange(list: ObservableList&lt;T&gt;, value: T) &lt;&lt;Constructor&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>875</x>
+      <y>230</y>
+      <w>145</w>
+      <h>125</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>270.0;10.0;270.0;70.0;10.0;70.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>575</x>
+      <y>410</y>
+      <w>230</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>ListAddition&lt;T&gt;
+--
+- index: int
+--
+~ ListAddition(list: ObservableList&lt;T&gt;, index: int, value: T) &lt;&lt;Constructor&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>685</x>
+      <y>380</y>
+      <w>135</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>250.0;10.0;250.0;40.0;10.0;40.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>815</x>
+      <y>410</y>
+      <w>200</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>ListRemoval&lt;T&gt;
+--
+~ ListRemoval(list: ObservableList&lt;T&gt;, value: T) &lt;&lt;Constructor&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>805</x>
+      <y>380</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;220.0;40.0;220.0;60.0</additional_attributes>
+  </element>
+</diagram>

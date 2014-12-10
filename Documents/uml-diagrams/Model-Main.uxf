@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.0">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>148</x>
+      <y>404</y>
+      <w>164</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+TournamentModule
+--
+- name: StringProperty
+- description: StringProperty
+- possibleScores: ObservableHashMap&lt;String,Integer&gt;
+- phaseList: ListProperty&lt;GamePhase&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>292</x>
+      <y>152</y>
+      <w>160</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+Event
+--
+- includedTournaments: ListProperty&lt;Tournament&gt;
+- registeredPlayers: ListProperty&lt;Player&gt;
+- name: StringProperty
+- startDate: ObjectProperty&lt;LocalDate&gt;
+- endDate: ObjectProperty&lt;LocalDate&gt;
+- location: StringProperty
+- administrators: ListProperty&lt;EventAdministrator&gt;
+- eventPhase: EventPhase
+--
++ getIncludedTournaments(): List&lt;Tournament&gt;
++ setIncludedTournaments(value: List&lt;Tournament&gt;)
++ getRegisteredPlayers(): List&lt;Player&gt;
++ setRegisteredPlayers(value: List&lt;Player&gt;)
++ getName(): String
++ setName(value: String)
++ getStartDate(): LocalDate
++ setStartDate(value: LocalDate)
++ getLocation(): String
++ setLocation(value: String)
++ getAdministrators(): ListProperty&lt;EventAdministrator&gt;
++ setAdministrators(value: ListProperty&lt;EventAdministrator&gt;)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>372</y>
+      <w>148</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+Tournament
+--
+- registeredPlayers: ListProperty&lt;Player&gt;
+- attendingPlayers: ListProperty&lt;Player&gt;
+- rounds: ListProperty&lt;TournamentRound&gt;
+- name: StringProperty
+- scoreTable: ListProperty&lt;PlayerScore&gt;
+- administrators: ListProperty&lt;TournamentAdministrator&gt;
+--
++ getRegisteredPlayer(): List&lt;Player&gt;
++ setRegisteredPlayer(value: List&lt;Player&gt;)
++ getAttendantPlayers(): List&lt;Player&gt;
++ setAttendantPlayers(value: List&lt;Player&gt;)
++ getRounds(): List&lt;TournamentRound&gt;
++ setRounds(value: List&lt;TournamentRound&gt;)
++ getName(): String
++ setName(value: String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>352</x>
+      <y>300</y>
+      <w>112</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+contains
+m1=*
+m2=1</panel_attributes>
+    <additional_attributes>260.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>396</y>
+      <w>92</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+utilizes
+m1=1
+m2=*</panel_attributes>
+    <additional_attributes>10.0;40.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>284</y>
+      <w>304</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+has
+m1=*
+m2=1..*</panel_attributes>
+    <additional_attributes>740.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>632</x>
+      <y>488</y>
+      <w>156</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>RoundGenerator
+--
+_+ generateRound(value: Tournament): TournamentRound_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>584</x>
+      <y>392</y>
+      <w>128</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+TournamentRound
+--
+- pairings: ListProperty&lt;Pairing&gt;
+--
++ getPairings(): List&lt;Pairing&gt;
++ setPairings(value: List&lt;Pairing&gt;)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>536</x>
+      <y>392</y>
+      <w>56</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+stores
+m1=1..*
+m2=1</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>796</x>
+      <y>352</y>
+      <w>36</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+consists of
+m1=2..*
+m2=*</panel_attributes>
+    <additional_attributes>40.0;10.0;40.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>596</x>
+      <y>448</y>
+      <w>32</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+generates
+m1=  *
+m2=1</panel_attributes>
+    <additional_attributes>40.0;10.0;40.0;300.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>268</y>
+      <w>132</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+Player
+--
+- nickName: StringProperty
+- startingNumber: StringProperty
+- payed: BooleanProperty
+- disqualified: BooleanProperty
+- id: StringProperty
+--
++ getNickName(): String
++ setNickName(value: String)
++ getStartingNumber(): String
++ setStartingNumber(value: String)
++ isPayed(): boolean
++ setPayed(value: boolean)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>784</x>
+      <y>416</y>
+      <w>132</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+Pairing
+--
+- oppenents: ListProperty&lt;Player&gt;
+- scoreTable: ListProperty&lt;PlayerScore&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>708</x>
+      <y>416</y>
+      <w>84</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+contains
+m1=1..*
+m2=1</panel_attributes>
+    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>12</x>
+      <y>164</y>
+      <w>224</w>
+      <h>68</h>
+    </coordinates>
+    <panel_attributes>FileManager
+--
+_+ loadEventFromFile(path: Path): Event_
+_+ saveEventToFile(event: Event, path: Path)_
+_+ loadTournamentFromFile(path: Path): Tournament_
+_+ saveTournamentToFile(tournament: Tournament, path: Path)_
+_+ loadPlayersFromFile(path: Path): ListProperty&lt;Player&gt;_
+_+ savePlayersToFile(players: ListProperty&lt;Player&gt;, path: Path)_
+_+ loadTournamentModuleFromFile(path: Path): TournamentModule_
+_+ saveTournamentModuleToFile(tournamentModule: TournamentModule, path: Path)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>132</x>
+      <y>228</y>
+      <w>152</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+saves and loads</panel_attributes>
+    <additional_attributes>360.0;440.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>216</y>
+      <w>68</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+saves and loads</panel_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>604</x>
+      <y>24</y>
+      <w>132</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+Person
+--
+- firstName: StringProperty
+- lastName: StringProperty
+- mailAdress: StringProperty
+--
++ getFirstName(): String
++ setFirstName(value: String)
++ getLastName(): String
++ setLastName(value: String)
++ getMailAdresse(): String
++ setMailAdresse(value: String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>180</y>
+      <w>52</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>508</x>
+      <y>228</y>
+      <w>88</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+EventAdministrator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>104</y>
+      <w>176</w>
+      <h>172</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;420.0;410.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>228</y>
+      <w>68</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+has
+m1=*
+m2=1..*</panel_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>576</x>
+      <y>568</y>
+      <w>140</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>PairingStrategy
+--
+_+ generatePairing(tournament: Tournament): Pairing_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>676</x>
+      <y>660</y>
+      <w>56</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>SwissSystem</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>704</x>
+      <y>640</y>
+      <w>68</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>ModifiedSwissSystem</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>652</x>
+      <y>588</y>
+      <w>92</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>612</x>
+      <y>676</y>
+      <w>56</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>SingleElimination</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>548</x>
+      <y>660</y>
+      <w>56</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>DoubleElimination</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>516</x>
+      <y>640</y>
+      <w>56</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>FreeForAll</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>644</x>
+      <y>588</y>
+      <w>56</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>636</x>
+      <y>588</y>
+      <w>12</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>584</x>
+      <y>588</y>
+      <w>56</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>588</y>
+      <w>92</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>452</x>
+      <y>476</y>
+      <w>20</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+stores
+m1=*
+m2=1</panel_attributes>
+    <additional_attributes>20.0;130.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>396</x>
+      <y>528</y>
+      <w>128</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+PlayerScore
+--
+- player: ObjectProperty&lt;Player&gt;
+- score: ListProperty&lt;int&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>696</x>
+      <y>516</y>
+      <w>20</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+uses
+m1=*
+m2=1</panel_attributes>
+    <additional_attributes>20.0;10.0;20.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>148</x>
+      <y>548</y>
+      <w>164</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>GamePhase
+--
+- cutoff: IntegerProperty
+- pairingMethod: ObjectProperty&lt;PairingStrategy&gt;
+- roundCount: IntegerProperty
+- phaseNumber: IntegerProperty
+- roundDuration: ObjectProperty&lt;Duration&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>216</x>
+      <y>508</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+stores
+m1=1..*
+m2=1</panel_attributes>
+    <additional_attributes>20.0;100.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>328</y>
+      <w>132</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+TournamentAdministrator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>536</x>
+      <y>344</y>
+      <w>52</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+has
+m1=*
+m2=1..*</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>552</x>
+      <y>144</y>
+      <w>132</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;entity&gt;&gt;
+Administrator
+--
+- phoneNumber: StringProperty
+--
++ getPhoneNumber(): String
++ setPhoneNumber(value: String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>620</x>
+      <y>180</y>
+      <w>32</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;370.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>612</x>
+      <y>104</y>
+      <w>52</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>332</x>
+      <y>84</y>
+      <w>76</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Enumeration&gt;&gt;
+EventPhase
+--
+EVENTSETUP
+PREREGISTRATION
+REGISTRATION
+TOURNAMENTEXECUTION</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>368</x>
+      <y>124</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>12</x>
+      <y>12</y>
+      <w>912</w>
+      <h>680</h>
+    </coordinates>
+    <panel_attributes>Model
+--
+bg=#f5f5f5</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
