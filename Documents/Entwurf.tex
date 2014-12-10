@@ -16,6 +16,27 @@
     urlcolor=black
 }
 
+\usepackage{tikz}
+\usepackage{graphicx}
+
+\newcommand{\umlbullet}[1] {
+	\raisebox{0.5ex}{
+	\begin{tikzpicture}[#1]
+		\draw (1ex,0.4ex) -- (1ex,1.3ex);
+		\draw (1ex,0.4ex) -- (2ex,0.4ex);
+	\end{tikzpicture}}
+}
+
+\usepackage{enumitem}
+\newlist{umlscheme}{itemize}{7}
+\setlist[umlscheme]{label=\umlbullet{}}
+\setlist[umlscheme,1]{parsep=-5pt}
+\setlist[umlscheme,2]{parsep=-5pt}
+\setlist[umlscheme,3]{parsep=-5pt}
+\setlist[umlscheme,4]{parsep=-5pt}
+\setlist[umlscheme,5]{parsep=-5pt}
+\setlist[umlscheme,6]{parsep=-5pt}
+
 \renewcommand{\contentsname}{Inhaltsverzeichnis}
 
 \begin{document}
@@ -76,11 +97,9 @@ Zum Leserkreis dieses Entwurfsdokuments gehören die folgenden Personengruppen:
 	\item Die Betreuer
 \end{itemize}
 
-\subsection{Angewandte Entwurfsprinzipien}
+\subsection{Angewandte Entwicklungsprinzipien}
 
 Der Entwurf von \textbf{Tourney} findet im Top-Down-Prinzip statt. Hierzu wird die geforderte Gesamtfunktionalität des Systems betrachtet und dann zur Erfüllung dieser notwendige Aufgaben auf Komponenten und schließlich Klassen verteilt.
-
-\textbf{[WEITERE ENTWURFSPRINZIPIEN]}
 
 \subsection{Überblick über den Entwurf}
 
@@ -95,9 +114,29 @@ Das Entwurfsdokument wird in die folgenden Kapitel gegliedert:
 
 \section{Architektur des Systems}
 
-\subsection{Architekturmuster}
+\subsection{Überblick über die Architektur}
+
+Das geplante System wird in einer klassischen Architektur aus drei Schichten realisiert. Hierzu findet eine Gliederung in die drei Komponenten Benutzeroberfläche, Anwendungslogik und Datenhaltung statt. Da die Benutzeroberfläche über \textit{JavaFX} erstellt wird ist diese standardmäßig in externe \textit{.fxml}-Dateien ausgelagert. Die Anwendungslogik dient als Vermittler zwischen den anderen beiden Komponenten und reagiert auf Eingaben aus der Benutzeroberfläche mit den richtigen Operationen auf der Datenhaltungsschicht.
+
+Bei der Architektur wird Wert auf eine geringe Kopplung zwischen und einen hohen Zusammenhalt in den Modulen gelegt. Dies wird unter anderem durch das Verwenden von \textit{JavaFX-Bindings} gewährleistet. Hierbei werden Attribute von Klassen mit anderen Attributen oder Elementen der Benutzeroberfläche über eine Listener-Architektur gebunden und bei Bedarf neu berechnet oder aktualisiert.
 
 \subsection{Verwendete Entwurfsmuster}
+
+Bei der Entwicklung werden an einigen Stellen die folgenden bewährten Entwurfsmuster verwendet:
+\begin{itemize}
+	\item[] \textbf{Observer} \hfill
+	
+	\leftskip 1cm
+	Ändern sich die Attribute von Objekten, so müssen häufig sowohl die Benutzer-oberfläche aktualisiert als auch andere Attribute neu berechnet werden. In entgegengesetzter Richtung ändern einige Eingaben über die Benutzeroberfläche Attribute.
+	
+	Dieser Zusammenhang wird über \textit{JavaFX-Bindings} implementiert, wobei das Observer-Entwurfsmuster verwendet wird. Hierzu werden alle relevanten Attribute als \textit{JavaFX-Properties} deklariert.
+
+	\leftskip 0cm
+	\item[] \textbf{Strategy} \hfill
+	
+	\leftskip 1cm
+	Die Berechnung der Ergebnisse von Spielrunden findet immer abhängig von dem verwendeten Regelmodul statt. Dazu wird jedes mögliche Paarungsprinzip als Subklasse einer Strategie-Oberklasse hinzugefügt und kann austauschend verwendet werden. Diese Modularität trägt zur guten Erweiterbarkeit bei.
+\end{itemize}
 
 \subsection{Komponentendiagramm}
 
@@ -111,23 +150,149 @@ Das Entwurfsdokument wird in die folgenden Kapitel gegliedert:
 
 [Klassendiagramm]
 
-\subsubsection{Protokoll}
-
-[Sequenzdiagramme]
-
-\subsubsection{Verhalten}
-
-[Zustands- und Aktivitätsdiagramme]
-
 \subsubsection{Interne Realisierung}
 
 \subsubsection{Realisierte Anforderungen}
 
 \subsection{Verbindung der Komponenten}
 
+\subsection{Sequenzdiagramme}
+
+\subsubsection{Aktionsbezeichnung}
+
 \section{Externe Schnittstellen}
 
 \subsection{Dauerhafte Datenspeicherung}
+
+Die Speicherung von Daten findet über das \textit{XML}-Dateiformat statt und wird von der Klasse \textit{FileManager} übernommen. Diese bietet statische Methoden, die relevante Objektgeflechte speichern und aus validen Dateien laden kann.
+
+Je nach Zweck der Speicherung werden die folgenden Dateistrukturierungen verwendet und in \textit{Zip}-Dateien mit der Dateiendung \textit{.tmf} zusammengefasst.
+
+\subsubsection{Event}
+
+Die Datei \textit{Event.xml} speichert allgemeine Daten zum ganzen Event. Sie ist folgendermaßen strukturiert:
+\vspace{0.4cm}
+
+\fbox{\parbox{\textwidth}{
+\begin{umlscheme}
+	\item metadata
+	\begin{umlscheme}
+		\item name
+		\item location
+		\item date
+		\begin{umlscheme}
+			\item start-date
+			\item end-date
+		\end{umlscheme}
+		\item event-administrators
+		\begin{umlscheme}
+			\item administrator 1
+			\begin{umlscheme}
+				\item name
+				\begin{umlscheme}
+					\item first-name
+					\item last-name
+				\end{umlscheme}
+				\item mail-address
+				\item phone-number
+			\end{umlscheme}
+			\item[] $\vdots$
+		\end{umlscheme}
+	\end{umlscheme}
+	\item tournaments
+	\begin{umlscheme}
+		\item tournament 1
+		\begin{umlscheme}
+			\item id
+		\end{umlscheme}
+		\item[] $\vdots$
+	\end{umlscheme}
+\end{umlscheme}}}
+
+\subsubsection{Spieler}
+
+Die Datei \textit{Players.xml} speichert alle Spieler, die zu einem jeweiligen Event vorangemeldet oder angemeldet sind und ist folgendermaßen strukturiert:
+\vspace{0.4cm}
+
+\fbox{\parbox{\textwidth}{
+\begin{umlscheme}
+	\item player 1
+	\begin{umlscheme}
+		\item id
+		\item name
+		\begin{umlscheme}
+			\item first-name
+			\item last-name
+		\end{umlscheme}
+		\item mail-address
+		\item nick-name
+		\item starting-number
+		\item payed
+		\item disqualified
+	\end{umlscheme}
+	\item[] $\vdots$
+\end{umlscheme}}}
+
+\subsubsection{Turnier}
+
+Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier, wobei im Dateiname die eindeutige ID des Turniers angegeben ist. Dabei sind diese Dateien folgendermaßen strukturiert:
+\vspace{0.4cm}
+
+\fbox{\parbox{\textwidth}{
+\begin{umlscheme}
+	\item metadata
+	\begin{umlscheme}
+		\item name
+	\end{umlscheme}
+	\item tournament-administrators
+	\begin{umlscheme}
+		\item administrator 1
+		\begin{umlscheme}
+			\item name
+			\begin{umlscheme}
+				\item first-name
+				\item last-name
+			\end{umlscheme}
+			\item mail-address
+			\item phone-number
+		\end{umlscheme}
+		\item[] $\vdots$
+	\end{umlscheme}
+	\item registered-players
+	\begin{umlscheme}
+		\item player-id 1
+		\item[] $\vdots$
+	\end{umlscheme}
+	\item attendant-players
+	\begin{umlscheme}
+		\item player-id 1
+		\item[] $\vdots$
+	\end{umlscheme}
+	\item tournament-rounds
+	\begin{umlscheme}
+		\item tournament-round 1
+		\begin{umlscheme}
+			\item pairings
+			\begin{umlscheme}
+				\item pairing 1
+				\begin{umlscheme}
+					\item participants
+					\begin{umlscheme}
+						\item player 1
+						\vspace{0.1cm}
+						\item[] \umlbullet{} scores
+						\vspace{0.1cm}
+						\item[] \hspace{0.4cm} \umlbullet{} score 1
+						\item[] \hspace{0.6cm} $\vdots$
+						\item[] $\vdots$
+					\end{umlscheme}
+				\end{umlscheme}
+				\item[] $\vdots$
+			\end{umlscheme}
+		\end{umlscheme}
+		\item[] $\vdots$
+	\end{umlscheme}
+\end{umlscheme}}}
 
 \subsection{Externer Zugriff}
 
@@ -141,6 +306,10 @@ Das Entwurfsdokument wird in die folgenden Kapitel gegliedert:
 	\item Version 1.1 (07.12.2014)
 	\begin{itemize}
 		\item Kapitel 1 hinzugefügt
+	\end{itemize}
+	\item Version 1.2 (10.12.2014)
+	\begin{itemize}
+		\item Kapitel 2 und 4 hinzugefügt
 	\end{itemize}
 \end{itemize}
 
