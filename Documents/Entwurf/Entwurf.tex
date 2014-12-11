@@ -172,8 +172,8 @@ Im folgenden wird die Schicht der Datenhaltung und Anwendungslogik beschrieben u
 \includediagram{1.0}{model-undo.png}
 
 \subsubsection{Beschreibung}
-
-\textit{TODO: Beschreibung Model}
+Zu Anfangs steht die Klasse \textit{Event} sie symbolisiert das echte Event, sie enthält die Spielerliste und die Tournierliste. In der Klasse \textit{Turnier} läuft das Turnier ab, es werden die Teilnehmden \textit{Spieler} gespeichert und die bisherigen Runden und deren Ergebnisse. In der Klasse \textit{Spieler} werden die persönlichen Daten des Spieler, wie Vorname, Nachname und Mail Adresse gespeichert. Die Klassen sind reine Datenstrukturen, jegliche Logik wird in den \textit{Controllern} ausgeführt.
+\textit{TODO: Beschreibung Undo}
 
 Der \textit{UndoManager} bietet eine einfach zu benutzende Schnittstelle, um es dem Benutzer zu ermöglichen, durchgeführte Aktionen wieder rückgängig zu machen. Dieses Verfahren lässt sich auf alle \textit{JavaFX-Properties} und \textit{JavaFX-Listen} anwenden, indem man sie durch \textit{registerUndoProperty()} registriert.\\
 Intern werden alle an den Properties gemachten Änderungen in einer verketteten Liste gespeichert, die aus \textit{UndoNode}s aufgebaut ist.\\
