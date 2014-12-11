@@ -89,6 +89,8 @@
 
 \tableofcontents
 
+\newpage
+
 \section{Einleitung}
 
 Dieser Entwurf bietet den Entwicklern von \textbf{Tourney} einen Überblick über die Architektur der Software. Dadurch wird ein Grundgerüst bereitgestellt, das die geplante Implementierung ermöglicht.
@@ -112,6 +114,8 @@ Zum Leserkreis dieses Entwurfsdokuments gehören die folgenden Personengruppen:
 
 Der Entwurf von \textbf{Tourney} findet im Top-Down-Prinzip statt. Hierzu wird die geforderte Gesamtfunktionalität des Systems betrachtet und dann zur Erfüllung dieser notwendige Aufgaben auf Komponenten und schließlich Klassen verteilt.
 
+\newpage
+
 \subsection{Überblick über den Entwurf}
 
 Das Entwurfsdokument wird in die folgenden Kapitel gegliedert:
@@ -122,6 +126,8 @@ Das Entwurfsdokument wird in die folgenden Kapitel gegliedert:
 	\item[] \textbf{Kapitel 4} charakterisiert externe Schnittstellen und die verwendete Methodik zur persistenten Datenspeicherung.
 	\item[] \textbf{Kapitel 5} enthält die Versionshistorie zu diesem Dokument.
 \end{itemize}
+
+\newpage
 
 \section{Architektur des Systems}
 
@@ -159,6 +165,8 @@ Bei der Entwicklung werden an einigen Stellen die folgenden bewährten Entwurfsm
 
 \includediagram{0.7}{component-diagram.png}
 
+\newpage
+
 \section{Komponenten}
 
 \subsection{Model}
@@ -172,12 +180,22 @@ Im folgenden wird die Schicht der Datenhaltung und Anwendungslogik beschrieben u
 \includediagram{1.0}{model-undo.png}
 
 \subsubsection{Beschreibung}
-Zu Anfangs steht die Klasse \textit{Event} sie symbolisiert das echte Event, sie enthält die Spielerliste und die Tournierliste. In der Klasse \textit{Turnier} läuft das Turnier ab, es werden die Teilnehmden \textit{Spieler} gespeichert und die bisherigen Runden und deren Ergebnisse. In der Klasse \textit{Spieler} werden die persönlichen Daten des Spieler, wie Vorname, Nachname und Mail Adresse gespeichert. Die Klassen sind reine Datenstrukturen, jegliche Logik wird in den \textit{Controllern} ausgeführt.\\
-Der \textit{UndoManager} bietet eine einfach zu benutzende Schnittstelle, um es dem Benutzer zu ermöglichen, durchgeführte Aktionen wieder rückgängig zu machen. Dieses Verfahren lässt sich auf alle \textit{JavaFX-Properties} und \textit{JavaFX-Listen} anwenden, indem man sie durch \textit{registerUndoProperty()} registriert.\\
-Intern werden alle an den Properties gemachten Änderungen in einer verketteten Liste gespeichert, die aus \textit{UndoNode}s aufgebaut ist.\\
-Die ausgeführten Änderungen werden innerhalb der Nodes als konkrete Implementierung des \textit{UndoAction} Interfaces abgelegt, das die beiden Methoden \textit{undo()} und \textit{redo()} bereitstellt. Die Implementierungen kümmern sich dann um die konkrete Ausführung der Rückgängig- und Wiederherstell-Aktionen.\\
+Zu Beginn steht die Klasse \textit{Event}. Sie symbolisiert das echte Event und enthält die Spielerliste und die Turnierliste. In der Klasse \textit{Tournament} läuft das Turnier ab, es werden die teilnehmenden \textit{Player} und die bisherigen Runden und deren Ergebnisse gespeichert. In der Klasse \textit{Spieler} werden die persönlichen Daten des Spieler wie Vorname, Nachname und E-Mail-Adresse gespeichert. Die Klassen sind reine Datenstrukturen, jegliche Logik wird in den \textit{Controllern} ausgeführt.
+
+\vspace{0.5cm}
+
+Der \textit{UndoManager} bietet eine einfach zu benutzende Schnittstelle, um es dem Benutzer zu ermöglichen, durchgeführte Aktionen wieder rückgängig zu machen. Dieses Verfahren lässt sich auf alle \textit{JavaFX-Properties} und \textit{JavaFX-Listen} anwenden, indem man sie durch \textit{registerUndoProperty()} registriert.
+
+Intern werden alle an den Properties gemachten Änderungen in einer verketteten Liste gespeichert, die aus \textit{UndoNode}s aufgebaut ist.
+
+Die ausgeführten Änderungen werden innerhalb der Nodes als konkrete Implementierung des \textit{UndoAction} Interfaces abgelegt, das die beiden Methoden \textit{undo()} und \textit{redo()} bereitstellt. Die Implementierungen kümmern sich dann um die konkrete Ausführung der Rückgängig- und Wiederherstell-Aktionen.
+
+\newpage
+
 Wenn an \textit{JavaFX-Properties} Änderungen erfolgen, werden diese als \textit{PropertyUndoAction} gespeichert. Der vorherige und der neue Wert werden gespeichert, um später rückgängig gemacht oder wiederhergestellt werden zu können.
 Änderungen an \textit{JavaFX-Listen} sind von etwas komplizierterer Natur, da hier pro Change-Event mehrere Hinzufüge- und Entfernen-Aktionen zusammengefasst sind. Daher wird dieses Verhalten in einer \textit{ListUndoAction} gespiegelt, die verschiedene \textit{ListChange}s beinhaltet. Dabei entsprechen \textit{ListAddition}s dem Hinzufügen von Werten zu einer Liste und \textit{ListRemoval}s dem Entfernen von Werten von einer Liste.
+
+\newpage
 
 \subsection{View}
 
@@ -189,6 +207,8 @@ Die Benutzeroberfläche in \textit{JavaFX} besteht aus jeweils einer \textit{.fx
 
 Durch diese Strukturierung ist eine komplette Kapselung der Benutzeroberfläche mit geringer Kopplung zu den anderen Komponenten gegeben.
 
+\newpage
+
 \subsection{Controller}
 
 Die Kontrollstruktur nimmt Eingaben von der Benutzeroberfläche entgegen und führt anhand dessen die passenden Operationen auf der Datenhaltungsschicht aus. Die Struktur wird im Folgenden beschrieben.
@@ -197,9 +217,15 @@ Die Kontrollstruktur nimmt Eingaben von der Benutzeroberfläche entgegen und fü
 
 \includediagram{1.0}{controller.png}
 
+\newpage
+
 \subsubsection{Beschreibung}
 
-\textit{TODO: Beschreibung}
+Die Controller in der Kontrollschicht spiegeln die Fenster der Anwendung wieder. Hierbei beginnt die Benutzerführung im \textit{EntryPoint} und kann über Aktionen auf der Benutzeroberfläche entlang der Pfeile erfolgen.
+
+Zudem übernehmen die Controller das beschriebene Binding von Attributen und Elementen der Benutzeroberfläche. Über eine Listener-Struktur reagieren die Controller auf Eingaben mit den passenden Operationen auf der Datenhaltungsschicht.
+
+Neben den Controllern sind in der Kontrollschicht noch die Klassen \textit{PreferenceManager} und \textit{RoundTimer} vorhanden, die sich um die Einstellungen des aktuellen Benutzers und die Rundenzeiten kümmern.
 
 \subsection{Verbindung der Komponenten}
 
@@ -209,6 +235,8 @@ Die Kontrollstruktur hält für den Zugriff relevante Instanzen aus der Datenhal
 
 Außerdem sind bestimmte Attribute untereinander und Elemente der Benutzeroberfläche über \textit{JavaFX-Bindings} miteinander verknüpft. Hierzu werden als Attribute an den relevanten Stellen \textit{JavaFX-Properties} verwendet.
 
+\newpage
+
 \subsection{Sequenzdiagramme}
 
 \subsubsection{Turniermodul hinzufügen}
@@ -216,6 +244,8 @@ Außerdem sind bestimmte Attribute untereinander und Elemente der Benutzeroberfl
 \includediagram{1.0}{sequence-add-tournament-module.png}
 
 Sendet der Administrator über die Oberfläche den Befehl an den \textit{TournamentModuleEditorController}, ein neues Regelmodul zu erstellen, so wird dieser zunächst initialisiert. Daraufhin wird eine neue Instanz der Klasse \textit{TournamentModule} erstellt und an den Controller zurückgegeben. Dieser stellt nun die Oberfläche dar, in der der Administrator das Modul editieren kann.
+
+\newpage
 
 \subsubsection{Vorangemeldeten Spieler bestätigen}
 
@@ -229,6 +259,8 @@ Um einen vorangemeldeten Spieler durch eine Anmeldung über den \textit{Registra
 
 Will ein Nutzer eine Aktion im \textit{EventPhaseViewController} rückgängig machen, so wird der zugehörige Befehl an die Instanz des \textit{UndoManagers} gesendet. Dieser holt sich die aktuelle Aktion auf der Benutzeroberfläche von der Liste von Aktionen und macht diese rückgängig. Zuletzt wird noch das Wiederherstellen dieser Aktion möglich gemacht.
 
+\newpage
+
 \subsubsection{Passwort ändern}
 
 \includediagram{1.0}{sequence-change-password.png}
@@ -241,6 +273,8 @@ Das Ändern des Passworts findet über einen Aufruf des \textit{OptionsViewContr
 
 Will der Administrator ein neues Event über den \textit{MainWindowController} erstellen, so wird zunächst ein \textit{EventCreationDialog} geöffnet und initialisiert. Dieser erstellt ein neues \textit{Event}, das der \textit{MainWindowController} dann an einen \textit{EventPhaseViewController} weitergibt. Das neue Event wird schließlich in einem \textit{EventSetupPhaseController} dargestellt.
 
+\newpage
+
 \section{Externe Schnittstellen}
 
 \subsection{Dauerhafte Datenspeicherung}
@@ -252,6 +286,8 @@ Die Speicherung von Daten findet über das \textit{XML}-Dateiformat statt und wi
 Es werden die folgenden Dateistrukturierungen verwendet und in \textit{Zip}-Dateien mit der Dateiendung \textit{.tmf} zusammengefasst. Ein solches Dateipaket beschreibt ein komplettes Event mit allen seinen Turnieren und Teilnehmern.
 
 Je nachdem ob das komplette Event auf einem Administrationsrechner gespeichert werden soll oder ob Spielerdaten an einen weiteren Anmeldungsplatz oder Turnierdaten an den Arbeitsplatz eines Turnierordners weitergegeben oder dort gespeichert werden soll werden nur die jeweils relevanten Auszüge aus den Dateien genutzt. Zudem lässt die Software über die Benutzeroberfläche keine Änderungen an Daten zu, die ein Nicht-Administrator nicht bearbeiten darf, da diese beim Zusammenfügen am Administrationsrechner schließlich nicht beachtet werden.
+
+\newpage
 
 \subsubsubsection{Event}
 
@@ -320,8 +356,7 @@ Die Datei \textit{Players.xml} speichert alle Spieler, die zu einem jeweiligen E
 
 \subsubsubsection{Turnier}
 
-Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier, wobei im Dateiname die eindeutige ID des Turniers angegeben ist. Dabei sind diese Dateien folgendermaßen strukturiert:
-\vspace{0.4cm}
+Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier in folgender Struktur, wobei im Dateiname die eindeutige ID des Turniers angegeben ist.
 
 \fbox{\parbox{\textwidth}{
 \begin{umlscheme}
@@ -435,6 +470,8 @@ Die folgendermaßen strukturierte Datei \textit{RuleTemplateID.xml} speichert je
 \subsection{Externer Zugriff}
 
 Auf dem Gebiet des Turniermanagements wie es von \textbf{Tourney} durchgeführt wird sind keine zu bedenkenden Systeme vorhanden. Alle Eingaben finden über die Benutzeroberfläche statt und Ergebnisse werden nur direkt an den Nutzer ausgegeben. Daher erfolgt weder auf externe Daten noch auf \textbf{Tourney} von externer Seite ein Zugriff und derartige Schnittstellen müssen nicht eingeplant werden.
+
+\newpage
 
 \section{Versionshistorie}
 
