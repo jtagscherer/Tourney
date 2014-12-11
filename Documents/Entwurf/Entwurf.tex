@@ -37,6 +37,19 @@
 \setlist[umlscheme,5]{parsep=-5pt}
 \setlist[umlscheme,6]{parsep=-5pt}
 
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\newcommand{\subsubsubsection}[1]{\paragraph{#1}\mbox{}\\}
+
+\newcommand{\includediagram}[2]{
+	\vspace{0.5cm}
+	\begin{center}
+		\includegraphics[width=#1\textwidth]{#2}
+	\end{center}
+	\vspace{0.5cm}
+}
+
 \renewcommand{\contentsname}{Inhaltsverzeichnis}
 
 \begin{document}
@@ -140,15 +153,37 @@ Bei der Entwicklung werden an einigen Stellen die folgenden bewährten Entwurfsm
 
 \subsection{Komponentendiagramm}
 
+\includediagram{0.7}{component-diagram.png}
+
 \subsection{Komponentenübergreifende Funktionen}
 
 \section{Komponenten}
 
-\subsection{Komponente X}
+\subsection{Model}
 
 \subsubsection{Schnittstelle}
 
-[Klassendiagramm]
+\includediagram{1.0}{model-main.png}
+
+\includediagram{1.0}{model-undo.png}
+
+\subsubsection{Interne Realisierung}
+
+\subsubsection{Realisierte Anforderungen}
+
+\subsection{View}
+
+\subsubsection{Schnittstelle}
+
+\subsubsection{Interne Realisierung}
+
+\subsubsection{Realisierte Anforderungen}
+
+\subsection{Controller}
+
+\subsubsection{Schnittstelle}
+
+\includediagram{1.0}{controller.png}
 
 \subsubsection{Interne Realisierung}
 
@@ -166,11 +201,13 @@ Bei der Entwicklung werden an einigen Stellen die folgenden bewährten Entwurfsm
 
 Die Speicherung von Daten findet über das \textit{XML}-Dateiformat statt und wird von der Klasse \textit{FileManager} übernommen. Diese bietet statische Methoden, die relevante Objektgeflechte speichern und aus validen Dateien laden kann.
 
+\subsubsection{Speicherung eines Events}
+
 Es werden die folgenden Dateistrukturierungen verwendet und in \textit{Zip}-Dateien mit der Dateiendung \textit{.tmf} zusammengefasst. Ein solches Dateipaket beschreibt ein komplettes Event mit allen seinen Turnieren und Teilnehmern.
 
 Je nachdem ob das komplette Event auf einem Administrationsrechner gespeichert werden soll oder ob Spielerdaten an einen weiteren Anmeldungsplatz oder Turnierdaten an den Arbeitsplatz eines Turnierordners weitergegeben oder dort gespeichert werden soll werden nur die jeweils relevanten Auszüge aus den Dateien genutzt. Zudem lässt die Software über die Benutzeroberfläche keine Änderungen an Daten zu, die ein Nicht-Administrator nicht bearbeiten darf, da diese beim Zusammenfügen am Administrationsrechner schließlich nicht beachtet werden.
 
-\subsubsection{Event}
+\subsubsubsection{Event}
 
 Die Datei \textit{Event.xml} speichert allgemeine Daten zum ganzen Event. Sie ist folgendermaßen strukturiert:
 \vspace{0.4cm}
@@ -211,7 +248,7 @@ Die Datei \textit{Event.xml} speichert allgemeine Daten zum ganzen Event. Sie is
 	\end{umlscheme}
 \end{umlscheme}}}
 
-\subsubsection{Spieler}
+\subsubsubsection{Spieler}
 
 Die Datei \textit{Players.xml} speichert alle Spieler, die zu einem jeweiligen Event vorangemeldet oder angemeldet sind und ist folgendermaßen strukturiert:
 \vspace{0.4cm}
@@ -235,7 +272,7 @@ Die Datei \textit{Players.xml} speichert alle Spieler, die zu einem jeweiligen E
 	\item[] $\vdots$
 \end{umlscheme}}}
 
-\subsubsection{Turnier}
+\subsubsubsection{Turnier}
 
 Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier, wobei im Dateiname die eindeutige ID des Turniers angegeben ist. Dabei sind diese Dateien folgendermaßen strukturiert:
 \vspace{0.4cm}
@@ -295,6 +332,48 @@ Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier, wobei im Da
 		\end{umlscheme}
 		\item[] $\vdots$
 	\end{umlscheme}
+	\item tournament-rules
+	\begin{umlscheme}
+		\item tournament-phases
+		\begin{umlscheme}
+			\item phase 1
+			\begin{umlscheme}
+				\item phase-number
+				\item number-of-rounds
+				\item pairing-system
+				\item cutoff-number-after-phase
+			\end{umlscheme}
+			\item[] $\vdots$
+		\end{umlscheme}
+	\end{umlscheme}
+\end{umlscheme}}}
+
+\subsubsection{Speicherung von Regelmodulen}
+
+Neben den Events mit Turnieren und Spielern müssen auch noch die Vorlagen für Turniermodule gespeichert werden.
+
+\subsubsection{Regelmodul}
+
+Die folgendermaßen strukturierte Datei \textit{RuleTemplateID.xml} speichert jeweils eine Vorlage für Turnierregeln, die zur Erstellung eines neuen Turniers verwendet werden können. Auch sie trägt eine eindeutige ID im Dateinamen.
+\vspace{0.4cm}
+
+\fbox{\parbox{\textwidth}{
+\begin{umlscheme}
+	\item meta-data
+	\begin{umlscheme}
+		\item name
+	\end{umlscheme}
+	\item tournament-phases
+	\begin{umlscheme}
+		\item phase 1
+		\begin{umlscheme}
+			\item phase-number
+			\item number-of-rounds
+			\item pairing-system
+			\item cutoff-number-after-phase
+		\end{umlscheme}
+		\item[] $\vdots$
+	\end{umlscheme}
 \end{umlscheme}}}
 
 \subsection{Externer Zugriff}
@@ -315,6 +394,10 @@ Auf dem Gebiet des Turniermanagements wie es von \textbf{Tourney} durchgeführt 
 	\item Version 1.2 (10.12.2014)
 	\begin{itemize}
 		\item Kapitel 2 und 4 hinzugefügt
+	\end{itemize}
+	\item Version 1.3 (11.12.2014)
+	\begin{itemize}
+		\item Kapitel 3 hinzugefügt
 	\end{itemize}
 \end{itemize}
 
