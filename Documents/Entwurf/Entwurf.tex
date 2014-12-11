@@ -179,11 +179,13 @@ Im folgenden wird die Schicht der Datenhaltung und Anwendungslogik beschrieben u
 
 \subsection{View}
 
-Beim View handelt es sich um die eigentliche grafische Benutzeroberfläche, die über $\textit{JavaFX}$ implementiert wird.
+Beim View handelt es sich um die eigentliche grafische Benutzeroberfläche, die über \textit{JavaFX} implementiert wird.
 
 \subsubsection{Beschreibung}
 
-\textit{TODO: Beschreibung des Aufbaus}
+Die Benutzeroberfläche in \textit{JavaFX} besteht aus jeweils einer \textit{.fxml}-Datei für jede in der Kontrollstruktur beschriebene Controller-Klasse. Diese Dateien enthalten XML-strukturierte Daten, die die Oberfläche jeweils eines Fensters beschreiben und die Callback-Methode bei einer durch den Nutzer initiierten Aktion festlegen.
+
+Durch diese Strukturierung ist eine komplette Kapselung der Benutzeroberfläche mit geringer Kopplung zu den anderen Komponenten gegeben.
 
 \subsection{Controller}
 
@@ -211,31 +213,31 @@ Außerdem sind bestimmte Attribute untereinander und Elemente der Benutzeroberfl
 
 \includediagram{1.0}{sequence-add-tournament-module.png}
 
-\textit{TODO: Beschreibung}
+Sendet der Administrator über die Oberfläche den Befehl an den \textit{TournamentModuleEditorController}, ein neues Regelmodul zu erstellen, so wird dieser zunächst initialisiert. Daraufhin wird eine neue Instanz der Klasse \textit{TournamentModule} erstellt und an den Controller zurückgegeben. Dieser stellt nun die Oberfläche dar, in der der Administrator das Modul editieren kann.
 
 \subsubsection{Vorangemeldeten Spieler bestätigen}
 
 \includediagram{1.0}{sequence-verify-registered-player.png}
 
-\textit{TODO: Beschreibung}
+Um einen vorangemeldeten Spieler durch eine Anmeldung über den \textit{RegistrationPhase-Controller} zu bestätigen holt der Controller die Liste aller registrierten und teilnehmenden Spieler vom Turnier-Objekt und kopiert den anzumeldenden Spieler in die Liste der teilnehmenden Spieler.
 
 \subsubsection{Aktion rückgängig machen}
 
 \includediagram{1.0}{sequence-undo-action.png}
 
-\textit{TODO: Beschreibung}
+Will ein Nutzer eine Aktion im \textit{EventPhaseViewController} rückgängig machen, so wird der zugehörige Befehl an die Instanz des \textit{UndoManagers} gesendet. Dieser holt sich die aktuelle Aktion auf der Benutzeroberfläche von der Liste von Aktionen und macht diese rückgängig. Zuletzt wird noch das Wiederherstellen dieser Aktion möglich gemacht.
 
 \subsubsection{Passwort ändern}
 
 \includediagram{1.0}{sequence-change-password.png}
 
-\textit{TODO: Beschreibung}
+Das Ändern des Passworts findet über einen Aufruf des \textit{OptionsViewControllers} statt. Dieser öffnet wiederum einen \textit{PasswordDialogController}, der initialisiert wird und sich dann die Singleton-Instanz vom \textit{PreferencesManager} holt. Über diese wird schließlich das neue Passwort gesetzt. Der \textit{PreferencesManager} übernimmt hierbei Operationen wie das Hashing des Passworts.
 
 \subsubsection{Neues Event erstellen}
 
 \includediagram{1.0}{sequence-create-event.png}
 
-\textit{TODO: Beschreibung}
+Will der Administrator ein neues Event über den \textit{MainWindowController} erstellen, so wird zunächst ein \textit{EventCreationDialog} geöffnet und initialisiert. Dieser erstellt ein neues \textit{Event}, das der \textit{MainWindowController} dann an einen \textit{EventPhaseViewController} weitergibt. Das neue Event wird schließlich in einem \textit{EventSetupPhaseController} dargestellt.
 
 \section{Externe Schnittstellen}
 
