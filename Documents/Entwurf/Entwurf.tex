@@ -43,11 +43,9 @@
 \newcommand{\subsubsubsection}[1]{\paragraph{#1}\mbox{}\\}
 
 \newcommand{\includediagram}[2]{
-	\vspace{0.5cm}
 	\begin{center}
 		\includegraphics[width=#1\textwidth]{#2}
 	\end{center}
-	\vspace{0.5cm}
 }
 
 \renewcommand{\contentsname}{Inhaltsverzeichnis}
@@ -149,51 +147,95 @@ Bei der Entwicklung werden an einigen Stellen die folgenden bewährten Entwurfsm
 	
 	\leftskip 1cm
 	Die Berechnung der Ergebnisse von Spielrunden findet immer abhängig von dem verwendeten Regelmodul statt. Dazu wird jedes mögliche Paarungsprinzip als Subklasse einer Strategie-Oberklasse hinzugefügt und kann austauschend verwendet werden. Diese Modularität trägt zur guten Erweiterbarkeit bei.
+	
+	\leftskip 0cm
+	\item[] \textbf{Singleton} \hfill
+	
+	\leftskip 1cm
+	Die Klasse \textit{PreferencesManager} zur Verwaltung der Einstellungen darf pro laufendem System nur als eine Instanz vorhanden sein. Daher wird das Entwurfsmuster des Singletons verwendet.
 \end{itemize}
 
 \subsection{Komponentendiagramm}
 
 \includediagram{0.7}{component-diagram.png}
 
-\subsection{Komponentenübergreifende Funktionen}
-
 \section{Komponenten}
 
 \subsection{Model}
 
-\subsubsection{Schnittstelle}
+Im folgenden wird die Schicht der Datenhaltung und Anwendungslogik beschrieben und strukturiert.
+
+\subsubsection{Klassendiagramme}
 
 \includediagram{1.0}{model-main.png}
 
 \includediagram{1.0}{model-undo.png}
 
-\subsubsection{Interne Realisierung}
+\subsubsection{Beschreibung}
 
-\subsubsection{Realisierte Anforderungen}
+\textit{TODO: Beschreibung Model}
+
+\textit{TODO: Beschreibung Undo}
 
 \subsection{View}
 
-\subsubsection{Schnittstelle}
+Beim View handelt es sich um die eigentliche grafische Benutzeroberfläche, die über $\textit{JavaFX}$ implementiert wird.
 
-\subsubsection{Interne Realisierung}
+\subsubsection{Beschreibung}
 
-\subsubsection{Realisierte Anforderungen}
+\textit{TODO: Beschreibung des Aufbaus}
 
 \subsection{Controller}
 
-\subsubsection{Schnittstelle}
+Die Kontrollstruktur nimmt Eingaben von der Benutzeroberfläche entgegen und führt anhand dessen die passenden Operationen auf der Datenhaltungsschicht aus. Die Struktur wird im Folgenden beschrieben.
+
+\subsubsection{Klassendiagramm}
 
 \includediagram{1.0}{controller.png}
 
-\subsubsection{Interne Realisierung}
+\subsubsection{Beschreibung}
 
-\subsubsection{Realisierte Anforderungen}
+\textit{TODO: Beschreibung}
 
 \subsection{Verbindung der Komponenten}
 
+Die beiden Schichten View und Controller sind über eine Listener-Struktur miteinander verbunden, wobei Eingaben des Nutzers einen Callback zur Folge haben.
+
+Die Kontrollstruktur hält für den Zugriff relevante Instanzen aus der Datenhaltungsschicht bereit.
+
+Außerdem sind bestimmte Attribute untereinander und Elemente der Benutzeroberfläche über \textit{JavaFX-Bindings} miteinander verknüpft. Hierzu werden als Attribute an den relevanten Stellen \textit{JavaFX-Properties} verwendet.
+
 \subsection{Sequenzdiagramme}
 
-\subsubsection{Aktionsbezeichnung}
+\subsubsection{Turniermodul hinzufügen}
+
+\includediagram{1.0}{sequence-add-tournament-module.png}
+
+\textit{TODO: Beschreibung}
+
+\subsubsection{Vorangemeldeten Spieler bestätigen}
+
+\includediagram{1.0}{sequence-verify-registered-player.png}
+
+\textit{TODO: Beschreibung}
+
+\subsubsection{Aktion rückgängig machen}
+
+\includediagram{1.0}{sequence-undo-action.png}
+
+\textit{TODO: Beschreibung}
+
+\subsubsection{Passwort ändern}
+
+\includediagram{1.0}{sequence-change-password.png}
+
+\textit{TODO: Beschreibung}
+
+\subsubsection{Neues Event erstellen}
+
+\includediagram{1.0}{sequence-create-event.png}
+
+\textit{TODO: Beschreibung}
 
 \section{Externe Schnittstellen}
 
@@ -341,7 +383,7 @@ Die Dateien \textit{TournamentID.xml} speichern jeweils ein Turnier, wobei im Da
 				\item phase-number
 				\item number-of-rounds
 				\item pairing-system
-				\item cutoff-number-after-phase
+				\item cutoff-player-number-after-phase
 			\end{umlscheme}
 			\item[] $\vdots$
 		\end{umlscheme}
@@ -362,6 +404,16 @@ Die folgendermaßen strukturierte Datei \textit{RuleTemplateID.xml} speichert je
 	\item meta-data
 	\begin{umlscheme}
 		\item name
+		\item description
+	\end{umlscheme}
+	\item possible-scores
+	\begin{umlscheme}
+		\item score 1
+		\begin{umlscheme}
+			\item name
+			\item points
+		\end{umlscheme}
+		\item[] $\vdots$
 	\end{umlscheme}
 	\item tournament-phases
 	\begin{umlscheme}
