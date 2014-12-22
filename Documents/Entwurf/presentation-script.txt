@@ -1,0 +1,26 @@
+Skript zur Entwurfspräsentation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> Slide 1: Logo, Name und Teammitglieder
+
+"Im folgenden wird der Entwurf der Software Tourney präsentiert, die im Rahmen des Softwarepraktikums im Wintersemester 2014/2015 an der Universität Stuttgart entwickelt wird."
+
+-> Slide 2: Komponentendiagramm
+
+"Das Softwaresystem ist in die hier gezeigten Komponenten gegliedert. Diese kommunizieren über das Observer-Prinzip, was zu einer geringen Kopplung führt. Der View enthält die grafische Oberfläche der Anwendung. Diese wird mit JavaFX realisiert und besteht daher aus jeweils einer FXML-Datei pro benötigtem Bildschirm. Beim Model handelt es sich um die Datenhaltungsschicht. Sie enthält ein Objektgeflecht, das Events mit allen relevanten Daten abbildet. Der Controller enthält die eigentliche Anwendungslogik und stellt die Schnittstelle zwischen View und Model dar. Er ist außerdem für das Laden und Speichern der Daten verantwortlich. Diese werden für jedes Event als XML-Dateien für das Event, die Spieler und die Turniere abgelegt. Zudem werden Regelmodule als eigene XML-Dateien gespeichert. Die Komponenten werden im folgenden genauer beschrieben."
+
+-> Slide 3: Klassendiagramm Model, bei Übermotivation passend über das Diagramm bewegen
+
+"Die zentrale Klasse im Model ist das Event. Es enthält Event-Organisatoren und vorangemeldete und anwesende Spieler. Zudem bündelt es die Turniere, die an diesem Event stattfinden. Ein solches Turnier besteht aus den "
+
+-> Slide 4: Klassendiagramm UndoManager
+
+""
+
+-> Slide 5: View
+
+"Der View besteht ausschließlich aus FXML-Dateien, wobei Benutzeraktionen im Controller behandelt werden."
+
+-> Slide 6: Klassendiagramm Controller
+
+""
