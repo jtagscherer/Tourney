@@ -5,22 +5,30 @@ Skript zur Entwurfspräsentation
 
 "Im folgenden wird der Entwurf der Software Tourney präsentiert, die im Rahmen des Softwarepraktikums im Wintersemester 2014/2015 an der Universität Stuttgart entwickelt wird."
 
+*Lensflare*
+
 -> Slide 2: Komponentendiagramm
+
+*Explosion*
 
 "Das Softwaresystem ist in die hier gezeigten Komponenten gegliedert. Diese kommunizieren über das Observer-Prinzip, was zu einer geringen Kopplung führt. Der View enthält die grafische Oberfläche der Anwendung. Diese wird mit JavaFX realisiert und besteht daher aus jeweils einer FXML-Datei pro benötigtem Bildschirm. Beim Model handelt es sich um die Datenhaltungsschicht. Sie enthält ein Objektgeflecht, das Events mit allen relevanten Daten abbildet. Der Controller enthält die eigentliche Anwendungslogik und stellt die Schnittstelle zwischen View und Model dar. Er ist außerdem für das Laden und Speichern der Daten verantwortlich. Diese werden für jedes Event als XML-Dateien für das Event, die Spieler und die Turniere abgelegt. Zudem werden Regelmodule als eigene XML-Dateien gespeichert. Die Komponenten werden im folgenden genauer beschrieben."
 
+*Laserschwert*, *Lensflare*
+
 -> Slide 3: Klassendiagramm Model, bei Übermotivation passend über das Diagramm bewegen
 
-"Die zentrale Klasse im Model ist das Event. Es enthält Event-Organisatoren und vorangemeldete und anwesende Spieler. Zudem bündelt es die Turniere, die an diesem Event stattfinden. Ein solches Turnier besteht aus den "
+"Die zentrale Klasse im Model ist das Event. Es enthält Event-Organisatoren und vorangemeldete und anwesende Spieler. Zudem bündelt es die Turniere, die an diesem Event stattfinden. Ein solches Turnier besteht aus den angemeldeten und teilnehmenden Spielern, dem Regelsatz des Turniers, repräsentiert als TournamentModule mit dem Spielablauf als Spielphasen und den Runden. Diese enthalten die spezifischen Paarungen der einzelnen Spieler. Die Paarungen werden mit der jeweiligen PairingStrategy im Regelsatz durch den RoundGenerator bestimmt. Zur Verfügung stehen hierzu die Paarungssysteme Jeder-gegen-Jeden, K.O.-, Doppel-K.O.-, Schweizer und das Modifizierte Schweizer System. Die Punktzahl eines Spielers in einem Turnier wird in PlayerScore-Objekten festgehalten. Im System existieren zudem einige zu verwaltende Personengruppen. Dazu wird die Superklasse Person mit den Attributen Name und Mail-Addresse genutzt. Hiervon erbt die Klasse Player, die zusätzlich noch Nickname, Startnummer, ID und Spielerstatus speichern. Zudem gibt es die Superklasse Administrator mit einer Telefonnummer, von der die Klassen EventAdministrator und TournamentAdministrator erben. Auf dieses Objektgeflecht hat der FileManager Zugriff, der sich um das Laden und Speichern aller Daten über die angesprochenen XML-Dateien kümmert."
 
 -> Slide 4: Klassendiagramm UndoManager
 
-""
+"Der UndoManager bietet eine einfach zu benutzende Schnittstelle, um es dem Benutzer zu ermöglichen, durchgeführte Aktionen wieder rückgängig zu machen. Dieses Verfahren lässt sich auf alle JavaFX-Properties und JavaFX-Listen anwenden, indem man sie durch registerUndoProperty() registriert. Intern werden alle an den Properties gemachten Anderungen in einer verketteten Liste gespeichert, die aus UndoNodes aufgebaut ist. Die ausgeführten Anderungen werden innerhalb der Nodes als konkrete Implementierung des UndoAction-Interfaces abgelegt, das die beiden Methoden undo() und redo() bereitstellt. Die Implementierungen kümmern sich dann um die konkrete Ausführung der Rückgängig- und Wiederherstell-Aktionen."
 
--> Slide 5: View
+*Atompilz*
 
-"Der View besteht ausschließlich aus FXML-Dateien, wobei Benutzeraktionen im Controller behandelt werden."
+-> Slide 5: View (JavaFX-Logo?)
+
+"Der View besteht ausschließlich aus FXML-Dateien, wobei Benutzeraktionen im Controller behandelt werden. Diese Dateien enthalten XML-strukturierte Daten, die die Oberfläche jeweils eines Fensters beschreiben und die Callback-Methode bei einer durch den Nutzer initiierten Aktion festlegen. Durch diese Strukturierung ist eine komplette Kapselung der Benutzeroberfläche mit geringer Kopplung zu den anderen Komponenten gegeben."
 
 -> Slide 6: Klassendiagramm Controller
 
-""
+"Die Controller-Klassen in der Kontrollschicht spiegeln die Fenster der Anwendung wider. Hierbei beginnt die Benutzerführung im EntryPoint und kann über Aktionen auf der Benutzeroberfläche entlang der Pfeile erfolgen. Zudem übernehmen die Controller das Binding von Attributen und Elementen der Benutzeroberfläche. Über eine Listener-Struktur reagieren die Controller auf Eingaben mit den passenden Operationen auf der Datenhaltungsschicht. Neben den Controllern sind in der Kontrollschicht noch die Klassen PreferenceManager und RoundTimer vorhanden, die sich um die Einstellungen des aktuellen Benutzers und die Rundenzeiten kümmern."
