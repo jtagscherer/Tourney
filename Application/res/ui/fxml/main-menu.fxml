@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<GridPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.MainMenuController">
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="800.0" styleClass="main-menu-root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.MainMenuController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/main-menu.css" />
@@ -39,7 +39,7 @@
 									<children>
 										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0" HBox.hgrow="ALWAYS">
 											<children>
-												<Button mnemonicParsing="false" styleClass="multi-button-left">
+												<Button fx:id="buttonNewEvent" mnemonicParsing="false" styleClass="multi-button-left">
 													<padding>
 														<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 													</padding>
@@ -52,7 +52,7 @@
 										</VBox>
 										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0" HBox.hgrow="ALWAYS">
 											<children>
-												<Button mnemonicParsing="false" styleClass="multi-button-right">
+												<Button fx:id="buttonOpenEvent" mnemonicParsing="false" styleClass="multi-button-right">
 													<graphic>
 														<IconPane styleClass="icon-folder-open" />
 													</graphic>
@@ -72,7 +72,7 @@
 								<Label alignment="CENTER" styleClass="button-heading" text="Turniermodule" />
 								<VBox>
 									<children>
-										<Button maxHeight="-Infinity" mnemonicParsing="false">
+										<Button fx:id="buttonEditTournamentModules" maxHeight="-Infinity" mnemonicParsing="false">
 											<graphic>
 												<IconPane styleClass="icon-create" />
 											</graphic>
@@ -90,7 +90,7 @@
 								<Label alignment="CENTER" styleClass="button-heading" text="Einstellungen" />
 								<VBox>
 									<children>
-										<Button maxHeight="-Infinity" mnemonicParsing="false">
+										<Button fx:id="buttonOpenOptions" maxHeight="-Infinity" mnemonicParsing="false">
 											<graphic>
 												<IconPane styleClass="icon-settings" />
 											</graphic>

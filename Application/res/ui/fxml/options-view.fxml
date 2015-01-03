@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import tourney.prototype.ui.animation.*?>
+<?import usspg31.tourney.controller.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="800.0" styleClass="main-menu-root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.controls.OptionsViewController">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/main-menu.css" />
+	</stylesheets>
+	<columnConstraints>
+		<ColumnConstraints hgrow="ALWAYS" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints fillHeight="false" minHeight="50.0" percentHeight="15.0" />
+		<RowConstraints minHeight="400.0" percentHeight="70.0" />
+		<RowConstraints percentHeight="15.0" />
+	</rowConstraints>
+	<children>
+		<Label styleClass="heading" text="Einstellungen" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+		<StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" />
+		<VBox GridPane.rowIndex="1">
+			<children>
+				<Pane VBox.vgrow="ALWAYS" />
+				<HBox spacing="30.0" VBox.vgrow="NEVER">
+					<children>
+						<Pane HBox.hgrow="ALWAYS" />
+                  <VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" styleClass="button-heading" text="Sprache" />
+                        <VBox>
+                           <children>
+                              <Button fx:id="buttonChangeLanguage" maxHeight="-Infinity" mnemonicParsing="false">
+                                 <graphic>
+                                    <IconPane styleClass="icon-language" />
+                                 </graphic>
+                              </Button>
+                              <Label alignment="CENTER" styleClass="button-description" text="Ändern" VBox.vgrow="NEVER" />
+                           </children>
+                        </VBox>
+                        <Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
+                        <Label styleClass="button-explanation" text="Legen Sie fest, welche Sprache Tourney verwenden soll." wrapText="true" />
+                        <Pane VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
+							<children>
+								<Label alignment="CENTER" styleClass="button-heading" text="Passwort" />
+								<VBox>
+									<children>
+										<Button fx:id="buttonChangePassword" maxHeight="-Infinity" mnemonicParsing="false">
+											<graphic>
+												<IconPane styleClass="icon-key" />
+											</graphic>
+										</Button>
+										<Label alignment="CENTER" styleClass="button-description" text="Festlegen" VBox.vgrow="NEVER" />
+									</children>
+								</VBox>
+								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
+								<Label styleClass="button-explanation" text="Bestimmen Sie das Passwort, mit dem Tourney vor unberechtigen Zugriff geschützt werden kann." wrapText="true" />
+								<Pane VBox.vgrow="ALWAYS" />
+							</children>
+						</VBox>
+						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
+							<children>
+								<Label alignment="CENTER" styleClass="button-heading" text="Hauptmenü" />
+								<VBox>
+									<children>
+										<Button fx:id="buttonReturnToMainMenu" maxHeight="-Infinity" mnemonicParsing="false">
+											<graphic>
+												<IconPane styleClass="icon-close" />
+											</graphic>
+										</Button>
+										<Label alignment="CENTER" styleClass="button-description" text="Zurückkehren" VBox.vgrow="NEVER" />
+									</children>
+								</VBox>
+								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
+								<Label styleClass="button-explanation" text="Kehren Sie zum Hauptmenü zurück" wrapText="true" />
+								<Pane VBox.vgrow="ALWAYS" />
+							</children>
+						</VBox>
+						<Pane HBox.hgrow="ALWAYS" />
+					</children>
+				</HBox>
+				<Pane VBox.vgrow="ALWAYS" />
+			</children>
+		</VBox>
+	</children>
+</GridPane>

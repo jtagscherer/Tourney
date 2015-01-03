@@ -10,6 +10,13 @@
 	-fx-font-smoothing-type: gray;
 }
 
+.main-window {
+	-fx-max-width: -t-max-value;
+	-fx-max-height: -t-max-value;
+	-fx-prev-width: 900;
+	-fx-background-color: #f00;
+}
+
 .root {
 	-fx-background-color: #d8d8d8;
 }
