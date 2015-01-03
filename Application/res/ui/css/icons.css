@@ -8,6 +8,10 @@
 	-fx-max-height: -t-icon-height;
 	-fx-background-color: -t-icon-color;
 }
+.icon-pane:disabled {
+	-fx-opacity: 100%;
+	-fx-background-color: derive(-t-icon-color, 100%);
+}
 
 .icon-add {
 	-fx-shape: "M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z";

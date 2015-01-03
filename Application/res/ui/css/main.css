@@ -4,13 +4,14 @@
 @import url(buttons.css);
 
 * {
-	-t-max-width: 17976931348623157063305520677714305623012364024923650195478;
+	-t-max-value: 17976931348623157063305520677714305623012364024923650195478;
 	-t-button-color: #eee;
 	-t-icon-color: #222;
+	-fx-font-smoothing-type: gray;
 }
 
 .root {
-	-fx-background-color: #ddd;
+	-fx-background-color: #d8d8d8;
 }
 
 .heading {
