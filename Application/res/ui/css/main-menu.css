@@ -1,0 +1,9 @@
+
+.vertical-seperator {
+	-fx-min-height: 1px;
+	-fx-background-color: #444;
+}
+
+.button {
+	-fx-min-height: 75px;
+}
