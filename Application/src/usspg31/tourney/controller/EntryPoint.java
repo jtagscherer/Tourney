@@ -3,16 +3,12 @@ package usspg31.tourney.controller;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class EntryPoint extends Application {
-
 	private static final Logger log = Logger.getLogger(EntryPoint.class.getName());
-
-	private static EntryPoint instance = null;
 
 	public static void main(String[] args) {
 		log.info("Starting Application");
@@ -27,21 +23,14 @@ public class EntryPoint extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		instance = this;
-
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(this.getClass().getResource("/ui/fxml/main-window.fxml"));
-			Parent root = null;
-			root = (Parent)fxmlLoader.load();
+			Pane root = MainWindow.getInstance();
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Tourney");
-
 			primaryStage.show();
 		} catch(Exception e) {
 			log.severe(e.toString());
 		}
 	}
-
 }
