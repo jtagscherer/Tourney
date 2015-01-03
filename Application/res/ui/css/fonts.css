@@ -1,0 +1,99 @@
+
+/* ******************************************* *
+ *                   ROBOTO                    *
+ * ******************************************* */
+
+/* roboto-regular */
+@font-face {
+	font-family: roboto;
+	src: url('../fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+	font-family: roboto-italic;
+	src: url('../fonts/Roboto/Roboto-Italic.ttf');
+}
+
+/* roboto-thin */
+@font-face {
+	font-family: roboto-thin;
+	src: url('../fonts/Roboto/Roboto-Thin.ttf');
+}
+
+@font-face {
+	font-family: roboto-thin-italic;
+	src: url('../fonts/Roboto/Roboto-ThinItalic.ttf');
+}
+
+/* roboto-light */
+@font-face {
+	font-family: roboto-light;
+	src: url('../fonts/Roboto/Roboto-Light.ttf');
+}
+
+@font-face {
+	font-family: roboto-light-italic;
+	src: url('../fonts/Roboto/Roboto-LightItalic.ttf');
+}
+
+/* roboto-medium */
+@font-face {
+	font-family: roboto-medium;
+	src: url('../fonts/Roboto/Roboto-Medium.ttf');
+}
+
+@font-face {
+	font-family: roboto-medium-italic;
+	src: url('../fonts/Roboto/Roboto-MediumItalic.ttf');
+}
+
+/* roboto-bold */
+@font-face {
+	font-family: roboto-bold;
+	src: url('../fonts/Roboto/Roboto-Bold.ttf');
+}
+
+@font-face {
+	font-family: roboto-bold-italic;
+	src: url('../fonts/Roboto/Roboto-BoldItalic.ttf');
+}
+
+/* roboto-black */
+@font-face {
+	font-family: roboto-black;
+	src: url('../fonts/Roboto/Roboto-Black.ttf');
+}
+
+@font-face {
+	font-family: roboto-black-italic;
+	src: url('../fonts/Roboto/Roboto-BlackItalic.ttf');
+}
+
+
+/* ******************************************* *
+ *                 ROBOTO SLAB                 *
+ * ******************************************* */
+
+/* roboto-slab */
+@font-face {
+	font-family: roboto-slab;
+	src: url('../fonts/Roboto_Slab/RobotoSlab-Regular.ttf');
+}
+
+/* roboto-slab-thin */
+@font-face {
+	font-family: roboto-slab-thin;
+	src: url('../fonts/Roboto_Slab/RobotoSlab-Thin.ttf');
+}
+
+/* roboto-slab-light */
+@font-face {
+	font-family: roboto-slab-light;
+	src: url('../fonts/Roboto_Slab/RobotoSlab-Light.ttf');
+}
+
+/* roboto-bold */
+@font-face {
+	font-family: roboto-slab-bold;
+	src: url('../fonts/Roboto_Slab/RobotoSlab-Bold.ttf');
+}

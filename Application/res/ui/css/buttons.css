@@ -1,0 +1,28 @@
+
+.button {
+	-fx-background-radius: 1px;
+	-fx-background-color: #888, -t-button-color;
+	-fx-background-insets: 0, 1px;
+}
+
+.button:hover {
+	-fx-background-color: #888, derive(-t-button-color, 30%);
+}
+
+.button:armed {
+	-fx-background-color: #888, derive(-t-button-color, -10%)
+}
+
+.multi-button-left {
+	-fx-background-radius: 1px 0 0 1px;
+	-fx-background-insets: 0, 1px 0 1px 1px;
+}
+
+.multi-button-middle {
+	-fx-background-radius: 0;
+	-fx-background-insets: 0, 1px 0 1px 0;
+}
+
+.multi-button-right {
+	-fx-background-radius: 0 1px 1px 0;
+}
