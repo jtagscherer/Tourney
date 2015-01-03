@@ -10,9 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<GridPane prefHeight="500.0" prefWidth="800.0"
-	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="usspg31.tourney.controller.MainWindowController">
+<GridPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.MainWindowController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/main-menu.css" />
@@ -21,16 +19,13 @@
 		<ColumnConstraints hgrow="ALWAYS" />
 	</columnConstraints>
 	<rowConstraints>
-		<RowConstraints fillHeight="false" minHeight="50.0"
-			percentHeight="15.0" />
+		<RowConstraints fillHeight="false" minHeight="50.0" percentHeight="15.0" />
 		<RowConstraints minHeight="400.0" percentHeight="70.0" />
 		<RowConstraints percentHeight="15.0" />
 	</rowConstraints>
 	<children>
-		<Label styleClass="heading" text="Hauptmenü"
-			GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-		<StackPane prefHeight="150.0" prefWidth="200.0"
-			GridPane.rowIndex="2" />
+		<Label styleClass="heading" text="Hauptmenü" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+		<StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" />
 		<VBox GridPane.rowIndex="1">
 			<children>
 				<Pane VBox.vgrow="ALWAYS" />
@@ -39,15 +34,12 @@
 						<Pane HBox.hgrow="ALWAYS" />
 						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
 							<children>
-								<Label alignment="CENTER"
-									text="Event" VBox.vgrow="ALWAYS" />
+								<Label alignment="CENTER" styleClass="button-heading" text="Event" />
 								<HBox VBox.vgrow="NEVER">
 									<children>
-										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0"
-											spacing="5.0" HBox.hgrow="ALWAYS">
+										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0" HBox.hgrow="ALWAYS">
 											<children>
-												<Button maxWidth="1.7976931348623157E308"
-													mnemonicParsing="false" styleClass="multi-button-left">
+												<Button mnemonicParsing="false" styleClass="multi-button-left">
 													<padding>
 														<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 													</padding>
@@ -55,78 +47,59 @@
 														<IconPane styleClass="icon-add" />
 													</graphic>
 												</Button>
-												<Label alignment="CENTER" maxWidth="1.7976931348623157E308"
-													text="Neu" VBox.vgrow="NEVER" />
+												<Label alignment="CENTER" styleClass="button-description" text="Neu" VBox.vgrow="NEVER" />
 											</children>
 										</VBox>
-										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0"
-											spacing="5.0" HBox.hgrow="ALWAYS">
+										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0" HBox.hgrow="ALWAYS">
 											<children>
-												<Button maxWidth="1.7976931348623157E308"
-													mnemonicParsing="false" styleClass="multi-button-right">
+												<Button mnemonicParsing="false" styleClass="multi-button-right">
 													<graphic>
 														<IconPane styleClass="icon-folder-open" />
 													</graphic>
 												</Button>
-												<Label alignment="CENTER" maxWidth="1.7976931348623157E308"
-													text="Öffnen" VBox.vgrow="NEVER" />
+												<Label alignment="CENTER" styleClass="button-description" text="Öffnen" VBox.vgrow="NEVER" />
 											</children>
 										</VBox>
 									</children>
 								</HBox>
-								<Pane prefHeight="1.0" styleClass="vertical-seperator"
-									VBox.vgrow="NEVER" />
-								<Label
-									text="Erstellen oder lade Sie ein Event, um Turniere zu planen, Anmeldungen entgegenzunehmen und Turniere durchzuführen."
-									wrapText="true" />
+								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
+								<Label styleClass="button-explanation" text="Erstellen oder lade Sie ein Event, um Turniere zu planen, Anmeldungen entgegenzunehmen und Turniere durchzuführen." wrapText="true" />
 								<Pane VBox.vgrow="ALWAYS" />
 							</children>
 						</VBox>
 						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
 							<children>
-								<Label alignment="CENTER" maxWidth="1.7976931348623157E308"
-									text="Turniermodule" VBox.vgrow="ALWAYS" />
-								<VBox spacing="5.0">
+								<Label alignment="CENTER" styleClass="button-heading" text="Turniermodule" />
+								<VBox>
 									<children>
-										<Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
-											mnemonicParsing="false">
+										<Button maxHeight="-Infinity" mnemonicParsing="false">
 											<graphic>
 												<IconPane styleClass="icon-create" />
 											</graphic>
 										</Button>
-										<Label alignment="CENTER" maxWidth="1.7976931348623157E308"
-											text="Bearbeiten" VBox.vgrow="NEVER" />
+										<Label alignment="CENTER" styleClass="button-description" text="Bearbeiten" VBox.vgrow="NEVER" />
 									</children>
 								</VBox>
-								<Pane prefHeight="1.0" styleClass="vertical-seperator"
-									VBox.vgrow="NEVER" />
-								<Label
-									text="Verwalten und erstellen Sie Turniermodule, die grundlegende Bausteine um im Turnier Paarungen zu generieren und Partien auszuwerten."
-									wrapText="true" />
+								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
+								<Label styleClass="button-explanation" text="Verwalten und erstellen Sie Turniermodule - Die grundlegenden Bausteine um im Turnier Paarungen zu generieren und Partien auszuwerten." wrapText="true" />
 								<Pane VBox.vgrow="ALWAYS" />
 							</children>
 						</VBox>
 						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
 							<children>
-								<Label alignment="CENTER" maxWidth="1.7976931348623157E308"
-									text="Einstellungen" VBox.vgrow="ALWAYS" />
-								<VBox spacing="5.0">
+								<Label alignment="CENTER" styleClass="button-heading" text="Einstellungen" />
+								<VBox>
 									<children>
-										<Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
-											mnemonicParsing="false">
+										<Button maxHeight="-Infinity" mnemonicParsing="false">
 											<graphic>
 												<IconPane styleClass="icon-settings" />
 											</graphic>
 										</Button>
-										<Label alignment="CENTER" maxWidth="1.7976931348623157E308"
-											text="Anpassen" VBox.vgrow="NEVER" />
+										<Label alignment="CENTER" styleClass="button-description" text="Anpassen" VBox.vgrow="NEVER" />
 									</children>
 								</VBox>
-								<Pane prefHeight="1.0" styleClass="vertical-seperator"
-									VBox.vgrow="NEVER" />
-								<Label
-									text="Passen Sie Tourney nach Ihren Wünschen und Vorstellungen an."
-									wrapText="true" />
+								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
+								<Label styleClass="button-explanation" text="Passen Sie Tourney nach Ihren Wünschen und Vorstellungen an." wrapText="true" />
 								<Pane VBox.vgrow="ALWAYS" />
 							</children>
 						</VBox>

@@ -5,5 +5,26 @@
 }
 
 .button {
-	-fx-min-height: 75px;
+	-fx-min-height: 60pt;
+	-fx-max-height: 60pt;
+	-fx-max-width: -t-max-value;
+}
+
+.button-heading {
+	-fx-max-width: -t-max-value;
+	-fx-padding: 0 0 2pt 0;
+	-fx-font-size: 16pt;
+}
+
+.button-description {
+	-fx-max-width: -t-max-value;
+	-fx-padding: 1pt 0 2pt 0;
+	-fx-font-size: 11pt;
+}
+
+.button-explanation {
+	-fx-font-family: "Roboto Light";
+	-fx-max-width: -t-max-value;
+	-fx-padding: 2pt 0 0 0;
+	-fx-font-size: 11pt;
 }
