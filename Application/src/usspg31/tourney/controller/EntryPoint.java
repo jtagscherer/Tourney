@@ -1,5 +1,6 @@
 package usspg31.tourney.controller;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
@@ -10,14 +11,14 @@ import javafx.stage.Stage;
 public class EntryPoint extends Application {
 	private static final Logger log = Logger.getLogger(EntryPoint.class.getName());
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
 		log.info("Starting Application");
 		log.info("Running JavaFX Version " + System.getProperty("javafx.runtime.version"));
 
 		try {
 			launch(args);
 		} catch (Throwable t) {
-			log.severe(t.toString());
+			log.log(Level.SEVERE, t.getMessage(), t);
 		}
 	}
 
@@ -30,7 +31,8 @@ public class EntryPoint extends Application {
 			primaryStage.setTitle("Tourney");
 			primaryStage.show();
 		} catch(Exception e) {
-			log.severe(e.toString());
+			log.log(Level.SEVERE, e.getMessage(), e);
+			System.exit(1);
 		}
 	}
 }
