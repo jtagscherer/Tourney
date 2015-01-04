@@ -1,4 +1,4 @@
-package usspg31.tourney.controller.controls;
+package usspg31.tourney.controller.layout;
 
 import javafx.scene.layout.Pane;
 
