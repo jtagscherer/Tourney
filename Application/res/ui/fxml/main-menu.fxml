@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import tourney.prototype.ui.animation.*?>
-<?import usspg31.tourney.controller.controls.*?>
+<?import usspg31.tourney.controller.layout.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.shape.*?>
 <?import java.net.*?>
@@ -9,105 +9,79 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import usspg31.tourney.controller.layout.RelativityPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="800.0" styleClass="main-menu-root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.MainMenuController">
+<RelativityPane prefHeight="500.0" prefWidth="800.0"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="usspg31.tourney.controller.MainMenuController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/main-menu.css" />
 	</stylesheets>
-	<columnConstraints>
-		<ColumnConstraints hgrow="ALWAYS" />
-	</columnConstraints>
-	<rowConstraints>
-		<RowConstraints fillHeight="false" minHeight="50.0" percentHeight="15.0" />
-		<RowConstraints minHeight="400.0" percentHeight="70.0" />
-		<RowConstraints percentHeight="15.0" />
-	</rowConstraints>
 	<children>
-		<Label styleClass="heading" text="Hauptmenü" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-		<StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" />
-		<VBox GridPane.rowIndex="1">
-			<children>
-				<Pane VBox.vgrow="ALWAYS" />
-				<HBox spacing="30.0" VBox.vgrow="NEVER">
-					<children>
-						<Pane HBox.hgrow="ALWAYS" />
-						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
-							<children>
-								<Label alignment="CENTER" styleClass="button-heading" text="Event" />
-								<HBox VBox.vgrow="NEVER">
-									<children>
-										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0" HBox.hgrow="ALWAYS">
-											<children>
-												<Button fx:id="buttonNewEvent" mnemonicParsing="false" styleClass="multi-button-left">
-													<padding>
-														<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-													</padding>
-													<graphic>
-														<IconPane styleClass="icon-add" />
-													</graphic>
-												</Button>
-												<Label alignment="CENTER" styleClass="button-description" text="Neu" VBox.vgrow="NEVER" />
-											</children>
-										</VBox>
-										<VBox maxWidth="1.7976931348623157E308" prefWidth="10000.0" HBox.hgrow="ALWAYS">
-											<children>
-												<Button fx:id="buttonOpenEvent" mnemonicParsing="false" styleClass="multi-button-right">
-													<graphic>
-														<IconPane styleClass="icon-folder-open" />
-													</graphic>
-												</Button>
-												<Label alignment="CENTER" styleClass="button-description" text="Öffnen" VBox.vgrow="NEVER" />
-											</children>
-										</VBox>
-									</children>
-								</HBox>
-								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
-								<Label styleClass="button-explanation" text="Erstellen oder lade Sie ein Event, um Turniere zu planen, Anmeldungen entgegenzunehmen und Turniere durchzuführen." wrapText="true" />
-								<Pane VBox.vgrow="ALWAYS" />
-							</children>
-						</VBox>
-						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
-							<children>
-								<Label alignment="CENTER" styleClass="button-heading" text="Turniermodule" />
-								<VBox>
-									<children>
-										<Button fx:id="buttonEditTournamentModules" maxHeight="-Infinity" mnemonicParsing="false">
-											<graphic>
-												<IconPane styleClass="icon-create" />
-											</graphic>
-										</Button>
-										<Label alignment="CENTER" styleClass="button-description" text="Bearbeiten" VBox.vgrow="NEVER" />
-									</children>
-								</VBox>
-								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
-								<Label styleClass="button-explanation" text="Verwalten und erstellen Sie Turniermodule - Die grundlegenden Bausteine um im Turnier Paarungen zu generieren und Partien auszuwerten." wrapText="true" />
-								<Pane VBox.vgrow="ALWAYS" />
-							</children>
-						</VBox>
-						<VBox maxWidth="300.0" HBox.hgrow="ALWAYS">
-							<children>
-								<Label alignment="CENTER" styleClass="button-heading" text="Einstellungen" />
-								<VBox>
-									<children>
-										<Button fx:id="buttonOpenOptions" maxHeight="-Infinity" mnemonicParsing="false">
-											<graphic>
-												<IconPane styleClass="icon-settings" />
-											</graphic>
-										</Button>
-										<Label alignment="CENTER" styleClass="button-description" text="Anpassen" VBox.vgrow="NEVER" />
-									</children>
-								</VBox>
-								<Pane prefHeight="1.0" styleClass="vertical-seperator" VBox.vgrow="NEVER" />
-								<Label styleClass="button-explanation" text="Passen Sie Tourney nach Ihren Wünschen und Vorstellungen an." wrapText="true" />
-								<Pane VBox.vgrow="ALWAYS" />
-							</children>
-						</VBox>
-						<Pane HBox.hgrow="ALWAYS" />
-					</children>
+		<Label minHeight="-Infinity" minWidth="-Infinity" styleClass="heading"
+			text="Hauptmenü" RelativityPane.relLeft="50%"
+			RelativityPane.relRight="50%" RelativityPane.relTop="5% 5px 30px" />
+		<RelativityPane RelativityPane.relTop="33% 40px"
+			RelativityPane.relRight="5% 10px" RelativityPane.relBottom="0px"
+			RelativityPane.relLeft="5% 10px" minWidth="600" maxWidth="1000">
+			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
+				RelativityPane.relRight="70%" RelativityPane.relLeft="0%">
+				<Label styleClass="button-heading" text="Event" />
+				<HBox>
+					<VBox HBox.hgrow="ALWAYS">
+						<Button fx:id="buttonNewEvent" styleClass="menu-button, multi-button-left">
+							<graphic>
+								<IconPane styleClass="icon-add" />
+							</graphic>
+						</Button>
+						<Label styleClass="button-description" text="Neu" />
+					</VBox>
+					<VBox HBox.hgrow="ALWAYS">
+						<Button fx:id="buttonOpenEvent" styleClass="menu-button, multi-button-right">
+							<graphic>
+								<IconPane styleClass="icon-folder-open" />
+							</graphic>
+						</Button>
+						<Label styleClass="button-description" text="Öffnen" />
+					</VBox>
 				</HBox>
-				<Pane VBox.vgrow="ALWAYS" />
-			</children>
-		</VBox>
+				<Pane styleClass="vertical-seperator" />
+				<Label styleClass="button-explanation"
+					text="Erstellen oder lade Sie ein Event, um Turniere zu planen, Anmeldungen entgegenzunehmen und Turniere durchzuführen." />
+			</VBox>
+			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
+				RelativityPane.relRight="35%" RelativityPane.relLeft="35%">
+				<Label styleClass="button-heading" text="Turniermodule" />
+				<Button fx:id="buttonEditTournamentModules" styleClass="menu-button"
+					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+					AnchorPane.rightAnchor="0">
+					<graphic>
+						<IconPane styleClass="icon-create" />
+					</graphic>
+				</Button>
+				<Label styleClass="button-description" text="Bearbeiten" />
+				<Pane styleClass="vertical-seperator" />
+				<Label styleClass="button-explanation"
+					text="Verwalten und erstellen Sie Turniermodule - Die grundlegenden Bausteine um im Turnier Paarungen zu generieren und Partien auszuwerten." />
+			</VBox>
+			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
+				RelativityPane.relRight="0%" RelativityPane.relLeft="70%">
+				<Label styleClass="button-heading" text="Einstellungen" />
+				<Button fx:id="buttonOpenOptions" styleClass="menu-button"
+					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+					AnchorPane.rightAnchor="0">
+					<graphic>
+						<IconPane styleClass="icon-settings" />
+					</graphic>
+				</Button>
+				<Label styleClass="button-description" text="Anpassen" />
+				<Pane styleClass="vertical-seperator" />
+				<Label styleClass="button-explanation"
+					text="Passen Sie Tourney nach Ihren Wünschen und Vorstellungen an." />
+			</VBox>
+		</RelativityPane>
 	</children>
-</GridPane>
+</RelativityPane>

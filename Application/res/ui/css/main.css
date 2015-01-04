@@ -10,6 +10,11 @@
 	-fx-font-smoothing-type: gray;
 }
 
+.panel {
+	-fx-max-width: -t-max-value;
+	-fx-max-height: -t-max-value;
+}
+
 .main-window {
 	-fx-max-width: -t-max-value;
 	-fx-max-height: -t-max-value;
