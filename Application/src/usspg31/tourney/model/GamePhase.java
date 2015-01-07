@@ -23,4 +23,64 @@ public class GamePhase {
 		this.pairingMethod = new SimpleObjectProperty<PairingStrategy>();
 		this.roundDuration = new SimpleObjectProperty<Duration>();
 	}
+
+	public int getCutoff() {
+		return this.cutoff.get();
+	}
+
+	public void setCutoff(int value) {
+		this.cutoff.set(value);
+	}
+
+	public IntegerProperty getCutoffPorperty() {
+		return this.cutoff;
+	}
+
+	public PairingStrategy getPairingMethod() {
+		return this.pairingMethod.get();
+	}
+
+	public void setPairingMethod(PairingStrategy value) {
+		this.pairingMethod.set(value);
+	}
+
+	public ObjectProperty<PairingStrategy> getPairingMethodProperty() {
+		return this.pairingMethod;
+	}
+
+	public int getRoundCount() {
+		return this.roundCount.get();
+	}
+
+	public void setRoundCount(int value) {
+		this.roundCount.set(value);
+	}
+
+	public IntegerProperty getRoundCountProperty() {
+		return this.roundCount;
+	}
+
+	public int getPhaseNumber() {
+		return this.phaseNumber.get();
+	}
+
+	public void setPhaseNumber(int value) {
+		this.phaseNumber.set(value);
+	}
+
+	public IntegerProperty getPhaseNumberProperty() {
+		return this.phaseNumber;
+	}
+
+	public Duration getRoundDuration() {
+		return this.roundDuration.get();
+	}
+
+	public void setRoundDuration(Duration value) {
+		this.roundDuration.set(value);
+	}
+
+	public ObjectProperty<Duration> getRoundDurationProperty() {
+		return this.roundDuration;
+	}
 }
