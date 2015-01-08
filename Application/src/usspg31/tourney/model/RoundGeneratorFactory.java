@@ -4,12 +4,9 @@ public class RoundGeneratorFactory {
 	public TournamentRound generateRound(Tournament value) {
 		TournamentRound round = new TournamentRound(value.getRounds().size());
 		round.getPairings().addAll(
-				value.getRuleSet().getPhaseList().get(value.getRounds().size())
+				StaticMethods.findPhase(value.getRounds().size(), value)
 						.getPairingMethod().generatePairing(value));
 		return round;
 	}
 
-	public int findPhase(int roundcount) {
-
-	}
 }
