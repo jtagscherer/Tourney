@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import usspg31.tourney.controller.controls.EventPhaseViewController;
 
 public class MainWindow extends StackPane {
 
@@ -42,6 +43,9 @@ public class MainWindow extends StackPane {
 	private Pane optionsView;
 	private OptionsViewController optionsViewController;
 
+	private Pane eventPhaseView;
+	private EventPhaseViewController eventPhaseViewController;
+
 	private DoubleProperty offset;
 
 	private Timeline slideAnimation;
@@ -58,7 +62,7 @@ public class MainWindow extends StackPane {
 
 		this.loadSubViews();
 
-		this.getChildren().addAll(this.mainMenu, this.optionsView);
+		this.getChildren().addAll(this.mainMenu, this.optionsView, this.eventPhaseView);
 	}
 
 	private void initTransitions() {
@@ -81,6 +85,12 @@ public class MainWindow extends StackPane {
 		this.optionsView = optionsViewLoader.load();
 		this.optionsViewController = optionsViewLoader.getController();
 		this.optionsView.setVisible(false);
+
+		FXMLLoader eventPhaseViewLoader = new FXMLLoader(this.getClass()
+				.getResource("/ui/fxml/controls/event-phase-view.fxml"));
+		this.eventPhaseView = eventPhaseViewLoader.load();
+		this.eventPhaseViewController = eventPhaseViewLoader.getController();
+		this.eventPhaseView.setVisible(false);
 
 		this.currentPane = this.mainMenu;
 	}
@@ -163,7 +173,6 @@ public class MainWindow extends StackPane {
 
 	public void displayEventPhaseView() {
 		log.fine("Displaying event phases");
-		this.mainMenu.setVisible(false);
-		this.optionsView.setVisible(false);
+		this.slideUp(this.eventPhaseView);
 	}
 }

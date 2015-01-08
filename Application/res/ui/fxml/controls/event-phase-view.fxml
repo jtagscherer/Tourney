@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<RelativityPane xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.controls.EventPhaseViewController">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/event-phase.css" />
+	</stylesheets>
+	<children>
+		<HBox fx:id="menuButtonBar" prefHeight="42.0" prefWidth="200.0"
+			spacing="10.0" RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
+			RelativityPane.relTop="0px">
+			<children>
+				<Button fx:id="buttonClose" maxHeight="1.7976931348623157E308"
+					mnemonicParsing="false" styleClass="menu-button">
+					<graphic>
+						<IconPane>
+							<styleClass>
+								<String fx:value="icon-close" />
+								<String fx:value="half" />
+							</styleClass>
+						</IconPane>
+					</graphic>
+				</Button>
+				<Button fx:id="buttonSave" maxHeight="1.7976931348623157E308"
+					mnemonicParsing="false" styleClass="menu-button">
+					<graphic>
+						<IconPane>
+							<styleClass>
+								<String fx:value="icon-save" />
+								<String fx:value="half" />
+							</styleClass>
+						</IconPane>
+					</graphic>
+				</Button>
+				<HBox maxHeight="1.7976931348623157E308">
+					<children>
+						<Button fx:id="buttonOptions" maxHeight="1.7976931348623157E308"
+							mnemonicParsing="false">
+							<graphic>
+								<IconPane>
+									<styleClass>
+										<String fx:value="icon-undo" />
+										<String fx:value="half" />
+									</styleClass>
+								</IconPane>
+							</graphic>
+							<styleClass>
+								<String fx:value="menu-button" />
+								<String fx:value="multi-button" />
+								<String fx:value="left" />
+							</styleClass>
+						</Button>
+						<Button fx:id="buttonRedo" maxHeight="1.7976931348623157E308"
+							mnemonicParsing="false">
+							<graphic>
+								<IconPane styleClass="icon-redo, half" />
+							</graphic>
+							<styleClass>
+								<String fx:value="menu-button" />
+								<String fx:value="multi-button" />
+								<String fx:value="right" />
+							</styleClass>
+						</Button>
+					</children>
+				</HBox>
+			</children>
+			<padding>
+				<Insets bottom="4.0" left="3.0" right="3.0" top="3.0" />
+			</padding>
+		</HBox>
+		<HBox alignment="TOP_RIGHT" pickOnBounds="false" prefHeight="30.0"
+			prefWidth="200.0" spacing="10.0" RelativityPane.relLeft="0px"
+			RelativityPane.relRight="0px" RelativityPane.relTop="0px">
+			<children>
+				<Button fx:id="buttonLock" maxHeight="1.7976931348623157E308"
+					mnemonicParsing="false" styleClass="menu-button">
+					<graphic>
+						<IconPane>
+							<styleClass>
+								<String fx:value="icon-lock" />
+								<String fx:value="half" />
+							</styleClass>
+						</IconPane>
+					</graphic>
+				</Button>
+				<Button fx:id="buttonOptions" maxHeight="1.7976931348623157E308"
+					mnemonicParsing="false" styleClass="menu-button">
+					<graphic>
+						<IconPane>
+							<styleClass>
+								<String fx:value="icon-settings" />
+								<String fx:value="half" />
+							</styleClass>
+						</IconPane>
+					</graphic>
+				</Button>
+			</children>
+			<padding>
+				<Insets bottom="4.0" left="3.0" right="3.0" top="3.0" />
+			</padding>
+		</HBox>
+		<HBox fx:id="breadcrumbContainer" prefWidth="200.0"
+			RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
+			RelativityPane.relTop="42px">
+			<children>
+				<Button fx:id="breadcrumbEventSetup" mnemonicParsing="false"
+					styleClass="breadcrumb-button" text="Event Einstellungen"
+					HBox.hgrow="ALWAYS" />
+				<Button fx:id="breadcrumbPreRegistration" mnemonicParsing="false"
+					styleClass="breadcrumb-button" text="Voranmeldung" HBox.hgrow="ALWAYS" />
+				<Button fx:id="breadcrumbRegistration" mnemonicParsing="false"
+					styleClass="breadcrumb-button" text="Anmeldung" HBox.hgrow="ALWAYS" />
+				<Button fx:id="breadcrumbTournamentExecution"
+					mnemonicParsing="false" styleClass="breadcrumb-button" text="Turnierdurchführung"
+					HBox.hgrow="ALWAYS" />
+			</children>
+			<padding>
+				<Insets bottom="4.0" left="3.0" right="3.0" top="3.0" />
+			</padding>
+		</HBox>
+		<StackPane fx:id="eventPhaseContainer" prefHeight="150.0"
+			prefWidth="200.0" RelativityPane.relBottom="0px"
+			RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
+			RelativityPane.relTop="84px" />
+	</children>
+</RelativityPane>
