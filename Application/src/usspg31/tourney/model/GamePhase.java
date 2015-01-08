@@ -32,7 +32,7 @@ public class GamePhase {
 		this.cutoff.set(value);
 	}
 
-	public IntegerProperty cutoffPorperty() {
+	public IntegerProperty cutoffProperty() {
 		return this.cutoff;
 	}
 
