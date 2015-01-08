@@ -31,7 +31,7 @@ public class Player extends Person {
 		this.nickName.set(value);
 	}
 
-	public StringProperty getNickNameProperty() {
+	public StringProperty nickNameProperty() {
 		return this.nickName;
 	}
 
@@ -43,7 +43,7 @@ public class Player extends Person {
 		this.startingNumber.set(value);
 	}
 
-	public StringProperty getStartingNumberProperty() {
+	public StringProperty startingNumberProperty() {
 		return this.startingNumber;
 	}
 
@@ -55,7 +55,7 @@ public class Player extends Person {
 		this.payed.set(value);
 	}
 
-	public BooleanProperty getPayedProperty() {
+	public BooleanProperty payedProperty() {
 		return this.payed;
 	}
 
@@ -67,7 +67,7 @@ public class Player extends Person {
 		this.disqualified.set(value);
 	}
 
-	public BooleanProperty getDisqualifiedProperty() {
+	public BooleanProperty disqualifiedProperty() {
 		return this.disqualified;
 	}
 
@@ -79,7 +79,7 @@ public class Player extends Person {
 		this.id.set(value);
 	}
 
-	public StringProperty getIdProperty() {
+	public StringProperty idProperty() {
 		return this.id;
 	}
 }
