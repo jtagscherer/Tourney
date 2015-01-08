@@ -21,5 +21,39 @@ public class TournamentModule {
 		this.possibleScores = FXCollections
 				.observableMap(new HashMap<String, Integer>());
 		this.phaseList = FXCollections.observableArrayList();
+
 	}
+
+	public String getName() {
+		return this.name.get();
+	}
+
+	public void setName(String value) {
+		this.name.set(value);
+	}
+
+	public StringProperty nameProperty() {
+		return this.name;
+	}
+
+	public String getDescription() {
+		return this.description.get();
+	}
+
+	public void setDescription(String value) {
+		this.description.set(value);
+	}
+
+	public StringProperty descriptionProperty() {
+		return this.description;
+	}
+
+	public ObservableMap<String, Integer> getPossibleScores() {
+		return this.possibleScores;
+	}
+
+	public ObservableList<GamePhase> getPhaseList() {
+		return this.phaseList;
+	}
+
 }

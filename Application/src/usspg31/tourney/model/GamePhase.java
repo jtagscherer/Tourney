@@ -32,7 +32,7 @@ public class GamePhase {
 		this.cutoff.set(value);
 	}
 
-	public IntegerProperty getCutoffPorperty() {
+	public IntegerProperty cutoffPorperty() {
 		return this.cutoff;
 	}
 
@@ -44,7 +44,7 @@ public class GamePhase {
 		this.pairingMethod.set(value);
 	}
 
-	public ObjectProperty<PairingStrategy> getPairingMethodProperty() {
+	public ObjectProperty<PairingStrategy> pairingMethodProperty() {
 		return this.pairingMethod;
 	}
 
@@ -56,7 +56,7 @@ public class GamePhase {
 		this.roundCount.set(value);
 	}
 
-	public IntegerProperty getRoundCountProperty() {
+	public IntegerProperty roundCountProperty() {
 		return this.roundCount;
 	}
 
@@ -68,7 +68,7 @@ public class GamePhase {
 		this.phaseNumber.set(value);
 	}
 
-	public IntegerProperty getPhaseNumberProperty() {
+	public IntegerProperty phaseNumberProperty() {
 		return this.phaseNumber;
 	}
 
@@ -80,7 +80,7 @@ public class GamePhase {
 		this.roundDuration.set(value);
 	}
 
-	public ObjectProperty<Duration> getRoundDurationProperty() {
+	public ObjectProperty<Duration> roundDurationProperty() {
 		return this.roundDuration;
 	}
 }
