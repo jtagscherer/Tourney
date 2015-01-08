@@ -1,9 +1,8 @@
-package usspg31.tourney.model;
+package usspg31.tourney.model.filemanagement;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,6 +29,17 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import usspg31.tourney.model.Event;
+import usspg31.tourney.model.EventAdministrator;
+import usspg31.tourney.model.GamePhase;
+import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.Player;
+import usspg31.tourney.model.PlayerScore;
+import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.TournamentAdministrator;
+import usspg31.tourney.model.TournamentModule;
+import usspg31.tourney.model.TournamentRound;
 
 /**
  * Contains static methods that save and load rule modules and events including
@@ -135,11 +145,11 @@ public class FileSaver {
 		if (!FileSaver.initialized) {
 			FileSaver.initialize();
 		}
-		
-		if(!path.endsWith(".ttm")) {
+
+		if (!path.endsWith(".ttm")) {
 			path += ".ttm";
 		}
-		
+
 		FileSaver.saveTournamentModule(module, path);
 	}
 
