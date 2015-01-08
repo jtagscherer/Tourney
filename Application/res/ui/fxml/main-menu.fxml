@@ -13,9 +13,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<RelativityPane prefHeight="500.0" prefWidth="800.0"
-	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="usspg31.tourney.controller.MainMenuController">
+<RelativityPane xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.MainMenuController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/main-menu.css" />
@@ -24,23 +23,23 @@
 		<Label minHeight="-Infinity" minWidth="-Infinity" styleClass="heading"
 			text="Hauptmenü" RelativityPane.relLeft="50%"
 			RelativityPane.relRight="50%" RelativityPane.relTop="5% 5px 30px" />
-		<RelativityPane RelativityPane.relTop="33% 40px"
-			RelativityPane.relRight="5% 10px" RelativityPane.relBottom="0px"
-			RelativityPane.relLeft="5% 10px" minWidth="600" maxWidth="1000">
+		<RelativityPane styleClass="menu-button-container"
+			RelativityPane.relTop="33% 40px" RelativityPane.relRight="5% 10px"
+			RelativityPane.relBottom="0px" RelativityPane.relLeft="5% 10px">
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="70%" RelativityPane.relLeft="0%">
 				<Label styleClass="button-heading" text="Event" />
-				<HBox>
-					<VBox HBox.hgrow="ALWAYS">
-						<Button fx:id="buttonNewEvent" styleClass="menu-button, multi-button-left">
+				<HBox fx:id="eventButtonsContainer" styleClass="multi-button-container">
+					<VBox fx:id="eventButtonsLeft" styleClass="vbox" HBox.hgrow="ALWAYS">
+						<Button fx:id="buttonNewEvent" styleClass="menu-button, multi-button, left">
 							<graphic>
 								<IconPane styleClass="icon-add" />
 							</graphic>
 						</Button>
 						<Label styleClass="button-description" text="Neu" />
 					</VBox>
-					<VBox HBox.hgrow="ALWAYS">
-						<Button fx:id="buttonOpenEvent" styleClass="menu-button, multi-button-right">
+					<VBox fx:id="eventButtonsRight" HBox.hgrow="ALWAYS">
+						<Button fx:id="buttonOpenEvent" styleClass="menu-button, multi-button, right">
 							<graphic>
 								<IconPane styleClass="icon-folder-open" />
 							</graphic>

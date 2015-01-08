@@ -1,15 +1,23 @@
 
+.multi-button-container {
+	-fx-max-width: -t-max-value;
+	-fx-background-color: #f00;
+}
+
+.menu-button-container {
+	-fx-min-width: 600px;
+	-fx-max-width: 1000px;
+}
+
 .vertical-seperator {
 	-fx-min-height: 1px;
 	-fx-background-color: #444;
 }
 
 .icon-pane {
-	-fx-min-value: 0;
 }
 
 .menu-button {
-	-fx-min-width: 0;
 	-fx-min-height: 60pt;
 	-fx-max-height: 60pt;
 	-fx-max-width: -t-max-value;
@@ -23,6 +31,8 @@
 }
 
 .button-description {
+	-fx-min-width: 0;
+	-fx-pref-width: 0;
 	-fx-alignment: center;
 	-fx-max-width: -t-max-value;
 	-fx-padding: 1pt 0 2pt 0;

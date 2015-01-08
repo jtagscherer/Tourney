@@ -18,16 +18,19 @@
 	-fx-background-color: #888, derive(-t-button-color, -5%);
 }
 
-.multi-button-left {
+.multi-button {
+}
+
+.multi-button.left {
 	-fx-background-radius: 1px 0 0 1px;
 	-fx-background-insets: 0, 1px 0 1px 1px;
 }
 
-.multi-button-middle {
+.multi-button.middle {
 	-fx-background-radius: 0;
 	-fx-background-insets: 0, 1px 0 1px 0;
 }
 
-.multi-button-right {
+.multi-button.right {
 	-fx-background-radius: 0 1px 1px 0;
 }
