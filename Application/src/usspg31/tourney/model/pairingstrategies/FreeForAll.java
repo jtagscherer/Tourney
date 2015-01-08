@@ -5,7 +5,7 @@ import java.util.Random;
 
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Player;
-import usspg31.tourney.model.StaticMethods;
+import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Tournament;
 
 public class FreeForAll implements PairingStrategy {
@@ -19,11 +19,11 @@ public class FreeForAll implements PairingStrategy {
 		randomList.addAll(value.getRegisteredPlayers());
 		int randomNumber;
 		if (value.getRounds().size() == 0) {
-			while (randomList.size() >= StaticMethods.findPhase(
+			while (randomList.size() >= PairingHelper.findPhase(
 					value.getRounds().size(), value).getNumberOfOpponents()) {
 				partResult = new Pairing();
 
-				for (int i = 0; i < StaticMethods.findPhase(
+				for (int i = 0; i < PairingHelper.findPhase(
 						value.getRounds().size(), value).getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
 					partResult.getOpponents().add(randomList.get(randomNumber));
@@ -34,11 +34,11 @@ public class FreeForAll implements PairingStrategy {
 		} else if (value.getRuleSet().getPhaseList()
 				.get(value.getRounds().size() - 1).getPairingMethod()
 				.getClass() != FreeForAll.class) {
-			while (randomList.size() >= StaticMethods.findPhase(
+			while (randomList.size() >= PairingHelper.findPhase(
 					value.getRounds().size(), value).getNumberOfOpponents()) {
 				partResult = new Pairing();
 
-				for (int i = 0; i < StaticMethods.findPhase(
+				for (int i = 0; i < PairingHelper.findPhase(
 						value.getRounds().size(), value).getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
 					partResult.getOpponents().add(randomList.get(randomNumber));
@@ -47,11 +47,11 @@ public class FreeForAll implements PairingStrategy {
 				result.add(partResult);
 			}
 		} else {
-			while (randomList.size() >= StaticMethods.findPhase(
+			while (randomList.size() >= PairingHelper.findPhase(
 					value.getRounds().size(), value).getNumberOfOpponents()) {
 				partResult = new Pairing();
 
-				for (int i = 0; i < StaticMethods.findPhase(
+				for (int i = 0; i < PairingHelper.findPhase(
 						value.getRounds().size(), value).getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
 					partResult.getOpponents().add(randomList.get(randomNumber));
