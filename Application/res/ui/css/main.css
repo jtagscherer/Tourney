@@ -24,6 +24,8 @@
 
 .root {
 	-fx-background-color: #d8d8d8;
+	-fx-min-width: 640px;
+	-fx-min-height: 480px;
 }
 
 .heading {
