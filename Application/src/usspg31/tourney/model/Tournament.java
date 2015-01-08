@@ -1,7 +1,5 @@
 package usspg31.tourney.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -35,7 +33,7 @@ public class Tournament {
 		return this.attendingPlayers;
 	}
 
-	public ObservableList<TournamentRound> getRound() {
+	public ObservableList<TournamentRound> getRounds() {
 		return this.rounds;
 	}
 
