@@ -15,6 +15,7 @@ public class GamePhase {
 	private final IntegerProperty roundCount;
 	private final IntegerProperty phaseNumber;
 	private final ObjectProperty<Duration> roundDuration;
+	private final IntegerProperty numberOfOpponents;
 
 	public GamePhase() {
 		this.cutoff = new SimpleIntegerProperty();
@@ -22,6 +23,7 @@ public class GamePhase {
 		this.phaseNumber = new SimpleIntegerProperty();
 		this.pairingMethod = new SimpleObjectProperty<PairingStrategy>();
 		this.roundDuration = new SimpleObjectProperty<Duration>();
+		this.numberOfOpponents = new SimpleIntegerProperty();
 	}
 
 	public int getCutoff() {
@@ -82,5 +84,17 @@ public class GamePhase {
 
 	public ObjectProperty<Duration> roundDurationProperty() {
 		return this.roundDuration;
+	}
+
+	public int getNumberOfOpponents() {
+		return this.numberOfOpponents.get();
+	}
+
+	public void setNumberOfOpponents(int value) {
+		this.numberOfOpponents.set(value);
+	}
+
+	public IntegerProperty numberOfOpponentsProperty() {
+		return this.numberOfOpponents;
 	}
 }

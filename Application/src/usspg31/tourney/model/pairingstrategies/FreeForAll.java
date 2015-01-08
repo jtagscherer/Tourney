@@ -17,12 +17,16 @@ public class FreeForAll implements PairingStrategy {
 		Pairing partResult;
 		randomList.addAll(value.getRegisteredPlayers());
 		int randomNumber;
-		if (value.getRuleSet().getPhaseList().get(value.getRounds().size() - 1)
-				.getPairingMethod().getClass() != FreeForAll.class) {
+		if (value.getRounds().size() == 0) {
+
+		} else if (value.getRuleSet().getPhaseList()
+				.get(value.getRounds().size() - 1).getPairingMethod()
+				.getClass() != FreeForAll.class) {
 			while (randomList.size() > 0) {
 				partResult = new Pairing();
 
-				for (int i = 0; i < value.getRuleSet().getNumberOfOpponents(); i++) {
+				for (int i = 0; i < value.getRuleSet().getPhaseList()
+						.get(value.get).getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);

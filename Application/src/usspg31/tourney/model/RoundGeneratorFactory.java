@@ -8,4 +8,8 @@ public class RoundGeneratorFactory {
 						.getPairingMethod().generatePairing(value));
 		return round;
 	}
+
+	public int findPhase(int roundcount) {
+
+	}
 }
