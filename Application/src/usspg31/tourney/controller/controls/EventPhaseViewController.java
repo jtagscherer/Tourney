@@ -6,6 +6,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import usspg31.tourney.controller.controls.eventphases.EventSetupPhaseController
 import usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.RegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
+import usspg31.tourney.model.undo.UndoManager;
 
 public class EventPhaseViewController {
 
@@ -62,10 +64,17 @@ public class EventPhaseViewController {
 	private static final Duration transitionDuration = Duration.millis(300);
 	private static Interpolator transitionInterpolator = Interpolator.SPLINE(.4, 0, 0, 1);
 
+	// Undo
+	private UndoManager undoManager;
+
 	@FXML private void initialize() throws IOException {
 		this.buttonClose.setOnAction(event -> {
 			MainWindow.getInstance().displayMainMenu();
 		});
+
+		this.undoManager = new UndoManager();
+		this.buttonUndo.disableProperty().bind(this.undoManager.undoAvailableProperty().not());
+		this.buttonRedo.disableProperty().bind(this.undoManager.redoAvailableProperty().not());
 
 		this.phasePosition = new SimpleDoubleProperty(0);
 
@@ -91,17 +100,12 @@ public class EventPhaseViewController {
 
 	private void initBreadcrumbs() {
 		// make all breadcrumb buttons equal size
-		this.breadcrumbEventSetup.prefWidthProperty().bind(
-				this.breadcrumbContainer.widthProperty().divide(4));
+		DoubleBinding quarterWidth = this.breadcrumbContainer.widthProperty().divide(4);
 
-		this.breadcrumbPreRegistration.prefWidthProperty().bind(
-				this.breadcrumbContainer.widthProperty().divide(4));
-
-		this.breadcrumbRegistration.prefWidthProperty().bind(
-				this.breadcrumbContainer.widthProperty().divide(4));
-
-		this.breadcrumbTournamentExecution.prefWidthProperty().bind(
-				this.breadcrumbContainer.widthProperty().divide(4));
+		this.breadcrumbEventSetup.prefWidthProperty().bind(quarterWidth);
+		this.breadcrumbPreRegistration.prefWidthProperty().bind(quarterWidth);
+		this.breadcrumbRegistration.prefWidthProperty().bind(quarterWidth);
+		this.breadcrumbTournamentExecution.prefWidthProperty().bind(quarterWidth);
 	}
 
 	private void loadSubViews() throws IOException {

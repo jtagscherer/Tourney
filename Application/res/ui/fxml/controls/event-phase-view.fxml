@@ -42,7 +42,7 @@
 				</Button>
 				<HBox maxHeight="1.7976931348623157E308">
 					<children>
-						<Button fx:id="buttonOptions" maxHeight="1.7976931348623157E308"
+						<Button fx:id="buttonUndo" maxHeight="1.7976931348623157E308"
 							mnemonicParsing="false">
 							<graphic>
 								<IconPane>
