@@ -5,11 +5,23 @@ import javafx.collections.ObservableList;
 
 public class PlayerScore {
 
-	private final Player player;
+	private Player player;
 	private final ObservableList<Integer> score;
 
 	public PlayerScore() {
 		this.player = new Player();
 		this.score = FXCollections.observableArrayList();
+	}
+
+	public Player getPlayer() {
+		return this.player;
+	}
+
+	public void setPlayer(Player value) {
+		this.player = value;
+	}
+
+	public ObservableList<Integer> getScore() {
+		return this.score;
 	}
 }
