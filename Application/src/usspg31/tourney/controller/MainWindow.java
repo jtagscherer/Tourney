@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
@@ -41,12 +42,15 @@ public class MainWindow extends StackPane {
 	private Pane optionsView;
 	private OptionsViewController optionsViewController;
 
-	private DoubleProperty rightOffset;
+	private DoubleProperty offset;
 
-	private Timeline moveLeft;
-	private Timeline moveRight;
+	private Timeline slideAnimation;
+
+	private Node currentPane;
 
 	private MainWindow() throws IOException {
+		this.setMinWidth(0);
+		this.setMinHeight(0);
 		this.getStyleClass().add("main-window");
 		this.getStylesheets().add("/ui/css/main.css");
 
@@ -55,20 +59,14 @@ public class MainWindow extends StackPane {
 		this.loadSubViews();
 
 		this.getChildren().addAll(this.mainMenu, this.optionsView);
-
-		this.displayMainMenu();
 	}
 
 	private void initTransitions() {
-		this.rightOffset = new SimpleDoubleProperty(0);
+		this.offset = new SimpleDoubleProperty(0);
 
-		this.moveLeft = new Timeline(
-				new KeyFrame(Duration.ZERO, new KeyValue(this.rightOffset, 0)),
-				new KeyFrame(transitionDuration, new KeyValue(this.rightOffset, 1, transitionInterpolator)));
-
-		this.moveRight = new Timeline(
-				new KeyFrame(Duration.ZERO, new KeyValue(this.rightOffset, 1)),
-				new KeyFrame(transitionDuration, new KeyValue(this.rightOffset, 0, transitionInterpolator)));
+		this.slideAnimation = new Timeline(
+				new KeyFrame(Duration.ZERO, new KeyValue(this.offset, 0)),
+				new KeyFrame(transitionDuration, new KeyValue(this.offset, 1, transitionInterpolator)));
 	}
 
 	private void loadSubViews() throws IOException {
@@ -76,25 +74,91 @@ public class MainWindow extends StackPane {
 				.getResource("/ui/fxml/main-menu.fxml"));
 		this.mainMenu = mainMenuLoader.load();
 		this.mainMenuController = mainMenuLoader.getController();
-		this.mainMenu.translateXProperty().bind(this.widthProperty().multiply(this.rightOffset).negate());
 		this.mainMenu.setVisible(true);
 
 		FXMLLoader optionsViewLoader = new FXMLLoader(this.getClass()
 				.getResource("/ui/fxml/options-view.fxml"));
 		this.optionsView = optionsViewLoader.load();
 		this.optionsViewController = optionsViewLoader.getController();
-		this.optionsView.translateXProperty().bind(this.widthProperty().multiply(this.rightOffset).negate().add(this.widthProperty()));
-		this.optionsView.setVisible(true);
+		this.optionsView.setVisible(false);
+
+		this.currentPane = this.mainMenu;
+	}
+
+	private void slide(final Node from, final Node to) {
+		this.slideAnimation.setOnFinished(event -> {
+			log.fine("Finished animation: from: " + from + " to: " + to);
+			from.translateXProperty().unbind();
+			from.translateYProperty().unbind();
+			to.translateXProperty().unbind();
+			to.translateYProperty().unbind();
+			to.setMouseTransparent(false);
+			from.setVisible(false);
+			this.currentPane = to;
+		});
+		from.setVisible(true);
+		to.setVisible(true);
+		from.setMouseTransparent(true);
+		to.setMouseTransparent(true);
+		this.slideAnimation.play();
+	}
+
+	private void slideLeft(Node to) {
+		this.slideLeft(this.currentPane, to);
+	}
+
+	private void slideRight(Node to) {
+		this.slideRight(this.currentPane, to);
+	}
+
+	private void slideUp(Node to) {
+		this.slideUp(this.currentPane, to);
+	}
+
+	private void slideDown(Node to) {
+		this.slideDown(this.currentPane, to);
+	}
+
+	private void slideLeft(Node from, Node to) {
+		from.translateXProperty().bind(this.widthProperty().multiply(this.offset).negate());
+		to.translateXProperty().bind(this.widthProperty().multiply(this.offset).negate().add(this.widthProperty()));
+		from.setTranslateY(0);
+		to.setTranslateY(0);
+		this.slide(from, to);
+	}
+
+	private void slideRight(Node from, Node to) {
+		from.translateXProperty().bind(this.widthProperty().multiply(this.offset));
+		to.translateXProperty().bind(this.widthProperty().multiply(this.offset).subtract(this.widthProperty()));
+		from.setTranslateY(0);
+		to.setTranslateY(0);
+		this.slide(from, to);
+	}
+
+	private void slideUp(Node from, Node to) {
+		from.translateYProperty().bind(this.heightProperty().multiply(this.offset).negate());
+		to.translateYProperty().bind(this.heightProperty().multiply(this.offset).negate().add(this.heightProperty()));
+		from.setTranslateX(0);
+		to.setTranslateX(0);
+		this.slide(from, to);
+	}
+
+	private void slideDown(Node from, Node to) {
+		from.translateYProperty().bind(this.heightProperty().multiply(this.offset));
+		to.translateYProperty().bind(this.heightProperty().multiply(this.offset).subtract(this.heightProperty()));
+		from.setTranslateX(0);
+		to.setTranslateX(0);
+		this.slide(from, to);
 	}
 
 	public void displayMainMenu() {
 		log.fine("Displaying main menu");
-		this.moveRight.play();
+		this.slideUp(this.mainMenu);
 	}
 
 	public void displayOptionsView() {
 		log.fine("Displaying options");
-		this.moveLeft.play();
+		this.slideDown(this.optionsView);
 	}
 
 	public void displayEventPhaseView() {
