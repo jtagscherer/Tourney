@@ -26,6 +26,11 @@ public class MainMenuController {
 			MainWindow.getInstance().displayOptionsView();
 		});
 
+		this.buttonOpenEvent.setOnAction(event -> {
+			log.finer("Open Event Button was clicked");
+			MainWindow.getInstance().displayEventPhaseView();
+		});
+
 		// make the two event-related buttons share the width of their parent
 		this.eventButtonsLeft.prefWidthProperty().bind(
 				this.eventButtonsContainer.widthProperty().divide(2));
