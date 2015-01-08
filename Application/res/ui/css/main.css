@@ -16,6 +16,8 @@
 }
 
 .main-window {
+	-fx-min-width: 640;
+	-fx-min-height: 480;
 	-fx-max-width: -t-max-value;
 	-fx-max-height: -t-max-value;
 	-fx-prev-width: 900;
