@@ -21,6 +21,16 @@
 	-t-icon-height: 14px;
 }
 
+.icon-remove {
+	-t-icon-width: 28px;
+	-t-icon-height: 4px;
+	-fx-shape: "M38 26H10v-4h28v4z";
+}
+.icon-remove.half {
+	-t-icon-width: 14px;
+	-t-icon-height: 2px;
+}
+
 .icon-folder-open {
 	-t-icon-width: 40px;
 	-t-icon-height: 32px;
@@ -31,12 +41,12 @@
 	-t-icon-height: 16px;
 }
 
-.icon-create {
+.icon-edit {
 	-t-icon-width: 36px;
 	-t-icon-height: 36px;
 	-fx-shape: "M6 34.5V42h7.5l22.13-22.13-7.5-7.5L6 34.5zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z";
 }
-.icon-create.half {
+.icon-edit.half {
 	-t-icon-width: 18px;
 	-t-icon-height: 18px;
 }
@@ -110,21 +120,21 @@
 }
 
 .icon-lock {
-	-t-icon-width: 48px;
-	-t-icon-height: 48px;
+	-t-icon-width: 32px;
+	-t-icon-height: 42px;
 	-fx-shape: "M36 16h-2v-4c0-5.52-4.48-10-10-10S14 6.48 14 12v4h-2c-2.21 0-4 1.79-4 4v20c0 2.21 1.79 4 4 4h24c2.21 0 4-1.79 4-4V20c0-2.21-1.79-4-4-4zM24 5.8c3.42 0 6.2 2.78 6.2 6.2v4H18v-4h-.2c0-3.42 2.78-6.2 6.2-6.2zM36 40H12V20h24v20zm-12-6c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z";
 }
 .icon-lock.half {
-	-t-icon-width: 24px;
-	-t-icon-height: 24px;
+	-t-icon-width: 16px;
+	-t-icon-height: 21px;
 }
 
 .icon-lock-open {
-	-t-icon-width: 48px;
-	-t-icon-height: 48px;
+	-t-icon-width: 32px;
+	-t-icon-height: 42px;
 	-fx-shape: "M24 34c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm12-18h-2v-4c0-5.52-4.48-10-10-10S14 6.48 14 12h3.8c0-3.42 2.78-6.2 6.2-6.2 3.42 0 6.2 2.78 6.2 6.2v4H12c-2.21 0-4 1.79-4 4v20c0 2.21 1.79 4 4 4h24c2.21 0 4-1.79 4-4V20c0-2.21-1.79-4-4-4zm0 24H12V20h24v20z";
 }
 .icon-lock-open.half {
-	-t-icon-width: 24px;
-	-t-icon-height: 24px;
+	-t-icon-width: 16px;
+	-t-icon-height: 21px;
 }

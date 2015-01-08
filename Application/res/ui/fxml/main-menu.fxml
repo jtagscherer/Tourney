@@ -58,7 +58,7 @@
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
 					AnchorPane.rightAnchor="0">
 					<graphic>
-						<IconPane styleClass="icon-create" />
+						<IconPane styleClass="icon-edit" />
 					</graphic>
 				</Button>
 				<Label styleClass="button-description" text="Bearbeiten" />
