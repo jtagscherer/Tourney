@@ -1,10 +1,9 @@
-package usspg31.tourney.controller.controls;
+package usspg31.tourney.controller;
 
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import usspg31.tourney.controller.MainWindow;
 
 
 public class OptionsViewController {
