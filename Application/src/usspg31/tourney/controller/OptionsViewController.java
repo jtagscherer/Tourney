@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 
 public class OptionsViewController {
 
-	private final Logger log = Logger.getLogger(OptionsViewController.class.getName());
+	private static final Logger log = Logger.getLogger(OptionsViewController.class.getName());
 
 	@FXML private Button buttonChangeLanguage;
 	@FXML private Button buttonChangePassword;
@@ -16,6 +16,7 @@ public class OptionsViewController {
 
 	@FXML private void initialize() {
 		this.buttonReturnToMainMenu.setOnAction(event -> {
+			log.finer("ReturnToMainMenu Button was clicked");
 			MainWindow.getInstance().displayMainMenu();
 		});
 	}
