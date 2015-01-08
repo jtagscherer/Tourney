@@ -153,12 +153,12 @@ public class MainWindow extends StackPane {
 
 	public void displayMainMenu() {
 		log.fine("Displaying main menu");
-		this.slideUp(this.mainMenu);
+		this.slideDown(this.mainMenu);
 	}
 
 	public void displayOptionsView() {
 		log.fine("Displaying options");
-		this.slideDown(this.optionsView);
+		this.slideUp(this.optionsView);
 	}
 
 	public void displayEventPhaseView() {
