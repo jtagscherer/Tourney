@@ -2,6 +2,8 @@ package usspg31.tourney.model;
 
 import java.util.HashMap;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -14,6 +16,7 @@ public class TournamentModule {
 	private final StringProperty description;
 	private final ObservableMap<String, Integer> possibleScores;
 	private final ObservableList<GamePhase> phaseList;
+	private final IntegerProperty numberOfOpponents;
 
 	public TournamentModule() {
 		this.name = new SimpleStringProperty();
@@ -21,6 +24,7 @@ public class TournamentModule {
 		this.possibleScores = FXCollections
 				.observableMap(new HashMap<String, Integer>());
 		this.phaseList = FXCollections.observableArrayList();
+		this.numberOfOpponents = new SimpleIntegerProperty();
 
 	}
 
@@ -54,6 +58,18 @@ public class TournamentModule {
 
 	public ObservableList<GamePhase> getPhaseList() {
 		return this.phaseList;
+	}
+
+	public int getNumberOfOpponents() {
+		return this.numberOfOpponents.get();
+	}
+
+	public void setNumberOfOpponents(int value) {
+		this.numberOfOpponents.set(value);
+	}
+
+	public IntegerProperty numberOfOpponentsProperty() {
+		return this.numberOfOpponents;
 	}
 
 }

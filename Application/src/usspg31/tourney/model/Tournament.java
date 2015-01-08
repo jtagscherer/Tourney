@@ -1,5 +1,7 @@
 package usspg31.tourney.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -9,20 +11,24 @@ public class Tournament {
 
 	private final ObservableList<Player> registeredPlayers;
 	private final ObservableList<Player> attendingPlayers;
+	private final ObservableList<Player> remainingPlayers;
 	private final ObservableList<TournamentRound> rounds;
 	private final StringProperty name;
 	private final ObservableList<PlayerScore> scoreTable;
 	private final ObservableList<TournamentAdministrator> administrators;
 	private final StringProperty id;
+	private final ObjectProperty<TournamentModule> ruleSet;
 
 	public Tournament() {
 		this.registeredPlayers = FXCollections.observableArrayList();
 		this.attendingPlayers = FXCollections.observableArrayList();
+		this.remainingPlayers = FXCollections.observableArrayList();
 		this.rounds = FXCollections.observableArrayList();
 		this.name = new SimpleStringProperty();
 		this.scoreTable = FXCollections.observableArrayList();
 		this.administrators = FXCollections.observableArrayList();
 		this.id = new SimpleStringProperty();
+		this.ruleSet = new SimpleObjectProperty<TournamentModule>();
 	}
 
 	public ObservableList<Player> getRegisteredPlayers() {
@@ -31,6 +37,10 @@ public class Tournament {
 
 	public ObservableList<Player> getAttendingPlayers() {
 		return this.attendingPlayers;
+	}
+
+	public ObservableList<Player> getRemainingPlayers() {
+		return this.remainingPlayers;
 	}
 
 	public ObservableList<TournamentRound> getRounds() {
@@ -63,5 +73,17 @@ public class Tournament {
 
 	public void setId(String id) {
 		this.id.set(id);
+	}
+
+	public TournamentModule getRuleSet() {
+		return this.ruleSet.get();
+	}
+
+	public void setRuleSet(TournamentModule value) {
+		this.ruleSet.set(value);
+	}
+
+	public ObjectProperty<TournamentModule> ruleSetProperty() {
+		return this.ruleSet;
 	}
 }
