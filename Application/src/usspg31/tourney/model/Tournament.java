@@ -1,5 +1,7 @@
 package usspg31.tourney.model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -13,6 +15,7 @@ public class Tournament {
 	private final StringProperty name;
 	private final ObservableList<PlayerScore> scoreTable;
 	private final ObservableList<TournamentAdministrator> administrators;
+	private final StringProperty id;
 
 	public Tournament() {
 		this.registeredPlayers = FXCollections.observableArrayList();
@@ -21,6 +24,7 @@ public class Tournament {
 		this.name = new SimpleStringProperty();
 		this.scoreTable = FXCollections.observableArrayList();
 		this.administrators = FXCollections.observableArrayList();
+		this.id = new SimpleStringProperty();
 	}
 
 	public ObservableList<Player> getRegisteredPlayers() {
@@ -53,5 +57,13 @@ public class Tournament {
 
 	public ObservableList<TournamentAdministrator> getAdministrators() {
 		return this.administrators;
+	}
+
+	public String getId() {
+		return this.id.get();
+	}
+
+	public void setId(String id) {
+		this.id.set(id);
 	}
 }
