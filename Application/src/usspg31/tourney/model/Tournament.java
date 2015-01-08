@@ -11,6 +11,7 @@ public class Tournament {
 
 	private final ObservableList<Player> registeredPlayers;
 	private final ObservableList<Player> attendingPlayers;
+	private final ObservableList<Player> remainingPlayers;
 	private final ObservableList<TournamentRound> rounds;
 	private final StringProperty name;
 	private final ObservableList<PlayerScore> scoreTable;
@@ -21,6 +22,7 @@ public class Tournament {
 	public Tournament() {
 		this.registeredPlayers = FXCollections.observableArrayList();
 		this.attendingPlayers = FXCollections.observableArrayList();
+		this.remainingPlayers = FXCollections.observableArrayList();
 		this.rounds = FXCollections.observableArrayList();
 		this.name = new SimpleStringProperty();
 		this.scoreTable = FXCollections.observableArrayList();
@@ -35,6 +37,10 @@ public class Tournament {
 
 	public ObservableList<Player> getAttendingPlayers() {
 		return this.attendingPlayers;
+	}
+
+	public ObservableList<Player> getRemainingPlayers() {
+		return this.remainingPlayers;
 	}
 
 	public ObservableList<TournamentRound> getRounds() {
