@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<AnchorPane fx:controller="usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/event-phase.css" />
+	</stylesheets>
+	<children>
+		<Label styleClass="heading" text="Voranmeldungen" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+		<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
+			<children>
+				<TableView fx:id="tablePlayers" HBox.hgrow="ALWAYS">
+					<columns>
+						<TableColumn prefWidth="75.0" text="C1" />
+						<TableColumn prefWidth="75.0" text="C2" />
+					</columns>
+				</TableView>
+				<VBox spacing="5.0" styleClass="table-edit-button-container">
+					<children>
+						<Button fx:id="buttonAddPlayer" mnemonicParsing="false" styleClass="table-edit-button">
+							<graphic>
+								<IconPane>
+									<styleClass>
+										<String fx:value="icon-add" />
+										<String fx:value="half" />
+									</styleClass>
+								</IconPane>
+							</graphic>
+						</Button>
+						<Button fx:id="buttonRemovePlayer" mnemonicParsing="false" styleClass="table-edit-button">
+							<graphic>
+								<IconPane>
+									<styleClass>
+										<String fx:value="icon-remove" />
+										<String fx:value="half" />
+									</styleClass>
+								</IconPane>
+							</graphic>
+						</Button>
+						<Button fx:id="buttonEditPlayer" mnemonicParsing="false" styleClass="table-edit-button">
+							<graphic>
+								<IconPane>
+									<styleClass>
+										<String fx:value="icon-edit" />
+										<String fx:value="half" />
+									</styleClass>
+								</IconPane>
+							</graphic>
+						</Button>
+					</children>
+				</VBox>
+			</children>
+		</HBox>
+	</children>
+</AnchorPane>
