@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import usspg31.tourney.controller.controls.OptionsViewController;
 
 public class MainWindow extends StackPane {
 
