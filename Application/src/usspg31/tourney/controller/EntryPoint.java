@@ -29,6 +29,10 @@ public class EntryPoint extends Application {
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Tourney");
+
+			primaryStage.minWidthProperty().bind(root.minWidthProperty());
+			primaryStage.minHeightProperty().bind(root.minHeightProperty());
+
 			primaryStage.show();
 		} catch(Exception e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
