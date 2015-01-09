@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.model.Event;
 
 public class MainMenuController {
 
@@ -23,6 +24,7 @@ public class MainMenuController {
 	@FXML private void initialize() {
 		this.buttonNewEvent.setOnAction(event -> {
 			log.finer("New Event Button was clicked");
+			MainWindow.getInstance().getEventPhaseViewController().loadEvent(new Event());
 			MainWindow.getInstance().slideUp(
 					MainWindow.getInstance().getEventPhaseView());
 		});
