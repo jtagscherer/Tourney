@@ -16,12 +16,7 @@
 		<Label styleClass="heading" text="Voranmeldungen" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
 		<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
 			<children>
-				<TableView fx:id="tablePlayers" HBox.hgrow="ALWAYS">
-					<columns>
-						<TableColumn prefWidth="75.0" text="C1" />
-						<TableColumn prefWidth="75.0" text="C2" />
-					</columns>
-				</TableView>
+				<TableView fx:id="tablePlayers" HBox.hgrow="ALWAYS" />
 				<VBox spacing="5.0" styleClass="table-edit-button-container">
 					<children>
 						<Button fx:id="buttonAddPlayer" mnemonicParsing="false" styleClass="table-edit-button">
