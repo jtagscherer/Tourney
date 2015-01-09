@@ -32,7 +32,7 @@ import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentModule;
 
 /**
- * Contains static methods that save and load rule modules and events including
+ * Contains static methods that save rule modules and events including
  * tournaments and players using XML files
  * 
  * @author Jan Tagscherer
