@@ -38,12 +38,7 @@
             </HBox>
       		<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
       			<children>
-      				<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS">
-      					<columns>
-      						<TableColumn prefWidth="75.0" text="C1" />
-      						<TableColumn prefWidth="75.0" text="C2" />
-      					</columns>
-      				</TableView>
+      				<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS" />
       				<VBox spacing="5.0" styleClass="table-edit-button-container">
       					<children>
       						<Button fx:id="buttonRemovePlayer" mnemonicParsing="false" styleClass="table-edit-button">
