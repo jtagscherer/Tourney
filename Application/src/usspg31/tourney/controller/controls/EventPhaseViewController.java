@@ -20,9 +20,10 @@ import usspg31.tourney.controller.controls.eventphases.EventSetupPhaseController
 import usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.RegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
+import usspg31.tourney.model.Event;
 import usspg31.tourney.model.undo.UndoManager;
 
-public class EventPhaseViewController {
+public class EventPhaseViewController implements EventUser {
 
 	// Menu bar
 	@FXML private Button buttonClose;
@@ -63,15 +64,13 @@ public class EventPhaseViewController {
 	private static final Duration transitionDuration = Duration.millis(300);
 	private static Interpolator transitionInterpolator = Interpolator.SPLINE(.4, 0, 0, 1);
 
-	// Undo
-	private UndoManager undoManager;
+	// Event
+	private Event loadedEvent;
+
+	// UndoManager
+	private UndoManager activeUndoManager;
 
 	@FXML private void initialize() throws IOException {
-		// set up undo manager
-		this.undoManager = new UndoManager();
-		this.buttonUndo.disableProperty().bind(this.undoManager.undoAvailableProperty().not());
-		this.buttonRedo.disableProperty().bind(this.undoManager.redoAvailableProperty().not());
-
 		this.phasePosition = new SimpleDoubleProperty(0);
 
 		this.loadSubViews();
@@ -79,7 +78,20 @@ public class EventPhaseViewController {
 
 
 		this.buttonClose.setOnAction(event -> {
+			// TODO: ask the user to save the currently active event
+			this.unloadEvent();
 			MainWindow.getInstance().slideDown(MainWindow.getInstance().getMainMenu());
+		});
+
+		this.buttonUndo.setOnAction(event -> {
+			if (this.activeUndoManager != null) {
+				this.activeUndoManager.undo();
+			}
+		});
+		this.buttonRedo.setOnAction(event -> {
+			if (this.activeUndoManager != null) {
+				this.activeUndoManager.redo();
+			}
 		});
 
 		this.buttonOptions.setOnAction(event -> {
@@ -118,7 +130,7 @@ public class EventPhaseViewController {
 		FXMLLoader eventSetupPhaseLoader = new FXMLLoader(this.getClass()
 				.getResource("/ui/fxml/controls/eventphases/event-setup-phase.fxml"));
 		this.eventSetupPhase = eventSetupPhaseLoader.load();
-		//this.eventSetupPhaseController = eventSetupPhaseLoader.getController();
+		this.eventSetupPhaseController = eventSetupPhaseLoader.getController();
 		this.eventSetupPhase.setVisible(true);
 
 		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(this.getClass()
@@ -171,5 +183,37 @@ public class EventPhaseViewController {
 								new KeyValue(this.phasePosition, phaseNumber,
 										transitionInterpolator)));
 		this.currentAnimation.play();
+	}
+
+	public void setActiveUndoManager(UndoManager undoManager) {
+		this.activeUndoManager = undoManager;
+		this.buttonUndo.disableProperty().bind(undoManager.undoAvailableProperty().not());
+		this.buttonRedo.disableProperty().bind(undoManager.redoAvailableProperty().not());
+	}
+
+	public void unsetUndoManager() {
+		this.activeUndoManager = null;
+		this.buttonUndo.disableProperty().unbind();
+		this.buttonUndo.disableProperty().set(true);
+		this.buttonRedo.disableProperty().unbind();
+		this.buttonRedo.disableProperty().set(true);
+	}
+
+	@Override
+	public void loadEvent(Event event) {
+		if (this.loadedEvent != null) {
+			this.unloadEvent();
+		}
+
+		this.eventSetupPhaseController.loadEvent(event);
+		this.loadedEvent = event;
+	}
+
+	@Override
+	public void unloadEvent() {
+		// TODO unload any registered listeners on the event
+		this.eventSetupPhaseController.unloadEvent();
+
+		this.loadedEvent = null;
 	}
 }
