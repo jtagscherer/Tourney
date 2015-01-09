@@ -30,12 +30,12 @@
 				</Button>
 				<HBox>
 					<children>
-						<Button fx:id="buttonUndo" styleClass="menu-button, multi-button, left">
+						<Button fx:id="buttonUndo" disable="true" styleClass="menu-button, multi-button, left">
 							<graphic>
 								<IconPane styleClass="icon-undo, half" />
 							</graphic>
 						</Button>
-						<Button fx:id="buttonRedo" styleClass="menu-button, multi-button, right">
+						<Button fx:id="buttonRedo" disable="true" styleClass="menu-button, multi-button, right">
 							<graphic>
 								<IconPane styleClass="icon-redo, half" />
 							</graphic>
