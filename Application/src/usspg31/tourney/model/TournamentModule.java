@@ -4,18 +4,19 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 public class TournamentModule {
 
 	private final StringProperty name;
 	private final StringProperty description;
-	private final ObservableList<PossibleScoring> possibleScorings;
+	private final ObservableList<ObservableMap<String, Integer>> possibleScores;
 	private final ObservableList<GamePhase> phaseList;
 
 	public TournamentModule() {
 		this.name = new SimpleStringProperty();
 		this.description = new SimpleStringProperty();
-		this.possibleScorings = FXCollections.observableArrayList();
+		this.possibleScores = FXCollections.observableArrayList();
 		this.phaseList = FXCollections.observableArrayList();
 
 	}
@@ -44,8 +45,8 @@ public class TournamentModule {
 		return this.description;
 	}
 
-	public ObservableList<PossibleScoring> getPossibleScores() {
-		return this.possibleScorings;
+	public ObservableList<ObservableMap<String, Integer>> getPossibleScores() {
+		return this.possibleScores;
 	}
 
 	public ObservableList<GamePhase> getPhaseList() {
