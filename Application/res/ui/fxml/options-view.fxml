@@ -56,17 +56,17 @@
 			</VBox>
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="0%" RelativityPane.relLeft="70%">
-				<Label styleClass="button-heading" text="Hauptmenü" />
-				<Button fx:id="buttonReturnToMainMenu" styleClass="menu-button"
+				<Label fx:id="labelExitHeading" styleClass="button-heading" text="Hauptmenü" />
+				<Button fx:id="buttonExit" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
 					AnchorPane.rightAnchor="0">
 					<graphic>
 						<IconPane styleClass="icon-close" />
 					</graphic>
 				</Button>
-				<Label styleClass="button-description" text="Zurückkehren" />
+				<Label fx:id="labelExitDescription" styleClass="button-description" text="Zurückkehren" />
 				<Pane styleClass="vertical-seperator" />
-				<Label styleClass="button-explanation" text="Kehren Sie zum Hauptmenü zurück." />
+				<Label fx:id="labelExitExplanation" styleClass="button-explanation" text="Kehren Sie zum Hauptmenü zurück." />
 			</VBox>
 		</RelativityPane>
 	</children>

@@ -95,6 +95,27 @@ public class MainWindow extends StackPane {
 		this.currentPane = this.mainMenu;
 	}
 
+	public OptionsViewController getOptionsViewController() {
+		return this.optionsViewController;
+	}
+	public Pane getOptionsView() {
+		return this.optionsView;
+	}
+
+	public MainMenuController getMainMenuController() {
+		return this.mainMenuController;
+	}
+	public Pane getMainMenu() {
+		return this.mainMenu;
+	}
+
+	public EventPhaseViewController getEventPhaseViewController() {
+		return this.eventPhaseViewController;
+	}
+	public Pane getEventPhaseView() {
+		return this.eventPhaseView;
+	}
+
 	private void slide(final Node from, final Node to) {
 		this.slideAnimation.setOnFinished(event -> {
 			log.fine("Finished animation: from: " + from + " to: " + to);
@@ -113,19 +134,19 @@ public class MainWindow extends StackPane {
 		this.slideAnimation.play();
 	}
 
-	private void slideLeft(Node to) {
+	public void slideLeft(Node to) {
 		this.slideLeft(this.currentPane, to);
 	}
 
-	private void slideRight(Node to) {
+	public void slideRight(Node to) {
 		this.slideRight(this.currentPane, to);
 	}
 
-	private void slideUp(Node to) {
+	public void slideUp(Node to) {
 		this.slideUp(this.currentPane, to);
 	}
 
-	private void slideDown(Node to) {
+	public void slideDown(Node to) {
 		this.slideDown(this.currentPane, to);
 	}
 
@@ -159,20 +180,5 @@ public class MainWindow extends StackPane {
 		from.setTranslateX(0);
 		to.setTranslateX(0);
 		this.slide(from, to);
-	}
-
-	public void displayMainMenu() {
-		log.fine("Displaying main menu");
-		this.slideDown(this.mainMenu);
-	}
-
-	public void displayOptionsView() {
-		log.fine("Displaying options");
-		this.slideUp(this.optionsView);
-	}
-
-	public void displayEventPhaseView() {
-		log.fine("Displaying event phases");
-		this.slideUp(this.eventPhaseView);
 	}
 }

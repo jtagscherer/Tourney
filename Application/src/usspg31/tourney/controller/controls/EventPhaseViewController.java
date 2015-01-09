@@ -6,7 +6,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
@@ -68,10 +67,7 @@ public class EventPhaseViewController {
 	private UndoManager undoManager;
 
 	@FXML private void initialize() throws IOException {
-		this.buttonClose.setOnAction(event -> {
-			MainWindow.getInstance().displayMainMenu();
-		});
-
+		// set up undo manager
 		this.undoManager = new UndoManager();
 		this.buttonUndo.disableProperty().bind(this.undoManager.undoAvailableProperty().not());
 		this.buttonRedo.disableProperty().bind(this.undoManager.redoAvailableProperty().not());
@@ -81,6 +77,22 @@ public class EventPhaseViewController {
 		this.loadSubViews();
 		this.initBreadcrumbs();
 
+
+		this.buttonClose.setOnAction(event -> {
+			MainWindow.getInstance().slideDown(MainWindow.getInstance().getMainMenu());
+		});
+
+		this.buttonOptions.setOnAction(event -> {
+			MainWindow mainWindow = MainWindow.getInstance();
+			mainWindow.getOptionsViewController().setExitProperties("Event",
+					"Zurückkehren",
+					"Kehren Sie zu Ihrem momentan geöffneten Event zurück.", () -> {
+						mainWindow.slideDown(mainWindow.getEventPhaseView());
+					});
+			mainWindow.slideUp(mainWindow.getOptionsView());
+		});
+
+		// register listeners on the breadcrumb bar
 		this.breadcrumbEventSetup.setOnAction(event -> {
 			this.slideToPhase(0);
 		});
@@ -94,18 +106,12 @@ public class EventPhaseViewController {
 			this.slideToPhase(3);
 		});
 
+		// add all event phase views to the event phase container
 		this.eventPhaseContainer.getChildren().addAll(this.eventSetupPhase,
 				this.preRegistrationPhase, this.registrationPhase);
 	}
 
 	private void initBreadcrumbs() {
-		// make all breadcrumb buttons equal size
-		DoubleBinding quarterWidth = this.breadcrumbContainer.widthProperty().divide(4);
-
-		this.breadcrumbEventSetup.prefWidthProperty().bind(quarterWidth);
-		this.breadcrumbPreRegistration.prefWidthProperty().bind(quarterWidth);
-		this.breadcrumbRegistration.prefWidthProperty().bind(quarterWidth);
-		this.breadcrumbTournamentExecution.prefWidthProperty().bind(quarterWidth);
 	}
 
 	private void loadSubViews() throws IOException {
@@ -113,34 +119,45 @@ public class EventPhaseViewController {
 				.getResource("/ui/fxml/controls/eventphases/event-setup-phase.fxml"));
 		this.eventSetupPhase = eventSetupPhaseLoader.load();
 		//this.eventSetupPhaseController = eventSetupPhaseLoader.getController();
-		this.eventSetupPhase.translateXProperty().bind(
-				this.eventPhaseContainer.widthProperty().multiply(0)
-				.subtract(this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
 		this.eventSetupPhase.setVisible(true);
 
 		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(this.getClass()
 				.getResource("/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
 		this.preRegistrationPhase = preRegistrationPhaseLoader.load();
-		this.preRegistrationPhase.translateXProperty().bind(
-				this.eventPhaseContainer.widthProperty().multiply(1)
-				.subtract(this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
 		this.preRegistrationPhase.setVisible(true);
 
 		FXMLLoader registrationPhaseLoader = new FXMLLoader(this.getClass()
 				.getResource("/ui/fxml/controls/eventphases/registration-phase.fxml"));
 		this.registrationPhase = registrationPhaseLoader.load();
-		this.registrationPhase.translateXProperty().bind(
-				this.eventPhaseContainer.widthProperty().multiply(2)
-				.subtract(this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
 		this.registrationPhase.setVisible(true);
 
 		//		FXMLLoader tournamentExecutionPhaseLoader = new FXMLLoader(this.getClass()
 		//				.getResource("/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
 		//		this.tournamentExecutionPhase = tournamentExecutionPhaseLoader.load();
 		//		this.tournamentExecutionPhase.setVisible(true);
+
+		// bind the phase view's translateX property to the phasePosition
+		// property, so the pages scroll all together, when the phasePosition
+		// gets changed. (e.g. phasePosition == 1 -> show phase 2)
+
+		this.eventSetupPhase.translateXProperty().bind(
+				this.eventPhaseContainer.widthProperty()
+				.multiply(0)
+				.subtract(this.eventPhaseContainer.widthProperty()
+						.multiply(this.phasePosition)));
+
+		this.preRegistrationPhase.translateXProperty().bind(
+				this.eventPhaseContainer.widthProperty()
+				.multiply(1)
+				.subtract(this.eventPhaseContainer.widthProperty()
+						.multiply(this.phasePosition)));
+
+		this.registrationPhase.translateXProperty().bind(
+				this.eventPhaseContainer.widthProperty()
+				.multiply(2)
+				.subtract(this.eventPhaseContainer.widthProperty()
+						.multiply(this.phasePosition)));
+
 	}
 
 	private void slideToPhase(int phaseNumber) {
@@ -148,10 +165,11 @@ public class EventPhaseViewController {
 			this.currentAnimation.stop();
 		}
 		this.currentAnimation = new Timeline(
-				new KeyFrame(Duration.ZERO,
-						new KeyValue(this.phasePosition, this.phasePosition.get())),
+				new KeyFrame(Duration.ZERO, new KeyValue(
+						this.phasePosition, this.phasePosition.get())),
 						new KeyFrame(transitionDuration,
-								new KeyValue(this.phasePosition, phaseNumber, transitionInterpolator)));
+								new KeyValue(this.phasePosition, phaseNumber,
+										transitionInterpolator)));
 		this.currentAnimation.play();
 	}
 }
