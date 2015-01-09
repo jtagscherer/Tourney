@@ -14,121 +14,67 @@
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
-		<HBox fx:id="menuButtonBar" prefHeight="42.0" prefWidth="200.0"
-			spacing="10.0" RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
+		<HBox fx:id="menuButtonBar" spacing="10.0"
+			RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
 			RelativityPane.relTop="0px">
 			<children>
-				<Button fx:id="buttonClose" maxHeight="1.7976931348623157E308"
-					mnemonicParsing="false" styleClass="menu-button">
+				<Button fx:id="buttonClose" styleClass="menu-button">
 					<graphic>
-						<IconPane>
-							<styleClass>
-								<String fx:value="icon-close" />
-								<String fx:value="half" />
-							</styleClass>
-						</IconPane>
+						<IconPane styleClass="icon-close, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonSave" maxHeight="1.7976931348623157E308"
-					mnemonicParsing="false" styleClass="menu-button">
+				<Button fx:id="buttonSave" styleClass="menu-button">
 					<graphic>
-						<IconPane>
-							<styleClass>
-								<String fx:value="icon-save" />
-								<String fx:value="half" />
-							</styleClass>
-						</IconPane>
+						<IconPane styleClass="icon-save, half" />
 					</graphic>
 				</Button>
-				<HBox maxHeight="1.7976931348623157E308">
+				<HBox>
 					<children>
-						<Button fx:id="buttonUndo" maxHeight="1.7976931348623157E308"
-							mnemonicParsing="false">
+						<Button fx:id="buttonUndo" styleClass="menu-button, multi-button, left">
 							<graphic>
-								<IconPane>
-									<styleClass>
-										<String fx:value="icon-undo" />
-										<String fx:value="half" />
-									</styleClass>
-								</IconPane>
+								<IconPane styleClass="icon-undo, half" />
 							</graphic>
-							<styleClass>
-								<String fx:value="menu-button" />
-								<String fx:value="multi-button" />
-								<String fx:value="left" />
-							</styleClass>
 						</Button>
-						<Button fx:id="buttonRedo" maxHeight="1.7976931348623157E308"
-							mnemonicParsing="false">
+						<Button fx:id="buttonRedo" styleClass="menu-button, multi-button, right">
 							<graphic>
 								<IconPane styleClass="icon-redo, half" />
 							</graphic>
-							<styleClass>
-								<String fx:value="menu-button" />
-								<String fx:value="multi-button" />
-								<String fx:value="right" />
-							</styleClass>
 						</Button>
 					</children>
 				</HBox>
 			</children>
-			<padding>
-				<Insets bottom="4.0" left="3.0" right="3.0" top="3.0" />
-			</padding>
 		</HBox>
-		<HBox alignment="TOP_RIGHT" pickOnBounds="false" prefHeight="30.0"
-			prefWidth="200.0" spacing="10.0" RelativityPane.relLeft="0px"
+		<HBox fx:id="secondaryMenuButtonBar" alignment="TOP_RIGHT"
+			pickOnBounds="false" spacing="10.0" RelativityPane.relLeft="0px"
 			RelativityPane.relRight="0px" RelativityPane.relTop="0px">
 			<children>
-				<Button fx:id="buttonLock" maxHeight="1.7976931348623157E308"
-					mnemonicParsing="false" styleClass="menu-button">
+				<Button fx:id="buttonLock" styleClass="menu-button">
 					<graphic>
-						<IconPane>
-							<styleClass>
-								<String fx:value="icon-lock" />
-								<String fx:value="half" />
-							</styleClass>
-						</IconPane>
+						<IconPane styleClass="icon-lock, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonOptions" maxHeight="1.7976931348623157E308"
-					mnemonicParsing="false" styleClass="menu-button">
+				<Button fx:id="buttonOptions" styleClass="menu-button">
 					<graphic>
-						<IconPane>
-							<styleClass>
-								<String fx:value="icon-settings" />
-								<String fx:value="half" />
-							</styleClass>
-						</IconPane>
+						<IconPane styleClass="icon-settings, half" />
 					</graphic>
 				</Button>
 			</children>
-			<padding>
-				<Insets bottom="4.0" left="3.0" right="3.0" top="3.0" />
-			</padding>
 		</HBox>
-		<HBox fx:id="breadcrumbContainer" prefWidth="200.0"
-			RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
-			RelativityPane.relTop="42px">
+		<HBox fx:id="breadcrumbContainer" RelativityPane.relLeft="0px"
+			RelativityPane.relRight="0px" RelativityPane.relTop="42px">
 			<children>
-				<Button fx:id="breadcrumbEventSetup" mnemonicParsing="false"
-					styleClass="breadcrumb-button" text="Event Einstellungen"
-					HBox.hgrow="ALWAYS" />
-				<Button fx:id="breadcrumbPreRegistration" mnemonicParsing="false"
-					styleClass="breadcrumb-button" text="Voranmeldung" HBox.hgrow="ALWAYS" />
-				<Button fx:id="breadcrumbRegistration" mnemonicParsing="false"
-					styleClass="breadcrumb-button" text="Anmeldung" HBox.hgrow="ALWAYS" />
-				<Button fx:id="breadcrumbTournamentExecution"
-					mnemonicParsing="false" styleClass="breadcrumb-button" text="Turnierdurchführung"
-					HBox.hgrow="ALWAYS" />
+				<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, multi-button, left"
+					text="Event Einstellungen" HBox.hgrow="ALWAYS" />
+				<Button fx:id="breadcrumbPreRegistration" styleClass="breadcrumb-button, multi-button, middle"
+					text="Voranmeldung" HBox.hgrow="ALWAYS" />
+				<Button fx:id="breadcrumbRegistration" styleClass="breadcrumb-button, multi-button, middle"
+					text="Anmeldung" HBox.hgrow="ALWAYS" />
+				<Button fx:id="breadcrumbTournamentExecution" styleClass="breadcrumb-button, multi-button, right"
+					text="Turnierdurchführung" HBox.hgrow="ALWAYS" />
 			</children>
-			<padding>
-				<Insets bottom="4.0" left="3.0" right="3.0" top="3.0" />
-			</padding>
 		</HBox>
-		<StackPane fx:id="eventPhaseContainer" prefHeight="150.0"
-			prefWidth="200.0" RelativityPane.relBottom="0px"
-			RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
-			RelativityPane.relTop="84px" />
+		<StackPane fx:id="eventPhaseContainer"
+			RelativityPane.relBottom="0px" RelativityPane.relLeft="0px"
+			RelativityPane.relRight="0px" RelativityPane.relTop="84px" />
 	</children>
 </RelativityPane>

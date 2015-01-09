@@ -28,7 +28,7 @@
 
 .multi-button.middle {
 	-fx-background-radius: 0;
-	-fx-background-insets: 0, 1px 0 1px 0;
+	-fx-background-insets: 0, 1px 0 1px 1px;
 }
 
 .multi-button.right {

@@ -9,6 +9,12 @@
 	-fx-min-height: 35px;
 }
 
+#menuButtonBar,
+#secondaryMenuButtonBar,
+#breadcrumbContainer {
+	-fx-padding: 3px 3px 4px 3px;
+}
+
 #breadcrumbContainer {
 	-fx-background-color: #888, #d4d4d4;
 	-fx-background-insets: 0, 0 0 1px 0;
@@ -16,6 +22,7 @@
 
 .breadcrumb-button {
 	-fx-min-width: 0;
+	-fx-pref-width: 0;
 	-fx-min-height: 35px;
 	-fx-max-width: -t-max-value;
 }

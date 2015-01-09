@@ -21,22 +21,30 @@ public class MainMenuController {
 	@FXML private HBox eventButtonsContainer;
 
 	@FXML private void initialize() {
-		this.buttonOpenOptions.setOnAction(event -> {
-			log.finer("Options Button was clicked");
-			MainWindow.getInstance().displayOptionsView();
+		this.buttonNewEvent.setOnAction(event -> {
+			log.finer("New Event Button was clicked");
+			MainWindow.getInstance().slideUp(
+					MainWindow.getInstance().getEventPhaseView());
 		});
-
 		this.buttonOpenEvent.setOnAction(event -> {
 			log.finer("Open Event Button was clicked");
-			MainWindow.getInstance().displayEventPhaseView();
+			MainWindow.getInstance().slideUp(
+					MainWindow.getInstance().getEventPhaseView());
 		});
 
-		// make the two event-related buttons share the width of their parent
-		this.eventButtonsLeft.prefWidthProperty().bind(
-				this.eventButtonsContainer.widthProperty().divide(2));
-		this.eventButtonsRight.prefWidthProperty().bind(
-				this.eventButtonsContainer.widthProperty()
-				.subtract(this.eventButtonsLeft.prefWidthProperty()));
+		this.buttonOpenOptions.setOnAction(event -> {
+			log.finer("Options Button was clicked");
+
+			MainWindow.getInstance().getOptionsViewController()
+			.setExitProperties("Hauptmenü", "Zurückkehren",
+					"Kehren Sie zum Hauptmenü zurück", () -> {
+						MainWindow.getInstance().slideDown(
+								MainWindow.getInstance().getMainMenu());
+					});
+
+			MainWindow.getInstance().slideUp(
+					MainWindow.getInstance().getOptionsView());
+		});
 	}
 
 }

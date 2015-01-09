@@ -30,7 +30,7 @@
 				RelativityPane.relRight="70%" RelativityPane.relLeft="0%">
 				<Label styleClass="button-heading" text="Event" />
 				<HBox fx:id="eventButtonsContainer" styleClass="multi-button-container">
-					<VBox fx:id="eventButtonsLeft" styleClass="vbox" HBox.hgrow="ALWAYS">
+					<VBox fx:id="eventButtonsLeft" HBox.hgrow="ALWAYS">
 						<Button fx:id="buttonNewEvent" styleClass="menu-button, multi-button, left">
 							<graphic>
 								<IconPane styleClass="icon-add" />

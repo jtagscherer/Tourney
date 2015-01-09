@@ -13,9 +13,6 @@
 	-fx-background-color: #444;
 }
 
-.icon-pane {
-}
-
 .menu-button {
 	-fx-min-height: 60pt;
 	-fx-max-height: 60pt;
@@ -45,4 +42,11 @@
 	-fx-font-size: 11pt;
 	-fx-wrap-text: true;
 	-fx-text-alignment: justify;
+}
+
+#eventButtonsLeft,
+#eventButtonsRight {
+	-fx-min-width: 0;
+	-fx-pref-width: 0;
+	-fx-max-width: -t-max-value;
 }
