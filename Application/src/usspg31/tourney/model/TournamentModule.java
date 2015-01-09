@@ -1,7 +1,5 @@
 package usspg31.tourney.model;
 
-import java.util.HashMap;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -15,12 +13,10 @@ public class TournamentModule {
 	private final ObservableList<ObservableMap<String, Integer>> possibleScores;
 	private final ObservableList<GamePhase> phaseList;
 
-	@SuppressWarnings("unchecked")
 	public TournamentModule() {
 		this.name = new SimpleStringProperty();
 		this.description = new SimpleStringProperty();
-		this.possibleScores = FXCollections.observableArrayList(FXCollections
-				.observableMap(new HashMap<String, Integer>()));
+		this.possibleScores = FXCollections.observableArrayList();
 		this.phaseList = FXCollections.observableArrayList();
 
 	}
