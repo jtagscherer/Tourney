@@ -1,10 +1,13 @@
 package usspg31.tourney.model.filemanagement;
 
+import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import usspg31.tourney.model.Player;
 
@@ -90,6 +93,48 @@ public class PlayerDocument {
 			disqualified.appendChild(this.document.createTextNode(String
 					.valueOf(player.getDisqualified())));
 		}
+	}
+
+	/**
+	 * Extract the list of players from this document
+	 * 
+	 * @return List of players to be extracted
+	 */
+	public ArrayList<Player> getPlayerList() {
+		ArrayList<Player> players = new ArrayList<Player>();
+
+		Node playersNode = this.document.getElementsByTagName("players")
+				.item(0);
+
+		for (Node player : FileLoader.getChildNodesByTag(playersNode, "player")) {
+			Player newPlayer = new Player();
+
+			newPlayer.setId(player.getAttributes().getNamedItem("id")
+					.getTextContent());
+
+			Node playerName = FileLoader.getFirstChildNodeByTag(player, "name");
+			newPlayer.setFirstName(FileLoader.getFirstChildNodeByTag(
+					playerName, "first-name").getTextContent());
+			newPlayer.setLastName(FileLoader.getFirstChildNodeByTag(playerName,
+					"last-name").getTextContent());
+
+			newPlayer.setMailAdress(FileLoader.getFirstChildNodeByTag(player,
+					"mail-address").getTextContent());
+			newPlayer.setNickName(FileLoader.getFirstChildNodeByTag(player,
+					"nickname").getTextContent());
+			newPlayer.setStartingNumber(FileLoader.getFirstChildNodeByTag(
+					player, "starting-number").getTextContent());
+
+			newPlayer.setPayed(Boolean.parseBoolean(FileLoader
+					.getFirstChildNodeByTag(player, "payed").getTextContent()));
+			newPlayer.setDisqualified(Boolean.parseBoolean(FileLoader
+					.getFirstChildNodeByTag(player, "disqualified")
+					.getTextContent()));
+
+			players.add(newPlayer);
+		}
+
+		return players;
 	}
 
 	/**

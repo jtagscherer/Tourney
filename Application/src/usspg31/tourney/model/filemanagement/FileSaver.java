@@ -107,7 +107,7 @@ public class FileSaver {
 		}
 
 		FileSaver.saveEvent(event, "Event.xml", zipOutputStream);
-		FileSaver.savePlayers(event.getRegisteredPlayers(), "Players.xml",
+		FileSaver.savePlayersToFile(event.getRegisteredPlayers(), "Players.xml",
 				zipOutputStream);
 		for (Tournament tournament : event.getTournaments()) {
 			FileSaver.saveTournament(tournament,
@@ -207,7 +207,7 @@ public class FileSaver {
 	 * @param path
 	 *            The path where the players should be saved
 	 */
-	public static void savePlayers(ObservableList<Player> players,
+	public static void savePlayersToFile(ObservableList<Player> players,
 			String fileName, ZipOutputStream zipOutputStream) {
 
 		PlayerDocument document = new PlayerDocument(
