@@ -32,6 +32,9 @@ public class UndoManager {
 	/** Flag set if a registered property is currently changed by an undo or redo action */
 	private boolean isPerformingAction;
 
+	/** Used for collecting multiple actions and put them into a single undo action */
+	private UndoBatch undoBatch;
+
 	/**
 	 * Initializes a new UndoManager.
 	 */
@@ -43,6 +46,38 @@ public class UndoManager {
 		this.redoAvailableProperty = new SimpleBooleanProperty(false);
 
 		this.isPerformingAction = false;
+
+		this.undoBatch = null;
+	}
+
+	/**
+	 * Clears the whole undo history.
+	 * It will be no longer possible to undo or redo previously added actions.
+	 */
+	public void clearHistory() {
+		this.headNode.setNext(null);
+		this.currentNode = this.headNode;
+
+		this.setUndoAvailable(false);
+		this.setRedoAvailable(false);
+
+		this.isPerformingAction = false;
+	}
+
+	/**
+	 * Tells the UndoManager to put all following actions into one single undo
+	 * action, until {@link#endUndoBatch()} is called. The batch only is actually
+	 * added to the undo history, if it contains at least one action.
+	 */
+	public void beginUndoBatch() {
+		this.undoBatch = new UndoBatch();
+	}
+
+	/**
+	 * Ends a previously started collection of undo actions.
+	 */
+	public void endUndoBatch() {
+		this.undoBatch = null;
 	}
 
 	/**
@@ -91,10 +126,13 @@ public class UndoManager {
 
 	/**
 	 * Undoes the current active action if one is available.
+	 * Ends the batching of undo actions, if it was activated before.
 	 * Otherwise does nothing.
 	 */
 	public void undo() {
 		if (this.undoAvailable()) {
+			this.endUndoBatch();
+
 			this.isPerformingAction = true;
 
 			this.currentNode.getAction().undo();
@@ -136,6 +174,15 @@ public class UndoManager {
 	}
 
 	/**
+	 * Unregisters a property to stop watching for changes.
+	 * Entries in the undo history will not be removed.
+	 * @param property
+	 */
+	public <T> void unregisterUndoProperty(Property<T> property) {
+		property.removeListener(this::propertyChangeListener);
+	}
+
+	/**
 	 * Registers a list to watch for changes.
 	 * Adds a listener to the list that automatically stores changes to the
 	 * list in in the undo history.
@@ -143,6 +190,35 @@ public class UndoManager {
 	 */
 	public <T> void registerUndoProperty(ObservableList<T> list) {
 		list.addListener(this::listChangeListener);
+	}
+
+	/**
+	 * Unregisters a list to stop watching for changes.
+	 * Entries in the undo history will not be removed.
+	 * @param list
+	 */
+	public <T> void unregisterUndoProperty(ObservableList<T> list) {
+		list.removeListener(this::listChangeListener);
+	}
+
+	/**
+	 * Adds an undoAction to the undo history.
+	 * @param undoAction
+	 */
+	private void addUndoAction(UndoAction undoAction) {
+		if (this.undoBatch != null) {
+			this.undoBatch.addUndoAction(undoAction);
+			// did we just add the first element to the undoBatch?
+			if (this.undoBatch.getUndoActionCount() == 1) {
+				this.currentNode.setNext(new UndoNode(this.currentNode, this.undoBatch));
+			}
+		} else {
+			this.currentNode.setNext(new UndoNode(this.currentNode, undoAction));
+		}
+
+		this.currentNode = this.currentNode.getNext();
+		this.setUndoAvailable(true);
+		this.setRedoAvailable(false);
 	}
 
 	/**
@@ -155,12 +231,8 @@ public class UndoManager {
 	private <T> void propertyChangeListener(ObservableValue<? extends T> observable,
 			T oldValue, T newValue) {
 		if (!this.isPerformingAction) {
-			this.currentNode.setNext(new UndoNode(this.currentNode,
-					new PropertyUndoAction<T>((Property<T>) observable,
-							oldValue, newValue)));
-			this.currentNode = this.currentNode.getNext();
-			this.setUndoAvailable(true);
-			this.setRedoAvailable(false);
+			this.addUndoAction(new PropertyUndoAction<T>(
+					(Property<T>) observable, oldValue, newValue));
 		}
 	}
 
@@ -171,11 +243,7 @@ public class UndoManager {
 	@SuppressWarnings("unchecked")
 	private <T> void listChangeListener(Change<? extends T> change) {
 		if (!this.isPerformingAction) {
-			this.currentNode.setNext(new UndoNode(this.currentNode,
-					new ListUndoAction<T>((Change<T>) change)));
-			this.currentNode = this.currentNode.getNext();
-			this.setUndoAvailable(true);
-			this.setRedoAvailable(false);
+			this.addUndoAction(new ListUndoAction<>((Change<T>) change));
 		}
 	}
 
