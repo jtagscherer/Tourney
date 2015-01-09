@@ -6,9 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.controls.EventUser;
+import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.undo.UndoManager;
@@ -20,7 +20,7 @@ public class EventSetupPhaseController implements EventUser {
 	@FXML private UndoTextField textFieldEventTitle;
 	@FXML private DatePicker datePickerStartDate;
 	@FXML private DatePicker datePickerEndDate;
-	@FXML private TextArea textAreaEventLocation;
+	@FXML private UndoTextArea textAreaEventLocation;
 
 	@FXML private TableView<String> tableTournaments;
 	@FXML private Button buttonAddTournament;
@@ -29,9 +29,9 @@ public class EventSetupPhaseController implements EventUser {
 
 	private Event loadedEvent;
 
-	private UndoManager undoManager;
+	private final UndoManager undoManager;
 
-	@FXML private void initialize() {
+	public EventSetupPhaseController() {
 		this.undoManager = new UndoManager();
 	}
 
@@ -53,6 +53,7 @@ public class EventSetupPhaseController implements EventUser {
 		this.undoManager.registerUndoProperty(this.textFieldEventTitle.undoTextProperty());
 		this.undoManager.registerUndoProperty(this.datePickerStartDate.valueProperty());
 		this.undoManager.registerUndoProperty(this.datePickerEndDate.valueProperty());
+		this.undoManager.registerUndoProperty(this.textAreaEventLocation.undoTextProperty());
 	}
 
 	@Override
@@ -76,6 +77,7 @@ public class EventSetupPhaseController implements EventUser {
 		this.undoManager.unregisterUndoProperty(this.textFieldEventTitle.undoTextProperty());
 		this.undoManager.unregisterUndoProperty(this.datePickerStartDate.valueProperty());
 		this.undoManager.unregisterUndoProperty(this.datePickerEndDate.valueProperty());
+		this.undoManager.unregisterUndoProperty(this.textAreaEventLocation.undoTextProperty());
 
 		this.undoManager.clearHistory();
 

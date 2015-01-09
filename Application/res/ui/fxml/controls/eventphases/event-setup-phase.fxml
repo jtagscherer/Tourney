@@ -20,7 +20,7 @@
             <UndoTextField fx:id="textFieldEventTitle" layoutX="3.0" layoutY="62.0" promptText="Titel" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0" />
             <DatePicker fx:id="datePickerStartDate" layoutX="-12.0" layoutY="93.0" promptText="Startdatum" showWeekNumbers="true" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
             <DatePicker fx:id="datePickerEndDate" layoutY="124.0" promptText="Enddatum" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="110.0" />
-            <TextArea fx:id="textAreaEventLocation" layoutX="5.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" promptText="Beschreibung" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="140.0" />
+            <UndoTextArea fx:id="textAreaEventLocation" layoutX="5.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" promptText="Beschreibung" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="140.0" />
          </children>
     </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
