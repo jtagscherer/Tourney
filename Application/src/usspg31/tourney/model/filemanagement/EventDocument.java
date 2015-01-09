@@ -1,9 +1,13 @@
 package usspg31.tourney.model.filemanagement;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.EventAdministrator;
@@ -104,6 +108,55 @@ public class EventDocument {
 	}
 
 	/**
+	 * Extract all meta data from this event document
+	 * 
+	 * @return Extracted meta data from this event document
+	 */
+	public EventMetaData getMetaData() {
+		EventMetaData metaData = new EventMetaData();
+
+		Node meta = this.document.getElementsByTagName("meta").item(0);
+
+		metaData.setName(FileLoader.getFirstChildNodeByTag(meta, "name")
+				.getTextContent());
+		metaData.setLocation(FileLoader
+				.getFirstChildNodeByTag(meta, "location").getTextContent());
+
+		Node date = FileLoader.getFirstChildNodeByTag(meta, "date");
+
+		metaData.setStartDate(LocalDate.parse(FileLoader
+				.getFirstChildNodeByTag(date, "start-date").getTextContent()));
+		metaData.setEndDate(LocalDate.parse(FileLoader.getFirstChildNodeByTag(
+				date, "end-date").getTextContent()));
+
+		Node eventAdministrators = FileLoader.getFirstChildNodeByTag(meta,
+				"event-administrators");
+
+		ArrayList<EventAdministrator> administrators = new ArrayList<EventAdministrator>();
+		for (Node admin : FileLoader.getChildNodesByTag(eventAdministrators,
+				"administrator")) {
+			EventAdministrator administrator = new EventAdministrator();
+
+			Node adminName = FileLoader.getFirstChildNodeByTag(admin, "name");
+			administrator.setFirstName(FileLoader.getFirstChildNodeByTag(
+					adminName, "first-name").getTextContent());
+			administrator.setLastName(FileLoader.getFirstChildNodeByTag(
+					adminName, "last-name").getTextContent());
+
+			administrator.setMailAdress(FileLoader.getFirstChildNodeByTag(
+					admin, "mail-address").getTextContent());
+			administrator.setPhoneNumber(FileLoader.getFirstChildNodeByTag(
+					admin, "phone-number").getTextContent());
+
+			administrators.add(administrator);
+		}
+
+		metaData.setAdministrators(administrators);
+
+		return metaData;
+	}
+
+	/**
 	 * Append references to all tournaments to the document
 	 * 
 	 * @param tournaments
@@ -124,6 +177,34 @@ public class EventDocument {
 			tournamentId.appendChild(this.document.createTextNode(tournament
 					.getId()));
 		}
+	}
+
+	/**
+	 * Extract a list of all tournaments referenced by this document
+	 * 
+	 * @param tournamentList
+	 *            A list of tournaments that are referenced in this event
+	 * @return List of all tournament ids
+	 */
+	public ArrayList<Tournament> getTournamentList(
+			ArrayList<Tournament> tournamentList) {
+		ArrayList<Tournament> attachedTournaments = new ArrayList<Tournament>();
+
+		Node tournaments = this.document.getElementsByTagName("tournaments")
+				.item(0);
+		for (Node tournament : FileLoader.getChildNodesByTag(tournaments,
+				"tournament")) {
+			String id = FileLoader.getFirstChildNodeByTag(tournament,
+					"tournament-id").getTextContent();
+
+			for (Tournament listedTournament : tournamentList) {
+				if (listedTournament.getId().equals(id)) {
+					attachedTournaments.add(listedTournament);
+				}
+			}
+		}
+
+		return attachedTournaments;
 	}
 
 	/**
