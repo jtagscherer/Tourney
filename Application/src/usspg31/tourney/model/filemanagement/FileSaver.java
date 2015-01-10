@@ -88,8 +88,7 @@ public class FileSaver {
 			FileSaver.initialize();
 		}
 
-		String zipFilePath = path + event.getName().replace(" ", "") + ".tef";
-		File zipFile = new File(zipFilePath);
+		File zipFile = new File(path);
 		try {
 			zipFile.getParentFile().mkdirs();
 			zipFile.createNewFile();
@@ -100,15 +99,15 @@ public class FileSaver {
 		FileOutputStream fileOutputStream;
 		ZipOutputStream zipOutputStream = null;
 		try {
-			fileOutputStream = new FileOutputStream(zipFilePath);
+			fileOutputStream = new FileOutputStream(path);
 			zipOutputStream = new ZipOutputStream(fileOutputStream);
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		FileSaver.saveEvent(event, "Event.xml", zipOutputStream);
-		FileSaver.savePlayersToFile(event.getRegisteredPlayers(), "Players.xml",
-				zipOutputStream);
+		FileSaver.savePlayersToFile(event.getRegisteredPlayers(),
+				"Players.xml", zipOutputStream);
 		for (Tournament tournament : event.getTournaments()) {
 			FileSaver.saveTournament(tournament,
 					"Tournament_" + tournament.getId() + ".xml",
@@ -191,8 +190,7 @@ public class FileSaver {
 		document.appendTournamentRounds(tournament.getRounds());
 
 		if (tournament.getRuleSet() != null) {
-			document.appendTournamentPhases(tournament.getRuleSet()
-					.getPhaseList());
+			document.appendTournamentRules(tournament.getRuleSet());
 		}
 
 		FileSaver.saveDocumentToZip(document.getDocument(), fileName,
@@ -207,7 +205,7 @@ public class FileSaver {
 	 * @param path
 	 *            The path where the players should be saved
 	 */
-	public static void savePlayersToFile(ObservableList<Player> players,
+	private static void savePlayersToFile(ObservableList<Player> players,
 			String fileName, ZipOutputStream zipOutputStream) {
 
 		PlayerDocument document = new PlayerDocument(
