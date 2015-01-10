@@ -8,63 +8,55 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<SplitPane fx:controller="usspg31.tourney.controller.controls.eventphases.EventSetupPhaseController" dividerPositions="0.29797979797979796" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <stylesheets>
+<SplitPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
+	fx:controller="usspg31.tourney.controller.controls.eventphases.EventSetupPhaseController"
+	dividerPositions="0.29797979797979796">
+	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/event-phase.css" />
-  </stylesheets>
-  <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-         <children>
-            <Label layoutX="21.0" layoutY="21.0" styleClass="heading" text="Event" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-            <UndoTextField fx:id="textFieldEventTitle" layoutX="3.0" layoutY="62.0" promptText="Titel" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0" />
-            <DatePicker fx:id="datePickerStartDate" layoutX="-12.0" layoutY="93.0" promptText="Startdatum" showWeekNumbers="true" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
-            <DatePicker fx:id="datePickerEndDate" layoutY="124.0" promptText="Enddatum" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="110.0" />
-            <UndoTextArea fx:id="textAreaEventLocation" layoutX="5.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" promptText="Beschreibung" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="140.0" />
-         </children>
-    </AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-         <children>
-            <Label styleClass="heading" text="Turniere" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
-               <children>
-                  <TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
-                  <VBox spacing="5.0" styleClass="table-edit-button-container">
-                     <children>
-                        <Button fx:id="buttonAddTournament" mnemonicParsing="false" styleClass="table-edit-button">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-add" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="buttonRemoveTournament" mnemonicParsing="false" styleClass="table-edit-button">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-remove" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="buttonEditTournament" mnemonicParsing="false" styleClass="table-edit-button">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-edit" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children></AnchorPane>
-  </items>
+	</stylesheets>
+	<items>
+		<AnchorPane>
+			<Label styleClass="heading" text="Event" AnchorPane.leftAnchor="5.0"
+				AnchorPane.topAnchor="5.0" />
+			<UndoTextField fx:id="textFieldEventTitle" promptText="Titel"
+				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
+				AnchorPane.topAnchor="50.0" />
+			<DatePicker fx:id="datePickerStartDate" promptText="Startdatum"
+				showWeekNumbers="true" AnchorPane.leftAnchor="5.0"
+				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
+			<DatePicker fx:id="datePickerEndDate" promptText="Enddatum"
+				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
+				AnchorPane.topAnchor="110.0" />
+			<UndoTextArea fx:id="textAreaEventLocation" promptText="Beschreibung"
+				AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
+				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="140.0" />
+		</AnchorPane>
+		<AnchorPane>
+			<Label styleClass="heading" text="Turniere"
+				AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+			<HBox spacing="5.0" AnchorPane.bottomAnchor="5.0"
+				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
+				AnchorPane.topAnchor="50.0">
+				<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
+				<VBox spacing="5.0" styleClass="table-edit-button-container">
+					<Button fx:id="buttonAddTournament" styleClass="table-edit-button">
+						<graphic>
+							<IconPane styleClass="icon-add, half" />
+						</graphic>
+					</Button>
+					<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button">
+						<graphic>
+							<IconPane styleClass="icon-remove, half" />
+						</graphic>
+					</Button>
+					<Button fx:id="buttonEditTournament" styleClass="table-edit-button">
+						<graphic>
+							<IconPane styleClass="icon-edit, half" />
+						</graphic>
+					</Button>
+				</VBox>
+			</HBox>
+		</AnchorPane>
+	</items>
 </SplitPane>

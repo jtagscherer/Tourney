@@ -6,58 +6,41 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/buttons.css" />
 	</stylesheets>
-   <children>
-      <HBox spacing="5.0">
-         <children>
-            <TextField promptText="Vorname" HBox.hgrow="ALWAYS" />
-            <TextField promptText="Nachname" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
-      <TextField promptText="E-Mail Adresse" />
-      <TextField promptText="Nickname" />
-      <Label styleClass="sub-heading" text="Angemeldet zu den folgenden Turnieren:" />
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-         <children>
-            <TableView fx:id="tableTournaments1" HBox.hgrow="ALWAYS" />
-            <VBox spacing="5.0" styleClass="table-edit-button-container">
-               <children>
-                  <Button fx:id="buttonAddTournament1" mnemonicParsing="false" styleClass="table-edit-button">
-                     <graphic>
-                        <IconPane>
-                           <styleClass>
-                              <String fx:value="icon-add" />
-                              <String fx:value="half" />
-                           </styleClass>
-                        </IconPane>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="buttonRemoveTournament1" mnemonicParsing="false" styleClass="table-edit-button">
-                     <graphic>
-                        <IconPane>
-                           <styleClass>
-                              <String fx:value="icon-remove" />
-                              <String fx:value="half" />
-                           </styleClass>
-                        </IconPane>
-                     </graphic>
-                  </Button>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-      <CheckBox mnemonicParsing="false" text="Startgeld bezahlt" />
-      <HBox alignment="BOTTOM_RIGHT" spacing="5.0">
-         <children>
-            <Button disable="true" mnemonicParsing="false" text="Speichern" />
-            <Button mnemonicParsing="false" text="Abbrechen" />
-         </children>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+	<children>
+		<HBox spacing="5.0">
+			<TextField promptText="Vorname" HBox.hgrow="ALWAYS" />
+			<TextField promptText="Nachname" HBox.hgrow="ALWAYS" />
+		</HBox>
+		<TextField promptText="E-Mail Adresse" />
+		<TextField promptText="Nickname" />
+		<Label styleClass="sub-heading" text="Angemeldet zu den folgenden Turnieren:" />
+		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+			<TableView fx:id="tableTournaments1" HBox.hgrow="ALWAYS" />
+			<VBox spacing="5.0" styleClass="table-edit-button-container">
+				<Button fx:id="buttonAddTournament1" styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-add, half" />
+					</graphic>
+				</Button>
+				<Button fx:id="buttonRemoveTournament1" styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-remove, half" />
+					</graphic>
+				</Button>
+			</VBox>
+		</HBox>
+		<CheckBox text="Startgeld bezahlt" />
+		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
+			<Button disable="true" text="Speichern" />
+			<Button text="Abbrechen" />
+		</HBox>
+	</children>
+	<padding>
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
 </VBox>
