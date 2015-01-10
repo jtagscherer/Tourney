@@ -3,6 +3,7 @@ package usspg31.tourney.model.filemanagement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import usspg31.tourney.model.Event;
 import usspg31.tourney.model.EventAdministrator;
 
 /**
@@ -15,6 +16,7 @@ public class EventMetaData {
 	private String location;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private Event.EventPhase eventPhase;
 	private ArrayList<EventAdministrator> administrators;
 
 	/**
@@ -22,6 +24,14 @@ public class EventMetaData {
 	 */
 	public EventMetaData() {
 		this.administrators = new ArrayList<EventAdministrator>();
+	}
+
+	public Event.EventPhase getEventPhase() {
+		return this.eventPhase;
+	}
+
+	public void setEventPhase(Event.EventPhase eventPhase) {
+		this.eventPhase = eventPhase;
 	}
 
 	public String getName() {
