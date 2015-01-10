@@ -295,8 +295,8 @@ public class TournamentDocument {
 					// Add the unique identification string of the player
 					Element playerId = this.document.createElement("player-id");
 					participantElement.appendChild(playerId);
-					playerId.appendChild(this.document.createTextNode(String
-							.valueOf(participant.getId())));
+					playerId.appendChild(this.document
+							.createTextNode(participant.getId()));
 
 					// Add the scores of the current participant
 					Element scoreElement = this.document
@@ -309,7 +309,7 @@ public class TournamentDocument {
 								Element scoreIntegerElement = this.document
 										.createElement("score");
 								scoreElement.appendChild(scoreIntegerElement);
-								scoreElement.appendChild(this.document
+								scoreIntegerElement.appendChild(this.document
 										.createTextNode(String
 												.valueOf(scoreInteger)));
 							}
@@ -355,7 +355,7 @@ public class TournamentDocument {
 					Player player = null;
 
 					String id = FileLoader.getFirstChildNodeByTag(participant,
-							"id").getTextContent();
+							"player-id").getTextContent();
 
 					for (Player listedPlayer : playerList) {
 						if (listedPlayer.getId().equals(id)) {
@@ -507,6 +507,8 @@ public class TournamentDocument {
 				.item(0);
 		for (Node scoring : FileLoader.getChildNodesByTag(scores, "scoring")) {
 			PossibleScoring newScoring = new PossibleScoring();
+			newScoring.setPriorityValue(Integer.valueOf(scoring.getAttributes()
+					.getNamedItem("priority").getTextContent()));
 			for (Node score : FileLoader.getChildNodesByTag(scoring, "score")) {
 				newScoring.getScores().put(
 						FileLoader.getFirstChildNodeByTag(score, "name")
