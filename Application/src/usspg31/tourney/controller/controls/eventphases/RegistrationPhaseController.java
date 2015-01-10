@@ -1,18 +1,18 @@
 package usspg31.tourney.controller.controls.eventphases;
 
-import usspg31.tourney.controller.controls.TournamentUser;
-import usspg31.tourney.model.Tournament;
+import usspg31.tourney.controller.controls.EventUser;
+import usspg31.tourney.model.Event;
 
-public class RegistrationPhaseController implements TournamentUser {
+public class RegistrationPhaseController implements EventUser {
 
 	@Override
-	public void loadTournament(Tournament tournament) {
+	public void loadEvent(Event event) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void unloadTournament() {
+	public void unloadEvent() {
 		// TODO Auto-generated method stub
 
 	}
