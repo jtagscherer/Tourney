@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 public class EntryPoint extends Application {
 	private static final Logger log = Logger.getLogger(EntryPoint.class.getName());
 
+	private static Stage primaryStage;
+
 	public static void main(String[] args) throws ClassNotFoundException {
 		log.info("Starting Application");
 		log.info("Running JavaFX Version " + System.getProperty("javafx.runtime.version"));
@@ -22,8 +24,13 @@ public class EntryPoint extends Application {
 		}
 	}
 
+	public static Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		EntryPoint.primaryStage = primaryStage;
 		try {
 			Pane root = MainWindow.getInstance();
 			Scene scene = new Scene(root);
