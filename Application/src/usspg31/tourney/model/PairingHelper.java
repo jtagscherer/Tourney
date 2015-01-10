@@ -2,6 +2,9 @@ package usspg31.tourney.model;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import usspg31.tourney.model.PlayerScore.PlayerScoreComparator;
+
 public class PairingHelper {
 	public static GamePhase findPhase(int roundcount, Tournament value) {
 		for (GamePhase actPhase : value.getRuleSet().getPhaseList()) {
@@ -34,4 +37,10 @@ public class PairingHelper {
 		return remainingPlayerScore;
 	}
 
+	public static Player identifyWinner(Pairing pairing) {
+		PlayerScoreComparator comparator = null;
+		FXCollections.sort(pairing.getScoreTable(), comparator);
+		return pairing.getScoreTable().get(pairing.getScoreTable().size() - 1)
+				.getPlayer();
+	}
 }
