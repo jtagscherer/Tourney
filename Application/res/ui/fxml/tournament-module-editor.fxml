@@ -35,7 +35,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
                         <VBox spacing="5.0" styleClass="table-edit-button-container">
@@ -115,7 +115,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <TableView fx:id="tableTournaments1" HBox.hgrow="ALWAYS" />
                         <VBox spacing="5.0" styleClass="table-edit-button-container">
