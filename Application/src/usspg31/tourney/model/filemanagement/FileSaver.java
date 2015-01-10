@@ -88,8 +88,7 @@ public class FileSaver {
 			FileSaver.initialize();
 		}
 
-		String zipFilePath = path + event.getName().replace(" ", "") + ".tef";
-		File zipFile = new File(zipFilePath);
+		File zipFile = new File(path);
 		try {
 			zipFile.getParentFile().mkdirs();
 			zipFile.createNewFile();
@@ -100,7 +99,7 @@ public class FileSaver {
 		FileOutputStream fileOutputStream;
 		ZipOutputStream zipOutputStream = null;
 		try {
-			fileOutputStream = new FileOutputStream(zipFilePath);
+			fileOutputStream = new FileOutputStream(path);
 			zipOutputStream = new ZipOutputStream(fileOutputStream);
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
