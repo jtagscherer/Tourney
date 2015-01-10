@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
@@ -20,17 +19,17 @@
 			AnchorPane.topAnchor="50.0">
 			<TableView HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0">
-				<Button styleClass="table-edit-button">
+				<Button fx:id="buttonAddTournamentModule" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-add, half" />
 					</graphic>
 				</Button>
-				<Button styleClass="table-edit-button">
+				<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-remoce, half" />
 					</graphic>
 				</Button>
-				<Button styleClass="table-edit-button">
+				<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-edit, half" />
 					</graphic>

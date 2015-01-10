@@ -16,10 +16,10 @@
 	</stylesheets>
 	<children>
 		<Label styleClass="heading" text="Voranmeldung" />
-		<TextField maxHeight="1.7976931348623157E308" promptText="Teilnehmer suchen"
-			HBox.hgrow="ALWAYS" />
+		<TextField fx:id="textFieldPlayerSearch" maxHeight="1.7976931348623157E308"
+			promptText="Teilnehmer suchen" HBox.hgrow="ALWAYS" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-			<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS" />
+			<TableView fx:id="tablePreRegisteredPlayers" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">
 				<Button fx:id="buttonAddPlayer" styleClass="table-edit-button">
 					<graphic>

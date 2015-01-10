@@ -13,31 +13,31 @@
 	</stylesheets>
 	<children>
 		<HBox spacing="5.0">
-			<TextField promptText="Vorname" HBox.hgrow="ALWAYS" />
-			<TextField promptText="Nachname" HBox.hgrow="ALWAYS" />
+			<TextField fx:id="textFieldFirstName" promptText="Vorname" HBox.hgrow="ALWAYS" />
+			<TextField fx:id="textFieldLastName" promptText="Nachname" HBox.hgrow="ALWAYS" />
 		</HBox>
-		<TextField promptText="E-Mail Adresse" />
-		<TextField promptText="Nickname" />
+		<TextField fx:id="textFieldEmail" promptText="E-Mail Adresse" />
+		<TextField fx:id="textFieldNickname" promptText="Nickname" />
 		<Label styleClass="sub-heading" text="Angemeldet zu den folgenden Turnieren:" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-			<TableView fx:id="tableTournaments1" HBox.hgrow="ALWAYS" />
+			<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">
-				<Button fx:id="buttonAddTournament1" styleClass="table-edit-button">
+				<Button fx:id="buttonAddTournament" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-add, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonRemoveTournament1" styleClass="table-edit-button">
+				<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-remove, half" />
 					</graphic>
 				</Button>
 			</VBox>
 		</HBox>
-		<CheckBox text="Startgeld bezahlt" />
+		<CheckBox fx:if="checkBoxPayed" text="Startgeld bezahlt" />
 		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
-			<Button disable="true" text="Speichern" />
-			<Button text="Abbrechen" />
+			<Button fx:id="buttonSave" disable="true" text="Speichern" />
+			<Button fx:id="buttonCancel" text="Abbrechen" />
 		</HBox>
 	</children>
 	<padding>
