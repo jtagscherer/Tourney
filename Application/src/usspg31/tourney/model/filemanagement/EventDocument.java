@@ -61,19 +61,25 @@ public class EventDocument {
 
 		Element startDate = this.document.createElement("start-date");
 		date.appendChild(startDate);
-		startDate.appendChild(this.document.createTextNode(event.getStartDate()
-				.toString()));
+		if (event.getStartDate() != null) {
+			startDate.appendChild(this.document.createTextNode(event
+					.getStartDate().toString()));
+		}
 
 		Element endDate = this.document.createElement("end-date");
 		date.appendChild(endDate);
-		endDate.appendChild(this.document.createTextNode(event.getEndDate()
-				.toString()));
+		if (event.getEndDate() != null) {
+			endDate.appendChild(this.document.createTextNode(event.getEndDate()
+					.toString()));
+		}
 
 		// Add the current event phase
 		Element phase = this.document.createElement("current-phase");
 		meta.appendChild(phase);
-		phase.appendChild(this.document.createTextNode(event.getEventPhase()
-				.name()));
+		if (event.getEventPhase() != null) {
+			phase.appendChild(this.document.createTextNode(event
+					.getEventPhase().name()));
+		}
 
 		// Add the event administrators
 		Element eventAdministrators = this.document
@@ -130,13 +136,23 @@ public class EventDocument {
 
 		Node date = FileLoader.getFirstChildNodeByTag(meta, "date");
 
-		metaData.setStartDate(LocalDate.parse(FileLoader
-				.getFirstChildNodeByTag(date, "start-date").getTextContent()));
-		metaData.setEndDate(LocalDate.parse(FileLoader.getFirstChildNodeByTag(
-				date, "end-date").getTextContent()));
-		metaData.setEventPhase(Event.EventPhase
-				.valueOf(FileLoader.getFirstChildNodeByTag(meta,
-						"current-phase").getTextContent()));
+		if (!FileLoader.getFirstChildNodeByTag(date, "start-date")
+				.getTextContent().equals("")) {
+			metaData.setStartDate(LocalDate.parse(FileLoader
+					.getFirstChildNodeByTag(date, "start-date")
+					.getTextContent()));
+		}
+		if (!FileLoader.getFirstChildNodeByTag(date, "end-date")
+				.getTextContent().equals("")) {
+			metaData.setEndDate(LocalDate.parse(FileLoader
+					.getFirstChildNodeByTag(date, "end-date").getTextContent()));
+		}
+
+		if (FileLoader.getFirstChildNodeByTag(meta, "current-phase") != null) {
+			metaData.setEventPhase(Event.EventPhase.valueOf(FileLoader
+					.getFirstChildNodeByTag(meta, "current-phase")
+					.getTextContent()));
+		}
 
 		Node eventAdministrators = FileLoader.getFirstChildNodeByTag(meta,
 				"event-administrators");
