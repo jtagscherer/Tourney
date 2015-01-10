@@ -73,7 +73,9 @@ public class EventPhaseViewController implements EventUser {
 	private Node registrationPhase;
 	private RegistrationPhaseController registrationPhaseController;
 
+	@SuppressWarnings("unused") // TODO: remove
 	private Node tournamentExecutionPhase;
+	@SuppressWarnings("unused") // TODO: remove
 	private TournamentExecutionPhaseController tournamentExecutionPhaseController;
 
 	// Animations
