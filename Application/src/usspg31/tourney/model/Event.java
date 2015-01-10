@@ -33,6 +33,7 @@ public class Event {
 		this.location = new SimpleStringProperty("");
 		this.administrators = FXCollections.observableArrayList();
 		this.eventPhase = new SimpleObjectProperty<Event.EventPhase>();
+		this.setEventPhase(Event.EventPhase.EVENT_SETUP);
 	}
 
 	public ObservableList<Tournament> getTournaments() {
