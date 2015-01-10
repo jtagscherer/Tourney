@@ -32,4 +32,8 @@ public class PossibleScoring {
 	public void setPriority(IntegerProperty priority) {
 		this.priority = priority;
 	}
+
+	public void setPriorityValue(int value) {
+		this.priority.set(value);
+	}
 }
