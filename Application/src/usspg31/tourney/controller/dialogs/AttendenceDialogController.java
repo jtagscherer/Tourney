@@ -7,15 +7,14 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.model.Player;
 
-public class AttendenceDialogController extends VBox implements DialogContent<List<Player>, List<Player>> {
+public class AttendenceDialogController extends VBox implements IModalDialogProvider<List<Player>, List<Player>> {
 
-	private final static Logger log = Logger.getLogger(AttendenceDialogController.class.getName());
+	private static final Logger log = Logger.getLogger(AttendenceDialogController.class.getName());
 
 	@FXML private TableView<String> tableRegisteredPlayers;
 	@FXML private TableView<String> tableAttendingPlayers;
@@ -26,7 +25,6 @@ public class AttendenceDialogController extends VBox implements DialogContent<Li
 	public AttendenceDialogController() {
 		try {
 			FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/ui/fxml/dialogs/attendence-dialog.fxml"));
-			log.info(loader.getLocation().toString());
 			loader.setController(this);
 			loader.setRoot(this);
 			loader.load();
@@ -55,8 +53,9 @@ public class AttendenceDialogController extends VBox implements DialogContent<Li
 	}
 
 	@Override
-	public Node getRoot() {
-		return this;
+	public void initModalDialog(
+			ModalDialog<List<Player>, List<Player>> modalDialog) {
+		modalDialog.title("Teilnehmende Spieler").dialogButtons(
+				DialogButtons.NONE);
 	}
-
 }
