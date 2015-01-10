@@ -4,12 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
-		<URL value="@/ui/css/buttons.css" />
 		<URL value="@/ui/css/tournament-module-editor.css" />
 	</stylesheets>
 	<children>
