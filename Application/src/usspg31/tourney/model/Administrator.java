@@ -9,7 +9,7 @@ public class Administrator extends Person {
 
 	public Administrator() {
 		super();
-		this.phoneNumber = new SimpleStringProperty();
+		this.phoneNumber = new SimpleStringProperty("");
 	}
 
 	public String getPhoneNumber() {

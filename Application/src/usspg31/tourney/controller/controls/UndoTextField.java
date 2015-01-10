@@ -44,7 +44,7 @@ public class UndoTextField extends TextField {
 	 */
 	public StringProperty undoTextProperty() {
 		if (this.undoText == null) {
-			this.undoText = new SimpleStringProperty() {
+			this.undoText = new SimpleStringProperty("") {
 				@Override
 				public void set(String newValue) {
 					super.set(newValue);

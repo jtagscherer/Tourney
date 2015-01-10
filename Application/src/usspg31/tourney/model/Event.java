@@ -27,10 +27,10 @@ public class Event {
 	public Event() {
 		this.tournaments = FXCollections.observableArrayList();
 		this.registeredPlayers = FXCollections.observableArrayList();
-		this.name = new SimpleStringProperty();
+		this.name = new SimpleStringProperty("");
 		this.startDate = new SimpleObjectProperty<LocalDate>();
 		this.endDate = new SimpleObjectProperty<LocalDate>();
-		this.location = new SimpleStringProperty();
+		this.location = new SimpleStringProperty("");
 		this.administrators = FXCollections.observableArrayList();
 		this.eventPhase = new SimpleObjectProperty<Event.EventPhase>();
 	}
