@@ -13,7 +13,7 @@
 <?import usspg31.tourney.controller.layout.IconPane?>
 <?import javafx.scene.layout.VBox?>
 
-<RelativityPane fx:id="options" xmlns="http://javafx.com/javafx/8"
+<RelativityPane xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.OptionsViewController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
@@ -29,7 +29,7 @@
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="70%" RelativityPane.relLeft="0%">
 				<Label styleClass="button-heading" text="Sprache" />
-				<Button fx:id="buttonChangeLanguage" styleClass="menu-button">
+				<Button fx:id="buttonChangeLanguage" styleClass="menu-button" onAction="#onButtonChangeLanguageClicked">
 					<graphic>
 						<IconPane styleClass="icon-language" />
 					</graphic>
@@ -44,7 +44,7 @@
 				<Label styleClass="button-heading" text="Passwort" />
 				<Button fx:id="buttonChangePassword" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
-					AnchorPane.rightAnchor="0">
+					AnchorPane.rightAnchor="0" onAction="#onButtonChangePasswordClicked">
 					<graphic>
 						<IconPane styleClass="icon-key" />
 					</graphic>

@@ -2,6 +2,7 @@ package usspg31.tourney.controller;
 
 import java.util.logging.Logger;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,10 +21,7 @@ public class OptionsViewController {
 	@FXML private Label labelExitExplanation;
 
 	@FXML private void initialize() {
-		//		this.buttonExit.setOnAction(event -> {
-		//			log.finer("ReturnToMainMenu Button was clicked");
-		//			MainWindow.getInstance().displayMainMenu();
-		//		});
+
 	}
 
 	public void setExitProperties(String title, String description,
@@ -32,6 +30,14 @@ public class OptionsViewController {
 		this.labelExitDescription.setText(description);
 		this.labelExitExplanation.setText(explanation);
 		this.buttonExit.setOnAction(event -> exitCallback.run());
+	}
+
+	@FXML private void onButtonChangeLanguageClicked(ActionEvent event) {
+
+	}
+
+	@FXML private void onButtonChangePasswordClicked(ActionEvent event) {
+
 	}
 
 }
