@@ -10,11 +10,20 @@ import usspg31.tourney.model.Tournament;
 
 public class SingleElimination implements PairingStrategy {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * usspg31.tourney.model.pairingstrategies.PairingStrategy#generatePairing
+	 * (usspg31.tourney.model.Tournament)
+	 */
 	@Override
 	public ArrayList<Pairing> generatePairing(Tournament tournament) {
-		// TODO Auto-generated method stub
+
 		ArrayList<Pairing> result = new ArrayList<>();
 		Pairing partResult = new Pairing();
+		// checks if this round is the first round in the gamphase and modify
+		// the pairing strategy for this round
 		if (PairingHelper.isFirstInPhase(tournament.getRounds().size(),
 				tournament, PairingHelper.findPhase(tournament.getRounds()
 						.size(), tournament))) {
@@ -50,8 +59,8 @@ public class SingleElimination implements PairingStrategy {
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
 					partResult.getOpponents().add(
-							PairingHelper.identifyWinner(tmp.get(i)));
-					tmp.remove(i);
+							PairingHelper.identifyWinner(tmp.get(0)));
+					tmp.remove(0);
 				}
 			}
 
