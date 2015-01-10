@@ -190,8 +190,7 @@ public class FileSaver {
 		document.appendTournamentRounds(tournament.getRounds());
 
 		if (tournament.getRuleSet() != null) {
-			document.appendTournamentPhases(tournament.getRuleSet()
-					.getPhaseList());
+			document.appendTournamentRules(tournament.getRuleSet());
 		}
 
 		FileSaver.saveDocumentToZip(document.getDocument(), fileName,

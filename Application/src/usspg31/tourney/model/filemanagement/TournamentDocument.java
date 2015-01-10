@@ -2,11 +2,14 @@ package usspg31.tourney.model.filemanagement;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,8 +18,10 @@ import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
+import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentAdministrator;
+import usspg31.tourney.model.TournamentModule;
 import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.pairingstrategies.PairingStrategy;
 
@@ -31,6 +36,8 @@ public class TournamentDocument {
 
 	private Document document;
 	private Element rootElement;
+
+	private String id;
 
 	public static final int REGISTERED_PLAYERS = 0;
 	public static final int ATTENDANT_PLAYERS = 1;
@@ -371,6 +378,8 @@ public class TournamentDocument {
 						playerScore.getScore().add(
 								Integer.parseInt(score.getTextContent()));
 					}
+
+					roundPairing.getScoreTable().add(playerScore);
 				}
 
 				tournamentRound.getPairings().add(roundPairing);
@@ -388,16 +397,51 @@ public class TournamentDocument {
 	 * @param gamePhases
 	 *            List of game phases to be appended
 	 */
-	public void appendTournamentPhases(ObservableList<GamePhase> gamePhases) {
+	public void appendTournamentRules(TournamentModule ruleSet) {
 		Element tournamentRules = this.document
 				.createElement("tournament-rules");
 		this.rootElement.appendChild(tournamentRules);
 
+		// Append a list of possible scorings
+		Element possibleScoresElement = this.document
+				.createElement("possible-scores");
+		tournamentRules.appendChild(possibleScoresElement);
+
+		for (PossibleScoring scoringPriority : ruleSet.getPossibleScores()) {
+			Element scoringElement = this.document.createElement("scoring");
+			Attr scoringPriorityAttribute = this.document
+					.createAttribute("priority");
+			scoringPriorityAttribute.setValue(String.valueOf(scoringPriority
+					.getPriority().get()));
+			scoringElement.setAttributeNode(scoringPriorityAttribute);
+			possibleScoresElement.appendChild(scoringElement);
+
+			Iterator<Entry<String, Integer>> iterator = scoringPriority
+					.getScores().entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<String, Integer> entry = iterator.next();
+
+				Element scoreElement = this.document.createElement("score");
+				scoringElement.appendChild(scoreElement);
+
+				Element nameElement = this.document.createElement("name");
+				scoreElement.appendChild(nameElement);
+				nameElement.appendChild(this.document.createTextNode(entry
+						.getKey()));
+
+				Element pointsElement = this.document.createElement("points");
+				scoreElement.appendChild(pointsElement);
+				pointsElement.appendChild(this.document.createTextNode(String
+						.valueOf(entry.getValue())));
+			}
+		}
+
+		// Append a list of tournament phases
 		Element tournamentPhases = this.document
 				.createElement("tournament-phases");
 		tournamentRules.appendChild(tournamentPhases);
 
-		for (GamePhase phase : gamePhases) {
+		for (GamePhase phase : ruleSet.getPhaseList()) {
 			Element phaseElement = this.document.createElement("phase");
 			tournamentPhases.appendChild(phaseElement);
 
@@ -453,7 +497,29 @@ public class TournamentDocument {
 	 * 
 	 * @return The list of game phases in this tournament
 	 */
-	public ArrayList<GamePhase> getGamePhases() {
+	public TournamentModule getTournamentRules() {
+		TournamentModule tournamentModule = new TournamentModule();
+
+		// Load a list of possible scorings
+		ArrayList<PossibleScoring> possibleScores = new ArrayList<PossibleScoring>();
+
+		Node scores = this.document.getElementsByTagName("possible-scores")
+				.item(0);
+		for (Node scoring : FileLoader.getChildNodesByTag(scores, "scoring")) {
+			PossibleScoring newScoring = new PossibleScoring();
+			for (Node score : FileLoader.getChildNodesByTag(scoring, "score")) {
+				newScoring.getScores().put(
+						FileLoader.getFirstChildNodeByTag(score, "name")
+								.getTextContent(),
+						Integer.valueOf(FileLoader.getFirstChildNodeByTag(
+								score, "points").getTextContent()));
+			}
+
+			possibleScores.add(newScoring);
+		}
+		tournamentModule.getPossibleScores().setAll(possibleScores);
+
+		// Load a list of game phases
 		ArrayList<GamePhase> gamePhases = new ArrayList<GamePhase>();
 
 		Node tournamentRules = this.document.getElementsByTagName(
@@ -496,8 +562,9 @@ public class TournamentDocument {
 
 			gamePhases.add(phase);
 		}
+		tournamentModule.getPhaseList().setAll(gamePhases);
 
-		return gamePhases;
+		return tournamentModule;
 	}
 
 	/**
@@ -517,5 +584,24 @@ public class TournamentDocument {
 	 */
 	public void setDocument(Document document) {
 		this.document = document;
+	}
+
+	/**
+	 * Get the id of the represented tournament
+	 * 
+	 * @return The id of the tournament
+	 */
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * Set the id of the tournament represented in this document
+	 * 
+	 * @param id
+	 *            New id of the tournament
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 }
