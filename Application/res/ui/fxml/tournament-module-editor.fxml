@@ -28,8 +28,8 @@
 				<VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
 					<children>
 						<Label styleClass="sub-heading" text="Allgemein" />
-						<TextField promptText="Titel" />
-						<TextArea prefHeight="200.0" prefWidth="200.0"
+						<UndoTextField fx:id="textFieldModuleTitle" promptText="Titel" />
+						<UndoTextArea fx:id="textAreaDescription" prefHeight="200.0" prefWidth="200.0"
 							promptText="Beschreibung" />
 					</children>
 					<padding>
@@ -40,33 +40,33 @@
 					<children>
 						<Label styleClass="sub-heading" text="Turnierphasen" />
 						<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-							<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
+							<TableView fx:id="tableTournamentPhases" HBox.hgrow="ALWAYS" />
 							<VBox spacing="5.0" styleClass="table-edit-button-container">
 								<HBox styleClass="up-down-button-container">
-									<Button HBox.hgrow="ALWAYS"
+									<Button fx:id="buttonMovePhaseUp" HBox.hgrow="ALWAYS"
 										styleClass="multi-button, left, table-edit-button, half">
 										<graphic>
 											<IconPane styleClass="icon-arrow-up, half" />
 										</graphic>
 									</Button>
-									<Button HBox.hgrow="ALWAYS"
+									<Button fx:id="buttonMovePhaseDown" HBox.hgrow="ALWAYS"
 										styleClass="multi-button, right, table-edit-button, half">
 										<graphic>
 											<IconPane styleClass="icon-arrow-down, half" />
 										</graphic>
 									</Button>
 								</HBox>
-								<Button fx:id="buttonAddTournament" styleClass="table-edit-button">
+								<Button fx:id="buttonAddPhase" styleClass="table-edit-button">
 									<graphic>
 										<IconPane styleClass="icon-add, half" />
 									</graphic>
 								</Button>
-								<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button">
+								<Button fx:id="buttonRemovePhase" styleClass="table-edit-button">
 									<graphic>
 										<IconPane styleClass="icon-remove, half" />
 									</graphic>
 								</Button>
-								<Button fx:id="buttonEditTournament" styleClass="table-edit-button">
+								<Button fx:id="buttonEditPhase" styleClass="table-edit-button">
 									<graphic>
 										<IconPane styleClass="icon-edit, half" />
 									</graphic>
@@ -75,33 +75,33 @@
 						</HBox>
 						<Label styleClass="sub-heading" text="Mögliche Wertungen" />
 						<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-							<TableView fx:id="tableTournaments1" HBox.hgrow="ALWAYS" />
+							<TableView fx:id="tablePossibleScores" HBox.hgrow="ALWAYS" />
 							<VBox spacing="5.0" styleClass="table-edit-button-container">
 								<HBox styleClass="up-down-button-container">
-									<Button HBox.hgrow="ALWAYS"
+									<Button fx:id="buttonMoveScoreUp" HBox.hgrow="ALWAYS"
 										styleClass="multi-button, left, table-edit-button, half">
 										<graphic>
 											<IconPane styleClass="icon-arrow-up, half" />
 										</graphic>
 									</Button>
-									<Button HBox.hgrow="ALWAYS"
+									<Button fx:id="buttonMoveScoreDown" HBox.hgrow="ALWAYS"
 										styleClass="multi-button, right, table-efit-button, half">
 										<graphic>
 											<IconPane styleClass="icon-arrow-down, half" />
 										</graphic>
 									</Button>
 								</HBox>
-								<Button fx:id="buttonAddTournament1" styleClass="table-edit-button">
+								<Button fx:id="buttonAddScore" styleClass="table-edit-button">
 									<graphic>
 										<IconPane styleClass="icon-add, half" />
 									</graphic>
 								</Button>
-								<Button fx:id="buttonRemoveTournament1" styleClass="table-edit-button">
+								<Button fx:id="buttonRemoveScore" styleClass="table-edit-button">
 									<graphic>
 										<IconPane styleClass="icon-remove, half" />
 									</graphic>
 								</Button>
-								<Button fx:id="buttonEditTournament1" styleClass="table-edit-button">
+								<Button fx:id="buttonEditScore" styleClass="table-edit-button">
 									<graphic>
 										<IconPane styleClass="icon-edit, half" />
 									</graphic>
@@ -117,8 +117,8 @@
 		</SplitPane>
 		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
 			<children>
-				<Button disable="true" text="Speichern" />
-				<Button text="Abbrechen" />
+				<Button fx:id="buttonSave" disable="true" text="Speichern" />
+				<Button fx:id="buttonCancel" text="Abbrechen" />
 			</children>
 			<padding>
 				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

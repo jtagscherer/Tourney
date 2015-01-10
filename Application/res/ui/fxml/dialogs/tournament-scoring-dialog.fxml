@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import usspg31.tourney.controller.layout.*?>
+<?import usspg31.tourney.controller.controls.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -12,22 +13,22 @@
 		<URL value="@/ui/css/main.css" />
 	</stylesheets>
 	<children>
-		<TextField promptText="Wertungsbezeichnung" />
+		<UndoTextField fx:id="textFieldScoringTitle" promptText="Wertungsbezeichnung" />
 		<Label styleClass="sub-heading" text="Voreingestellte Wertungswerte" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-			<TableView fx:id="tableTournaments1" HBox.hgrow="ALWAYS" />
+			<TableView fx:id="tablePossibleScores" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">
-				<Button fx:id="buttonAddTournament1" styleClass="table-edit-button">
+				<Button fx:id="buttonAddPossibleScore" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-add, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonRemoveTournament1" styleClass="table-edit-button">
+				<Button fx:id="buttonRemovePossibleScore" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-remove, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonEditTournament1" styleClass="table-edit-button">
+				<Button fx:id="buttonEditPossibleScore" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-edit, half" />
 					</graphic>
@@ -35,8 +36,8 @@
 			</VBox>
 		</HBox>
 		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
-			<Button disable="true" text="Speichern" />
-			<Button text="Abbrechen" />
+			<Button fx:id="buttonSave" disable="true" text="Speichern" />
+			<Button fx:id="buttonCancel" text="Abbrechen" />
 		</HBox>
 	</children>
 	<padding>

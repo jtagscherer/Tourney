@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<VBoxspacing = xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox spacing="5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 	</stylesheets>
@@ -15,17 +15,17 @@
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<VBox HBox.hgrow="ALWAYS">
 				<Label styleClass="sub-heading" text="Angemeldete Spieler" />
-				<TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-					VBox.vgrow="ALWAYS" />
+				<TableView fx:id="tableRegisteredPlayers" maxHeight="1.7976931348623157E308"
+					maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 			</VBox>
 			<VBox spacing="5.0">
 				<Pane VBox.vgrow="ALWAYS" />
-				<Button styleClass="table-edit-button">
+				<Button fx:id="buttonAddAttendee" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-arrow-right, half" />
 					</graphic>
 				</Button>
-				<Button styleClass="table-edit-button">
+				<Button fx:id="buttonRemoveAttendee" styleClass="table-edit-button">
 					<graphic>
 						<IconPane styleClass="icon-arrow-left" />
 					</graphic>
@@ -34,12 +34,12 @@
 			</VBox>
 			<VBox HBox.hgrow="ALWAYS">
 				<Label styleClass="sub-heading" text="Anwesende Spieler" />
-				<TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-					VBox.vgrow="ALWAYS" />
+				<TableView fx:id="tableAttendingPlayers" maxHeight="1.7976931348623157E308"
+					maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 			</VBox>
 		</HBox>
 		<HBox alignment="BOTTOM_RIGHT">
-			<Button text="Turnier beginnen" />
+			<Button fx:id="buttonStartTournament" text="Turnier beginnen" />
 		</HBox>
 	</children>
 	<padding>
