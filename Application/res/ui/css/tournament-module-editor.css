@@ -1,0 +1,5 @@
+
+.up-down-button-container {
+	-fx-max-width: -t-max-value;
+	-fx-min-height: 35px;
+}

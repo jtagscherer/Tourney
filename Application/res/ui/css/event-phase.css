@@ -30,8 +30,3 @@
 .table-edit-button-container {
 
 }
-
-.table-edit-button {
-	-fx-min-width: 100px;
-	-fx-min-height: 35px;
-}

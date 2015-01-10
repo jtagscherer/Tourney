@@ -138,3 +138,23 @@
 	-t-icon-width: 16px;
 	-t-icon-height: 21px;
 }
+
+.icon-arrow-down {
+	-t-icon-width: 24px;
+	-t-icon-height: 15px;
+	-fx-shape: "M14.83 16.42L24 25.59l9.17-9.17L36 19.25l-12 12-12-12z";
+}
+.icon-arrow-down.half {
+	-t-icon-width: 12px;
+	-t-icon-height: 7px;
+}
+
+.icon-arrow-up {
+	-t-icon-width: 24px;
+	-t-icon-height: 15px;
+	-fx-shape: "M14.83 30.83L24 21.66l9.17 9.17L36 28 24 16 12 28z";
+}
+.icon-arrow-up.half {
+	-t-icon-width: 12px;
+	-t-icon-height: 7px;
+}

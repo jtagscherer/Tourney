@@ -34,3 +34,13 @@
 .multi-button.right {
 	-fx-background-radius: 0 1px 1px 0;
 }
+
+.table-edit-button {
+	-fx-min-width: 100px;
+	-fx-min-height: 35px;
+}
+
+.table-edit-button.half {
+	-fx-min-width: 50px;
+	-fx-max-height: -t-max-value;
+}

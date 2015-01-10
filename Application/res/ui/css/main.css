@@ -35,3 +35,9 @@
 	-fx-font-weight: bold;
 	-fx-font-size: 30;
 }
+
+.sub-heading {
+	-fx-font-family: "Roboto Slab";
+	-fx-font-weight: bold;
+	-fx-font-size: 20;
+}
