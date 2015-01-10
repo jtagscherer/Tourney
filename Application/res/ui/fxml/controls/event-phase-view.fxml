@@ -73,4 +73,5 @@
 		<StackPane fx:id="eventPhaseContainer"
 			RelativityPane.relBottom="0px" RelativityPane.relLeft="0px"
 			RelativityPane.relRight="0px" RelativityPane.relTop="84px" />
+	</children>
 </RelativityPane>
