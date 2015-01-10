@@ -159,15 +159,20 @@ public class EventPhaseViewController implements EventUser {
 		// register listeners on the breadcrumb bar
 		this.breadcrumbEventSetup.setOnAction(event -> {
 			this.slideToPhase(0);
+			this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
 		});
 		this.breadcrumbPreRegistration.setOnAction(event -> {
 			this.slideToPhase(1);
+			this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
 		});
 		this.breadcrumbRegistration.setOnAction(event -> {
 			this.slideToPhase(2);
+			this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
 		});
 		this.breadcrumbTournamentExecution.setOnAction(event -> {
 			this.slideToPhase(3);
+			this.loadedEvent
+					.setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
 		});
 
 		// add all event phase views to the event phase container
@@ -281,6 +286,20 @@ public class EventPhaseViewController implements EventUser {
 
 		this.eventSetupPhaseController.loadEvent(event);
 		this.loadedEvent = event;
+		switch (this.loadedEvent.getEventPhase()) {
+		case EVENT_SETUP:
+			this.phasePosition.set(0);
+			break;
+		case PRE_REGISTRATION:
+			this.phasePosition.set(1);
+			break;
+		case REGISTRATION:
+			this.phasePosition.set(2);
+			break;
+		case TOURNAMENT_EXECUTION:
+			this.phasePosition.set(3);
+			break;
+		}
 	}
 
 	@Override
