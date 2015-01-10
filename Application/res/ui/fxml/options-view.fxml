@@ -59,7 +59,7 @@
 				<Label fx:id="labelExitHeading" styleClass="button-heading" text="Hauptmenü" />
 				<Button fx:id="buttonExit" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
-					AnchorPane.rightAnchor="0">
+					AnchorPane.rightAnchor="0" onAction="#onButtonExitClicked">
 					<graphic>
 						<IconPane styleClass="icon-close" />
 					</graphic>

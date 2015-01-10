@@ -14,14 +14,16 @@ public class OptionsViewController {
 
 	@FXML private Button buttonChangeLanguage;
 	@FXML private Button buttonChangePassword;
-
 	@FXML private Button buttonExit;
+
 	@FXML private Label labelExitHeading;
 	@FXML private Label labelExitDescription;
 	@FXML private Label labelExitExplanation;
 
-	@FXML private void initialize() {
+	private Runnable exitButtonCallback;
 
+	@FXML private void initialize() {
+		this.exitButtonCallback = null;
 	}
 
 	public void setExitProperties(String title, String description,
@@ -29,7 +31,7 @@ public class OptionsViewController {
 		this.labelExitHeading.setText(title);
 		this.labelExitDescription.setText(description);
 		this.labelExitExplanation.setText(explanation);
-		this.buttonExit.setOnAction(event -> exitCallback.run());
+		this.exitButtonCallback = exitCallback;
 	}
 
 	@FXML private void onButtonChangeLanguageClicked(ActionEvent event) {
@@ -38,6 +40,12 @@ public class OptionsViewController {
 
 	@FXML private void onButtonChangePasswordClicked(ActionEvent event) {
 
+	}
+
+	@FXML private void onButtonExitClicked(ActionEvent event) {
+		if (this.exitButtonCallback != null) {
+			this.exitButtonCallback.run();
+		}
 	}
 
 }
