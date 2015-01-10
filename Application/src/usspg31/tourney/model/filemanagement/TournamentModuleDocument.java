@@ -133,6 +133,8 @@ public class TournamentModuleDocument {
 				.item(0);
 		for (Node scoring : FileLoader.getChildNodesByTag(scores, "scoring")) {
 			PossibleScoring newScoring = new PossibleScoring();
+			newScoring.setPriorityValue(Integer.valueOf(scoring.getAttributes()
+					.getNamedItem("priority").getTextContent()));
 			for (Node score : FileLoader.getChildNodesByTag(scoring, "score")) {
 				newScoring.getScores().put(
 						FileLoader.getFirstChildNodeByTag(score, "name")

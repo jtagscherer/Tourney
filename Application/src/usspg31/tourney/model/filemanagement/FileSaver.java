@@ -90,7 +90,9 @@ public class FileSaver {
 
 		File zipFile = new File(path);
 		try {
-			zipFile.getParentFile().mkdirs();
+			if (zipFile.getParentFile() != null) {
+				zipFile.getParentFile().mkdirs();
+			}
 			zipFile.createNewFile();
 		} catch (IOException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
