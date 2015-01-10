@@ -206,6 +206,9 @@ public class EventPhaseViewController implements EventUser {
 		}
 
 		this.eventSetupPhaseController.loadEvent(event);
+		this.preRegistrationPhaseController.loadEvent(event);
+		this.registrationPhaseController.loadEvent(event);
+
 		this.loadedEvent = event;
 		switch (this.loadedEvent.getEventPhase()) {
 		case EVENT_SETUP:
@@ -227,6 +230,8 @@ public class EventPhaseViewController implements EventUser {
 	public void unloadEvent() {
 		// TODO unload any registered listeners on the event
 		this.eventSetupPhaseController.unloadEvent();
+		this.preRegistrationPhaseController.unloadEvent();
+		this.registrationPhaseController.unloadEvent();
 
 		this.loadedEvent = null;
 	}
