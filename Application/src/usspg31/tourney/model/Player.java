@@ -15,11 +15,11 @@ public class Player extends Person {
 
 	public Player() {
 		super();
-		this.nickName = new SimpleStringProperty();
-		this.startingNumber = new SimpleStringProperty();
+		this.nickName = new SimpleStringProperty("");
+		this.startingNumber = new SimpleStringProperty("");
 		this.payed = new SimpleBooleanProperty();
 		this.disqualified = new SimpleBooleanProperty();
-		this.id = new SimpleStringProperty();
+		this.id = new SimpleStringProperty("");
 	}
 
 	public String getNickName() {

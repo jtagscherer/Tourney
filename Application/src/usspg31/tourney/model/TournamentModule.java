@@ -13,8 +13,8 @@ public class TournamentModule {
 	private final ObservableList<GamePhase> phaseList;
 
 	public TournamentModule() {
-		this.name = new SimpleStringProperty();
-		this.description = new SimpleStringProperty();
+		this.name = new SimpleStringProperty("");
+		this.description = new SimpleStringProperty("");
 		this.possibleScorings = FXCollections.observableArrayList();
 		this.phaseList = FXCollections.observableArrayList();
 
