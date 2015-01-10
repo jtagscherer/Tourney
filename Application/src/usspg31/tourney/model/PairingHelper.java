@@ -3,9 +3,14 @@ package usspg31.tourney.model;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
-import usspg31.tourney.model.PlayerScore.PlayerScoreComparator;
 
 public class PairingHelper {
+
+	/**
+	 * @param roundcount
+	 * @param value
+	 * @return the GamePhase
+	 */
 	public static GamePhase findPhase(int roundcount, Tournament value) {
 		for (GamePhase actPhase : value.getRuleSet().getPhaseList()) {
 			if (roundcount - actPhase.getRoundCount() < 1) {
@@ -38,9 +43,20 @@ public class PairingHelper {
 	}
 
 	public static Player identifyWinner(Pairing pairing) {
-		PlayerScoreComparator comparator = null;
-		FXCollections.sort(pairing.getScoreTable(), comparator);
+		FXCollections.sort(pairing.getScoreTable());
 		return pairing.getScoreTable().get(pairing.getScoreTable().size() - 1)
 				.getPlayer();
+	}
+
+	/**
+	 * checks the pairing if there were a similar one in a previous round
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static boolean checkForSimiliarPairings(Pairing value,
+			Tournament tournament) {
+		// TODO implement checking for similar pairings in the same GamePhase
+		return false;
 	}
 }
