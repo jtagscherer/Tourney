@@ -102,7 +102,9 @@ public final class ModalDialog<P, R> extends StackPane {
 
 	public void exitWith(DialogResult result) {
 		this.hide();
-		this.dialogResultListener.onDialogClosed(result, this.dialogContent.getReturnValue());
+		if (this.dialogResultListener != null) {
+			this.dialogResultListener.onDialogClosed(result, this.dialogContent.getReturnValue());
+		}
 	}
 
 	private void hide() {
