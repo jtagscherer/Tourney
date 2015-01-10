@@ -17,64 +17,60 @@
 		<HBox fx:id="menuButtonBar" spacing="10.0"
 			RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
 			RelativityPane.relTop="0px">
-			<children>
-				<Button fx:id="buttonClose" styleClass="menu-button" onAction="#onButtonCloseClicked">
+			<Button fx:id="buttonClose" styleClass="menu-button" onAction="#onButtonCloseClicked">
+				<graphic>
+					<IconPane styleClass="icon-close, half" />
+				</graphic>
+			</Button>
+			<Button fx:id="buttonSave" styleClass="menu-button" onAction="#onButtonSaveClicked">
+				<graphic>
+					<IconPane styleClass="icon-save, half" />
+				</graphic>
+			</Button>
+			<HBox>
+				<Button fx:id="buttonUndo" disable="true"
+					styleClass="menu-button, multi-button, left" onAction="#onButtonUndoClicked">
 					<graphic>
-						<IconPane styleClass="icon-close, half" />
+						<IconPane styleClass="icon-undo, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonSave" styleClass="menu-button" onAction="#onButtonSaveClicked">
+				<Button fx:id="buttonRedo" disable="true"
+					styleClass="menu-button, multi-button, right" onAction="#onButtonRedoClicked">
 					<graphic>
-						<IconPane styleClass="icon-save, half" />
+						<IconPane styleClass="icon-redo, half" />
 					</graphic>
 				</Button>
-				<HBox>
-					<children>
-						<Button fx:id="buttonUndo" disable="true" styleClass="menu-button, multi-button, left" onAction="#onButtonUndoClicked">
-							<graphic>
-								<IconPane styleClass="icon-undo, half" />
-							</graphic>
-						</Button>
-						<Button fx:id="buttonRedo" disable="true" styleClass="menu-button, multi-button, right" onAction="#onButtonRedoClicked">
-							<graphic>
-								<IconPane styleClass="icon-redo, half" />
-							</graphic>
-						</Button>
-					</children>
-				</HBox>
-			</children>
+			</HBox>
 		</HBox>
 		<HBox fx:id="secondaryMenuButtonBar" alignment="TOP_RIGHT"
 			pickOnBounds="false" spacing="10.0" RelativityPane.relLeft="0px"
 			RelativityPane.relRight="0px" RelativityPane.relTop="0px">
-			<children>
-				<Button fx:id="buttonLock" styleClass="menu-button" onAction="#onButtonLockClicked">
-					<graphic>
-						<IconPane styleClass="icon-lock, half" />
-					</graphic>
-				</Button>
-				<Button fx:id="buttonOptions" styleClass="menu-button" onAction="#onButtonOptionsClicked">
-					<graphic>
-						<IconPane styleClass="icon-settings, half" />
-					</graphic>
-				</Button>
-			</children>
+			<Button fx:id="buttonLock" styleClass="menu-button" onAction="#onButtonLockClicked">
+				<graphic>
+					<IconPane styleClass="icon-lock, half" />
+				</graphic>
+			</Button>
+			<Button fx:id="buttonOptions" styleClass="menu-button"
+				onAction="#onButtonOptionsClicked">
+				<graphic>
+					<IconPane styleClass="icon-settings, half" />
+				</graphic>
+			</Button>
 		</HBox>
 		<HBox fx:id="breadcrumbContainer" RelativityPane.relLeft="0px"
 			RelativityPane.relRight="0px" RelativityPane.relTop="42px">
-			<children>
-				<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, multi-button, left"
-					text="Event Einstellungen" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbEventSetupClicked" />
-				<Button fx:id="breadcrumbPreRegistration" styleClass="breadcrumb-button, multi-button, middle"
-					text="Voranmeldung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbPreRegistrationClicked" />
-				<Button fx:id="breadcrumbRegistration" styleClass="breadcrumb-button, multi-button, middle"
-					text="Anmeldung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbRegistrationClicked" />
-				<Button fx:id="breadcrumbTournamentExecution" styleClass="breadcrumb-button, multi-button, right"
-					text="Turnierdurchführung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbTournamentExecutionClicked" />
-			</children>
+			<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, multi-button, left"
+				text="Event Einstellungen" HBox.hgrow="ALWAYS"
+				onAction="#onBreadcrumbEventSetupClicked" />
+			<Button fx:id="breadcrumbPreRegistration" styleClass="breadcrumb-button, multi-button, middle"
+				text="Voranmeldung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbPreRegistrationClicked" />
+			<Button fx:id="breadcrumbRegistration" styleClass="breadcrumb-button, multi-button, middle"
+				text="Anmeldung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbRegistrationClicked" />
+			<Button fx:id="breadcrumbTournamentExecution" styleClass="breadcrumb-button, multi-button, right"
+				text="Turnierdurchführung" HBox.hgrow="ALWAYS"
+				onAction="#onBreadcrumbTournamentExecutionClicked" />
 		</HBox>
 		<StackPane fx:id="eventPhaseContainer"
 			RelativityPane.relBottom="0px" RelativityPane.relLeft="0px"
 			RelativityPane.relRight="0px" RelativityPane.relTop="84px" />
-	</children>
 </RelativityPane>

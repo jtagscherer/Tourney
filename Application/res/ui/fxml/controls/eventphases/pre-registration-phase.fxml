@@ -8,44 +8,38 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
 		<Label styleClass="heading" text="Voranmeldung" />
-		<HBox prefWidth="200.0" spacing="5.0">
-			<children>
-				<TextField maxHeight="1.7976931348623157E308" promptText="Teilnehmer suchen" HBox.hgrow="ALWAYS" />
-			</children>
-		</HBox>
-		<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-			<children>
-				<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS" />
-				<VBox spacing="5.0" styleClass="table-edit-button-container">
-					<children>
-      				<Button fx:id="buttonAddPlayer" mnemonicParsing="false" styleClass="table-edit-button">
-      					<graphic>
-      						<IconPane styleClass="icon-add, half" />
-      					</graphic>
-      				</Button>
-						<Button fx:id="buttonRemovePlayer" mnemonicParsing="false" styleClass="table-edit-button">
-							<graphic>
-								<IconPane styleClass="icon-remove, half" />
-							</graphic>
-						</Button>
-						<Button fx:id="buttonEditPlayer" mnemonicParsing="false" styleClass="table-edit-button">
-							<graphic>
-								<IconPane styleClass="icon-edit, half" />
-							</graphic>
-						</Button>
-					</children>
-				</VBox>
-			</children>
+		<TextField maxHeight="1.7976931348623157E308" promptText="Teilnehmer suchen"
+			HBox.hgrow="ALWAYS" />
+		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+			<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS" />
+			<VBox spacing="5.0" styleClass="table-edit-button-container">
+				<Button fx:id="buttonAddPlayer" styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-add, half" />
+					</graphic>
+				</Button>
+				<Button fx:id="buttonRemovePlayer" styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-remove, half" />
+					</graphic>
+				</Button>
+				<Button fx:id="buttonEditPlayer" styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-edit, half" />
+					</graphic>
+				</Button>
+			</VBox>
 		</HBox>
 	</children>
 	<padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
 </VBox>

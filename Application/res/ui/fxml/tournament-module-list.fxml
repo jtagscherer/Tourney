@@ -6,47 +6,36 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="30.0" styleClass="heading" text="Turniermodule" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-      <HBox layoutX="200.0" layoutY="192.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
-         <children>
-            <TableView prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <VBox spacing="5.0">
-               <children>
-                  <Button mnemonicParsing="false" styleClass="table-edit-button">
-                     <graphic>
-                        <IconPane>
-                           <styleClass>
-                              <String fx:value="icon-add" />
-                              <String fx:value="half" />
-                           </styleClass>
-                        </IconPane>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" styleClass="table-edit-button">
-                     <graphic>
-                        <IconPane>
-                           <styleClass>
-                              <String fx:value="icon-remove" />
-                              <String fx:value="half" />
-                           </styleClass>
-                        </IconPane>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" styleClass="table-edit-button">
-                     <graphic>
-                        <IconPane>
-                           <styleClass>
-                              <String fx:value="icon-edit" />
-                              <String fx:value="half" />
-                           </styleClass>
-                        </IconPane>
-                     </graphic>
-                  </Button>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </children>
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/tournament-module-editor.css" />
+	</stylesheets>
+	<children>
+		<Label styleClass="heading" text="Turniermodule"
+			AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+		<HBox spacing="5.0" AnchorPane.bottomAnchor="5.0"
+			AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
+			AnchorPane.topAnchor="50.0">
+			<TableView HBox.hgrow="ALWAYS" />
+			<VBox spacing="5.0">
+				<Button styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-add, half" />
+					</graphic>
+				</Button>
+				<Button styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-remoce, half" />
+					</graphic>
+				</Button>
+				<Button styleClass="table-edit-button">
+					<graphic>
+						<IconPane styleClass="icon-edit, half" />
+					</graphic>
+				</Button>
+			</VBox>
+		</HBox>
+	</children>
 </AnchorPane>

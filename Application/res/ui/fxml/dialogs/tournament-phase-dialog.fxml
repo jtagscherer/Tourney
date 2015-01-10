@@ -6,50 +6,38 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox alignment="BASELINE_LEFT" spacing="5.0">
-         <children>
-            <Label text="Cutoff auf" />
-            <TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="16" />
-            <Label text="Spieler" />
-         </children>
-      </HBox>
-      <HBox alignment="BASELINE_LEFT" spacing="5.0">
-         <children>
-            <Label text="Paarungsmethode" />
-            <ComboBox prefWidth="150.0" />
-         </children>
-      </HBox>
-      <HBox alignment="BASELINE_LEFT" spacing="5.0">
-         <children>
-            <Label text="Rundenanzahl:" />
-            <TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="8" />
-         </children>
-      </HBox>
-      <HBox alignment="BASELINE_LEFT" spacing="5.0">
-         <children>
-            <Label text="Spielzeit pro Runde:" />
-            <TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="10" />
-            <Label text="Minute(n)" />
-            <TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="00" />
-            <Label text="Sekunden" />
-         </children>
-      </HBox>
-      <HBox alignment="BASELINE_LEFT" spacing="5.0">
-         <children>
-            <Label text="Anzahl Spieler je Paarung:" />
-            <TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="2" />
-         </children>
-      </HBox>
-      <HBox alignment="BOTTOM_RIGHT" spacing="5.0">
-         <children>
-            <Button disable="true" mnemonicParsing="false" text="Speichern" />
-            <Button mnemonicParsing="false" text="Abbrechen" />
-         </children>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<HBox alignment="BASELINE_LEFT" spacing="5.0">
+			<Label text="Cutoff auf" />
+			<TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="16" />
+			<Label text="Spieler" />
+		</HBox>
+		<HBox alignment="BASELINE_LEFT" spacing="5.0">
+			<Label text="Paarungsmethode" />
+			<ComboBox prefWidth="150.0" />
+		</HBox>
+		<HBox alignment="BASELINE_LEFT" spacing="5.0">
+			<Label text="Rundenanzahl:" />
+			<TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="8" />
+		</HBox>
+		<HBox alignment="BASELINE_LEFT" spacing="5.0">
+			<Label text="Spielzeit pro Runde:" />
+			<TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="10" />
+			<Label text="Minute(n)" />
+			<TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="00" />
+			<Label text="Sekunden" />
+		</HBox>
+		<HBox alignment="BASELINE_LEFT" spacing="5.0">
+			<Label text="Anzahl Spieler je Paarung:" />
+			<TextField alignment="CENTER_RIGHT" prefWidth="40.0" text="2" />
+		</HBox>
+		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
+			<Button disable="true" mnemonicParsing="false" text="Speichern" />
+			<Button mnemonicParsing="false" text="Abbrechen" />
+		</HBox>
+	</children>
+	<padding>
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
 </VBox>
