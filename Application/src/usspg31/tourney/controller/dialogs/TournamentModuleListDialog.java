@@ -9,10 +9,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import usspg31.tourney.model.TournamentModule;
 
-public class TournamentModuleListDialog extends AnchorPane implements DialogContent<List<TournamentModule>, Object> {
+public class TournamentModuleListDialog extends HBox implements IModalDialogProvider<List<TournamentModule>, Object> {
 
 	private static final Logger log = Logger.getLogger(TournamentModuleListDialog.class.getName());
 
@@ -35,6 +35,11 @@ public class TournamentModuleListDialog extends AnchorPane implements DialogCont
 	@Override
 	public void setProperties(List<TournamentModule> properties) {
 		// TODO: link the given list to the table
+	}
+
+	@Override
+	public void initModalDialog(ModalDialog<List<TournamentModule>, Object> modalDialog) {
+		modalDialog.title("Turniermodule").dialogButtons(DialogButtons.OK);
 	}
 
 }
