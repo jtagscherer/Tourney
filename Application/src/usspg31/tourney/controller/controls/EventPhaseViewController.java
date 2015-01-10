@@ -119,6 +119,7 @@ public class EventPhaseViewController implements EventUser {
 				.getResource(
 						"/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
 		this.preRegistrationPhase = preRegistrationPhaseLoader.load();
+		this.preRegistrationPhaseController = preRegistrationPhaseLoader.getController();
 		this.preRegistrationPhase.setVisible(true);
 
 		FXMLLoader registrationPhaseLoader = new FXMLLoader(
@@ -126,6 +127,7 @@ public class EventPhaseViewController implements EventUser {
 				.getResource(
 						"/ui/fxml/controls/eventphases/registration-phase.fxml"));
 		this.registrationPhase = registrationPhaseLoader.load();
+		this.registrationPhaseController = registrationPhaseLoader.getController();
 		this.registrationPhase.setVisible(true);
 
 		// FXMLLoader tournamentExecutionPhaseLoader = new
