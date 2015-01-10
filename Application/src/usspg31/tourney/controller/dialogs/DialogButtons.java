@@ -1,6 +1,7 @@
 package usspg31.tourney.controller.dialogs;
 
 public enum DialogButtons {
+	NONE(false, false, false, false),
 	OK(false, false, true, false),
 	OK_CANCEL(false, false, true, true),
 	YES_NO(true, true, false, false),
