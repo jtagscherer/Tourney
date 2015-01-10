@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.net.*?>
 <?import usspg31.tourney.controller.layout.*?>
 <?import javafx.scene.control.*?>
@@ -7,46 +8,36 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<AnchorPane fx:controller="usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
-		<Label styleClass="heading" text="Voranmeldungen" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-		<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
+		<Label styleClass="heading" text="Voranmeldung" />
+		<HBox prefWidth="200.0" spacing="5.0">
 			<children>
-				<TableView fx:id="tablePlayers" HBox.hgrow="ALWAYS" />
+				<TextField maxHeight="1.7976931348623157E308" promptText="Teilnehmer suchen" HBox.hgrow="ALWAYS" />
+			</children>
+		</HBox>
+		<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+			<children>
+				<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS" />
 				<VBox spacing="5.0" styleClass="table-edit-button-container">
 					<children>
-						<Button fx:id="buttonAddPlayer" mnemonicParsing="false" styleClass="table-edit-button">
-							<graphic>
-								<IconPane>
-									<styleClass>
-										<String fx:value="icon-add" />
-										<String fx:value="half" />
-									</styleClass>
-								</IconPane>
-							</graphic>
-						</Button>
+      				<Button fx:id="buttonAddPlayer" mnemonicParsing="false" styleClass="table-edit-button">
+      					<graphic>
+      						<IconPane styleClass="icon-add, half" />
+      					</graphic>
+      				</Button>
 						<Button fx:id="buttonRemovePlayer" mnemonicParsing="false" styleClass="table-edit-button">
 							<graphic>
-								<IconPane>
-									<styleClass>
-										<String fx:value="icon-remove" />
-										<String fx:value="half" />
-									</styleClass>
-								</IconPane>
+								<IconPane styleClass="icon-remove, half" />
 							</graphic>
 						</Button>
 						<Button fx:id="buttonEditPlayer" mnemonicParsing="false" styleClass="table-edit-button">
 							<graphic>
-								<IconPane>
-									<styleClass>
-										<String fx:value="icon-edit" />
-										<String fx:value="half" />
-									</styleClass>
-								</IconPane>
+								<IconPane styleClass="icon-edit, half" />
 							</graphic>
 						</Button>
 					</children>
@@ -54,4 +45,7 @@
 			</children>
 		</HBox>
 	</children>
-</AnchorPane>
+	<padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
+</VBox>
