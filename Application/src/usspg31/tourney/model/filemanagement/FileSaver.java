@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -26,23 +24,15 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import usspg31.tourney.model.Event;
-import usspg31.tourney.model.EventAdministrator;
-import usspg31.tourney.model.GamePhase;
-import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Player;
-import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.Tournament;
-import usspg31.tourney.model.TournamentAdministrator;
 import usspg31.tourney.model.TournamentModule;
-import usspg31.tourney.model.TournamentRound;
 
 /**
- * Contains static methods that save and load rule modules and events including
+ * Contains static methods that save rule modules and events including
  * tournaments and players using XML files
  * 
  * @author Jan Tagscherer
@@ -117,7 +107,7 @@ public class FileSaver {
 		}
 
 		FileSaver.saveEvent(event, "Event.xml", zipOutputStream);
-		FileSaver.savePlayers(event.getRegisteredPlayers(), "Players.xml",
+		FileSaver.savePlayersToFile(event.getRegisteredPlayers(), "Players.xml",
 				zipOutputStream);
 		for (Tournament tournament : event.getTournaments()) {
 			FileSaver.saveTournament(tournament,
@@ -163,92 +153,15 @@ public class FileSaver {
 	 */
 	private static void saveEvent(Event event, String fileName,
 			ZipOutputStream zipOutputStream) {
-		Document document = FileSaver.documentBuilder.newDocument();
 
-		// Add the root element
-		Element rootElement = document.createElement("event");
-		document.appendChild(rootElement);
+		EventDocument document = new EventDocument(
+				FileSaver.documentBuilder.newDocument());
 
-		// Add meta data
-		Element meta = document.createElement("meta");
-		rootElement.appendChild(meta);
+		document.appendMetaData(event);
+		document.appendTournamentList(event.getTournaments());
 
-		// Add the name
-		Element name = document.createElement("name");
-		meta.appendChild(name);
-		name.appendChild(document.createTextNode(event.getName()));
-
-		// Add the location
-		Element location = document.createElement("location");
-		meta.appendChild(location);
-		location.appendChild(document.createTextNode(event.getLocation()));
-
-		// Add the date
-		Element date = document.createElement("date");
-		meta.appendChild(date);
-
-		Element startDate = document.createElement("start-date");
-		date.appendChild(startDate);
-		startDate.appendChild(document.createTextNode(event.getStartDate()
-				.toString()));
-
-		Element endDate = document.createElement("end-date");
-		date.appendChild(endDate);
-		endDate.appendChild(document.createTextNode(event.getEndDate()
-				.toString()));
-
-		// Add the event administrators
-		Element eventAdministrators = document
-				.createElement("event-administrators");
-		meta.appendChild(eventAdministrators);
-
-		for (EventAdministrator eventAdministrator : event.getAdministrators()) {
-			Element administrator = document.createElement("administrator");
-			eventAdministrators.appendChild(administrator);
-
-			// Add the name of the current administrator
-			Element administratorName = document.createElement("name");
-			administrator.appendChild(administratorName);
-
-			Element firstName = document.createElement("first-name");
-			administratorName.appendChild(firstName);
-			firstName.appendChild(document.createTextNode(eventAdministrator
-					.getFirstName()));
-
-			Element lastName = document.createElement("last-name");
-			administratorName.appendChild(lastName);
-			lastName.appendChild(document.createTextNode(eventAdministrator
-					.getLastName()));
-
-			// Add the mail address of the current administrator
-			Element mailAddress = document.createElement("mail-address");
-			administrator.appendChild(mailAddress);
-			mailAddress.appendChild(document.createTextNode(eventAdministrator
-					.getMailAddress()));
-
-			// Add the phone number of the current administrator
-			Element phoneNumber = document.createElement("phone-number");
-			administrator.appendChild(phoneNumber);
-			phoneNumber.appendChild(document.createTextNode(eventAdministrator
-					.getPhoneNumber()));
-		}
-
-		// Add all tournaments in this event
-		Element tournaments = document.createElement("tournaments");
-		rootElement.appendChild(tournaments);
-
-		for (Tournament tournament : event.getTournaments()) {
-			Element tournamentElement = document.createElement("tournament");
-			tournaments.appendChild(tournamentElement);
-
-			// Add a reference to the current tournament using its ID
-			Element tournamentId = document.createElement("tournament-id");
-			tournamentElement.appendChild(tournamentId);
-			tournamentId
-					.appendChild(document.createTextNode(tournament.getId()));
-		}
-
-		FileSaver.saveDocumentToZip(document, fileName, zipOutputStream);
+		FileSaver.saveDocumentToZip(document.getDocument(), fileName,
+				zipOutputStream);
 	}
 
 	/**
@@ -261,214 +174,29 @@ public class FileSaver {
 	 */
 	private static void saveTournament(Tournament tournament, String fileName,
 			ZipOutputStream zipOutputStream) {
-		Document document = FileSaver.documentBuilder.newDocument();
 
-		// Add the root element
-		Element rootElement = document.createElement("tournament");
-		document.appendChild(rootElement);
+		TournamentDocument document = new TournamentDocument(
+				FileSaver.documentBuilder.newDocument());
 
-		// Add tournament metadata
-		Element meta = document.createElement("meta");
-		rootElement.appendChild(meta);
+		document.appendMetaData(tournament);
+		document.appendAdministratorList(tournament.getAdministrators());
 
-		// Add the tournament name to the metadata
-		Element name = document.createElement("name");
-		meta.appendChild(name);
-		name.appendChild(document.createTextNode(tournament.getName()));
+		document.appendPlayerList(tournament.getRegisteredPlayers(),
+				TournamentDocument.REGISTERED_PLAYERS);
+		document.appendPlayerList(tournament.getAttendingPlayers(),
+				TournamentDocument.ATTENDANT_PLAYERS);
+		document.appendPlayerList(tournament.getRemainingPlayers(),
+				TournamentDocument.REMAINING_PLAYERS);
 
-		// Add a node for every tournament administrator
-		Element administrators = document
-				.createElement("tournament-administrators");
-		rootElement.appendChild(administrators);
-
-		for (TournamentAdministrator administrator : tournament
-				.getAdministrators()) {
-			Element administratorElement = document
-					.createElement("administrator");
-			administrators.appendChild(administratorElement);
-
-			// Add the name of the administrator
-			Element administratorName = document.createElement("name");
-			administratorElement.appendChild(administratorName);
-
-			Element firstName = document.createElement("first-name");
-			administratorName.appendChild(firstName);
-			firstName.appendChild(document.createTextNode(administrator
-					.getFirstName()));
-
-			Element lastName = document.createElement("last-name");
-			administratorName.appendChild(lastName);
-			lastName.appendChild(document.createTextNode(administrator
-					.getLastName()));
-
-			// Add the mail address of the administrator
-			Element administratorMail = document.createElement("mail-address");
-			administratorElement.appendChild(administratorMail);
-			administratorMail.appendChild(document.createTextNode(administrator
-					.getMailAddress()));
-
-			// Add the phone number of the administrator
-			Element administratorPhone = document.createElement("phone-number");
-			administratorElement.appendChild(administratorPhone);
-			administratorPhone.appendChild(document
-					.createTextNode(administrator.getPhoneNumber()));
-		}
-
-		// Add a node for every registered player
-		Element registeredPlayers = document
-				.createElement("registered-players");
-		rootElement.appendChild(registeredPlayers);
-
-		for (Player player : tournament.getRegisteredPlayers()) {
-			Element playerElement = document.createElement("player");
-			registeredPlayers.appendChild(playerElement);
-
-			Element playerId = document.createElement("player-id");
-			playerElement.appendChild(playerId);
-			playerId.appendChild(document.createTextNode(player.getId()));
-		}
-
-		// Add a node for every attendant player
-		Element attendantPlayers = document.createElement("attendant-players");
-		rootElement.appendChild(attendantPlayers);
-
-		for (Player player : tournament.getAttendingPlayers()) {
-			Element playerElement = document.createElement("player");
-			attendantPlayers.appendChild(playerElement);
-
-			Element playerId = document.createElement("player-id");
-			playerElement.appendChild(playerId);
-			playerId.appendChild(document.createTextNode(player.getId()));
-		}
-
-		// Add a node for every remaining player in the game
-		Element remainingPlayers = document.createElement("remaining-players");
-		rootElement.appendChild(remainingPlayers);
-
-		for (Player player : tournament.getRemainingPlayers()) {
-			Element playerElement = document.createElement("player");
-			remainingPlayers.appendChild(playerElement);
-
-			Element playerId = document.createElement("player-id");
-			playerElement.appendChild(playerId);
-			playerId.appendChild(document.createTextNode(player.getId()));
-		}
-
-		// Add a node for every tournament round
-		Element tournamentRounds = document.createElement("tournament-rounds");
-		rootElement.appendChild(tournamentRounds);
-
-		for (TournamentRound tournamentRound : tournament.getRounds()) {
-			Element roundElement = document.createElement("tournament-round");
-			tournamentRounds.appendChild(roundElement);
-
-			// Add the number of the current tournament round
-			Element roundName = document.createElement("round-number");
-			roundElement.appendChild(roundName);
-			roundName.appendChild(document.createTextNode(String
-					.valueOf(tournamentRound.getRoundNumber())));
-
-			// Add all pairings of the current tournament round
-			Element pairings = document.createElement("pairings");
-			roundElement.appendChild(pairings);
-
-			for (Pairing pairing : tournamentRound.getPairings()) {
-				Element pairingElement = document.createElement("pairing");
-				pairings.appendChild(pairingElement);
-
-				// Add all participants of the pairing
-				Element participants = document.createElement("participants");
-				pairingElement.appendChild(participants);
-
-				for (Player participant : pairing.getOpponents()) {
-					Element participantElement = document
-							.createElement("player");
-					participants.appendChild(participantElement);
-
-					// Add the unique identification string of the player
-					Element playerId = document.createElement("player-id");
-					participantElement.appendChild(playerId);
-					playerId.appendChild(document.createTextNode(String
-							.valueOf(participant.getId())));
-
-					// Add the scores of the current participant
-					Element scoreElement = document.createElement("scores");
-					participantElement.appendChild(scoreElement);
-
-					for (PlayerScore score : pairing.getScoreTable()) {
-						if (score.getPlayer() == participant) {
-							for (Integer scoreInteger : score.getScore()) {
-								Element scoreIntegerElement = document
-										.createElement("score");
-								scoreElement.appendChild(scoreIntegerElement);
-								scoreElement.appendChild(document
-										.createTextNode(String
-												.valueOf(scoreInteger)));
-							}
-						}
-					}
-				}
-			}
-		}
-
-		// Add the applied tournament rules for this tournament
-		Element tournamentRules = document.createElement("tournament-rules");
-		rootElement.appendChild(tournamentRules);
-
-		Element tournamentPhases = document.createElement("tournament-phases");
-		tournamentRules.appendChild(tournamentPhases);
+		document.appendTournamentRounds(tournament.getRounds());
 
 		if (tournament.getRuleSet() != null) {
-			for (GamePhase phase : tournament.getRuleSet().getPhaseList()) {
-				Element phaseElement = document.createElement("phase");
-				tournamentPhases.appendChild(phaseElement);
-
-				// Add the phase number
-				Element phaseNumberElement = document
-						.createElement("phase-number");
-				phaseElement.appendChild(phaseNumberElement);
-				phaseNumberElement.appendChild(document.createTextNode(String
-						.valueOf(phase.getPhaseNumber())));
-
-				// Add the number of rounds
-				Element numberOfRoundsElement = document
-						.createElement("number-of-rounds");
-				phaseElement.appendChild(numberOfRoundsElement);
-				numberOfRoundsElement.appendChild(document
-						.createTextNode(String.valueOf(phase.getRoundCount())));
-
-				// Add the used pairing strategy
-				Element pairingStrategyElement = document
-						.createElement("pairing-strategy");
-				phaseElement.appendChild(pairingStrategyElement);
-				pairingStrategyElement.appendChild(document
-						.createTextNode(phase.getPairingMethod().getClass()
-								.getName()));
-
-				// Add the number of players in a pairing
-				Element opponentsElement = document
-						.createElement("opponents-in-pairing");
-				phaseElement.appendChild(opponentsElement);
-				opponentsElement.appendChild(document.createTextNode(String
-						.valueOf(phase.getNumberOfOpponents())));
-
-				// Add the number of players which should be kept after cutting
-				// off this round
-				Element cutOffElement = document.createElement("cutoff-number");
-				phaseElement.appendChild(cutOffElement);
-				cutOffElement.appendChild(document.createTextNode(String
-						.valueOf(phase.getCutoff())));
-
-				// Add the duration of a round in this game phase
-				Element durationElement = document
-						.createElement("round-duration");
-				phaseElement.appendChild(durationElement);
-				durationElement.appendChild(document.createTextNode(phase
-						.getRoundDuration().toString()));
-			}
+			document.appendTournamentPhases(tournament.getRuleSet()
+					.getPhaseList());
 		}
 
-		FileSaver.saveDocumentToZip(document, fileName, zipOutputStream);
+		FileSaver.saveDocumentToZip(document.getDocument(), fileName,
+				zipOutputStream);
 	}
 
 	/**
@@ -479,66 +207,16 @@ public class FileSaver {
 	 * @param path
 	 *            The path where the players should be saved
 	 */
-	public static void savePlayers(ObservableList<Player> players,
+	public static void savePlayersToFile(ObservableList<Player> players,
 			String fileName, ZipOutputStream zipOutputStream) {
-		Document document = FileSaver.documentBuilder.newDocument();
 
-		// Add the root element
-		Element rootElement = document.createElement("players");
-		document.appendChild(rootElement);
+		PlayerDocument document = new PlayerDocument(
+				FileSaver.documentBuilder.newDocument());
 
-		for (Player player : players) {
-			// Add a new player
-			Element playerElement = document.createElement("player");
-			Attr playerId = document.createAttribute("id");
-			playerId.setValue(player.getId());
-			playerElement.setAttributeNode(playerId);
-			rootElement.appendChild(playerElement);
+		document.appendPlayerList(players);
 
-			// Add the name of the player
-			Element name = document.createElement("name");
-			playerElement.appendChild(name);
-
-			Element firstName = document.createElement("first-name");
-			name.appendChild(firstName);
-			firstName
-					.appendChild(document.createTextNode(player.getFirstName()));
-
-			Element lastName = document.createElement("last-name");
-			name.appendChild(lastName);
-			lastName.appendChild(document.createTextNode(player.getLastName()));
-
-			// Add the mail address of the player
-			Element mailAddress = document.createElement("mail-address");
-			playerElement.appendChild(mailAddress);
-			mailAddress.appendChild(document.createTextNode(player
-					.getMailAddress()));
-
-			// Add the nick name of the player
-			Element nickname = document.createElement("nickname");
-			playerElement.appendChild(nickname);
-			nickname.appendChild(document.createTextNode(player.getNickName()));
-
-			// Add the starting number of the player
-			Element startingNumber = document.createElement("starting-number");
-			playerElement.appendChild(startingNumber);
-			startingNumber.appendChild(document.createTextNode(player
-					.getStartingNumber()));
-
-			// Add the payment status of the player
-			Element payed = document.createElement("payed");
-			playerElement.appendChild(payed);
-			payed.appendChild(document.createTextNode(String.valueOf(player
-					.getPayed())));
-
-			// Add the disqualification status of the player
-			Element disqualified = document.createElement("disqualified");
-			playerElement.appendChild(disqualified);
-			disqualified.appendChild(document.createTextNode(String
-					.valueOf(player.getDisqualified())));
-		}
-
-		FileSaver.saveDocumentToZip(document, fileName, zipOutputStream);
+		FileSaver.saveDocumentToZip(document.getDocument(), fileName,
+				zipOutputStream);
 	}
 
 	/**
@@ -551,92 +229,15 @@ public class FileSaver {
 	 */
 	private static void saveTournamentModule(TournamentModule module,
 			String path) {
-		Document document = FileSaver.documentBuilder.newDocument();
 
-		// Add the root element
-		Element rootElement = document.createElement("rule-template");
-		document.appendChild(rootElement);
+		TournamentModuleDocument document = new TournamentModuleDocument(
+				FileSaver.documentBuilder.newDocument());
 
-		// Add template metadata
-		Element meta = document.createElement("meta");
-		rootElement.appendChild(meta);
+		document.appendMetaData(module);
+		document.appendPossibleScores(module.getPossibleScores());
+		document.appendTournamentPhases(module.getPhaseList());
 
-		// Add template name
-		Element name = document.createElement("name");
-		meta.appendChild(name);
-		name.appendChild(document.createTextNode(module.getName()));
-
-		// Add template description
-		Element description = document.createElement("description");
-		meta.appendChild(description);
-		description
-				.appendChild(document.createTextNode(module.getDescription()));
-
-		// Add all possible scores
-		Element possibleScores = document.createElement("possible-scores");
-		rootElement.appendChild(possibleScores);
-
-		Iterator<Entry<String, Integer>> iterator = module.getPossibleScores()
-				.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Entry<String, Integer> entry = iterator.next();
-
-			Element scoreElement = document.createElement("score");
-			possibleScores.appendChild(scoreElement);
-
-			Element nameElement = document.createElement("name");
-			scoreElement.appendChild(nameElement);
-			nameElement.appendChild(document.createTextNode(entry.getKey()));
-
-			Element pointsElement = document.createElement("points");
-			scoreElement.appendChild(pointsElement);
-			pointsElement.appendChild(document.createTextNode(String
-					.valueOf(entry.getValue())));
-		}
-
-		// Add all game phases
-		Element gamePhases = document.createElement("game-phases");
-		rootElement.appendChild(gamePhases);
-
-		for (GamePhase phase : module.getPhaseList()) {
-			Element phaseElement = document.createElement("game-phase");
-			gamePhases.appendChild(phaseElement);
-
-			// Add the phase number
-			Element phaseNumberElement = document.createElement("phase-number");
-			phaseElement.appendChild(phaseNumberElement);
-			phaseNumberElement.appendChild(document.createTextNode(String
-					.valueOf(phase.getPhaseNumber())));
-
-			// Add the number of rounds
-			Element numberOfRoundsElement = document
-					.createElement("number-of-rounds");
-			phaseElement.appendChild(numberOfRoundsElement);
-			numberOfRoundsElement.appendChild(document.createTextNode(String
-					.valueOf(phase.getRoundCount())));
-
-			// Add the used pairing strategy
-			Element pairingStrategyElement = document
-					.createElement("pairing-strategy");
-			phaseElement.appendChild(pairingStrategyElement);
-			pairingStrategyElement.appendChild(document.createTextNode(phase
-					.getPairingMethod().getClass().getName()));
-
-			// Add the number of players which should be kept after cutting off
-			// this round
-			Element cutOffElement = document.createElement("cutoff-number");
-			phaseElement.appendChild(cutOffElement);
-			cutOffElement.appendChild(document.createTextNode(String
-					.valueOf(phase.getCutoff())));
-
-			// Add the duration of a round in this game phase
-			Element durationElement = document.createElement("round-duration");
-			phaseElement.appendChild(durationElement);
-			durationElement.appendChild(document.createTextNode(phase
-					.getRoundDuration().toString()));
-		}
-
-		FileSaver.saveDocumentToFile(document, path);
+		FileSaver.saveDocumentToFile(document.getDocument(), path);
 	}
 
 	/**
