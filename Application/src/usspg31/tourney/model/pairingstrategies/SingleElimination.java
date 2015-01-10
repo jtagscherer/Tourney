@@ -31,6 +31,7 @@ public class SingleElimination implements PairingStrategy {
 		// checks if this round is the first round in the gamephase and modify
 		// the pairing strategy for this round
 		if (tournament.getRounds().size() == 0) {
+
 			Random randomGenerator = new Random();
 			ArrayList<Player> randomList = new ArrayList<>();
 			randomList.addAll(tournament.getRemainingPlayers());
@@ -111,14 +112,16 @@ public class SingleElimination implements PairingStrategy {
 							.getPossibleScores().size()];
 
 					score.getScore().addAll(numberOfScores);
-					partResult.getOpponents().add(
-							PairingHelper.identifyWinner(tmp.get(0)));
+
 					partResult.getScoreTable().add(score);
 
 					partResult.getOpponents().add(
 							PairingHelper.identifyWinner(tmp.get(0)));
 					tmp.remove(0);
 				}
+
+				result.add(partResult);
+
 			}
 
 		}
