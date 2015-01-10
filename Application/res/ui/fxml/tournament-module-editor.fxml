@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import usspg31.tourney.controller.controls.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox maxHeight="480.0" maxWidth="640.0" minHeight="480.0" minWidth="640.0" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" styleClass="heading" text="Turniermodul bearbeiten">
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
+      <SplitPane dividerPositions="0.25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" VBox.vgrow="ALWAYS">
+         <items>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+               <children>
+                  <Label styleClass="sub-heading" text="Allgemein" />
+                  <TextField promptText="Titel" />
+                  <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Beschreibung" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label styleClass="sub-heading" text="Turnierphasen">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
+                        <VBox spacing="5.0" styleClass="table-edit-button-container">
+                           <children>
+                              <HBox styleClass="up-down-button-container">
+                                 <children>
+                                    <Button mnemonicParsing="false" HBox.hgrow="ALWAYS">
+                                       <graphic>
+                                          <IconPane>
+                                             <styleClass>
+                                                <String fx:value="icon-arrow-up" />
+                                                <String fx:value="half" />
+                                             </styleClass>
+                                          </IconPane>
+                                       </graphic>
+                                       <styleClass>
+                                          <String fx:value="multi-button" />
+                                          <String fx:value="left" />
+                                          <String fx:value="table-edit-button" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </Button>
+                                    <Button mnemonicParsing="false" HBox.hgrow="ALWAYS">
+                                       <graphic>
+                                          <IconPane>
+                                             <styleClass>
+                                                <String fx:value="icon-arrow-down" />
+                                                <String fx:value="half" />
+                                             </styleClass>
+                                          </IconPane>
+                                       </graphic>
+                                       <styleClass>
+                                          <String fx:value="multi-button" />
+                                          <String fx:value="right" />
+                                          <String fx:value="table-edit-button" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="buttonAddTournament" mnemonicParsing="false" styleClass="table-edit-button">
+                                 <graphic>
+                                    <IconPane>
+                                       <styleClass>
+                                          <String fx:value="icon-add" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </IconPane>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="buttonRemoveTournament" mnemonicParsing="false" styleClass="table-edit-button">
+                                 <graphic>
+                                    <IconPane>
+                                       <styleClass>
+                                          <String fx:value="icon-remove" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </IconPane>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="buttonEditTournament" mnemonicParsing="false" styleClass="table-edit-button">
+                                 <graphic>
+                                    <IconPane>
+                                       <styleClass>
+                                          <String fx:value="icon-edit" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </IconPane>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Label styleClass="sub-heading" text="Mögliche Wertungen">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <TableView fx:id="tableTournaments1" HBox.hgrow="ALWAYS" />
+                        <VBox spacing="5.0" styleClass="table-edit-button-container">
+                           <children>
+                              <HBox styleClass="up-down-button-container">
+                                 <children>
+                                    <Button mnemonicParsing="false" HBox.hgrow="ALWAYS">
+                                       <graphic>
+                                          <IconPane>
+                                             <styleClass>
+                                                <String fx:value="icon-arrow-up" />
+                                                <String fx:value="half" />
+                                             </styleClass>
+                                          </IconPane>
+                                       </graphic>
+                                       <styleClass>
+                                          <String fx:value="multi-button" />
+                                          <String fx:value="left" />
+                                          <String fx:value="table-edit-button" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </Button>
+                                    <Button mnemonicParsing="false" HBox.hgrow="ALWAYS">
+                                       <graphic>
+                                          <IconPane>
+                                             <styleClass>
+                                                <String fx:value="icon-arrow-down" />
+                                                <String fx:value="half" />
+                                             </styleClass>
+                                          </IconPane>
+                                       </graphic>
+                                       <styleClass>
+                                          <String fx:value="multi-button" />
+                                          <String fx:value="right" />
+                                          <String fx:value="table-edit-button" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="buttonAddTournament1" mnemonicParsing="false" styleClass="table-edit-button">
+                                 <graphic>
+                                    <IconPane>
+                                       <styleClass>
+                                          <String fx:value="icon-add" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </IconPane>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="buttonRemoveTournament1" mnemonicParsing="false" styleClass="table-edit-button">
+                                 <graphic>
+                                    <IconPane>
+                                       <styleClass>
+                                          <String fx:value="icon-remove" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </IconPane>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="buttonEditTournament1" mnemonicParsing="false" styleClass="table-edit-button">
+                                 <graphic>
+                                    <IconPane>
+                                       <styleClass>
+                                          <String fx:value="icon-edit" />
+                                          <String fx:value="half" />
+                                       </styleClass>
+                                    </IconPane>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </items>
+         <stylesheets>
+            <URL value="@/ui/css/main.css" />
+            <URL value="@/ui/css/event-phase.css" />
+         </stylesheets>
+      </SplitPane>
+      <HBox alignment="BOTTOM_RIGHT" spacing="5.0">
+         <children>
+            <Button disable="true" mnemonicParsing="false" text="Speichern" />
+            <Button mnemonicParsing="false" text="Abbrechen" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>
