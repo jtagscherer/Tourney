@@ -81,8 +81,8 @@ public class EventPhaseViewController implements EventUser {
 	private Timeline currentAnimation;
 
 	private static final Duration transitionDuration = Duration.millis(300);
-	private static Interpolator transitionInterpolator = Interpolator.SPLINE(
-			.4, 0, 0, 1);
+	private static Interpolator transitionInterpolator =
+			Interpolator.SPLINE(.4, 0, 0, 1);
 
 	// Event
 	private Event loadedEvent;
@@ -90,8 +90,7 @@ public class EventPhaseViewController implements EventUser {
 	// UndoManager
 	private UndoManager activeUndoManager;
 
-	@FXML
-	private void initialize() throws IOException {
+	@FXML private void initialize() throws IOException {
 		this.phasePosition = new SimpleDoubleProperty(0);
 
 		this.loadSubViews();
@@ -233,6 +232,7 @@ public class EventPhaseViewController implements EventUser {
 	}
 
 	@FXML private void onButtonCloseClicked(ActionEvent event) {
+		log.fine("Close Button was clicked");
 		this.onButtonSaveClicked(null);
 
 		this.unloadEvent();
@@ -241,18 +241,21 @@ public class EventPhaseViewController implements EventUser {
 	}
 
 	@FXML private void onButtonUndoClicked(ActionEvent event) {
+		log.fine("Undo Button was clicked");
 		if (this.activeUndoManager != null) {
 			this.activeUndoManager.undo();
 		}
 	}
 
 	@FXML private void onButtonRedoClicked(ActionEvent event) {
+		log.fine("Redo Button was clicked");
 		if (this.activeUndoManager != null) {
 			this.activeUndoManager.redo();
 		}
 	}
 
 	@FXML private void onButtonSaveClicked(ActionEvent event) {
+		log.fine("Save Button was clicked");
 		if (this.getLoadedEventFile() == null) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Eventdatei speichern");
@@ -286,10 +289,11 @@ public class EventPhaseViewController implements EventUser {
 	}
 
 	@FXML private void onButtonLockClicked(ActionEvent event) {
-
+		log.fine("Lock Button was clicked");
 	}
 
 	@FXML private void onButtonOptionsClicked(ActionEvent event) {
+		log.fine("Options Button was clicked");
 		MainWindow mainWindow = MainWindow.getInstance();
 		mainWindow.getOptionsViewController().setExitProperties("Event",
 				"Zurückkehren",
@@ -301,21 +305,25 @@ public class EventPhaseViewController implements EventUser {
 	}
 
 	@FXML private void onBreadcrumbEventSetupClicked(ActionEvent event) {
+		log.fine("Event Setup Breadcrumb was clicked");
 		this.slideToPhase(0);
 		this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
 	}
 
 	@FXML private void onBreadcrumbPreRegistrationClicked(ActionEvent event) {
+		log.fine("Pre Registration Breadcrumb was clicked");
 		this.slideToPhase(1);
 		this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
 	}
 
 	@FXML private void onBreadcrumbRegistrationClicked(ActionEvent event) {
+		log.fine("Registration Breadcrumb was clicked");
 		this.slideToPhase(2);
 		this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
 	}
 
 	@FXML private void onBreadcrumbTournamentExecutionClicked(ActionEvent event) {
+		log.fine("Tournament Execution Breadcrumb was clicked");
 		this.slideToPhase(3);
 		this.loadedEvent.setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
 	}
