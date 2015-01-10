@@ -24,10 +24,10 @@ public class Tournament {
 		this.attendingPlayers = FXCollections.observableArrayList();
 		this.remainingPlayers = FXCollections.observableArrayList();
 		this.rounds = FXCollections.observableArrayList();
-		this.name = new SimpleStringProperty();
+		this.name = new SimpleStringProperty("");
 		this.scoreTable = FXCollections.observableArrayList();
 		this.administrators = FXCollections.observableArrayList();
-		this.id = new SimpleStringProperty();
+		this.id = new SimpleStringProperty("");
 		this.ruleSet = new SimpleObjectProperty<TournamentModule>();
 	}
 

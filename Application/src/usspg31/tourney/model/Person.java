@@ -10,9 +10,9 @@ public class Person {
 	private final StringProperty mailAddress;
 
 	public Person() {
-		firstName = new SimpleStringProperty();
-		lastName = new SimpleStringProperty();
-		mailAddress = new SimpleStringProperty();
+		this.firstName = new SimpleStringProperty("");
+		this.lastName = new SimpleStringProperty("");
+		this.mailAddress = new SimpleStringProperty("");
 
 	}
 
