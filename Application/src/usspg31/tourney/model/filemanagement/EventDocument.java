@@ -69,6 +69,12 @@ public class EventDocument {
 		endDate.appendChild(this.document.createTextNode(event.getEndDate()
 				.toString()));
 
+		// Add the current event phase
+		Element phase = this.document.createElement("current-phase");
+		meta.appendChild(phase);
+		phase.appendChild(this.document.createTextNode(event.getEventPhase()
+				.name()));
+
 		// Add the event administrators
 		Element eventAdministrators = this.document
 				.createElement("event-administrators");
@@ -128,6 +134,8 @@ public class EventDocument {
 				.getFirstChildNodeByTag(date, "start-date").getTextContent()));
 		metaData.setEndDate(LocalDate.parse(FileLoader.getFirstChildNodeByTag(
 				date, "end-date").getTextContent()));
+		metaData.setEventPhase(Event.EventPhase.valueOf(FileLoader
+				.getFirstChildNodeByTag(meta, "location").getTextContent()));
 
 		Node eventAdministrators = FileLoader.getFirstChildNodeByTag(meta,
 				"event-administrators");
