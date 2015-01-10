@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.StackPane?>
+
+<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/dialogs.css" />
+	</stylesheets>
+	<children>
+		<StackPane fx:id="mainWindowRootContainer" mouseTransparent="true"
+			styleClass="modal-dialog-root-container" />
+		<StackPane styleClass="modal-dialog-background">
+			<VBox>
+				<Label fx:id="labelTitle" styleClass="heading" text="labelTitle">
+					<VBox.margin>
+						<Insets left="5.0" />
+					</VBox.margin>
+				</Label>
+				<StackPane fx:id="contentContainer" VBox.vgrow="ALWAYS" />
+				<HBox fx:id="dialogButtonContainer" alignment="BOTTOM_RIGHT"
+					spacing="5.0" />
+			</VBox>
+		</StackPane>
+	</children>
+</fx:root>
