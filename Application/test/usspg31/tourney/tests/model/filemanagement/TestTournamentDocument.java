@@ -3,9 +3,6 @@ package usspg31.tourney.tests.model.filemanagement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.time.Duration;
 import java.util.ArrayList;
 
@@ -15,16 +12,9 @@ import javafx.collections.ObservableList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Document;
 
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
@@ -264,20 +254,5 @@ public class TestTournamentDocument {
 		assertTrue(readPhase.getPairingMethod() instanceof SwissSystem);
 		assertEquals(4, readPhase.getRoundCount());
 		assertEquals(Duration.ofMinutes(10), readPhase.getRoundDuration());
-	}
-
-	public static void printDocument(Document doc, PrintStream out)
-			throws IOException, TransformerException {
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer = tf.newTransformer();
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		transformer.setOutputProperty(
-				"{http://xml.apache.org/xslt}indent-amount", "4");
-
-		transformer.transform(new DOMSource(doc), new StreamResult(
-				new OutputStreamWriter(out, "UTF-8")));
 	}
 }
