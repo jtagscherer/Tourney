@@ -148,7 +148,7 @@ public class EventDocument {
 					.getFirstChildNodeByTag(date, "end-date").getTextContent()));
 		}
 
-		if (FileLoader.getFirstChildNodeByTag(date, "current-phase") != null) {
+		if (FileLoader.getFirstChildNodeByTag(meta, "current-phase") != null) {
 			metaData.setEventPhase(Event.EventPhase.valueOf(FileLoader
 					.getFirstChildNodeByTag(meta, "current-phase")
 					.getTextContent()));
