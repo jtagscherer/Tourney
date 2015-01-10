@@ -13,6 +13,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 import org.controlsfx.dialog.Dialogs;
 
+import usspg31.tourney.controller.controls.EventPhaseViewController;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.filemanagement.FileLoader;
 
@@ -22,21 +23,14 @@ public class MainMenuController {
 	private static final Logger log = Logger.getLogger(MainMenuController.class
 			.getName());
 
-	@FXML
-	private Button buttonNewEvent;
-	@FXML
-	private Button buttonOpenEvent;
-	@FXML
-	private Button buttonEditTournamentModules;
-	@FXML
-	private Button buttonOpenOptions;
+	@FXML private Button buttonNewEvent;
+	@FXML private Button buttonOpenEvent;
+	@FXML private Button buttonEditTournamentModules;
+	@FXML private Button buttonOpenOptions;
 
-	@FXML
-	private VBox eventButtonsLeft;
-	@FXML
-	private VBox eventButtonsRight;
-	@FXML
-	private HBox eventButtonsContainer;
+	@FXML private VBox eventButtonsLeft;
+	@FXML private VBox eventButtonsRight;
+	@FXML private HBox eventButtonsContainer;
 
 	@FXML
 	private void initialize() {
@@ -54,8 +48,8 @@ public class MainMenuController {
 					log.finer("Open Event Button was clicked");
 					FileChooser fileChooser = new FileChooser();
 					fileChooser.setTitle("Eventdatei öffnen");
-					fileChooser.getExtensionFilters()
-							.add(new ExtensionFilter("Tourney Eventdateien",
+					fileChooser.getExtensionFilters().add(
+							new ExtensionFilter("Tourney Eventdateien (*.tef)",
 									"*.tef"));
 					File selectedFile = fileChooser.showOpenDialog(EntryPoint
 							.getPrimaryStage());
@@ -68,8 +62,7 @@ public class MainMenuController {
 											.getAbsolutePath());
 						} catch (Exception e) {
 							log.log(Level.SEVERE,
-									"Could not load the specified tournament.",
-									e);
+									"Could not load the specified event.", e);
 							Dialogs.create()
 									.owner(EntryPoint.getPrimaryStage())
 									.title("Fehler")
@@ -81,9 +74,14 @@ public class MainMenuController {
 						}
 
 						if (loadedEvent != null) {
-							MainWindow.getInstance()
-									.getEventPhaseViewController()
-									.loadEvent(loadedEvent);
+							EventPhaseViewController eventPhaseViewController = MainWindow
+									.getInstance()
+									.getEventPhaseViewController();
+
+							eventPhaseViewController.loadEvent(loadedEvent);
+							eventPhaseViewController
+									.setLoadedEventFile(selectedFile);
+
 							MainWindow.getInstance().slideUp(
 									MainWindow.getInstance()
 											.getEventPhaseView());
