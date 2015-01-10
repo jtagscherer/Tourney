@@ -6,8 +6,10 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.scene.layout.StackPane?>
+<?import usspg31.tourney.controller.layout.RelativityPane?>
 
-<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/dialogs.css" />
@@ -15,8 +17,10 @@
 	<children>
 		<StackPane fx:id="mainWindowRootContainer" mouseTransparent="true"
 			styleClass="modal-dialog-root-container" />
-		<StackPane styleClass="modal-dialog-background">
-			<VBox>
+		<RelativityPane styleClass="modal-dialog-background">
+			<VBox RelativityPane.relTop="5% 5px" RelativityPane.relRight="5% 5px"
+				RelativityPane.relBottom="5% 5px" RelativityPane.relLeft="5% 5px"
+				styleClass="modal-dialog-container">
 				<Label fx:id="labelTitle" styleClass="heading" text="labelTitle">
 					<VBox.margin>
 						<Insets left="5.0" />
@@ -26,6 +30,6 @@
 				<HBox fx:id="dialogButtonContainer" alignment="BOTTOM_RIGHT"
 					spacing="5.0" />
 			</VBox>
-		</StackPane>
+		</RelativityPane>
 	</children>
 </fx:root>
