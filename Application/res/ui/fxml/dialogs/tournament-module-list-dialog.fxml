@@ -6,35 +6,30 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.layout.HBox" spacing="5"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/tournament-module-editor.css" />
 	</stylesheets>
 	<children>
-		<Label styleClass="heading" text="Turniermodule"
-			AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-		<HBox spacing="5.0" AnchorPane.bottomAnchor="5.0"
-			AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-			AnchorPane.topAnchor="50.0">
-			<TableView fx:id="tableTournamentModules" HBox.hgrow="ALWAYS" />
-			<VBox spacing="5.0">
-				<Button fx:id="buttonAddTournamentModule" styleClass="table-edit-button">
-					<graphic>
-						<IconPane styleClass="icon-add, half" />
-					</graphic>
-				</Button>
-				<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button">
-					<graphic>
-						<IconPane styleClass="icon-remoce, half" />
-					</graphic>
-				</Button>
-				<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button">
-					<graphic>
-						<IconPane styleClass="icon-edit, half" />
-					</graphic>
-				</Button>
-			</VBox>
-		</HBox>
+		<TableView fx:id="tableTournamentModules" HBox.hgrow="ALWAYS" />
+		<VBox spacing="5.0">
+			<Button fx:id="buttonAddTournamentModule" styleClass="table-edit-button">
+				<graphic>
+					<IconPane styleClass="icon-add, half" />
+				</graphic>
+			</Button>
+			<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button">
+				<graphic>
+					<IconPane styleClass="icon-remoce, half" />
+				</graphic>
+			</Button>
+			<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button">
+				<graphic>
+					<IconPane styleClass="icon-edit, half" />
+				</graphic>
+			</Button>
+		</VBox>
 	</children>
 </fx:root>
