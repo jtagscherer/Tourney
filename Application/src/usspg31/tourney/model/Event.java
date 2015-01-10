@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 public class Event {
 
 	public static enum EventPhase {
-		EVENTSETUP, PREREGISTRATION, REGISTATION, TOURNAMENTEXECUTION
+		EVENT_SETUP, PRE_REGISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
 	}
 
 	private final ObservableList<Tournament> tournaments;
