@@ -45,10 +45,10 @@ public class EventSetupPhaseController implements EventUser {
 
 		this.loadedEvent = event;
 
-		event.nameProperty().bindBidirectional(this.textFieldEventTitle.undoTextProperty());
-		event.locationProperty().bindBidirectional(this.textAreaEventLocation.textProperty());
-		event.startDateProperty().bindBidirectional(this.datePickerStartDate.valueProperty());
-		event.endDateProperty().bindBidirectional(this.datePickerEndDate.valueProperty());
+		this.textFieldEventTitle.undoTextProperty().bindBidirectional(event.nameProperty());
+		this.datePickerStartDate.valueProperty().bindBidirectional(event.startDateProperty());
+		this.datePickerEndDate.valueProperty().bindBidirectional(event.endDateProperty());
+		this.textAreaEventLocation.undoTextProperty().bindBidirectional(event.locationProperty());
 
 		this.undoManager.registerUndoProperty(this.textFieldEventTitle.undoTextProperty());
 		this.undoManager.registerUndoProperty(this.datePickerStartDate.valueProperty());
