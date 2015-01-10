@@ -35,14 +35,15 @@ public class OptionsViewController {
 	}
 
 	@FXML private void onButtonChangeLanguageClicked(ActionEvent event) {
-
+		log.fine("Change Language Button was clicked");
 	}
 
 	@FXML private void onButtonChangePasswordClicked(ActionEvent event) {
-
+		log.fine("Change Password Button was clicked");
 	}
 
 	@FXML private void onButtonExitClicked(ActionEvent event) {
+		log.fine("Exit Button was clicked");
 		if (this.exitButtonCallback != null) {
 			this.exitButtonCallback.run();
 		}

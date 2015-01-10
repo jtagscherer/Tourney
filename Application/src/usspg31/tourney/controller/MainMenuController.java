@@ -33,14 +33,13 @@ public class MainMenuController {
 	@FXML private VBox eventButtonsRight;
 	@FXML private HBox eventButtonsContainer;
 
-	@FXML
-	private void initialize() {
+	@FXML private void initialize() {
 
 	}
 
 	@FXML private void onButtonNewEventClicked(ActionEvent event) {
 		// create a new event and open it
-		log.finer("New Event Button was clicked");
+		log.fine("New Event Button was clicked");
 		MainWindow.getInstance().getEventPhaseViewController()
 		.loadEvent(new Event());
 		MainWindow.getInstance().slideUp(
@@ -49,7 +48,7 @@ public class MainMenuController {
 
 	@FXML private void onButtonOpenEventClicked(ActionEvent event) {
 		// open the file chooser dialog and load the chosen event
-		log.finer("Open Event Button was clicked");
+		log.fine("Open Event Button was clicked");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Eventdatei öffnen");
 		fileChooser.getExtensionFilters().add(
@@ -94,11 +93,11 @@ public class MainMenuController {
 	}
 
 	@FXML private void onButtonOpenTournamentModuleEditorClicked(ActionEvent event) {
-
+		log.fine("Open Tournament Module Editor Button was clicked");
 	}
 
 	@FXML private void onButtonOpenOptionsClicked(ActionEvent event) {
-		log.finer("Options Button was clicked");
+		log.fine("Options Button was clicked");
 
 		MainWindow.getInstance().getOptionsViewController().setExitProperties(
 				"Hauptmenü",
