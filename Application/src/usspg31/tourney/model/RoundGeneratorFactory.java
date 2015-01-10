@@ -8,5 +8,4 @@ public class RoundGeneratorFactory {
 						.getPairingMethod().generatePairing(value));
 		return round;
 	}
-
 }
