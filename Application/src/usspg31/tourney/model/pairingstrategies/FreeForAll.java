@@ -10,14 +10,24 @@ import usspg31.tourney.model.Tournament;
 
 public class FreeForAll implements PairingStrategy {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * usspg31.tourney.model.pairingstrategies.PairingStrategy#generatePairing
+	 * (usspg31.tourney.model.Tournament)
+	 */
 	@Override
 	public ArrayList<Pairing> generatePairing(Tournament tournament) {
+
 		ArrayList<Pairing> result = new ArrayList<>();
 		Random randomGenerator = new Random();
 		ArrayList<Player> randomList = new ArrayList<>();
 		Pairing partResult;
 		randomList.addAll(tournament.getRegisteredPlayers());
 		int randomNumber;
+
+		// checks if this is the first round in the tournament
 		if (tournament.getRounds().size() == 0) {
 			while (randomList.size() >= PairingHelper.findPhase(
 					tournament.getRounds().size(), tournament)
@@ -33,9 +43,10 @@ public class FreeForAll implements PairingStrategy {
 				}
 				result.add(partResult);
 			}
-		} else if (tournament.getRuleSet().getPhaseList()
-				.get(tournament.getRounds().size() - 1).getPairingMethod()
-				.getClass() != FreeForAll.class) {
+			// checks if the round is the first in his gamephase
+		} else if (PairingHelper
+				.findPhase(tournament.getRounds().size() - 1, tournament)
+				.getPairingMethod().getClass() != FreeForAll.class) {
 			while (randomList.size() >= PairingHelper.findPhase(
 					tournament.getRounds().size(), tournament)
 					.getNumberOfOpponents()) {
@@ -63,7 +74,10 @@ public class FreeForAll implements PairingStrategy {
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
-				if (!checkForSimiliarPairings(partResult)) {
+
+				if (!PairingHelper.checkForSimiliarPairings(partResult,
+						tournament)) {
+					// TODO finish checking
 					result.add(partResult);
 				}
 			}
@@ -74,8 +88,4 @@ public class FreeForAll implements PairingStrategy {
 		return result;
 	}
 
-	private boolean checkForSimiliarPairings(Pairing value) {
-		// TODO implement checking for similar pairings in the same GamePhase
-		return false;
-	}
 }
