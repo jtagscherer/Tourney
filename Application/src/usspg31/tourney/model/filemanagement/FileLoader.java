@@ -1,8 +1,14 @@
 package usspg31.tourney.model.filemanagement;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,6 +16,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Player;
+import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.TournamentModule;
 
 /**
  * Contains static methods that load rule modules and events including
@@ -24,6 +36,9 @@ public class FileLoader {
 	private static DocumentBuilder documentBuilder;
 	private static boolean initialized = false;
 
+	/**
+	 * Initialize the file loader. Has to be called before using any methods
+	 */
 	public static void initialize() {
 		try {
 			FileLoader.documentBuilder = DocumentBuilderFactory.newInstance()
@@ -32,6 +47,129 @@ public class FileLoader {
 		} catch (ParserConfigurationException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
+	}
+
+	/**
+	 * Load an event from a packaged file
+	 * 
+	 * @param path
+	 *            Path to the file
+	 * @return Event including tournaments and players that the file represents
+	 * @throws SAXException
+	 *             If the files in the zip file can not be parsed
+	 * @throws IOException
+	 *             If the zip file can not be read
+	 */
+	public static Event loadEventFromFile(String path) throws IOException,
+			SAXException {
+		if (!FileLoader.initialized) {
+			FileLoader.initialize();
+		}
+
+		Event event = new Event();
+
+		EventDocument eventDocument = null;
+		PlayerDocument playerDocument = null;
+		ArrayList<TournamentDocument> tournamentDocuments = new ArrayList<TournamentDocument>();
+
+		ZipFile zipFile = new ZipFile(path);
+
+		Enumeration<? extends ZipEntry> entries = zipFile.entries();
+
+		while (entries.hasMoreElements()) {
+			ZipEntry entry = entries.nextElement();
+			InputStream stream = zipFile.getInputStream(entry);
+
+			if (entry.getName().equals("Event.xml")) {
+				eventDocument = new EventDocument(
+						FileLoader.documentBuilder.parse(stream));
+			} else if (entry.getName().equals("Players.xml")) {
+				playerDocument = new PlayerDocument(
+						FileLoader.documentBuilder.parse(stream));
+			} else if (entry.getName().startsWith("Tournament")) {
+				TournamentDocument tournamentDocument = new TournamentDocument(
+						FileLoader.documentBuilder.parse(stream));
+				tournamentDocument.setId(entry.getName().substring(11,
+						entry.getName().length() - 4));
+
+				tournamentDocuments.add(tournamentDocument);
+			}
+
+			stream.close();
+		}
+
+		zipFile.close();
+
+		EventMetaData eventMeta = eventDocument.getMetaData();
+		event.setName(eventMeta.getName());
+		event.setLocation(eventMeta.getLocation());
+		event.setStartDate(eventMeta.getStartDate());
+		event.setEndDate(eventMeta.getEndDate());
+		event.setEventPhase(eventMeta.getEventPhase());
+		event.getAdministrators().setAll(eventMeta.getAdministrators());
+
+		ArrayList<Player> playerList = playerDocument.getPlayerList();
+		ArrayList<Tournament> tournamentList = new ArrayList<Tournament>();
+
+		for (TournamentDocument tournamentDocument : tournamentDocuments) {
+			Tournament newTournament = new Tournament();
+			newTournament.setId(tournamentDocument.getId());
+			newTournament.setName(tournamentDocument.getTournamentName());
+			newTournament.getAdministrators().setAll(
+					tournamentDocument.getTournamentAdministrators());
+
+			newTournament.getAttendingPlayers().setAll(
+					tournamentDocument.getPlayerList(
+							TournamentDocument.ATTENDANT_PLAYERS, playerList));
+			newTournament.getRegisteredPlayers().setAll(
+					tournamentDocument.getPlayerList(
+							TournamentDocument.REGISTERED_PLAYERS, playerList));
+			newTournament.getRemainingPlayers().setAll(
+					tournamentDocument.getPlayerList(
+							TournamentDocument.REMAINING_PLAYERS, playerList));
+
+			newTournament.getRounds().setAll(
+					tournamentDocument.getTournamentRounds(playerList));
+			newTournament.setRuleSet(tournamentDocument.getTournamentRules());
+
+			tournamentList.add(newTournament);
+		}
+
+		event.getTournaments().setAll(tournamentList);
+		event.getRegisteredPlayers().setAll(playerList);
+
+		return event;
+	}
+
+	/**
+	 * Load a tournament module from a file
+	 * 
+	 * @param path
+	 *            File to be loaded
+	 * @return The tournament module that is represented by the file
+	 * @throws IOException
+	 *             If the file could not be loaded
+	 * @throws SAXException
+	 *             If the file could not be parsed
+	 */
+	public static TournamentModule loadTournamentModuleFromFile(String path)
+			throws SAXException, IOException {
+		if (!FileLoader.initialized) {
+			FileLoader.initialize();
+		}
+
+		TournamentModule module = new TournamentModule();
+
+		TournamentModuleDocument moduleDocument = new TournamentModuleDocument(
+				FileLoader.documentBuilder.parse(new File(path)));
+
+		module.setName(moduleDocument.getName());
+		module.setDescription(moduleDocument.getDescription());
+
+		module.getPossibleScores().setAll(moduleDocument.getPossibleScores());
+		module.getPhaseList().setAll(moduleDocument.getTournamentPhases());
+
+		return module;
 	}
 
 	/**

@@ -96,7 +96,7 @@ public class TournamentModuleDocument {
 			Attr scoringPriorityAttribute = this.document
 					.createAttribute("priority");
 			scoringPriorityAttribute.setValue(String.valueOf(scoringPriority
-					.getPriority()));
+					.getPriority().get()));
 			scoringElement.setAttributeNode(scoringPriorityAttribute);
 			possibleScoresElement.appendChild(scoringElement);
 

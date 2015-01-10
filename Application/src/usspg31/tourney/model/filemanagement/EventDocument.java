@@ -134,8 +134,9 @@ public class EventDocument {
 				.getFirstChildNodeByTag(date, "start-date").getTextContent()));
 		metaData.setEndDate(LocalDate.parse(FileLoader.getFirstChildNodeByTag(
 				date, "end-date").getTextContent()));
-		metaData.setEventPhase(Event.EventPhase.valueOf(FileLoader
-				.getFirstChildNodeByTag(meta, "location").getTextContent()));
+		metaData.setEventPhase(Event.EventPhase
+				.valueOf(FileLoader.getFirstChildNodeByTag(meta,
+						"current-phase").getTextContent()));
 
 		Node eventAdministrators = FileLoader.getFirstChildNodeByTag(meta,
 				"event-administrators");
