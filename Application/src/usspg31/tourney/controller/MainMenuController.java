@@ -15,6 +15,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.controls.EventPhaseViewController;
+import usspg31.tourney.controller.dialogs.TournamentModuleListDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.filemanagement.FileLoader;
 
@@ -94,6 +95,11 @@ public class MainMenuController {
 
 	@FXML private void onButtonOpenTournamentModuleEditorClicked(ActionEvent event) {
 		log.fine("Open Tournament Module Editor Button was clicked");
+
+		new TournamentModuleListDialog()
+		.modalDialog()
+		.properties(null)
+		.show();
 	}
 
 	@FXML private void onButtonOpenOptionsClicked(ActionEvent event) {
