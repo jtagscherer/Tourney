@@ -172,7 +172,7 @@
 .icon-arrow-right {
 	-t-icon-width: 15px;
 	-t-icon-height: 24px;
-	-fx-shape: "M30.83 32.67l-9.17-9.17 9.17-9.17L28 11.5l-12 12 12 12z";
+	-fx-shape: "M17.17 32.92l9.17-9.17-9.17-9.17L20 11.75l12 12-12 12z";
 }
 .icon-arrow-right.half {
 	-t-icon-width: 7px;
