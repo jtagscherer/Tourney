@@ -85,7 +85,7 @@
 										</graphic>
 									</Button>
 									<Button fx:id="buttonMoveScoreDown" HBox.hgrow="ALWAYS"
-										styleClass="multi-button, right, table-efit-button, half">
+										styleClass="multi-button, right, table-edit-button, half">
 										<graphic>
 											<IconPane styleClass="icon-arrow-down, half" />
 										</graphic>
