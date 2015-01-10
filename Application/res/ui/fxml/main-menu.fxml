@@ -31,7 +31,7 @@
 				<Label styleClass="button-heading" text="Event" />
 				<HBox fx:id="eventButtonsContainer" styleClass="multi-button-container">
 					<VBox fx:id="eventButtonsLeft" HBox.hgrow="ALWAYS">
-						<Button fx:id="buttonNewEvent" styleClass="menu-button, multi-button, left">
+						<Button fx:id="buttonNewEvent" styleClass="menu-button, multi-button, left" onAction="#onButtonNewEventClicked">
 							<graphic>
 								<IconPane styleClass="icon-add" />
 							</graphic>
@@ -39,7 +39,7 @@
 						<Label styleClass="button-description" text="Neu" />
 					</VBox>
 					<VBox fx:id="eventButtonsRight" HBox.hgrow="ALWAYS">
-						<Button fx:id="buttonOpenEvent" styleClass="menu-button, multi-button, right">
+						<Button fx:id="buttonOpenEvent" styleClass="menu-button, multi-button, right" onAction="#onButtonOpenEventClicked">
 							<graphic>
 								<IconPane styleClass="icon-folder-open" />
 							</graphic>
@@ -56,7 +56,7 @@
 				<Label styleClass="button-heading" text="Turniermodule" />
 				<Button fx:id="buttonEditTournamentModules" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
-					AnchorPane.rightAnchor="0">
+					AnchorPane.rightAnchor="0" onAction="#onButtonOpenTournamentModuleEditorClicked">
 					<graphic>
 						<IconPane styleClass="icon-edit" />
 					</graphic>
@@ -71,7 +71,7 @@
 				<Label styleClass="button-heading" text="Einstellungen" />
 				<Button fx:id="buttonOpenOptions" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
-					AnchorPane.rightAnchor="0">
+					AnchorPane.rightAnchor="0" onAction="#onButtonOpenOptionsClicked">
 					<graphic>
 						<IconPane styleClass="icon-settings" />
 					</graphic>
