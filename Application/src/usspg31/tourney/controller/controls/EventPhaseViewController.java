@@ -11,6 +11,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -96,85 +97,6 @@ public class EventPhaseViewController implements EventUser {
 		this.loadSubViews();
 		this.initBreadcrumbs();
 
-		this.buttonClose.setOnAction(event -> {
-			// TODO: ask the user to save the currently active event
-				this.unloadEvent();
-				MainWindow.getInstance().slideDown(
-						MainWindow.getInstance().getMainMenu());
-			});
-
-		this.buttonUndo.setOnAction(event -> {
-			if (this.activeUndoManager != null) {
-				this.activeUndoManager.undo();
-			}
-		});
-		this.buttonRedo.setOnAction(event -> {
-			if (this.activeUndoManager != null) {
-				this.activeUndoManager.redo();
-			}
-		});
-
-		this.buttonSave
-				.setOnAction(event -> {
-					if (this.getLoadedEventFile() == null) {
-						FileChooser fileChooser = new FileChooser();
-						fileChooser.setTitle("Eventdatei speichern");
-						fileChooser.getExtensionFilters().add(
-								new ExtensionFilter(
-										"Tourney Eventdatei (*.tef)", "*.tef"));
-						File selectedFile = fileChooser
-								.showSaveDialog(EntryPoint.getPrimaryStage());
-						if (!selectedFile.getName().endsWith(".tef")) {
-							selectedFile = new File(selectedFile
-									.getAbsolutePath() + ".tef");
-						}
-						this.setLoadedEventFile(selectedFile);
-					}
-
-					try {
-						FileSaver.saveEventToFile(this.loadedEvent, this
-								.getLoadedEventFile().getAbsolutePath());
-					} catch (Exception e) {
-						log.log(Level.SEVERE, "Could not save the event.", e);
-						Dialogs.create()
-								.owner(EntryPoint.getPrimaryStage())
-								.title("Fehler")
-								.message(
-										"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
-								.showError();
-					}
-				});
-
-		this.buttonOptions.setOnAction(event -> {
-			MainWindow mainWindow = MainWindow.getInstance();
-			mainWindow.getOptionsViewController().setExitProperties("Event",
-					"Zurückkehren",
-					"Kehren Sie zu Ihrem momentan geöffneten Event zurück.",
-					() -> {
-						mainWindow.slideDown(mainWindow.getEventPhaseView());
-					});
-			mainWindow.slideUp(mainWindow.getOptionsView());
-		});
-
-		// register listeners on the breadcrumb bar
-		this.breadcrumbEventSetup.setOnAction(event -> {
-			this.slideToPhase(0);
-			this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
-		});
-		this.breadcrumbPreRegistration.setOnAction(event -> {
-			this.slideToPhase(1);
-			this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
-		});
-		this.breadcrumbRegistration.setOnAction(event -> {
-			this.slideToPhase(2);
-			this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
-		});
-		this.breadcrumbTournamentExecution.setOnAction(event -> {
-			this.slideToPhase(3);
-			this.loadedEvent
-					.setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
-		});
-
 		// add all event phase views to the event phase container
 		this.eventPhaseContainer.getChildren().addAll(this.eventSetupPhase,
 				this.preRegistrationPhase, this.registrationPhase);
@@ -193,15 +115,15 @@ public class EventPhaseViewController implements EventUser {
 
 		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(
 				this.getClass()
-						.getResource(
-								"/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
+				.getResource(
+						"/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
 		this.preRegistrationPhase = preRegistrationPhaseLoader.load();
 		this.preRegistrationPhase.setVisible(true);
 
 		FXMLLoader registrationPhaseLoader = new FXMLLoader(
 				this.getClass()
-						.getResource(
-								"/ui/fxml/controls/eventphases/registration-phase.fxml"));
+				.getResource(
+						"/ui/fxml/controls/eventphases/registration-phase.fxml"));
 		this.registrationPhase = registrationPhaseLoader.load();
 		this.registrationPhase.setVisible(true);
 
@@ -218,27 +140,27 @@ public class EventPhaseViewController implements EventUser {
 
 		this.eventSetupPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-						.widthProperty()
-						.multiply(0)
-						.subtract(
-								this.eventPhaseContainer.widthProperty()
-										.multiply(this.phasePosition)));
+				.widthProperty()
+				.multiply(0)
+				.subtract(
+						this.eventPhaseContainer.widthProperty()
+						.multiply(this.phasePosition)));
 
 		this.preRegistrationPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-						.widthProperty()
-						.multiply(1)
-						.subtract(
-								this.eventPhaseContainer.widthProperty()
-										.multiply(this.phasePosition)));
+				.widthProperty()
+				.multiply(1)
+				.subtract(
+						this.eventPhaseContainer.widthProperty()
+						.multiply(this.phasePosition)));
 
 		this.registrationPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-						.widthProperty()
-						.multiply(2)
-						.subtract(
-								this.eventPhaseContainer.widthProperty()
-										.multiply(this.phasePosition)));
+				.widthProperty()
+				.multiply(2)
+				.subtract(
+						this.eventPhaseContainer.widthProperty()
+						.multiply(this.phasePosition)));
 
 	}
 
@@ -308,5 +230,93 @@ public class EventPhaseViewController implements EventUser {
 		this.eventSetupPhaseController.unloadEvent();
 
 		this.loadedEvent = null;
+	}
+
+	@FXML private void onButtonCloseClicked(ActionEvent event) {
+		this.onButtonSaveClicked(null);
+
+		this.unloadEvent();
+		MainWindow.getInstance().slideDown(
+				MainWindow.getInstance().getMainMenu());
+	}
+
+	@FXML private void onButtonUndoClicked(ActionEvent event) {
+		if (this.activeUndoManager != null) {
+			this.activeUndoManager.undo();
+		}
+	}
+
+	@FXML private void onButtonRedoClicked(ActionEvent event) {
+		if (this.activeUndoManager != null) {
+			this.activeUndoManager.redo();
+		}
+	}
+
+	@FXML private void onButtonSaveClicked(ActionEvent event) {
+		if (this.getLoadedEventFile() == null) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Eventdatei speichern");
+			fileChooser.getExtensionFilters().add(
+					new ExtensionFilter(
+							"Tourney Eventdatei (*.tef)", "*.tef"));
+			File selectedFile = fileChooser
+					.showSaveDialog(EntryPoint.getPrimaryStage());
+			if (selectedFile == null) {
+				return;
+			}
+			if (!selectedFile.getName().endsWith(".tef")) {
+				selectedFile = new File(selectedFile
+						.getAbsolutePath() + ".tef");
+			}
+			this.setLoadedEventFile(selectedFile);
+		}
+
+		try {
+			FileSaver.saveEventToFile(this.loadedEvent, this
+					.getLoadedEventFile().getAbsolutePath());
+		} catch (Exception e) {
+			log.log(Level.SEVERE, "Could not save the event.", e);
+			Dialogs.create()
+			.owner(EntryPoint.getPrimaryStage())
+			.title("Fehler")
+			.message(
+					"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
+					.showError();
+		}
+	}
+
+	@FXML private void onButtonLockClicked(ActionEvent event) {
+
+	}
+
+	@FXML private void onButtonOptionsClicked(ActionEvent event) {
+		MainWindow mainWindow = MainWindow.getInstance();
+		mainWindow.getOptionsViewController().setExitProperties("Event",
+				"Zurückkehren",
+				"Kehren Sie zu Ihrem momentan geöffneten Event zurück.",
+				() -> {
+					mainWindow.slideDown(mainWindow.getEventPhaseView());
+				});
+		mainWindow.slideUp(mainWindow.getOptionsView());
+	}
+
+	@FXML private void onBreadcrumbEventSetupClicked(ActionEvent event) {
+		this.slideToPhase(0);
+		this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
+	}
+
+	@FXML private void onBreadcrumbPreRegistrationClicked(ActionEvent event) {
+		this.slideToPhase(1);
+		this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
+	}
+
+	@FXML private void onBreadcrumbRegistrationClicked(ActionEvent event) {
+		this.slideToPhase(2);
+		this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
+	}
+
+	@FXML private void onBreadcrumbTournamentExecutionClicked(ActionEvent event) {
+		this.slideToPhase(3);
+		this.loadedEvent.setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
 	}
 }
