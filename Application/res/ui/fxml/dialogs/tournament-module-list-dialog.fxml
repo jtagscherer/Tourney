@@ -22,7 +22,7 @@
 			</Button>
 			<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button">
 				<graphic>
-					<IconPane styleClass="icon-remoce, half" />
+					<IconPane styleClass="icon-remove, half" />
 				</graphic>
 			</Button>
 			<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button">
