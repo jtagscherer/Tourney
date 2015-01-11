@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import usspg31.tourney.controller.layout.*?>
 <?import usspg31.tourney.controller.controls.*?>
@@ -8,41 +9,53 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root spacing="5.0" type="VBox" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 	</stylesheets>
 	<children>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
-			<Label text="Cutoff auf" />
-			<UndoTextField fx:id="textFieldCutoff" alignment="CENTER_RIGHT" prefWidth="40.0" text="16" />
-			<Label text="Spieler" />
+			<children>
+				<Label text="Cutoff auf" />
+				<NumberTextField fx:id="textFieldCutoff" alignment="CENTER_RIGHT"
+					prefWidth="40.0" text="16" />
+				<Label text="Spieler" />
+			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
-			<Label text="Paarungsmethode" />
-			<ComboBox fx:id="comboBoxPairingStrategy" prefWidth="150.0" />
+			<children>
+				<Label text="Paarungsmethode" />
+				<ComboBox fx:id="comboBoxPairingStrategy" prefWidth="150.0" />
+			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
-			<Label text="Rundenanzahl:" />
-			<UndoTextField fx:id="textFieldRoundCount" alignment="CENTER_RIGHT" prefWidth="40.0" text="8" />
+			<children>
+				<Label text="Rundenanzahl:" />
+				<NumberTextField fx:id="textFieldRoundCount" alignment="CENTER_RIGHT"
+					prefWidth="40.0" text="8" />
+			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
-			<Label text="Spielzeit pro Runde:" />
-			<UndoTextField fx:id="textFieldPlayTimeMinutes" alignment="CENTER_RIGHT" prefWidth="40.0" text="10" />
-			<Label text="Minute(n)" />
-			<UndoTextField fx:id="textFieldPlayTimeSeconds" alignment="CENTER_RIGHT" prefWidth="40.0" text="00" />
-			<Label text="Sekunden" />
+			<children>
+				<Label text="Spielzeit pro Runde:" />
+				<NumberTextField fx:id="textFieldPlayTimeMinutes"
+					alignment="CENTER_RIGHT" prefWidth="40.0" text="10" />
+				<Label text="Minute(n)" />
+				<NumberTextField fx:id="textFieldPlayTimeSeconds"
+					alignment="CENTER_RIGHT" prefWidth="40.0" text="00" />
+				<Label text="Sekunden" />
+			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
-			<Label text="Anzahl Spieler je Paarung:" />
-			<UndoTextField fx:if="textFieldPlayersPerPairing" alignment="CENTER_RIGHT" prefWidth="40.0" text="2" />
-		</HBox>
-		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
-			<Button fx:id="buttonSave" disable="true" text="Speichern" />
-			<Button fx:id="buttonCancel" text="Abbrechen" />
+			<children>
+				<Label text="Anzahl Spieler je Paarung:" />
+				<NumberTextField fx:id="textFieldPlayersPerPairing"
+					alignment="CENTER_RIGHT" prefWidth="40.0" text="2" />
+			</children>
 		</HBox>
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
-</VBox>
+</fx:root>

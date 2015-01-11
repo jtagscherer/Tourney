@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,13 +15,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
-import usspg31.tourney.controller.controls.TournamentUser;
 import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
-public class TournamentDialog extends VBox implements TournamentUser, IModalDialogProvider<Tournament, Tournament> {
+public class TournamentDialog extends VBox implements IModalDialogProvider<Tournament, Tournament> {
 
 	private static final Logger log = Logger.getLogger(TournamentDialog.class.getName());
 
@@ -110,21 +110,38 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 				.getSelectionModel().selectedIndexProperty();
 		ReadOnlyObjectProperty<GamePhase> selectedItem = this.tableTournamentPhases
 				.getSelectionModel().selectedItemProperty();
+
 		// only enable move-up button if an item other than the topmost is selected
 		this.buttonMoveTournamentPhaseUp.disableProperty().bind(
 				selectedIndex.isEqualTo(0)
 				.or(selectedItem.isNull()));
+
 		// only enable move-down button if an item other than the last one is selected
+		// index < size - 1 && selected != null
 		this.buttonMoveTournamentPhaseDown.disableProperty().bind(
-				selectedIndex.isEqualTo(
+				selectedIndex.greaterThanOrEqualTo(
 						Bindings.size(this.tableTournamentPhases.getItems())
 						.subtract(1))
 						.or(selectedItem.isNull()));
+
+		selectedIndex.greaterThanOrEqualTo(
+				Bindings.size(this.tableTournamentPhases.getItems())
+				.subtract(1))
+				.or(selectedItem.isNull()).addListener((ov, o, n) -> {
+					log.info("VALUE IS " + n);
+				});
+
+		selectedIndex.addListener((ov, o, n) -> {
+			log.info("NEW SELECTED INDEX: " + n +
+					" SIZE IS " + Bindings.size(this.tableTournamentPhases.getItems()).subtract(1).get());
+		});
+
 		// only enable remove button if an item is selected and there is more than one possible score
 		this.buttonRemoveTournamentPhase.disableProperty().bind(
 				selectedItem.isNull()
 				.or(Bindings.size(this.tableTournamentPhases.getItems())
 						.lessThanOrEqualTo(1)));
+
 		// only enable edit button if an item is selected
 		this.buttonEditTournamentPhase.disableProperty().bind(
 				selectedItem.isNull());
@@ -163,8 +180,7 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 		modalDialog.title("Turniere").dialogButtons(DialogButtons.OK_CANCEL);
 	}
 
-	@Override
-	public void loadTournament(Tournament tournament) {
+	private void loadTournament(Tournament tournament) {
 		log.fine("Loading Tournament");
 		this.loadedTournament = tournament;
 		this.textFieldTournamentTitle.textProperty().bindBidirectional(this.loadedTournament.nameProperty());
@@ -178,8 +194,7 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 		log.fine("Tournament loaded");
 	}
 
-	@Override
-	public void unloadTournament() {
+	private void unloadTournament() {
 		log.fine("Unloading Tournament");
 		this.textFieldTournamentTitle.textProperty().unbindBidirectional(this.loadedTournament.nameProperty());
 		log.fine("Tournament unloaded");
@@ -194,19 +209,45 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 	}
 
 	@FXML private void onButtonMoveTournamentPhaseUpClicked(ActionEvent event) {
-
+		log.fine("Move Tournament Phase Up Button was clicked");
+		int selectedIndex = this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
+		int indexToSwap = selectedIndex - 1;
+		GamePhase tmp = this.getSelectedTournamentPhase();
+		ObservableList<GamePhase> phases = this.tableTournamentPhases.getItems();
+		phases.set(selectedIndex, phases.get(indexToSwap));
+		phases.set(indexToSwap, tmp);
+		this.tableTournamentPhases.getSelectionModel().select(indexToSwap);
 	}
 
 	@FXML private void onButtonMoveTournamentPhaseDownClicked(ActionEvent event) {
-
+		log.fine("Move Tournament Phase Down Button was clicked");
+		int selectedIndex = this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
+		int indexToSwap = selectedIndex + 1;
+		GamePhase tmp = this.getSelectedTournamentPhase();
+		ObservableList<GamePhase> phases = this.tableTournamentPhases.getItems();
+		phases.set(selectedIndex, phases.get(indexToSwap));
+		phases.set(indexToSwap, tmp);
+		this.tableTournamentPhases.getSelectionModel().select(indexToSwap);
 	}
 
 	@FXML private void onButtonAddTournamentPhaseClicked(ActionEvent event) {
-
+		log.fine("Add Tournament Phase Button was clicked");
+		new TournamentPhaseDialog().modalDialog()
+		.properties(new GamePhase())
+		.onResult((result, returnValue) -> {
+			if (result == DialogResult.OK && returnValue != null) {
+				this.loadedTournament.getRuleSet().getPhaseList().add(returnValue);
+			}
+		}).show();
 	}
 
 	@FXML private void onButtonRemoveTournamentPhaseClicked(ActionEvent event) {
+		log.fine("Remove Tournament Phase Button was clicked");
+		this.loadedTournament.getRuleSet().getPhaseList().remove(this.getSelectedTournamentPhase());
+	}
 
+	private GamePhase getSelectedTournamentPhase() {
+		return this.tableTournamentPhases.getSelectionModel().getSelectedItem();
 	}
 
 	@FXML private void onButtonEditTournamentPhaseClicked(ActionEvent event) {
