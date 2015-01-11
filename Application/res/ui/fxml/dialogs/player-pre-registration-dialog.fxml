@@ -7,14 +7,17 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.layout.VBox" spacing="5.0"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 	</stylesheets>
 	<children>
 		<HBox spacing="5.0">
-			<TextField fx:id="textFieldFirstName" promptText="Vorname" HBox.hgrow="ALWAYS" />
-			<TextField fx:id="textFieldLastName" promptText="Nachname" HBox.hgrow="ALWAYS" />
+			<TextField fx:id="textFieldFirstName" promptText="Vorname"
+				HBox.hgrow="ALWAYS" />
+			<TextField fx:id="textFieldLastName" promptText="Nachname"
+				HBox.hgrow="ALWAYS" />
 		</HBox>
 		<TextField fx:id="textFieldEmail" promptText="E-Mail Adresse" />
 		<TextField fx:id="textFieldNickname" promptText="Nickname" />
@@ -22,25 +25,23 @@
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">
-				<Button fx:id="buttonAddTournament" styleClass="table-edit-button">
+				<Button fx:id="buttonAddTournament" styleClass="table-edit-button"
+					onAction="#onButtonAddTournamentClicked">
 					<graphic>
 						<IconPane styleClass="icon-add, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button">
+				<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button"
+					onAction="#onButtonAddTournamentClicked">
 					<graphic>
 						<IconPane styleClass="icon-remove, half" />
 					</graphic>
 				</Button>
 			</VBox>
 		</HBox>
-		<CheckBox fx:if="checkBoxPayed" text="Startgeld bezahlt" />
-		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
-			<Button fx:id="buttonSave" disable="true" text="Speichern" />
-			<Button fx:id="buttonCancel" text="Abbrechen" />
-		</HBox>
+		<CheckBox fx:id="checkBoxPayed" text="Startgeld bezahlt" />
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
-</VBox>
+</fx:root>
