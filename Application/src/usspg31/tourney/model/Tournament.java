@@ -28,7 +28,7 @@ public class Tournament implements Cloneable {
 		this.scoreTable = FXCollections.observableArrayList();
 		this.administrators = FXCollections.observableArrayList();
 		this.id = new SimpleStringProperty("");
-		this.ruleSet = new SimpleObjectProperty<TournamentModule>();
+		this.ruleSet = new SimpleObjectProperty<TournamentModule>(new TournamentModule());
 	}
 
 	public ObservableList<Player> getRegisteredPlayers() {

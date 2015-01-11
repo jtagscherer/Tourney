@@ -6,13 +6,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.controls.NumberTextField;
 import usspg31.tourney.model.GamePhase;
+import usspg31.tourney.model.pairingstrategies.FreeForAll;
 import usspg31.tourney.model.pairingstrategies.PairingStrategy;
+import usspg31.tourney.model.pairingstrategies.SingleElimination;
+import usspg31.tourney.model.pairingstrategies.SwissSystem;
 
 public class TournamentPhaseDialog extends VBox implements IModalDialogProvider<GamePhase, GamePhase> {
 
@@ -45,7 +50,20 @@ public class TournamentPhaseDialog extends VBox implements IModalDialogProvider<
 			}
 		});
 
-		// TODO: add available pairing strategies to the combobox
+		// TODO: somehow format the output in the combobox (currently fully qualified class name is shown)
+		this.comboBoxPairingStrategy.setItems(this.getAvailablePairingStrategies());
+	}
+
+	private ObservableList<PairingStrategy> getAvailablePairingStrategies() {
+		ObservableList<PairingStrategy> pairingStrategies = FXCollections.observableArrayList();
+
+		// TODO: possibly get the available strategies via reflection or something?
+		pairingStrategies.addAll(
+				new SingleElimination(),
+				new FreeForAll(),
+				new SwissSystem());
+
+		return pairingStrategies;
 	}
 
 	@Override
@@ -79,6 +97,8 @@ public class TournamentPhaseDialog extends VBox implements IModalDialogProvider<
 		this.textFieldPlayTimeMinutes.numberValueProperty().addListener(this::timeUpdated);
 		this.textFieldPlayTimeSeconds.numberValueProperty().addListener(this::timeUpdated);
 
+		this.comboBoxPairingStrategy.valueProperty().addListener(this::pairingStrategyUpdated);
+
 		log.fine("Game Phase loaded");
 	}
 
@@ -92,13 +112,19 @@ public class TournamentPhaseDialog extends VBox implements IModalDialogProvider<
 		this.textFieldPlayTimeMinutes.numberValueProperty().removeListener(this::timeUpdated);
 		this.textFieldPlayTimeSeconds.numberValueProperty().removeListener(this::timeUpdated);
 
+		this.comboBoxPairingStrategy.valueProperty().removeListener(this::pairingStrategyUpdated);
+
 		this.loadedPhase = null;
 		log.fine("Game Phase unloaded");
 	}
 
-	public void timeUpdated(ObservableValue<? extends Number> observable, Number o, Number n) {
+	private void timeUpdated(ObservableValue<? extends Number> observable, Number o, Number n) {
 		this.loadedPhase.setRoundDuration(Duration.ofSeconds(
 				this.textFieldPlayTimeSeconds.getNumberValue() +
 				(this.textFieldPlayTimeMinutes.getNumberValue() * 60)));
+	}
+
+	private void pairingStrategyUpdated(ObservableValue<? extends PairingStrategy> ov, PairingStrategy o, PairingStrategy n) {
+		this.loadedPhase.setPairingMethod(n);
 	}
 }
