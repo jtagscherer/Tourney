@@ -6,6 +6,7 @@ import java.util.Random;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.Tournament;
 
 public class FreeForAll implements PairingStrategy {
@@ -26,6 +27,8 @@ public class FreeForAll implements PairingStrategy {
 		Pairing partResult;
 		randomList.addAll(tournament.getRegisteredPlayers());
 		int randomNumber;
+		PlayerScore score;
+		Integer[] numberOfScores;
 
 		// checks if this is the first round in the tournament
 		if (tournament.getRounds().size() == 0) {
@@ -38,6 +41,14 @@ public class FreeForAll implements PairingStrategy {
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
+
+					score = new PlayerScore();
+					score.setPlayer(randomList.get(randomNumber));
+					numberOfScores = new Integer[tournament.getRuleSet()
+							.getPossibleScores().size()];
+					score.getScore().addAll(numberOfScores);
+					partResult.getScoreTable().add(score);
+
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
@@ -56,6 +67,14 @@ public class FreeForAll implements PairingStrategy {
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
+
+					score = new PlayerScore();
+					score.setPlayer(randomList.get(randomNumber));
+					numberOfScores = new Integer[tournament.getRuleSet()
+							.getPossibleScores().size()];
+					score.getScore().addAll(numberOfScores);
+					partResult.getScoreTable().add(score);
+
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
@@ -71,6 +90,14 @@ public class FreeForAll implements PairingStrategy {
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
+
+					score = new PlayerScore();
+					score.setPlayer(randomList.get(randomNumber));
+					numberOfScores = new Integer[tournament.getRuleSet()
+							.getPossibleScores().size()];
+					score.getScore().addAll(numberOfScores);
+					partResult.getScoreTable().add(score);
+
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}

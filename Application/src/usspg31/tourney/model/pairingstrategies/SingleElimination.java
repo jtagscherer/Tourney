@@ -2,6 +2,8 @@ package usspg31.tourney.model.pairingstrategies;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PairingHelper;
@@ -10,6 +12,9 @@ import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.Tournament;
 
 public class SingleElimination implements PairingStrategy {
+
+	private static final Logger log = Logger.getLogger(SingleElimination.class
+			.getName());
 
 	/*
 	 * (non-Javadoc)
@@ -20,10 +25,10 @@ public class SingleElimination implements PairingStrategy {
 	 */
 	@Override
 	public ArrayList<Pairing> generatePairing(Tournament tournament) {
+		log.log(Level.FINER, this.getClass().toString());
 
 		ArrayList<Pairing> result = new ArrayList<>();
 		Pairing partResult = new Pairing();
-		PlayerScore scoreTable;
 		ArrayList<PlayerScore> opponents = new ArrayList<>();
 		PlayerScore score;
 		Integer[] numberOfScores;
@@ -47,14 +52,15 @@ public class SingleElimination implements PairingStrategy {
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
+
 					score = new PlayerScore();
 					score.setPlayer(randomList.get(randomNumber));
 					numberOfScores = new Integer[tournament.getRuleSet()
 							.getPossibleScores().size()];
-
 					score.getScore().addAll(numberOfScores);
-					partResult.getOpponents().add(randomList.get(randomNumber));
 					partResult.getScoreTable().add(score);
+
+					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
 				result.add(partResult);
@@ -83,12 +89,11 @@ public class SingleElimination implements PairingStrategy {
 					score.setPlayer(randomList.get(randomNumber));
 					numberOfScores = new Integer[tournament.getRuleSet()
 							.getPossibleScores().size()];
-
 					score.getScore().addAll(numberOfScores);
-					partResult.getOpponents().add(randomList.get(randomNumber));
 					partResult.getScoreTable().add(score);
 
 					partResult.getOpponents().add(randomList.get(randomNumber));
+
 					randomList.remove(randomNumber);
 				}
 				result.add(partResult);
@@ -110,13 +115,13 @@ public class SingleElimination implements PairingStrategy {
 					score.setPlayer(PairingHelper.identifyWinner(tmp.get(0)));
 					numberOfScores = new Integer[tournament.getRuleSet()
 							.getPossibleScores().size()];
-
 					score.getScore().addAll(numberOfScores);
 
 					partResult.getScoreTable().add(score);
 
 					partResult.getOpponents().add(
 							PairingHelper.identifyWinner(tmp.get(0)));
+
 					tmp.remove(0);
 				}
 
