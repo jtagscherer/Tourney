@@ -21,10 +21,10 @@ import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.TournamentModule;
 
-public class TournamentModuleEditorDialogController extends SplitPane implements IModalDialogProvider<TournamentModule, TournamentModule>{
+public class TournamentModuleEditorDialog extends SplitPane implements IModalDialogProvider<TournamentModule, TournamentModule>{
 
 	private static final Logger log = Logger
-			.getLogger(TournamentModuleEditorDialogController.class.getName());
+			.getLogger(TournamentModuleEditorDialog.class.getName());
 
 	@FXML private UndoTextField textFieldModuleTitle;
 	@FXML private UndoTextArea textAreaDescription;
@@ -55,7 +55,7 @@ public class TournamentModuleEditorDialogController extends SplitPane implements
 
 	private TournamentModule loadedModule;
 
-	public TournamentModuleEditorDialogController() {
+	public TournamentModuleEditorDialog() {
 		try {
 			FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/ui/fxml/dialogs/tournament-module-editor-dialog.fxml"));
 			loader.setController(this);
