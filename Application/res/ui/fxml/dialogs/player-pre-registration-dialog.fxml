@@ -32,7 +32,7 @@
 					</graphic>
 				</Button>
 				<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button"
-					onAction="#onButtonAddTournamentClicked">
+					onAction="#onButtonRemoveTournamentClicked">
 					<graphic>
 						<IconPane styleClass="icon-remove, half" />
 					</graphic>
