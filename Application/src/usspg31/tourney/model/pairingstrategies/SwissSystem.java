@@ -17,6 +17,9 @@ public class SwissSystem implements PairingStrategy {
 		Pairing partResult;
 		ArrayList<PlayerScore> mergedScoreTable = new ArrayList<>();
 
+		PlayerScore score;
+		Integer[] numberOfScores;
+
 		mergedScoreTable = PairingHelper.mergeScoreRemainingPlayer(tournament);
 		Collections.sort(mergedScoreTable);
 		while (mergedScoreTable.size() >= PairingHelper.findPhase(
@@ -27,6 +30,13 @@ public class SwissSystem implements PairingStrategy {
 			for (int i = 0; i < PairingHelper.findPhase(
 					tournament.getRounds().size(), tournament)
 					.getNumberOfOpponents(); i++) {
+				score = new PlayerScore();
+				score.setPlayer(mergedScoreTable.get(
+						mergedScoreTable.size() - 1).getPlayer());
+				numberOfScores = new Integer[tournament.getRuleSet()
+						.getPossibleScores().size()];
+				score.getScore().addAll(numberOfScores);
+				partResult.getScoreTable().add(score);
 				if (i == 0) {
 					partResult.getOpponents().add(
 							mergedScoreTable.get(mergedScoreTable.size() - 1)
