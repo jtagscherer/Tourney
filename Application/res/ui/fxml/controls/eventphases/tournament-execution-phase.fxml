@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import usspg31.tourney.controller.controls.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/event-phase.css" />
+	</stylesheets>
+	<children>
+		<Label styleClass="heading" text="Turnierdurchführung" />
+		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+			<PairingView fx:id="pairingView" />
+			<VBox spacing="5.0" styleClass="table-edit-button-container">
+				<Button disable="true" fx:id="buttonStartRound" styleClass="table-edit-button" 
+				onAction="#onButtonStartRoundClicked">
+					<graphic>
+						<IconPane styleClass="icon-add, half" />
+					</graphic>
+				</Button>
+				<Button disable="true" fx:id="buttonEnterResult" styleClass="table-edit-button"
+					onAction="#onButtonEnterResultClicked">
+					<graphic>
+						<IconPane styleClass="icon-remove, half" />
+					</graphic>
+				</Button>
+			</VBox>
+		</HBox>
+	</children>
+	<padding>
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
+</VBox>
+
