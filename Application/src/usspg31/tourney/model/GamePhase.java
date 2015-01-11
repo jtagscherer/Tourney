@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import usspg31.tourney.model.pairingstrategies.PairingStrategy;
+import usspg31.tourney.model.pairingstrategies.SingleElimination;
 
 public class GamePhase {
 
@@ -21,7 +22,7 @@ public class GamePhase {
 		this.cutoff = new SimpleIntegerProperty();
 		this.roundCount = new SimpleIntegerProperty();
 		this.phaseNumber = new SimpleIntegerProperty();
-		this.pairingMethod = new SimpleObjectProperty<PairingStrategy>();
+		this.pairingMethod = new SimpleObjectProperty<PairingStrategy>(new SingleElimination());
 		this.roundDuration = new SimpleObjectProperty<Duration>(Duration.ZERO);
 		this.numberOfOpponents = new SimpleIntegerProperty();
 	}

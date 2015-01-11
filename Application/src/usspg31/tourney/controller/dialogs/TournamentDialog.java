@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,13 +82,13 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesPhaseNumber);
 
 		this.tableColumnPhasesPairingMethod = new TableColumn<>("Paarungsmethode");
-		// TODO: pairing method doesn't actually has a coded name I could access
-		//		this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
-		//				cellData -> cellData.getValue().pairingMethodProperty().nameProperty());
+		this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
+				cellData -> new SimpleStringProperty(cellData.getValue().getPairingMethod().getName()));
+		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesPairingMethod);
 
 		this.tableColumnPhasesRoundCount = new TableColumn<>("Rundendanzahl");
 		this.tableColumnPhasesRoundCount.cellValueFactoryProperty().set(
-				cellData -> cellData.getValue().roundDurationProperty().asString());
+				cellData -> cellData.getValue().roundCountProperty().asString());
 		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesRoundCount);
 
 		this.tableColumnPhasesCutoff = new TableColumn<>("Cutoff");
@@ -104,47 +105,6 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 		this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
 				cellData -> cellData.getValue().numberOfOpponentsProperty().asString());
 		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesNumberOfOpponents);
-
-		// add listeners to the selection property of the table to dis-/enable table buttons accordingly
-		ReadOnlyIntegerProperty selectedIndex = this.tableTournamentPhases
-				.getSelectionModel().selectedIndexProperty();
-		ReadOnlyObjectProperty<GamePhase> selectedItem = this.tableTournamentPhases
-				.getSelectionModel().selectedItemProperty();
-
-		// only enable move-up button if an item other than the topmost is selected
-		this.buttonMoveTournamentPhaseUp.disableProperty().bind(
-				selectedIndex.isEqualTo(0)
-				.or(selectedItem.isNull()));
-
-		// only enable move-down button if an item other than the last one is selected
-		// index < size - 1 && selected != null
-		this.buttonMoveTournamentPhaseDown.disableProperty().bind(
-				selectedIndex.greaterThanOrEqualTo(
-						Bindings.size(this.tableTournamentPhases.getItems())
-						.subtract(1))
-						.or(selectedItem.isNull()));
-
-		selectedIndex.greaterThanOrEqualTo(
-				Bindings.size(this.tableTournamentPhases.getItems())
-				.subtract(1))
-				.or(selectedItem.isNull()).addListener((ov, o, n) -> {
-					log.info("VALUE IS " + n);
-				});
-
-		selectedIndex.addListener((ov, o, n) -> {
-			log.info("NEW SELECTED INDEX: " + n +
-					" SIZE IS " + Bindings.size(this.tableTournamentPhases.getItems()).subtract(1).get());
-		});
-
-		// only enable remove button if an item is selected and there is more than one possible score
-		this.buttonRemoveTournamentPhase.disableProperty().bind(
-				selectedItem.isNull()
-				.or(Bindings.size(this.tableTournamentPhases.getItems())
-						.lessThanOrEqualTo(1)));
-
-		// only enable edit button if an item is selected
-		this.buttonEditTournamentPhase.disableProperty().bind(
-				selectedItem.isNull());
 	}
 
 	private void initPossibleScoresTable() {
@@ -158,8 +118,6 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 		//		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
 		//				cellData -> cellData.getValue().getScores().);
 		//		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
-
-
 	}
 
 	@Override
@@ -191,6 +149,34 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 		}
 		this.tableTournamentPhases.setItems(tournament.getRuleSet().getPhaseList());
 		this.tablePossibleScores.setItems(tournament.getRuleSet().getPossibleScores());
+
+		// add listeners to the selection property of the table to dis-/enable table buttons accordingly
+		ReadOnlyIntegerProperty selectedIndex = this.tableTournamentPhases
+				.getSelectionModel().selectedIndexProperty();
+		ReadOnlyObjectProperty<GamePhase> selectedItem = this.tableTournamentPhases
+				.getSelectionModel().selectedItemProperty();
+
+		// only enable move-up button if an item other than the topmost is selected
+		this.buttonMoveTournamentPhaseUp.disableProperty().bind(
+				selectedIndex.isEqualTo(0)
+				.or(selectedItem.isNull()));
+
+		// only enable move-down button if an item other than the last one is selected
+		// index < size - 1 && selected != null
+		this.buttonMoveTournamentPhaseDown.disableProperty().bind(
+				selectedIndex.greaterThanOrEqualTo(
+						Bindings.size(this.tableTournamentPhases.getItems()).subtract(1))
+						.or(selectedItem.isNull()));
+
+		// only enable remove button if an item is selected and there is more than one possible score
+		this.buttonRemoveTournamentPhase.disableProperty().bind(
+				selectedItem.isNull()
+				.or(Bindings.size(this.tableTournamentPhases.getItems())
+						.lessThanOrEqualTo(1)));
+
+		// only enable edit button if an item is selected
+		this.buttonEditTournamentPhase.disableProperty().bind(
+				selectedItem.isNull());
 		log.fine("Tournament loaded");
 	}
 
@@ -209,6 +195,7 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	}
 
 	@FXML private void onButtonMoveTournamentPhaseUpClicked(ActionEvent event) {
+		// TODO: update the phase numbers correctly
 		log.fine("Move Tournament Phase Up Button was clicked");
 		int selectedIndex = this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
 		int indexToSwap = selectedIndex - 1;
@@ -220,6 +207,7 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	}
 
 	@FXML private void onButtonMoveTournamentPhaseDownClicked(ActionEvent event) {
+		// TODO: update the phase numbers correctly
 		log.fine("Move Tournament Phase Down Button was clicked");
 		int selectedIndex = this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
 		int indexToSwap = selectedIndex + 1;
@@ -231,6 +219,7 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	}
 
 	@FXML private void onButtonAddTournamentPhaseClicked(ActionEvent event) {
+		// TODO: update the phase numbers correctly
 		log.fine("Add Tournament Phase Button was clicked");
 		new TournamentPhaseDialog().modalDialog()
 		.properties(new GamePhase())
@@ -242,16 +231,24 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	}
 
 	@FXML private void onButtonRemoveTournamentPhaseClicked(ActionEvent event) {
+		// TODO: update the phase numbers correctly
 		log.fine("Remove Tournament Phase Button was clicked");
 		this.loadedTournament.getRuleSet().getPhaseList().remove(this.getSelectedTournamentPhase());
 	}
 
-	private GamePhase getSelectedTournamentPhase() {
-		return this.tableTournamentPhases.getSelectionModel().getSelectedItem();
+	@FXML private void onButtonEditTournamentPhaseClicked(ActionEvent event) {
+		log.fine("Edit Tournament Phase Button was clicked");
+		new TournamentPhaseDialog().modalDialog()
+		.properties(this.getSelectedTournamentPhase())
+		.onResult((result, returnValue) -> {
+			if (result == DialogResult.OK && returnValue != null) {
+				//this.loadedTournament.getRuleSet().getPhaseList().add(returnValue);
+			}
+		}).show();
 	}
 
-	@FXML private void onButtonEditTournamentPhaseClicked(ActionEvent event) {
-
+	private GamePhase getSelectedTournamentPhase() {
+		return this.tableTournamentPhases.getSelectionModel().getSelectedItem();
 	}
 
 	@FXML private void onButtonMovePossibleScoreUpClicked(ActionEvent event) {
