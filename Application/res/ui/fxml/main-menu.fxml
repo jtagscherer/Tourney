@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<RelativityPane fx:id="mainMenu" xmlns="http://javafx.com/javafx/8"
+<RelativityPane xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.MainMenuController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
@@ -49,7 +49,7 @@
 				</HBox>
 				<Pane styleClass="vertical-seperator" />
 				<Label styleClass="button-explanation"
-					text="Erstellen oder lade Sie ein Event, um Turniere zu planen, Anmeldungen entgegenzunehmen und Turniere durchzuführen." />
+					text="Erstellen oder laden Sie ein Event, um Turniere zu planen, Anmeldungen entgegenzunehmen und Turniere durchzuführen." />
 			</VBox>
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="35%" RelativityPane.relLeft="35%">
