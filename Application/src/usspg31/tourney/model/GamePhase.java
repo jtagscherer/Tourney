@@ -22,7 +22,7 @@ public class GamePhase {
 		this.roundCount = new SimpleIntegerProperty();
 		this.phaseNumber = new SimpleIntegerProperty();
 		this.pairingMethod = new SimpleObjectProperty<PairingStrategy>();
-		this.roundDuration = new SimpleObjectProperty<Duration>();
+		this.roundDuration = new SimpleObjectProperty<Duration>(Duration.ZERO);
 		this.numberOfOpponents = new SimpleIntegerProperty();
 	}
 
