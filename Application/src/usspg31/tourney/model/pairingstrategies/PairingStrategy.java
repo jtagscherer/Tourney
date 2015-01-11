@@ -16,4 +16,5 @@ public interface PairingStrategy {
 	 */
 	public ArrayList<Pairing> generatePairing(Tournament tournament);
 
+	public String getName();
 }
