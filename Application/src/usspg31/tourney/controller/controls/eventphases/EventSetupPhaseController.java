@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.controls.EventUser;
@@ -14,6 +15,7 @@ import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.controller.dialogs.DialogResult;
 import usspg31.tourney.controller.dialogs.TournamentDialog;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class EventSetupPhaseController implements EventUser {
@@ -25,10 +27,12 @@ public class EventSetupPhaseController implements EventUser {
 	@FXML private DatePicker datePickerEndDate;
 	@FXML private UndoTextArea textAreaEventLocation;
 
-	@FXML private TableView<String> tableTournaments;
+	@FXML private TableView<Tournament> tableTournaments;
 	@FXML private Button buttonAddTournament;
 	@FXML private Button buttonRemoveTournament;
 	@FXML private Button buttonEditTournament;
+
+	private TableColumn<Tournament, String> tableColumnTournamentTitle;
 
 	private Event loadedEvent;
 
@@ -36,6 +40,18 @@ public class EventSetupPhaseController implements EventUser {
 
 	public EventSetupPhaseController() {
 		this.undoManager = new UndoManager();
+	}
+
+	@FXML private void initialize() {
+		this.initTournamentTable();
+	}
+
+	private void initTournamentTable() {
+		// create title column
+		this.tableColumnTournamentTitle = new TableColumn<>("Titel");
+		this.tableColumnTournamentTitle.setCellValueFactory(
+				cellData -> cellData.getValue().nameProperty());
+		this.tableTournaments.getColumns().add(this.tableColumnTournamentTitle);
 	}
 
 	@Override
@@ -48,15 +64,21 @@ public class EventSetupPhaseController implements EventUser {
 
 		this.loadedEvent = event;
 
+		// bind all basic control's values
 		this.textFieldEventTitle.undoTextProperty().bindBidirectional(event.nameProperty());
 		this.datePickerStartDate.valueProperty().bindBidirectional(event.startDateProperty());
 		this.datePickerEndDate.valueProperty().bindBidirectional(event.endDateProperty());
 		this.textAreaEventLocation.undoTextProperty().bindBidirectional(event.locationProperty());
 
+		// create table bindings
+		this.tableTournaments.setItems(this.loadedEvent.getTournaments());
+
+		// register all undoable properties
 		this.undoManager.registerUndoProperty(this.textFieldEventTitle.undoTextProperty());
 		this.undoManager.registerUndoProperty(this.datePickerStartDate.valueProperty());
 		this.undoManager.registerUndoProperty(this.datePickerEndDate.valueProperty());
 		this.undoManager.registerUndoProperty(this.textAreaEventLocation.undoTextProperty());
+		this.undoManager.registerUndoProperty(event.getTournaments());
 	}
 
 	@Override
@@ -71,16 +93,18 @@ public class EventSetupPhaseController implements EventUser {
 		// TODO: unregister all listeners we registered to anything in the event
 		Event event = this.loadedEvent;
 
+		// unbind all basic control's values
 		event.nameProperty().unbindBidirectional(this.textFieldEventTitle.undoTextProperty());
 		event.locationProperty().unbindBidirectional(this.textAreaEventLocation.textProperty());
 		event.startDateProperty().unbindBidirectional(this.datePickerStartDate.valueProperty());
 		event.endDateProperty().unbindBidirectional(this.datePickerEndDate.valueProperty());
 
-		// TODO: unregister all undo properties we registered with the UndoManager
+		// unregister all undo properties we registered with the UndoManager
 		this.undoManager.unregisterUndoProperty(this.textFieldEventTitle.undoTextProperty());
 		this.undoManager.unregisterUndoProperty(this.datePickerStartDate.valueProperty());
 		this.undoManager.unregisterUndoProperty(this.datePickerEndDate.valueProperty());
 		this.undoManager.unregisterUndoProperty(this.textAreaEventLocation.undoTextProperty());
+		this.undoManager.unregisterUndoProperty(event.getTournaments());
 
 		this.undoManager.clearHistory();
 
@@ -90,7 +114,9 @@ public class EventSetupPhaseController implements EventUser {
 	@FXML private void onButtonAddTournamentClicked(ActionEvent event) {
 		log.fine("Add Tournament Button clicked");
 		this.checkEventLoaded();
-		new TournamentDialog().modalDialog().onResult((result, returnValue) -> {
+		new TournamentDialog().modalDialog()
+		.properties(new Tournament())
+		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
 				this.loadedEvent.getTournaments().add(returnValue);
 			}
@@ -100,16 +126,27 @@ public class EventSetupPhaseController implements EventUser {
 	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
 		log.fine("Remove Tournament Button clicked");
 		this.checkEventLoaded();
-		// TODO: get tournament selected in the table and remove it
+		this.loadedEvent.getTournaments().remove(this.getSelectedTournament());
 	}
 
 	@FXML private void onButtonEditTournamentClicked(ActionEvent event) {
 		log.fine("Edit Tournament Button clicked");
 		this.checkEventLoaded();
-		// TODO: get tournament selected in the table and pass it instead of null
-		new TournamentDialog().modalDialog().properties(null).onResult((result, returnValue) -> {
-
+		final Tournament selectedTournament = this.getSelectedTournament();
+		new TournamentDialog().modalDialog()
+		.properties((Tournament) selectedTournament.clone())
+		.onResult((result, returnValue) -> {
+			if (result == DialogResult.OK && returnValue != null) {
+				this.undoManager.beginUndoBatch();
+				this.loadedEvent.getTournaments().remove(selectedTournament);
+				this.loadedEvent.getTournaments().add(returnValue);
+				this.undoManager.endUndoBatch();
+			}
 		}).show();
+	}
+
+	private Tournament getSelectedTournament() {
+		return this.tableTournaments.getSelectionModel().getSelectedItem();
 	}
 
 	private void checkEventLoaded() {

@@ -25,6 +25,7 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 
 	@FXML private TableView<String> tableTournamentPhases;
 
+
 	@FXML private Button buttonMoveTournamentPhaseUp;
 	@FXML private Button buttonMoveTournamentPhaseDown;
 
@@ -56,7 +57,9 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 
 	@Override
 	public void setProperties(Tournament properties) {
-		this.unloadTournament();
+		if (this.loadedTournament != null) {
+			this.unloadTournament();
+		}
 		this.loadTournament(properties);
 	}
 
@@ -72,12 +75,17 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 
 	@Override
 	public void loadTournament(Tournament tournament) {
-		// TODO Auto-generated method stub
+		this.loadedTournament = tournament;
+		this.textFieldTournamentTitle.textProperty().bindBidirectional(this.loadedTournament.nameProperty());
+
+		// TODO: add remaining bindings
 	}
 
 	@Override
 	public void unloadTournament() {
-		// TODO Auto-generated method stub
+		this.textFieldTournamentTitle.textProperty().unbindBidirectional(this.loadedTournament.nameProperty());
+
+		// TODO: clear still-to-add bindings
 	}
 
 	@FXML private void onButtonLoadTournamentModuleClicked(ActionEvent event) {
