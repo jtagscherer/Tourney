@@ -89,6 +89,7 @@ public class EventSetupPhaseController implements EventUser {
 
 	@FXML private void onButtonAddTournamentClicked(ActionEvent event) {
 		log.fine("Add Tournament Button clicked");
+		this.checkEventLoaded();
 		new TournamentDialog().modalDialog().onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
 				this.loadedEvent.getTournaments().add(returnValue);
@@ -98,15 +99,23 @@ public class EventSetupPhaseController implements EventUser {
 
 	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
 		log.fine("Remove Tournament Button clicked");
+		this.checkEventLoaded();
 		// TODO: get tournament selected in the table and remove it
 	}
 
 	@FXML private void onButtonEditTournamentClicked(ActionEvent event) {
 		log.fine("Edit Tournament Button clicked");
+		this.checkEventLoaded();
 		// TODO: get tournament selected in the table and pass it instead of null
 		new TournamentDialog().modalDialog().properties(null).onResult((result, returnValue) -> {
 
 		}).show();
 	}
 
+	private void checkEventLoaded() {
+		if (this.loadedEvent == null) {
+			throw new IllegalStateException("An Event must be loaded in order "
+					+ "to perform actions on this controller");
+		}
+	}
 }
