@@ -9,120 +9,111 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.control.SplitPane" dividerPositions="0.25"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/tournament-module-editor.css" />
 	</stylesheets>
-	<children>
-		<Label alignment="TOP_LEFT" maxWidth="1.7976931348623157E308"
-			styleClass="heading" text="Turniermodul bearbeiten">
-			<padding>
-				<Insets left="5.0" />
-			</padding>
-		</Label>
-		<SplitPane dividerPositions="0.25" maxHeight="1.7976931348623157E308"
-			maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0"
-			VBox.vgrow="ALWAYS">
-			<items>
-				<VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-					<children>
-						<Label styleClass="sub-heading" text="Allgemein" />
-						<UndoTextField fx:id="textFieldModuleTitle" promptText="Titel" />
-						<UndoTextArea fx:id="textAreaDescription" prefHeight="200.0" prefWidth="200.0"
-							promptText="Beschreibung" />
-					</children>
-					<padding>
-						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-					</padding>
-				</VBox>
-				<VBox>
-					<children>
-						<Label styleClass="sub-heading" text="Turnierphasen" />
-						<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-							<TableView fx:id="tableTournamentPhases" HBox.hgrow="ALWAYS" />
-							<VBox spacing="5.0" styleClass="table-edit-button-container">
-								<HBox styleClass="up-down-button-container">
-									<Button fx:id="buttonMovePhaseUp" HBox.hgrow="ALWAYS"
-										styleClass="multi-button, left, table-edit-button, half">
-										<graphic>
-											<IconPane styleClass="icon-arrow-up, half" />
-										</graphic>
-									</Button>
-									<Button fx:id="buttonMovePhaseDown" HBox.hgrow="ALWAYS"
-										styleClass="multi-button, right, table-edit-button, half">
-										<graphic>
-											<IconPane styleClass="icon-arrow-down, half" />
-										</graphic>
-									</Button>
-								</HBox>
-								<Button fx:id="buttonAddPhase" styleClass="table-edit-button">
-									<graphic>
-										<IconPane styleClass="icon-add, half" />
-									</graphic>
-								</Button>
-								<Button fx:id="buttonRemovePhase" styleClass="table-edit-button">
-									<graphic>
-										<IconPane styleClass="icon-remove, half" />
-									</graphic>
-								</Button>
-								<Button fx:id="buttonEditPhase" styleClass="table-edit-button">
-									<graphic>
-										<IconPane styleClass="icon-edit, half" />
-									</graphic>
-								</Button>
-							</VBox>
-						</HBox>
-						<Label styleClass="sub-heading" text="Mögliche Wertungen" />
-						<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-							<TableView fx:id="tablePossibleScores" HBox.hgrow="ALWAYS" />
-							<VBox spacing="5.0" styleClass="table-edit-button-container">
-								<HBox styleClass="up-down-button-container">
-									<Button fx:id="buttonMoveScoreUp" HBox.hgrow="ALWAYS"
-										styleClass="multi-button, left, table-edit-button, half">
-										<graphic>
-											<IconPane styleClass="icon-arrow-up, half" />
-										</graphic>
-									</Button>
-									<Button fx:id="buttonMoveScoreDown" HBox.hgrow="ALWAYS"
-										styleClass="multi-button, right, table-edit-button, half">
-										<graphic>
-											<IconPane styleClass="icon-arrow-down, half" />
-										</graphic>
-									</Button>
-								</HBox>
-								<Button fx:id="buttonAddScore" styleClass="table-edit-button">
-									<graphic>
-										<IconPane styleClass="icon-add, half" />
-									</graphic>
-								</Button>
-								<Button fx:id="buttonRemoveScore" styleClass="table-edit-button">
-									<graphic>
-										<IconPane styleClass="icon-remove, half" />
-									</graphic>
-								</Button>
-								<Button fx:id="buttonEditScore" styleClass="table-edit-button">
-									<graphic>
-										<IconPane styleClass="icon-edit, half" />
-									</graphic>
-								</Button>
-							</VBox>
-						</HBox>
-					</children>
-					<padding>
-						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-					</padding>
-				</VBox>
-			</items>
-		</SplitPane>
-		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
+	<items>
+		<VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
 			<children>
-				<Button fx:id="buttonSave" disable="true" text="Speichern" />
-				<Button fx:id="buttonCancel" text="Abbrechen" />
+				<Label styleClass="sub-heading" text="Allgemein" />
+				<UndoTextField fx:id="textFieldModuleTitle"
+					promptText="Titel" />
+				<UndoTextArea fx:id="textAreaDescription" prefHeight="200.0"
+					prefWidth="200.0" promptText="Beschreibung" />
 			</children>
 			<padding>
 				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</padding>
-		</HBox>
-	</children>
-</VBox>
+		</VBox>
+		<VBox>
+			<children>
+				<Label styleClass="sub-heading" text="Turnierphasen" />
+				<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+					<TableView fx:id="tableTournamentPhases" HBox.hgrow="ALWAYS" />
+					<VBox spacing="5.0" styleClass="table-edit-button-container">
+						<HBox styleClass="up-down-button-container">
+							<Button fx:id="buttonMovePhaseUp" HBox.hgrow="ALWAYS"
+								styleClass="multi-button, left, table-edit-button, half"
+								onAction="#onButtonMovePhaseUpClicked">
+								<graphic>
+									<IconPane styleClass="icon-arrow-up, half" />
+								</graphic>
+							</Button>
+							<Button fx:id="buttonMovePhaseDown" HBox.hgrow="ALWAYS"
+								styleClass="multi-button, right, table-edit-button, half"
+								onAction="#onButtonMovePhaseDownClicked">
+								<graphic>
+									<IconPane styleClass="icon-arrow-down, half" />
+								</graphic>
+							</Button>
+						</HBox>
+						<Button fx:id="buttonAddPhase" styleClass="table-edit-button"
+							onAction="#onButtonAddPhaseClicked">
+							<graphic>
+								<IconPane styleClass="icon-add, half" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonRemovePhase" styleClass="table-edit-button"
+							onAction="#onButtonRemovePhaseClicked">
+							<graphic>
+								<IconPane styleClass="icon-remove, half" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonEditPhase" styleClass="table-edit-button"
+							onAction="#onButtonEditPhaseClicked">
+							<graphic>
+								<IconPane styleClass="icon-edit, half" />
+							</graphic>
+						</Button>
+					</VBox>
+				</HBox>
+				<Label styleClass="sub-heading" text="Mögliche Wertungen" />
+				<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+					<TableView fx:id="tablePossibleScores" HBox.hgrow="ALWAYS" />
+					<VBox spacing="5.0" styleClass="table-edit-button-container">
+						<HBox styleClass="up-down-button-container">
+							<Button fx:id="buttonMoveScoreUp" HBox.hgrow="ALWAYS"
+								styleClass="multi-button, left, table-edit-button, half"
+								onAction="#onButtonMoveScoreUpClicked">
+								<graphic>
+									<IconPane styleClass="icon-arrow-up, half" />
+								</graphic>
+							</Button>
+							<Button fx:id="buttonMoveScoreDown" HBox.hgrow="ALWAYS"
+								styleClass="multi-button, right, table-edit-button, half"
+								onAction="#onButtonMoveScoreDownClicked">
+								<graphic>
+									<IconPane styleClass="icon-arrow-down, half" />
+								</graphic>
+							</Button>
+						</HBox>
+						<Button fx:id="buttonAddScore" styleClass="table-edit-button"
+							onAction="#onButtonAddScoreClicked">
+							<graphic>
+								<IconPane styleClass="icon-add, half" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonRemoveScore" styleClass="table-edit-button"
+							onAction="#onButtonRemoveScoreClicked">
+							<graphic>
+								<IconPane styleClass="icon-remove, half" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonEditScore" styleClass="table-edit-button"
+							onAction="#onButtonRemoveScoreClicked">
+							<graphic>
+								<IconPane styleClass="icon-edit, half" />
+							</graphic>
+						</Button>
+					</VBox>
+				</HBox>
+			</children>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+			</padding>
+		</VBox>
+	</items>
+</fx:root>
