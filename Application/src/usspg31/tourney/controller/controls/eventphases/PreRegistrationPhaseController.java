@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import usspg31.tourney.controller.controls.EventUser;
@@ -15,7 +16,8 @@ import usspg31.tourney.model.Player;
 
 public class PreRegistrationPhaseController implements EventUser {
 
-	private static final Logger log = Logger.getLogger(PreRegistrationPhaseController.class.getName());
+	private static final Logger log = Logger
+			.getLogger(PreRegistrationPhaseController.class.getName());
 
 	@FXML private TextField textFieldPlayerSearch;
 	@FXML private TableView<Player> tablePreRegisteredPlayers;
@@ -23,7 +25,45 @@ public class PreRegistrationPhaseController implements EventUser {
 	@FXML private Button buttonRemovePlayer;
 	@FXML private Button buttonEditPlayer;
 
+	private TableColumn<Player, String> tableColumnPlayerFirstName;
+	private TableColumn<Player, String> tableColumnPlayerLastName;
+	private TableColumn<Player, String> tableColumnPlayerNickName;
+	private TableColumn<Player, String> tableColumnPlayerMailAddress;
+
 	private Event loadedEvent;
+
+	@FXML
+	private void initialize() {
+		this.initPlayerTable();
+	}
+
+	private void initPlayerTable() {
+		this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
+		this.tableColumnPlayerFirstName
+				.setCellValueFactory(cellData -> cellData.getValue()
+						.firstNameProperty());
+		this.tablePreRegisteredPlayers.getColumns().add(
+				this.tableColumnPlayerFirstName);
+
+		this.tableColumnPlayerLastName = new TableColumn<>("Nachname");
+		this.tableColumnPlayerLastName.setCellValueFactory(cellData -> cellData
+				.getValue().lastNameProperty());
+		this.tablePreRegisteredPlayers.getColumns().add(
+				this.tableColumnPlayerLastName);
+
+		this.tableColumnPlayerNickName = new TableColumn<>("Nickname");
+		this.tableColumnPlayerNickName.setCellValueFactory(cellData -> cellData
+				.getValue().nickNameProperty());
+		this.tablePreRegisteredPlayers.getColumns().add(
+				this.tableColumnPlayerNickName);
+
+		this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
+		this.tableColumnPlayerMailAddress
+				.setCellValueFactory(cellData -> cellData.getValue()
+						.mailAdressProperty());
+		this.tablePreRegisteredPlayers.getColumns().add(
+				this.tableColumnPlayerMailAddress);
+	}
 
 	@Override
 	public void loadEvent(Event event) {
@@ -34,7 +74,9 @@ public class PreRegistrationPhaseController implements EventUser {
 
 		this.loadedEvent = event;
 
-		// TODO: add bindings to the model
+		// create table bindings
+		this.tablePreRegisteredPlayers.setItems(this.loadedEvent
+				.getRegisteredPlayers());
 	}
 
 	@Override
@@ -50,39 +92,51 @@ public class PreRegistrationPhaseController implements EventUser {
 		this.loadedEvent = null;
 	}
 
-	@FXML private void onButtonAddPlayerClicked(ActionEvent event) {
+	@FXML
+	private void onButtonAddPlayerClicked(ActionEvent event) {
 		log.fine("Add Player Button clicked");
 		this.checkEventLoaded();
-		new PlayerPreRegistrationDialogController().modalDialog()
-		.properties(new Player())
-		.properties(this.loadedEvent)
-		.onResult((result, returnValue) -> {
-			if (result == DialogResult.OK && returnValue != null) {
-				this.loadedEvent.getRegisteredPlayers().add(returnValue);
-			}
-		}).show();
+		new PlayerPreRegistrationDialogController()
+				.modalDialog()
+				.properties(new Player())
+				.properties(this.loadedEvent)
+				.onResult(
+						(result, returnValue) -> {
+							if (result == DialogResult.OK
+									&& returnValue != null) {
+								this.loadedEvent.getRegisteredPlayers().add(
+										returnValue);
+							}
+						}).show();
 	}
 
-	@FXML private void onButtonRemovePlayerClicked(ActionEvent event) {
+	@FXML
+	private void onButtonRemovePlayerClicked(ActionEvent event) {
 		log.fine("Remove Player Button clicked");
 		this.checkEventLoaded();
 		// TODO: get selected player in the table and remove him
 	}
 
-	@FXML private void onButtonEditPlayerClicked(ActionEvent event) {
+	@FXML
+	private void onButtonEditPlayerClicked(ActionEvent event) {
 		log.fine("Edit Player Button clicked");
 		this.checkEventLoaded();
 		// TODO: get selected player in the table
 		final Player selectedPlayer = null;
-		new PlayerPreRegistrationDialogController().modalDialog()
-		.properties(selectedPlayer)
-		.properties(this.loadedEvent)
-		.onResult((result, returnValue) -> {
-			if (result == DialogResult.OK && returnValue != null) {
-				this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
-				this.loadedEvent.getRegisteredPlayers().add(returnValue);
-			}
-		}).show();
+		new PlayerPreRegistrationDialogController()
+				.modalDialog()
+				.properties(selectedPlayer)
+				.properties(this.loadedEvent)
+				.onResult(
+						(result, returnValue) -> {
+							if (result == DialogResult.OK
+									&& returnValue != null) {
+								this.loadedEvent.getRegisteredPlayers().remove(
+										selectedPlayer);
+								this.loadedEvent.getRegisteredPlayers().add(
+										returnValue);
+							}
+						}).show();
 	}
 
 	private void checkEventLoaded() {
