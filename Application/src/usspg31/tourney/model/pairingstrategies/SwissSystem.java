@@ -12,7 +12,7 @@ public class SwissSystem implements PairingStrategy {
 
 	@Override
 	public ArrayList<Pairing> generatePairing(Tournament tournament) {
-		// TODO Auto-generated method stub
+
 		ArrayList<Pairing> result = new ArrayList<>();
 		Pairing partResult;
 		ArrayList<PlayerScore> mergedScoreTable = new ArrayList<>();
@@ -45,6 +45,9 @@ public class SwissSystem implements PairingStrategy {
 							// TODO finish the procedure for similar pairings
 							result.add(partResult);
 						} else {
+							mergedScoreTable
+									.remove(mergedScoreTable.size() - 1);
+
 							result.add(partResult);
 						}
 					}
