@@ -1,22 +1,28 @@
 package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import usspg31.tourney.model.TournamentModule;
 
-public class TournamentModuleListDialog extends HBox implements IModalDialogProvider<List<TournamentModule>, Object> {
+public class TournamentModuleListDialog extends HBox implements IModalDialogProvider<ObservableList<TournamentModule>, Object> {
 
 	private static final Logger log = Logger.getLogger(TournamentModuleListDialog.class.getName());
 
-	@FXML private TableView<String> tableTournamentModules;
+	@FXML private TableView<TournamentModule> tableTournamentModules;
+	private TableColumn<TournamentModule, String> tableColumnModuleName;
+	private TableColumn<TournamentModule, String> tableColumnModuleDescription;
+
 	@FXML private Button buttonAddTournamentModule;
 	@FXML private Button buttonRemoveTournamentModule;
 	@FXML private Button buttonEditTournamentModule;
@@ -32,14 +38,64 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 		}
 	}
 
-	@Override
-	public void setProperties(List<TournamentModule> properties) {
-		// TODO: link the given list to the table
+	@FXML private void initialize() {
+		this.tableColumnModuleName = new TableColumn<TournamentModule, String>("Name");
+		this.tableColumnModuleName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+		this.tableTournamentModules.getColumns().add(this.tableColumnModuleName);
+
+		this.tableColumnModuleDescription = new TableColumn<TournamentModule, String>("Beschreibung");
+		this.tableColumnModuleDescription.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
+		this.tableTournamentModules.getColumns().add(this.tableColumnModuleDescription);
+
+		this.buttonEditTournamentModule.disableProperty().bind(
+				this.tableTournamentModules.getSelectionModel()
+				.selectedItemProperty().isNull());
+
+		this.buttonRemoveTournamentModule.disableProperty().bind(
+				this.tableTournamentModules.getSelectionModel()
+				.selectedItemProperty().isNull());
 	}
 
 	@Override
-	public void initModalDialog(ModalDialog<List<TournamentModule>, Object> modalDialog) {
+	public void setProperties(ObservableList<TournamentModule> properties) {
+		this.tableTournamentModules.setItems(properties);
+	}
+
+	@Override
+	public void initModalDialog(ModalDialog<ObservableList<TournamentModule>, Object> modalDialog) {
 		modalDialog.title("Turniermodule").dialogButtons(DialogButtons.OK);
 	}
 
+	@FXML private void onButtonAddTournamentModuleClicked(ActionEvent event) {
+		log.fine("Add Tournament Module Button clicked");
+		new TournamentModuleEditorDialogController()
+		.modalDialog()
+		.properties(new TournamentModule())
+		.onResult((result, returnValue) -> {
+			if (result == DialogResult.OK && returnValue != null) {
+				if (this.tableTournamentModules.getItems() == null) {
+					this.tableTournamentModules.setItems(FXCollections.observableArrayList());
+				}
+				this.tableTournamentModules.getItems().add(returnValue);
+			}
+		}).show();
+	}
+
+	@FXML private void onButtonRemoveTournamentModuleClicked(ActionEvent event) {
+		log.fine("Remove Tournament Module Button clicked");
+		this.tableTournamentModules.getItems().remove(
+				this.tableTournamentModules.getSelectionModel().getSelectedIndex());
+	}
+
+	@FXML private void onButtonEditTournamentModuleClicked(ActionEvent event) {
+		log.fine("Edit Tournament Module Button clicked");
+		new TournamentModuleEditorDialogController()
+		.modalDialog()
+		.properties(this.tableTournamentModules.getSelectionModel().getSelectedItem())
+		.onResult((result, returnValue) -> {
+			if (result == DialogResult.OK && returnValue != null) {
+
+			}
+		}).show();
+	}
 }

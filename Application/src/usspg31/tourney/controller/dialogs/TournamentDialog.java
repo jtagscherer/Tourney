@@ -135,7 +135,7 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 
 	@Override
 	public void initModalDialog(ModalDialog<Tournament, Tournament> modalDialog) {
-		modalDialog.title("Turniere").dialogButtons(DialogButtons.OK_CANCEL);
+		modalDialog.title("Turniere").dialogButtons(DialogButtons.OK);
 	}
 
 	private void loadTournament(Tournament tournament) {
@@ -177,6 +177,9 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 		// only enable edit button if an item is selected
 		this.buttonEditTournamentPhase.disableProperty().bind(
 				selectedItem.isNull());
+
+		// TODO: add bindings for the possible score table's buttons (see TournamentModuleEditorDialog)
+
 		log.fine("Tournament loaded");
 	}
 
@@ -187,11 +190,12 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	}
 
 	@FXML private void onButtonLoadTournamentModuleClicked(ActionEvent event) {
-
+		// TODO: show all available modules and let the use choose one
 	}
 
 	@FXML private void onButtonEditTournamentModulesClicked(ActionEvent event) {
-
+		log.fine("Edit Tournament Modules Button was clicked");
+		new TournamentModuleListDialog().modalDialog().show();
 	}
 
 	@FXML private void onButtonMoveTournamentPhaseUpClicked(ActionEvent event) {

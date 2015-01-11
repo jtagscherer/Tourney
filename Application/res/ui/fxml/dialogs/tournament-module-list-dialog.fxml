@@ -15,17 +15,20 @@
 	<children>
 		<TableView fx:id="tableTournamentModules" HBox.hgrow="ALWAYS" />
 		<VBox spacing="5.0">
-			<Button fx:id="buttonAddTournamentModule" styleClass="table-edit-button">
+			<Button fx:id="buttonAddTournamentModule" styleClass="table-edit-button"
+				onAction="#onButtonAddTournamentModuleClicked">
 				<graphic>
 					<IconPane styleClass="icon-add, half" />
 				</graphic>
 			</Button>
-			<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button">
+			<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button"
+				onAction="#onButtonRemoveTournamentModuleClicked">
 				<graphic>
 					<IconPane styleClass="icon-remove, half" />
 				</graphic>
 			</Button>
-			<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button">
+			<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button"
+				onAction="#onButtonEditTournamentModuleClicked">
 				<graphic>
 					<IconPane styleClass="icon-edit, half" />
 				</graphic>
