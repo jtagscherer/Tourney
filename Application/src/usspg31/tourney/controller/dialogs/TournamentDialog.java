@@ -67,7 +67,7 @@ public class TournamentDialog extends VBox implements TournamentUser, IModalDial
 
 	@Override
 	public void initModalDialog(ModalDialog<Tournament, Tournament> modalDialog) {
-		modalDialog.title("Turniere").dialogButtons(DialogButtons.OK);
+		modalDialog.title("Turniere").dialogButtons(DialogButtons.OK_CANCEL);
 	}
 
 	@Override
