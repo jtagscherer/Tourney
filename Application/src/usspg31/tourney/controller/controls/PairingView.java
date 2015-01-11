@@ -5,7 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -37,6 +39,8 @@ public class PairingView implements TournamentUser {
 
 	private IntegerProperty selectedRound;
 
+	private ObjectProperty<Pairing> selectedPairing;
+
 	public PairingView() {
 		try {
 			FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/ui/fxml/controls/pairing-view.fxml"));
@@ -51,6 +55,7 @@ public class PairingView implements TournamentUser {
 
 	@FXML private void initialize() {
 		this.selectedRound.addListener((ov, o, n) -> {
+			this.selectedPairing.set(null);
 			if (n.intValue() < this.loadedTournament.getRounds().size()) {
 				for (int i = 0; i < this.loadedTournament.getRounds().size(); i++) {
 					Pairing p = this.loadedTournament.getRounds().get(n.intValue()).getPairings().get(i);
@@ -106,6 +111,9 @@ public class PairingView implements TournamentUser {
 		pairingNode.getChildren().add(new Label("#" + index));
 
 		TableView<PlayerScore> opponentTable = new TableView<>();
+		opponentTable.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
+			this.setSelectedPairing(pairing);
+		});
 		TableColumn<PlayerScore, String> playerNameColumn = new TableColumn<>("Name");
 		playerNameColumn.setCellValueFactory(score -> {
 			return score.getValue().getPlayer().lastNameProperty();
@@ -123,4 +131,27 @@ public class PairingView implements TournamentUser {
 		return pairingNode;
 	}
 
+	/**
+	 * @return the selectedPairing property
+	 */
+	public ObjectProperty<Pairing> selectedPairingProperty() {
+		if (this.selectedPairing == null) {
+			this.selectedPairing = new SimpleObjectProperty<>();
+		}
+		return this.selectedPairing;
+	}
+
+	/**
+	 * @return the value of the selectedPairing property
+	 */
+	public Pairing getSelectedPairing() {
+		return this.selectedPairingProperty().get();
+	}
+
+	/**
+	 * @param value sets the new value for the selectedPairing property
+	 */
+	private void setSelectedPairing(Pairing value) {
+		this.selectedPairingProperty().set(value);
+	}
 }
