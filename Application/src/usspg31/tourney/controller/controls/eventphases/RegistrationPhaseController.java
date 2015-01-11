@@ -19,7 +19,7 @@ public class RegistrationPhaseController implements EventUser {
 			.getLogger(RegistrationPhaseController.class.getName());
 
 	@FXML private TextField textFieldPlayerSearch;
-	@FXML private TableView<String> tableRegisteredPlayers;
+	@FXML private TableView<Player> tableRegisteredPlayers;
 	@FXML private Button buttonAddPlayer;
 	@FXML private Button buttonRemovePlayer;
 	@FXML private Button buttonEditPlayer;

@@ -134,8 +134,9 @@ public class EventSetupPhaseController implements EventUser {
 		this.checkEventLoaded();
 		final Tournament selectedTournament = this.getSelectedTournament();
 		new TournamentDialog().modalDialog()
-		.properties((Tournament) selectedTournament.clone())
+		.properties(selectedTournament)
 		.onResult((result, returnValue) -> {
+			// TODO: well, this obviously won't work like that.
 			if (result == DialogResult.OK && returnValue != null) {
 				this.undoManager.beginUndoBatch();
 				this.loadedEvent.getTournaments().remove(selectedTournament);
