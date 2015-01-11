@@ -2,6 +2,7 @@ package usspg31.tourney.controller.controls.eventphases;
 
 import java.util.logging.Logger;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -10,6 +11,8 @@ import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
+import usspg31.tourney.controller.dialogs.DialogResult;
+import usspg31.tourney.controller.dialogs.TournamentDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.undo.UndoManager;
 
@@ -84,4 +87,35 @@ public class EventSetupPhaseController implements EventUser {
 		this.loadedEvent = null;
 	}
 
+	@FXML private void onButtonAddTournamentClicked(ActionEvent event) {
+		log.fine("Add Tournament Button clicked");
+		this.checkEventLoaded();
+		new TournamentDialog().modalDialog().onResult((result, returnValue) -> {
+			if (result == DialogResult.OK && returnValue != null) {
+				this.loadedEvent.getTournaments().add(returnValue);
+			}
+		}).show();
+	}
+
+	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
+		log.fine("Remove Tournament Button clicked");
+		this.checkEventLoaded();
+		// TODO: get tournament selected in the table and remove it
+	}
+
+	@FXML private void onButtonEditTournamentClicked(ActionEvent event) {
+		log.fine("Edit Tournament Button clicked");
+		this.checkEventLoaded();
+		// TODO: get tournament selected in the table and pass it instead of null
+		new TournamentDialog().modalDialog().properties(null).onResult((result, returnValue) -> {
+
+		}).show();
+	}
+
+	private void checkEventLoaded() {
+		if (this.loadedEvent == null) {
+			throw new IllegalStateException("An Event must be loaded in order "
+					+ "to perform actions on this controller");
+		}
+	}
 }
