@@ -40,17 +40,20 @@
 				AnchorPane.topAnchor="50.0">
 				<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
 				<VBox spacing="5.0" styleClass="table-edit-button-container">
-					<Button fx:id="buttonAddTournament" styleClass="table-edit-button">
+					<Button fx:id="buttonAddTournament" styleClass="table-edit-button"
+						onAction="#onButtonAddTournamentClicked">
 						<graphic>
 							<IconPane styleClass="icon-add, half" />
 						</graphic>
 					</Button>
-					<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button">
+					<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button"
+						onAction="#onButtonRemoveTournamentClicked">
 						<graphic>
 							<IconPane styleClass="icon-remove, half" />
 						</graphic>
 					</Button>
-					<Button fx:id="buttonEditTournament" styleClass="table-edit-button">
+					<Button fx:id="buttonEditTournament" styleClass="table-edit-button"
+						onAction="#onButtonEditTournamentClicked">
 						<graphic>
 							<IconPane styleClass="icon-edit, half" />
 						</graphic>
