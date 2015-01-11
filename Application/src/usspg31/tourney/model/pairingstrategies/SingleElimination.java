@@ -127,4 +127,9 @@ public class SingleElimination implements PairingStrategy {
 		}
 		return result;
 	}
+
+	@Override
+	public String getName() {
+		return "K.O.-System";
+	}
 }

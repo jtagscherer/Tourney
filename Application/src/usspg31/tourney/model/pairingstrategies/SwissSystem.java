@@ -57,4 +57,9 @@ public class SwissSystem implements PairingStrategy {
 		}
 		return result;
 	}
+
+	@Override
+	public String getName() {
+		return "Schweizer System";
+	}
 }
