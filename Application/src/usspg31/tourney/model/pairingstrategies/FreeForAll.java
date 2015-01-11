@@ -88,4 +88,9 @@ public class FreeForAll implements PairingStrategy {
 		return result;
 	}
 
+	@Override
+	public String getName() {
+		return "Jeder gegen Jeden";
+	}
+
 }
