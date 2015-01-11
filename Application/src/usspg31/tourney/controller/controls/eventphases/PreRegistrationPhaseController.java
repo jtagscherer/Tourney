@@ -113,6 +113,9 @@ public class PreRegistrationPhaseController implements EventUser {
 									&& returnValue != null) {
 								this.loadedEvent.getRegisteredPlayers().add(
 										returnValue);
+								returnValue.setId(String
+										.valueOf(this.loadedEvent
+												.getRegisteredPlayers().size()));
 							}
 						}).show();
 	}
