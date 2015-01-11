@@ -12,15 +12,18 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.model.Tournament;
 
-public class TournamentSelectionDialog extends VBox implements IModalDialogProvider<ObservableList<Tournament>, Tournament> {
+public class TournamentSelectionDialog extends VBox implements
+		IModalDialogProvider<ObservableList<Tournament>, Tournament> {
 
-	private static final Logger log = Logger.getLogger(TournamentSelectionDialog.class.getName());
+	private static final Logger log = Logger
+			.getLogger(TournamentSelectionDialog.class.getName());
 
-	@FXML private ComboBox<Tournament> comboBoxAvailableTournaments;
+	@FXML private ComboBox<Tournament> comboBoxSelectedTournament;
 
 	public TournamentSelectionDialog() {
 		try {
-			FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/ui/fxml/dialogs/tournament-selection-dialog.fxml"));
+			FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+					"/ui/fxml/dialogs/tournament-selection-dialog.fxml"));
 			loader.setController(this);
 			loader.setRoot(this);
 			loader.load();
@@ -29,8 +32,9 @@ public class TournamentSelectionDialog extends VBox implements IModalDialogProvi
 		}
 	}
 
-	@FXML private void initialize() {
-		this.comboBoxAvailableTournaments.setCellFactory(listView -> {
+	@FXML
+	private void initialize() {
+		this.comboBoxSelectedTournament.setCellFactory(listView -> {
 			return new ListCell<Tournament>() {
 				@Override
 				protected void updateItem(Tournament item, boolean empty) {
@@ -43,22 +47,34 @@ public class TournamentSelectionDialog extends VBox implements IModalDialogProvi
 				}
 			};
 		});
+
+		this.comboBoxSelectedTournament
+				.setButtonCell(new ListCell<Tournament>() {
+					@Override
+					protected void updateItem(Tournament item, boolean empty) {
+						super.updateItem(item, empty);
+						if (item == null || empty) {
+							this.setGraphic(null);
+						} else {
+							this.setText(item.getName());
+						}
+					}
+				});
 	}
 
 	@Override
 	public void setProperties(ObservableList<Tournament> properties) {
-		this.comboBoxAvailableTournaments.setItems(properties);
+		this.comboBoxSelectedTournament.setItems(properties);
 	}
 
 	@Override
 	public Tournament getReturnValue() {
-		return this.comboBoxAvailableTournaments.getValue();
+		return this.comboBoxSelectedTournament.getValue();
 	}
 
 	@Override
 	public void initModalDialog(
 			ModalDialog<ObservableList<Tournament>, Tournament> modalDialog) {
-		modalDialog.title("Turnier auswählen").dialogButtons(
-				DialogButtons.OK);
+		modalDialog.title("Turnier auswählen").dialogButtons(DialogButtons.OK);
 	}
 }

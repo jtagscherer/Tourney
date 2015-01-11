@@ -4,17 +4,28 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
+import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.Tournament;
 
+@SuppressWarnings("deprecation")
 public class PlayerPreRegistrationDialogController extends VBox implements
 		IModalDialogProvider<Object, Player> {
 
@@ -25,10 +36,13 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 	@FXML private TextField textFieldLastName;
 	@FXML private TextField textFieldEmail;
 	@FXML private TextField textFieldNickname;
-	@FXML private TableView<String> tableTournaments;
+	@FXML private TableView<Tournament> tableTournaments;
 	@FXML private Button buttonAddTournament;
 	@FXML private Button buttonRemoveTournament;
 	@FXML private CheckBox checkBoxPayed;
+
+	private TableColumn<Tournament, String> tableColumnTournamentName;
+	private ObservableList<Tournament> registeredTournaments;
 
 	private Player loadedPlayer;
 	private Player editedPlayer;
@@ -43,6 +57,35 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 			loader.load();
 		} catch (IOException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+
+	@FXML
+	private void initialize() {
+		this.registeredTournaments = FXCollections.observableArrayList();
+		this.initTournamentTable();
+
+		// Bind the remove button's availability to the selected item
+		this.buttonRemoveTournament.disableProperty().bind(
+				this.tableTournaments.getSelectionModel()
+						.selectedItemProperty().isNull());
+	}
+
+	private void initTournamentTable() {
+		this.tableColumnTournamentName = new TableColumn<>("Turniername");
+		this.tableColumnTournamentName.setCellValueFactory(cellData -> cellData
+				.getValue().nameProperty());
+		this.tableTournaments.getColumns().add(this.tableColumnTournamentName);
+	}
+
+	private void updateTournamentList() {
+		this.registeredTournaments.clear();
+		for (Tournament tournament : this.loadedEvent.getTournaments()) {
+			for (Player player : tournament.getRegisteredPlayers()) {
+				if (player.getId().equals(this.loadedPlayer.getId())) {
+					this.registeredTournaments.add(tournament);
+				}
+			}
 		}
 	}
 
@@ -76,8 +119,13 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 					this.editedPlayer.payedProperty());
 		} else if (properties instanceof Event) {
 			this.loadedEvent = (Event) properties;
-			// TODO: bind (not bidirectional) the tournaments contained in the
-			// event to table contents
+		}
+
+		if (this.loadedEvent != null && this.editedPlayer != null) {
+			this.updateTournamentList();
+
+			// create table bindings
+			this.tableTournaments.setItems(this.registeredTournaments);
 		}
 	}
 
@@ -94,13 +142,68 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 
 	@FXML
 	private void onButtonAddTournamentClicked(ActionEvent event) {
-		// TODO: show dialog to choose from existing tournaments the player
-		// doesn't already attend
+		ObservableList<Tournament> unregisteredTournaments = FXCollections
+				.observableArrayList();
+		for (Tournament tournament : this.loadedEvent.getTournaments()) {
+			boolean playerRegistered = false;
+			for (Player player : tournament.getRegisteredPlayers()) {
+				if (player.getId().equals(this.loadedPlayer.getId())) {
+					playerRegistered = true;
+				}
+			}
+			if (!playerRegistered) {
+				unregisteredTournaments.add(tournament);
+			}
+		}
+
+		new TournamentSelectionDialog()
+				.modalDialog()
+				.properties(unregisteredTournaments)
+				.onResult(
+						(result, returnValue) -> {
+							if (result == DialogResult.OK
+									&& returnValue != null) {
+								returnValue.getRegisteredPlayers().add(
+										this.editedPlayer);
+								this.updateTournamentList();
+							}
+						}).show();
 	}
 
 	@FXML
 	private void onButtonRemoveTournamentClicked(ActionEvent event) {
-		// TODO: get selected tournament from the table and remove it
+		Tournament selectedTournament = this.tableTournaments
+				.getSelectionModel().getSelectedItem();
+		if (selectedTournament == null) {
+			Dialogs.create()
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Fehler")
+					.message("Bitte wählen Sie eine Turnier aus der Liste aus.")
+					.showError();
+		} else {
+			Action response = Dialogs
+					.create()
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Turnier löschen")
+					.message(
+							"Wollen Sie den Spieler \""
+									+ this.loadedPlayer.getFirstName() + " "
+									+ this.loadedPlayer.getLastName()
+									+ "\" wirklich vom Turnier \""
+									+ selectedTournament.getName()
+									+ "\" abmelden?").showConfirm();
+
+			if (response == Dialog.ACTION_YES) {
+				for (Player player : selectedTournament.getRegisteredPlayers()) {
+					if (player.getId().equals(this.loadedPlayer.getId())) {
+						selectedTournament.getRegisteredPlayers()
+								.remove(player);
+					}
+				}
+			}
+		}
+
+		this.updateTournamentList();
 	}
 
 }

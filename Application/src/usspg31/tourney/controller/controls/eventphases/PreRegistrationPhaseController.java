@@ -42,6 +42,14 @@ public class PreRegistrationPhaseController implements EventUser {
 	@FXML
 	private void initialize() {
 		this.initPlayerTable();
+
+		// Bind the button's availability to the list selection
+		this.buttonRemovePlayer.disableProperty().bind(
+				this.tablePreRegisteredPlayers.getSelectionModel()
+						.selectedItemProperty().isNull());
+		this.buttonEditPlayer.disableProperty().bind(
+				this.tablePreRegisteredPlayers.getSelectionModel()
+						.selectedItemProperty().isNull());
 	}
 
 	private void initPlayerTable() {
@@ -113,6 +121,9 @@ public class PreRegistrationPhaseController implements EventUser {
 									&& returnValue != null) {
 								this.loadedEvent.getRegisteredPlayers().add(
 										returnValue);
+								returnValue.setId(String
+										.valueOf(this.loadedEvent
+												.getRegisteredPlayers().size()));
 							}
 						}).show();
 	}
