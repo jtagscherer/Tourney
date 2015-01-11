@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,6 +69,52 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 
 	@FXML private void initialize() {
 
+	}
+
+	private void initTournamentPhaseTable() {
+		// setup all table columns
+		this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
+		this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
+				cellData -> cellData.getValue().phaseNumberProperty().asString());
+		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesPhaseNumber);
+
+		this.tableColumnPhasesPairingMethod = new TableColumn<>("Paarungsmethode");
+		this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
+				cellData -> new SimpleStringProperty(cellData.getValue().getPairingMethod().getName()));
+		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesPairingMethod);
+
+		this.tableColumnPhasesRoundCount = new TableColumn<>("Rundendanzahl");
+		this.tableColumnPhasesRoundCount.cellValueFactoryProperty().set(
+				cellData -> cellData.getValue().roundCountProperty().asString());
+		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesRoundCount);
+
+		this.tableColumnPhasesCutoff = new TableColumn<>("Cutoff");
+		this.tableColumnPhasesCutoff.cellValueFactoryProperty().set(
+				cellData -> cellData.getValue().cutoffProperty().asString());
+		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesCutoff);
+
+		this.tableColumnPhasesRoundDuration = new TableColumn<>("Rundendauer");
+		this.tableColumnPhasesRoundDuration.cellValueFactoryProperty().set(
+				cellData -> cellData.getValue().roundDurationProperty().asString());
+		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesRoundDuration);
+
+		this.tableColumnPhasesNumberOfOpponents = new TableColumn<>("Spieler je Paarung");
+		this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
+				cellData -> cellData.getValue().numberOfOpponentsProperty().asString());
+		this.tableTournamentPhases.getColumns().add(this.tableColumnPhasesNumberOfOpponents);
+	}
+
+	private void initPossibleScoresTable() {
+		this.tableColumnPossibleScoresPriority = new TableColumn<>("Priorität");
+		this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
+				cellData -> cellData.getValue().getPriority().asString());
+		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
+
+		// TODO: somehow put the map in a string
+		//		this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
+		//		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
+		//				cellData -> cellData.getValue().getScores().);
+		//		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
 	}
 
 	@Override
