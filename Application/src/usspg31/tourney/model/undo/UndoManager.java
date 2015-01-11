@@ -211,12 +211,13 @@ public class UndoManager {
 			// did we just add the first element to the undoBatch?
 			if (this.undoBatch.getUndoActionCount() == 1) {
 				this.currentNode.setNext(new UndoNode(this.currentNode, this.undoBatch));
+				this.currentNode = this.currentNode.getNext();
 			}
 		} else {
 			this.currentNode.setNext(new UndoNode(this.currentNode, undoAction));
+			this.currentNode = this.currentNode.getNext();
 		}
 
-		this.currentNode = this.currentNode.getNext();
 		this.setUndoAvailable(true);
 		this.setRedoAvailable(false);
 	}
