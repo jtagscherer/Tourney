@@ -68,7 +68,7 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 
 	@FXML private void onButtonAddTournamentModuleClicked(ActionEvent event) {
 		log.fine("Add Tournament Module Button clicked");
-		new TournamentModuleEditorDialogController()
+		new TournamentModuleEditorDialog()
 		.modalDialog()
 		.properties(new TournamentModule())
 		.onResult((result, returnValue) -> {
@@ -89,7 +89,7 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 
 	@FXML private void onButtonEditTournamentModuleClicked(ActionEvent event) {
 		log.fine("Edit Tournament Module Button clicked");
-		new TournamentModuleEditorDialogController()
+		new TournamentModuleEditorDialog()
 		.modalDialog()
 		.properties(this.tableTournamentModules.getSelectionModel().getSelectedItem())
 		.onResult((result, returnValue) -> {
