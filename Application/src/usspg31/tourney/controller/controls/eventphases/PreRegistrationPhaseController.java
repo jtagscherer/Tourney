@@ -18,7 +18,7 @@ public class PreRegistrationPhaseController implements EventUser {
 	private static final Logger log = Logger.getLogger(PreRegistrationPhaseController.class.getName());
 
 	@FXML private TextField textFieldPlayerSearch;
-	@FXML private TableView<String> tablePreRegisteredPlayers;
+	@FXML private TableView<Player> tablePreRegisteredPlayers;
 	@FXML private Button buttonAddPlayer;
 	@FXML private Button buttonRemovePlayer;
 	@FXML private Button buttonEditPlayer;
