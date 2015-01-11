@@ -21,15 +21,15 @@ public class UndoBatch implements UndoAction {
 
 	@Override
 	public void undo() {
-		for (UndoAction action : this.undoActions) {
-			action.undo();
+		for (int i = this.undoActions.size() - 1; i >= 0; i--) {
+			this.undoActions.get(i).undo();
 		}
 	}
 
 	@Override
 	public void redo() {
-		for (UndoAction action : this.undoActions) {
-			action.redo();
+		for (int i = 0; i < this.undoActions.size(); i++) {
+			this.undoActions.get(i).redo();
 		}
 	}
 
