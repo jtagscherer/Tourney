@@ -7,7 +7,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Tournament {
+public class Tournament implements Cloneable {
 
 	private final ObservableList<Player> registeredPlayers;
 	private final ObservableList<Player> attendingPlayers;
@@ -85,5 +85,21 @@ public class Tournament {
 
 	public ObjectProperty<TournamentModule> ruleSetProperty() {
 		return this.ruleSet;
+	}
+
+	@Override
+	public Object clone() {
+		Tournament clone = new Tournament();
+		clone.setName(this.getName());
+		clone.setId(this.getId());
+		clone.setRuleSet(this.getRuleSet());
+
+		clone.getRegisteredPlayers().addAll(this.getRegisteredPlayers());
+		clone.getAttendingPlayers().addAll(this.getAttendingPlayers());
+		clone.getRounds().addAll(this.getRounds());
+		clone.getScoreTable().addAll(this.getScoreTable());
+		clone.getAdministrators().addAll(this.getAdministrators());
+
+		return clone;
 	}
 }
