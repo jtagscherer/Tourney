@@ -13,4 +13,9 @@ public class ModifiedSwissSystem implements PairingStrategy {
 		return null;
 	}
 
+	@Override
+	public String getName() {
+		return "Modifiziertes Schweizer System (not implemented)";
+	}
+
 }

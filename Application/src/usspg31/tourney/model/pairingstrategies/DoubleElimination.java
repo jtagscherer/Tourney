@@ -13,4 +13,9 @@ public class DoubleElimination implements PairingStrategy {
 		return null;
 	}
 
+	@Override
+	public String getName() {
+		return "Doppel-K.O.-System (not implemented)";
+	}
+
 }
