@@ -23,15 +23,23 @@ public class EventSetupPhaseController implements EventUser {
 	private final static Logger log = Logger
 			.getLogger(EventSetupPhaseController.class.getName());
 
-	@FXML private UndoTextField textFieldEventTitle;
-	@FXML private DatePicker datePickerStartDate;
-	@FXML private DatePicker datePickerEndDate;
-	@FXML private UndoTextArea textAreaEventLocation;
+	@FXML
+	private UndoTextField textFieldEventTitle;
+	@FXML
+	private DatePicker datePickerStartDate;
+	@FXML
+	private DatePicker datePickerEndDate;
+	@FXML
+	private UndoTextArea textAreaEventLocation;
 
-	@FXML private TableView<Tournament> tableTournaments;
-	@FXML private Button buttonAddTournament;
-	@FXML private Button buttonRemoveTournament;
-	@FXML private Button buttonEditTournament;
+	@FXML
+	private TableView<Tournament> tableTournaments;
+	@FXML
+	private Button buttonAddTournament;
+	@FXML
+	private Button buttonRemoveTournament;
+	@FXML
+	private Button buttonEditTournament;
 
 	private TableColumn<Tournament, String> tableColumnTournamentTitle;
 
@@ -46,6 +54,13 @@ public class EventSetupPhaseController implements EventUser {
 	@FXML
 	private void initialize() {
 		this.initTournamentTable();
+		this.buttonEditTournament.disableProperty().bind(
+				this.tableTournaments.getSelectionModel()
+						.selectedItemProperty().isNull());
+		this.buttonRemoveTournament.disableProperty().bind(
+				this.tableTournaments.getSelectionModel()
+						.selectedItemProperty().isNull());
+
 	}
 
 	private void initTournamentTable() {
