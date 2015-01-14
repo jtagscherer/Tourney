@@ -2,6 +2,10 @@ package usspg31.tourney.controller.controls.eventphases;
 
 import java.util.logging.Logger;
 
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
@@ -17,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.DialogResult;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialogController;
@@ -24,6 +29,7 @@ import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
 
+@SuppressWarnings("deprecation")
 public class RegistrationPhaseController implements EventUser {
 
 	private static final Logger log = Logger
@@ -206,29 +212,63 @@ public class RegistrationPhaseController implements EventUser {
 	private void onButtonRemovePlayerClicked(ActionEvent event) {
 		log.fine("Remove Player Button clicked");
 		this.checkEventLoaded();
-		// TODO: get selected player in the table and remove him
+
+		Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
+				.getSelectedItem();
+		if (selectedPlayer == null) {
+			Dialogs.create()
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Fehler")
+					.message(
+							"Bitte wählen Sie einen Spieler aus der Liste aus.")
+					.showError();
+		} else {
+			Action response = Dialogs
+					.create()
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Spieler löschen")
+					.message(
+							"Wollen Sie den Spieler \""
+									+ selectedPlayer.getFirstName() + " "
+									+ selectedPlayer.getLastName()
+									+ "\" wirklich löschen?").showConfirm();
+
+			if (response == Dialog.ACTION_YES) {
+				this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
+			}
+		}
 	}
 
 	@FXML
 	private void onButtonEditPlayerClicked(ActionEvent event) {
 		log.fine("Edit Player Button clicked");
 		this.checkEventLoaded();
-		// TODO: get selected player in the table
-		final Player selectedPlayer = null;
-		new PlayerPreRegistrationDialogController()
-				.modalDialog()
-				.properties(selectedPlayer)
-				.properties(this.loadedEvent)
-				.onResult(
-						(result, returnValue) -> {
-							if (result == DialogResult.OK
-									&& returnValue != null) {
-								this.loadedEvent.getRegisteredPlayers().remove(
-										selectedPlayer);
-								this.loadedEvent.getRegisteredPlayers().add(
-										returnValue);
-							}
-						}).show();
+
+		final Player selectedPlayer = this.tableRegisteredPlayers
+				.getSelectionModel().getSelectedItem();
+		if (selectedPlayer == null) {
+			Dialogs.create()
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Fehler")
+					.message(
+							"Bitte wählen Sie einen Spieler aus der Liste aus.")
+					.showError();
+		} else {
+			new PlayerPreRegistrationDialogController()
+					.modalDialog()
+					.properties(selectedPlayer)
+					.properties(this.loadedEvent)
+					.onResult(
+							(result, returnValue) -> {
+								if (result == DialogResult.OK
+										&& returnValue != null) {
+									this.loadedEvent.getRegisteredPlayers()
+											.remove(selectedPlayer);
+									this.loadedEvent.getRegisteredPlayers()
+											.add(returnValue);
+								}
+							}).show();
+		}
 	}
 
 	private void checkEventLoaded() {
