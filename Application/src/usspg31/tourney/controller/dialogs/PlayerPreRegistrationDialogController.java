@@ -96,7 +96,7 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 			// Clone the loaded player
 			this.editedPlayer = new Player();
 			this.editedPlayer.setFirstName(this.loadedPlayer.getFirstName());
-			this.editedPlayer.setLastName(this.loadedPlayer.getId());
+			this.editedPlayer.setLastName(this.loadedPlayer.getLastName());
 			this.editedPlayer.setId(this.loadedPlayer.getId());
 			this.editedPlayer.setMailAdress(this.loadedPlayer.getMailAddress());
 			this.editedPlayer.setNickName(this.loadedPlayer.getNickName());
