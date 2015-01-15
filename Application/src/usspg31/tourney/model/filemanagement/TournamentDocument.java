@@ -52,8 +52,10 @@ public class TournamentDocument {
 	public TournamentDocument(Document document) {
 		this.document = document;
 
-		this.rootElement = this.document.createElement("tournament");
-		this.document.appendChild(this.rootElement);
+		if (this.document.getFirstChild() == null) {
+			this.rootElement = this.document.createElement("tournament");
+			this.document.appendChild(this.rootElement);
+		}
 	}
 
 	/**

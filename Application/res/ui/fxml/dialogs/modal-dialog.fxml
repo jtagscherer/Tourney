@@ -20,8 +20,8 @@
 	<children>
 		<StackPane fx:id="mainWindowRootContainer" mouseTransparent="true"
 			styleClass="modal-dialog-root-container" />
-		<RelativityPane styleClass="modal-dialog-background">
-			<VBox RelativityPane.relTop="5% 5px" RelativityPane.relRight="5% 5px"
+		<RelativityPane fx:id="dialogBackground" styleClass="modal-dialog-background">
+			<VBox fx:id="dialogRoot" RelativityPane.relTop="5% 5px" RelativityPane.relRight="5% 5px"
 				RelativityPane.relBottom="5% 5px" RelativityPane.relLeft="5% 5px"
 				styleClass="modal-dialog-container">
 				<Label fx:id="labelTitle" styleClass="heading" text="labelTitle">

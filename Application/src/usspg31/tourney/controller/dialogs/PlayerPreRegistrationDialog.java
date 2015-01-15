@@ -21,16 +21,20 @@ import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 
 @SuppressWarnings("deprecation")
-public class PlayerPreRegistrationDialogController extends VBox implements
-		IModalDialogProvider<Object, Player> {
+public class PlayerPreRegistrationDialog extends VBox implements
+IModalDialogProvider<Object, Player> {
 
 	private static final Logger log = Logger
-			.getLogger(PlayerPreRegistrationDialogController.class.getName());
+			.getLogger(PlayerPreRegistrationDialog.class.getName());
 
 	@FXML private TextField textFieldFirstName;
 	@FXML private TextField textFieldLastName;
@@ -44,11 +48,12 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 	private TableColumn<Tournament, String> tableColumnTournamentName;
 	private ObservableList<Tournament> registeredTournaments;
 
+	private ModalDialog<ObservableList<Tournament>, Tournament> tournamentSelectionDialog;
+
 	private Player loadedPlayer;
-	private Player editedPlayer;
 	private Event loadedEvent;
 
-	public PlayerPreRegistrationDialogController() {
+	public PlayerPreRegistrationDialog() {
 		try {
 			FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
 					"/ui/fxml/dialogs/player-pre-registration-dialog.fxml"));
@@ -62,6 +67,8 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 
 	@FXML
 	private void initialize() {
+		this.tournamentSelectionDialog = new TournamentSelectionDialog().modalDialog();
+
 		this.registeredTournaments = FXCollections.observableArrayList();
 		this.initTournamentTable();
 
@@ -100,7 +107,7 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 			this.loadedEvent = (Event) properties;
 		}
 
-		if (this.loadedEvent != null && this.editedPlayer != null) {
+		if (this.loadedEvent != null && this.loadedPlayer != null) {
 			this.updateTournamentList();
 
 			// create table bindings
@@ -111,36 +118,36 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 	private void loadPlayer(Player player) {
 		this.loadedPlayer = player;
 
-		this.textFieldFirstName.textProperty().bindBidirectional(
-				this.editedPlayer.firstNameProperty());
-		this.textFieldLastName.textProperty().bindBidirectional(
-				this.editedPlayer.lastNameProperty());
-		this.textFieldEmail.textProperty().bindBidirectional(
-				this.editedPlayer.mailAdressProperty());
-		this.textFieldNickname.textProperty().bindBidirectional(
-				this.editedPlayer.nickNameProperty());
-		this.checkBoxPayed.selectedProperty().bindBidirectional(
-				this.editedPlayer.payedProperty());
+		this.loadedPlayer.firstNameProperty().bindBidirectional(
+				this.textFieldFirstName.textProperty());
+		this.loadedPlayer.lastNameProperty().bindBidirectional(
+				this.textFieldLastName.textProperty());
+		this.loadedPlayer.mailAdressProperty().bindBidirectional(
+				this.textFieldEmail.textProperty());
+		this.loadedPlayer.nickNameProperty().bindBidirectional(
+				this.textFieldNickname.textProperty());
+		this.loadedPlayer.payedProperty().bindBidirectional(
+				this.checkBoxPayed.selectedProperty());
 	}
 
 	private void unloadPlayer() {
 		this.textFieldFirstName.textProperty().unbindBidirectional(
-				this.editedPlayer.firstNameProperty());
+				this.loadedPlayer.firstNameProperty());
 		this.textFieldLastName.textProperty().unbindBidirectional(
-				this.editedPlayer.lastNameProperty());
+				this.loadedPlayer.lastNameProperty());
 		this.textFieldEmail.textProperty().unbindBidirectional(
-				this.editedPlayer.mailAdressProperty());
+				this.loadedPlayer.mailAdressProperty());
 		this.textFieldNickname.textProperty().unbindBidirectional(
-				this.editedPlayer.nickNameProperty());
+				this.loadedPlayer.nickNameProperty());
 		this.checkBoxPayed.selectedProperty().unbindBidirectional(
-				this.editedPlayer.payedProperty());
+				this.loadedPlayer.payedProperty());
 
 		this.loadedPlayer = null;
 	}
 
 	@Override
 	public Player getReturnValue() {
-		return this.editedPlayer;
+		return this.loadedPlayer;
 	}
 
 	@Override
@@ -164,21 +171,22 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 			}
 		}
 
-		new TournamentSelectionDialog()
-				.modalDialog()
-				.properties(unregisteredTournaments)
-				.onResult(
-						(result, returnValue) -> {
-							if (result == DialogResult.OK
-									&& returnValue != null) {
-								returnValue.getRegisteredPlayers().add(
-										this.editedPlayer);
-								this.updateTournamentList();
-							}
-						}).show();
+		this.tournamentSelectionDialog
+		.properties(unregisteredTournaments)
+		.onResult(
+				(result, returnValue) -> {
+					if (result == DialogResult.OK
+							&& returnValue != null) {
+						returnValue.getRegisteredPlayers().add(
+								this.loadedPlayer);
+						this.updateTournamentList();
+					}
+				}).show();
 	}
 
 	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
+		// TODO: it should be impossible to remove a player from a tournament he already played in
+
 		Tournament selectedTournament = this.tableTournaments
 				.getSelectionModel().getSelectedItem();
 

@@ -15,6 +15,10 @@ public class Event {
 		EVENT_SETUP, PRE_REGISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
 	}
 
+	public static enum UserFlag {
+		ADMINISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
+	}
+
 	private final ObservableList<Tournament> tournaments;
 	private final ObservableList<Player> registeredPlayers;
 	private final StringProperty name;
@@ -23,6 +27,9 @@ public class Event {
 	private final StringProperty location;
 	private final ObservableList<EventAdministrator> administrators;
 	private final ObjectProperty<EventPhase> eventPhase;
+
+	private final ObjectProperty<Tournament> executedTournament;
+	private final ObjectProperty<UserFlag> userFlag;
 
 	public Event() {
 		this.tournaments = FXCollections.observableArrayList();
@@ -34,6 +41,9 @@ public class Event {
 		this.administrators = FXCollections.observableArrayList();
 		this.eventPhase = new SimpleObjectProperty<Event.EventPhase>();
 		this.setEventPhase(Event.EventPhase.EVENT_SETUP);
+		this.executedTournament = new SimpleObjectProperty<Tournament>();
+		this.userFlag = new SimpleObjectProperty<Event.UserFlag>();
+		this.setUserFlag(UserFlag.ADMINISTRATION);
 	}
 
 	public ObservableList<Tournament> getTournaments() {
@@ -106,5 +116,29 @@ public class Event {
 
 	public ObjectProperty<EventPhase> eventPhaseProperty() {
 		return this.eventPhase;
+	}
+
+	public void setUserFlag(UserFlag value) {
+		this.userFlag.set(value);
+	}
+
+	public UserFlag getUserFlag() {
+		return this.userFlag.get();
+	}
+
+	public ObjectProperty<UserFlag> userFlagProperty() {
+		return this.userFlag;
+	}
+
+	public void setExecutedTournament(Tournament value) {
+		this.executedTournament.set(value);
+	}
+
+	public Tournament getExecutedTournament() {
+		return this.executedTournament.get();
+	}
+
+	public ObjectProperty<Tournament> executedTournamentProperty() {
+		return this.executedTournament;
 	}
 }

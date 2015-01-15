@@ -40,8 +40,10 @@ public class TournamentModuleDocument {
 	public TournamentModuleDocument(Document document) {
 		this.document = document;
 
-		this.rootElement = this.document.createElement("rule-template");
-		this.document.appendChild(this.rootElement);
+		if (this.document.getFirstChild() == null) {
+			this.rootElement = this.document.createElement("rule-template");
+			this.document.appendChild(this.rootElement);
+		}
 	}
 
 	/**

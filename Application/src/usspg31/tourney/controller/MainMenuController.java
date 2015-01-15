@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,7 +17,9 @@ import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.controls.EventPhaseViewController;
 import usspg31.tourney.controller.dialogs.TournamentModuleListDialog;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.TournamentModule;
 import usspg31.tourney.model.filemanagement.FileLoader;
 
 @SuppressWarnings("deprecation")
@@ -34,8 +37,10 @@ public class MainMenuController {
 	@FXML private VBox eventButtonsRight;
 	@FXML private HBox eventButtonsContainer;
 
-	@FXML private void initialize() {
+	private ModalDialog<ObservableList<TournamentModule>, Object> tournamentModuleListDialog;
 
+	@FXML private void initialize() {
+		this.tournamentModuleListDialog = new TournamentModuleListDialog().modalDialog();
 	}
 
 	@FXML private void onButtonNewEventClicked(ActionEvent event) {
@@ -96,9 +101,8 @@ public class MainMenuController {
 	@FXML private void onButtonOpenTournamentModuleEditorClicked(ActionEvent event) {
 		log.fine("Open Tournament Module Editor Button was clicked");
 
-		new TournamentModuleListDialog()
-		.modalDialog()
-		.properties(null)
+		this.tournamentModuleListDialog
+		.properties(null) // TODO: get all available tournament modules from the preferencesManager
 		.show();
 	}
 

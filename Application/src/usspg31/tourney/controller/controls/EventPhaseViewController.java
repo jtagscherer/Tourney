@@ -16,12 +16,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.EntryPoint;
@@ -45,24 +49,38 @@ public class EventPhaseViewController implements EventUser {
 	private File loadedEventFile;
 
 	// Menu bar
-	@FXML private Button buttonClose;
-	@FXML private Button buttonSave;
+	@FXML
+	private Button buttonClose;
+	@FXML
+	private Button buttonSave;
 
-	@FXML private Button buttonUndo;
-	@FXML private Button buttonRedo;
+	@FXML
+	private Button buttonUndo;
+	@FXML
+	private Button buttonRedo;
 
-	@FXML private Button buttonLock;
-	@FXML private Button buttonOptions;
+	@FXML
+	private Button buttonLock;
+	@FXML
+	private Button buttonOptions;
 
 	// Breadcrumb controls
-	@FXML private HBox breadcrumbContainer;
-	@FXML private Button breadcrumbEventSetup;
-	@FXML private Button breadcrumbPreRegistration;
-	@FXML private Button breadcrumbRegistration;
-	@FXML private Button breadcrumbTournamentExecution;
+	@FXML
+	private HBox breadcrumbContainer;
+	@FXML
+	private Button breadcrumbEventSetup;
+	@FXML
+	private Button breadcrumbPreRegistration;
+	@FXML
+	private Button breadcrumbRegistration;
+	@FXML
+	private Button breadcrumbTournamentExecution;
+
+	private InnerShadow highlightedBreadcrumbEffect;
 
 	// Event phases
-	@FXML private StackPane eventPhaseContainer;
+	@FXML
+	private StackPane eventPhaseContainer;
 
 	private Node eventSetupPhase;
 	private EventSetupPhaseController eventSetupPhaseController;
@@ -81,8 +99,8 @@ public class EventPhaseViewController implements EventUser {
 	private Timeline currentAnimation;
 
 	private static final Duration transitionDuration = Duration.millis(300);
-	private static Interpolator transitionInterpolator =
-			Interpolator.SPLINE(.4, 0, 0, 1);
+	private static Interpolator transitionInterpolator = Interpolator.SPLINE(
+			.4, 0, 0, 1);
 
 	// Event
 	private Event loadedEvent;
@@ -90,47 +108,58 @@ public class EventPhaseViewController implements EventUser {
 	// UndoManager
 	private UndoManager activeUndoManager;
 
-	@FXML private void initialize() throws IOException {
+	@FXML
+	private void initialize() throws IOException {
 		this.phasePosition = new SimpleDoubleProperty(0);
 
 		this.loadSubViews();
 		this.initBreadcrumbs();
 
 		// add all event phase views to the event phase container
-		this.eventPhaseContainer.getChildren().addAll(
-				this.eventSetupPhase,
-				this.preRegistrationPhase,
-				this.registrationPhase,
-				this.tournamentExecutionPhase
-				);
+		this.eventPhaseContainer.getChildren().addAll(this.eventSetupPhase,
+				this.preRegistrationPhase, this.registrationPhase,
+				this.tournamentExecutionPhase);
 	}
 
 	private void initBreadcrumbs() {
+		this.highlightedBreadcrumbEffect = new InnerShadow();
+		this.highlightedBreadcrumbEffect.setColor(Color.rgb(130, 130, 130));
+		this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
 	}
 
 	private void loadSubViews() throws IOException {
 		FXMLLoader eventSetupPhaseLoader = new FXMLLoader(this.getClass()
-				.getResource("/ui/fxml/controls/eventphases/event-setup-phase.fxml"));
+				.getResource(
+						"/ui/fxml/controls/eventphases/event-setup-phase.fxml"));
 		this.eventSetupPhase = eventSetupPhaseLoader.load();
 		this.eventSetupPhaseController = eventSetupPhaseLoader.getController();
 		this.eventSetupPhase.setVisible(true);
 
-		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(this.getClass()
-				.getResource("/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
+		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(
+				this.getClass()
+						.getResource(
+								"/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
 		this.preRegistrationPhase = preRegistrationPhaseLoader.load();
-		this.preRegistrationPhaseController = preRegistrationPhaseLoader.getController();
+		this.preRegistrationPhaseController = preRegistrationPhaseLoader
+				.getController();
 		this.preRegistrationPhase.setVisible(true);
 
-		FXMLLoader registrationPhaseLoader = new FXMLLoader(this.getClass()
-				.getResource("/ui/fxml/controls/eventphases/registration-phase.fxml"));
+		FXMLLoader registrationPhaseLoader = new FXMLLoader(
+				this.getClass()
+						.getResource(
+								"/ui/fxml/controls/eventphases/registration-phase.fxml"));
 		this.registrationPhase = registrationPhaseLoader.load();
-		this.registrationPhaseController = registrationPhaseLoader.getController();
+		this.registrationPhaseController = registrationPhaseLoader
+				.getController();
 		this.registrationPhase.setVisible(true);
 
-		FXMLLoader tournamentExecutionPhaseLoader = new FXMLLoader(this.getClass()
-				.getResource("/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
+		FXMLLoader tournamentExecutionPhaseLoader = new FXMLLoader(
+				this.getClass()
+						.getResource(
+								"/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
 		this.tournamentExecutionPhase = tournamentExecutionPhaseLoader.load();
-		this.tournamentExecutionPhaseController = tournamentExecutionPhaseLoader.getController();
+		this.tournamentExecutionPhaseController = tournamentExecutionPhaseLoader
+				.getController();
 		this.tournamentExecutionPhase.setVisible(true);
 
 		// bind the phase view's translateX property to the phasePosition
@@ -139,35 +168,35 @@ public class EventPhaseViewController implements EventUser {
 
 		this.eventSetupPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(0)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(0)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 
 		this.preRegistrationPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(1)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(1)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 
 		this.registrationPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(2)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(2)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 
 		this.tournamentExecutionPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(3)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(3)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 	}
 
 	private void slideToPhase(int phaseNumber) {
@@ -188,6 +217,13 @@ public class EventPhaseViewController implements EventUser {
 				undoManager.undoAvailableProperty().not());
 		this.buttonRedo.disableProperty().bind(
 				undoManager.redoAvailableProperty().not());
+
+		this.buttonSave.disableProperty().bind(
+				undoManager.undoAvailableProperty().not());
+	}
+
+	public UndoManager getActiveUndoManager() {
+		return this.activeUndoManager;
 	}
 
 	public void unsetUndoManager() {
@@ -243,45 +279,19 @@ public class EventPhaseViewController implements EventUser {
 		this.loadedEvent = null;
 	}
 
-	@FXML private void onButtonCloseClicked(ActionEvent event) {
-		log.fine("Close Button was clicked");
-		this.onButtonSaveClicked(null);
-
-		this.unloadEvent();
-		MainWindow.getInstance().slideDown(
-				MainWindow.getInstance().getMainMenu());
-	}
-
-	@FXML private void onButtonUndoClicked(ActionEvent event) {
-		log.fine("Undo Button was clicked");
-		if (this.activeUndoManager != null) {
-			this.activeUndoManager.undo();
-		}
-	}
-
-	@FXML private void onButtonRedoClicked(ActionEvent event) {
-		log.fine("Redo Button was clicked");
-		if (this.activeUndoManager != null) {
-			this.activeUndoManager.redo();
-		}
-	}
-
-	@FXML private void onButtonSaveClicked(ActionEvent event) {
-		log.fine("Save Button was clicked");
+	public Action saveEvent() {
 		if (this.getLoadedEventFile() == null) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Eventdatei speichern");
 			fileChooser.getExtensionFilters().add(
-					new ExtensionFilter(
-							"Tourney Eventdatei (*.tef)", "*.tef"));
-			File selectedFile = fileChooser
-					.showSaveDialog(EntryPoint.getPrimaryStage());
+					new ExtensionFilter("Tourney Eventdatei (*.tef)", "*.tef"));
+			File selectedFile = fileChooser.showSaveDialog(EntryPoint
+					.getPrimaryStage());
 			if (selectedFile == null) {
-				return;
+				return Dialog.ACTION_CANCEL;
 			}
 			if (!selectedFile.getName().endsWith(".tef")) {
-				selectedFile = new File(selectedFile
-						.getAbsolutePath() + ".tef");
+				selectedFile = new File(selectedFile.getAbsolutePath() + ".tef");
 			}
 			this.setLoadedEventFile(selectedFile);
 		}
@@ -292,19 +302,77 @@ public class EventPhaseViewController implements EventUser {
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Could not save the event.", e);
 			Dialogs.create()
-			.owner(EntryPoint.getPrimaryStage())
-			.title("Fehler")
-			.message(
-					"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Fehler")
+					.message(
+							"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
 					.showError();
+
+			return Dialog.ACTION_CANCEL;
+		}
+
+		return Dialog.ACTION_OK;
+	}
+
+	@FXML
+	private void onButtonCloseClicked(ActionEvent event) {
+		log.fine("Close Button was clicked");
+
+		if (this.activeUndoManager.undoAvailable()) {
+			Action response = Dialogs
+					.create()
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Warnung")
+					.message(
+							"Es sind ungesicherte Änderungen vorhanden.\n"
+									+ "Möchten Sie diese vor dem Beenden speichern?")
+					.actions(Dialog.ACTION_YES, Dialog.ACTION_NO,
+							Dialog.ACTION_CANCEL).showWarning();
+
+			if (response == Dialog.ACTION_CANCEL) {
+				return;
+			} else if (response == Dialog.ACTION_YES) {
+				Action saveResponse = this.saveEvent();
+				if (saveResponse != Dialog.ACTION_OK) {
+					return;
+				}
+			}
+		}
+
+		this.unloadEvent();
+		MainWindow.getInstance().slideDown(
+				MainWindow.getInstance().getMainMenu());
+	}
+
+	@FXML
+	private void onButtonUndoClicked(ActionEvent event) {
+		log.fine("Undo Button was clicked");
+		if (this.activeUndoManager != null) {
+			this.activeUndoManager.undo();
 		}
 	}
 
-	@FXML private void onButtonLockClicked(ActionEvent event) {
+	@FXML
+	private void onButtonRedoClicked(ActionEvent event) {
+		log.fine("Redo Button was clicked");
+		if (this.activeUndoManager != null) {
+			this.activeUndoManager.redo();
+		}
+	}
+
+	@FXML
+	private void onButtonSaveClicked(ActionEvent event) {
+		log.fine("Save Button was clicked");
+		this.saveEvent();
+	}
+
+	@FXML
+	private void onButtonLockClicked(ActionEvent event) {
 		log.fine("Lock Button was clicked");
 	}
 
-	@FXML private void onButtonOptionsClicked(ActionEvent event) {
+	@FXML
+	private void onButtonOptionsClicked(ActionEvent event) {
 		log.fine("Options Button was clicked");
 		MainWindow mainWindow = MainWindow.getInstance();
 		mainWindow.getOptionsViewController().setExitProperties("Event",
@@ -316,27 +384,53 @@ public class EventPhaseViewController implements EventUser {
 		mainWindow.slideUp(mainWindow.getOptionsView());
 	}
 
-	@FXML private void onBreadcrumbEventSetupClicked(ActionEvent event) {
+	@FXML
+	private void onBreadcrumbEventSetupClicked(ActionEvent event) {
 		log.fine("Event Setup Breadcrumb was clicked");
 		this.slideToPhase(0);
 		this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
+
+		this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
+		this.breadcrumbPreRegistration.setEffect(null);
+		this.breadcrumbRegistration.setEffect(null);
+		this.breadcrumbTournamentExecution.setEffect(null);
 	}
 
-	@FXML private void onBreadcrumbPreRegistrationClicked(ActionEvent event) {
+	@FXML
+	private void onBreadcrumbPreRegistrationClicked(ActionEvent event) {
 		log.fine("Pre Registration Breadcrumb was clicked");
 		this.slideToPhase(1);
 		this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
+
+		this.breadcrumbEventSetup.setEffect(null);
+		this.breadcrumbPreRegistration
+				.setEffect(this.highlightedBreadcrumbEffect);
+		this.breadcrumbRegistration.setEffect(null);
+		this.breadcrumbTournamentExecution.setEffect(null);
 	}
 
-	@FXML private void onBreadcrumbRegistrationClicked(ActionEvent event) {
+	@FXML
+	private void onBreadcrumbRegistrationClicked(ActionEvent event) {
 		log.fine("Registration Breadcrumb was clicked");
 		this.slideToPhase(2);
 		this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
+
+		this.breadcrumbEventSetup.setEffect(null);
+		this.breadcrumbPreRegistration.setEffect(null);
+		this.breadcrumbRegistration.setEffect(this.highlightedBreadcrumbEffect);
+		this.breadcrumbTournamentExecution.setEffect(null);
 	}
 
-	@FXML private void onBreadcrumbTournamentExecutionClicked(ActionEvent event) {
+	@FXML
+	private void onBreadcrumbTournamentExecutionClicked(ActionEvent event) {
 		log.fine("Tournament Execution Breadcrumb was clicked");
 		this.slideToPhase(3);
 		this.loadedEvent.setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
+
+		this.breadcrumbEventSetup.setEffect(null);
+		this.breadcrumbPreRegistration.setEffect(null);
+		this.breadcrumbRegistration.setEffect(null);
+		this.breadcrumbTournamentExecution
+				.setEffect(this.highlightedBreadcrumbEffect);
 	}
 }

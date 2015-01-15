@@ -17,8 +17,9 @@ import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.dialogs.DialogResult;
-import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialogController;
+import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
@@ -47,8 +48,13 @@ public class PreRegistrationPhaseController implements EventUser {
 
 	private Event loadedEvent;
 
+	private ModalDialog<Object, Player> preRegistrationDialog;
+
 	@FXML
 	private void initialize() {
+		this.preRegistrationDialog = new PlayerPreRegistrationDialog()
+				.modalDialog();
+
 		this.initPlayerTable();
 
 		// Bind the button's availability to the list selection
@@ -94,6 +100,8 @@ public class PreRegistrationPhaseController implements EventUser {
 		if (this.loadedEvent != null) {
 			this.unloadEvent();
 		}
+		
+		this.tablePreRegisteredPlayers.getSelectionModel().clearSelection();
 
 		this.loadedEvent = event;
 
@@ -101,7 +109,7 @@ public class PreRegistrationPhaseController implements EventUser {
 		FilteredList<Player> filteredPlayerList = new FilteredList<>(
 				this.loadedEvent.getRegisteredPlayers(), p -> true);
 
-		textFieldPlayerSearch.textProperty().addListener(
+		this.textFieldPlayerSearch.textProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					filteredPlayerList.setPredicate(player -> {
 						if (newValue == null || newValue.isEmpty()) {
@@ -144,8 +152,7 @@ public class PreRegistrationPhaseController implements EventUser {
 	private void onButtonAddPlayerClicked(ActionEvent event) {
 		log.fine("Add Player Button clicked");
 		this.checkEventLoaded();
-		new PlayerPreRegistrationDialogController()
-				.modalDialog()
+		this.preRegistrationDialog
 				.properties(new Player())
 				.properties(this.loadedEvent)
 				.onResult(
@@ -163,6 +170,9 @@ public class PreRegistrationPhaseController implements EventUser {
 
 	@FXML
 	private void onButtonRemovePlayerClicked(ActionEvent event) {
+		// TODO: no-one should be able to remove a player that has already
+		// played in a tournament
+
 		log.fine("Remove Player Button clicked");
 		this.checkEventLoaded();
 
@@ -184,7 +194,8 @@ public class PreRegistrationPhaseController implements EventUser {
 							"Wollen Sie den Spieler \""
 									+ selectedPlayer.getFirstName() + " "
 									+ selectedPlayer.getLastName()
-									+ "\" wirklich löschen?").showConfirm();
+									+ "\" wirklich löschen?")
+					.actions(Dialog.ACTION_YES, Dialog.ACTION_NO).showConfirm();
 
 			if (response == Dialog.ACTION_YES) {
 				this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
@@ -207,8 +218,7 @@ public class PreRegistrationPhaseController implements EventUser {
 							"Bitte wählen Sie einen Spieler aus der Liste aus.")
 					.showError();
 		} else {
-			new PlayerPreRegistrationDialogController()
-					.modalDialog()
+			this.preRegistrationDialog
 					.properties(selectedPlayer)
 					.properties(this.loadedEvent)
 					.onResult(

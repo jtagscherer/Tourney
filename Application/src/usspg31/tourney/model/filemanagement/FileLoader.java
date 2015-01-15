@@ -67,6 +67,7 @@ public class FileLoader {
 		}
 
 		Event event = new Event();
+		String executedTournamentId = null;
 
 		EventDocument eventDocument = null;
 		PlayerDocument playerDocument = null;
@@ -93,6 +94,16 @@ public class FileLoader {
 						entry.getName().length() - 4));
 
 				tournamentDocuments.add(tournamentDocument);
+			} else if (entry.getName().equals("Meta.xml")) {
+				MetaDocument metaDocument = new MetaDocument(
+						FileLoader.documentBuilder.parse(stream));
+				if (metaDocument.getMetaData().startsWith("Tournament")) {
+					executedTournamentId = metaDocument.getMetaData()
+							.substring(14);
+				} else {
+					event.setUserFlag(Event.UserFlag.valueOf(metaDocument
+							.getMetaData()));
+				}
 			}
 
 			stream.close();
@@ -137,6 +148,15 @@ public class FileLoader {
 
 		event.getTournaments().setAll(tournamentList);
 		event.getRegisteredPlayers().setAll(playerList);
+
+		if (executedTournamentId != null) {
+			for (Tournament tournament : event.getTournaments()) {
+				if (tournament.getId().equals(executedTournamentId)) {
+					event.setExecutedTournament(tournament);
+					break;
+				}
+			}
+		}
 
 		return event;
 	}

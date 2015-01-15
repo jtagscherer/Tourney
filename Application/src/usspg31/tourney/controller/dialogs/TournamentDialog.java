@@ -17,9 +17,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.controls.UndoTextField;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.TournamentModule;
 
 public class TournamentDialog extends VBox implements IModalDialogProvider<Tournament, Tournament> {
 
@@ -56,6 +62,9 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	@FXML private Button buttonRemovePossibleScore;
 	@FXML private Button buttonEditPossibleScore;
 
+	private ModalDialog<ObservableList<TournamentModule>, Object> tournamentModuleListDialog;
+	private ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+
 	private Tournament loadedTournament;
 
 	public TournamentDialog() {
@@ -70,6 +79,9 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	}
 
 	@FXML private void initialize() {
+		this.tournamentModuleListDialog = new TournamentModuleListDialog().modalDialog();
+		this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
+
 		this.initTournamentPhaseTable();
 		this.initPossibleScoresTable();
 	}
@@ -114,10 +126,10 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
 
 		// TODO: somehow put the map in a string
-		//		this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
-		//		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
-		//				cellData -> cellData.getValue().getScores().);
-		//		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
+		this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
+		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
+				cellData -> new SimpleStringProperty(""));
+		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresScores);
 	}
 
 	@Override
@@ -135,7 +147,7 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 
 	@Override
 	public void initModalDialog(ModalDialog<Tournament, Tournament> modalDialog) {
-		modalDialog.title("Turniere").dialogButtons(DialogButtons.OK);
+		modalDialog.title("Turniere").dialogButtons(DialogButtons.OK_CANCEL);
 	}
 
 	private void loadTournament(Tournament tournament) {
@@ -179,6 +191,8 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 				selectedItem.isNull());
 
 		// TODO: add bindings for the possible score table's buttons (see TournamentModuleEditorDialog)
+		this.tableColumnPossibleScoresScores.setCellValueFactory(cellValue ->
+		new MapToStringBinding<>(cellValue.getValue().getScores()).getStringProperty());
 
 		log.fine("Tournament loaded");
 	}
@@ -195,7 +209,9 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 
 	@FXML private void onButtonEditTournamentModulesClicked(ActionEvent event) {
 		log.fine("Edit Tournament Modules Button was clicked");
-		new TournamentModuleListDialog().modalDialog().show();
+		this.tournamentModuleListDialog
+		.properties(null) // TODO: actually load tournament modules (-> preferencesManager?)
+		.show();
 	}
 
 	@FXML private void onButtonMoveTournamentPhaseUpClicked(ActionEvent event) {
@@ -225,7 +241,7 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 	@FXML private void onButtonAddTournamentPhaseClicked(ActionEvent event) {
 		// TODO: update the phase numbers correctly
 		log.fine("Add Tournament Phase Button was clicked");
-		new TournamentPhaseDialog().modalDialog()
+		this.tournamentPhaseDialog
 		.properties(new GamePhase())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
@@ -242,7 +258,7 @@ public class TournamentDialog extends VBox implements IModalDialogProvider<Tourn
 
 	@FXML private void onButtonEditTournamentPhaseClicked(ActionEvent event) {
 		log.fine("Edit Tournament Phase Button was clicked");
-		new TournamentPhaseDialog().modalDialog()
+		this.tournamentPhaseDialog
 		.properties(this.getSelectedTournamentPhase())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {

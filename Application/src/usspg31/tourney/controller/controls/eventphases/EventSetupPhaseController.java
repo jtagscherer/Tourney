@@ -12,8 +12,9 @@ import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
-import usspg31.tourney.controller.dialogs.DialogResult;
 import usspg31.tourney.controller.dialogs.TournamentDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.undo.UndoManager;
@@ -45,6 +46,8 @@ public class EventSetupPhaseController implements EventUser {
 
 	private Event loadedEvent;
 
+	private ModalDialog<Tournament, Tournament> tournamentDialog;
+
 	private final UndoManager undoManager;
 
 	public EventSetupPhaseController() {
@@ -53,22 +56,23 @@ public class EventSetupPhaseController implements EventUser {
 
 	@FXML
 	private void initialize() {
+		this.tournamentDialog = new TournamentDialog().modalDialog();
+
 		this.initTournamentTable();
 		this.buttonEditTournament.disableProperty().bind(
 				this.tableTournaments.getSelectionModel()
-						.selectedItemProperty().isNull());
+				.selectedItemProperty().isNull());
 		this.buttonRemoveTournament.disableProperty().bind(
 				this.tableTournaments.getSelectionModel()
-						.selectedItemProperty().isNull());
-
+				.selectedItemProperty().isNull());
 	}
 
 	private void initTournamentTable() {
 		// create title column
 		this.tableColumnTournamentTitle = new TableColumn<>("Titel");
 		this.tableColumnTournamentTitle
-				.setCellValueFactory(cellData -> cellData.getValue()
-						.nameProperty());
+		.setCellValueFactory(cellData -> cellData.getValue()
+				.nameProperty());
 		this.tableTournaments.getColumns().add(this.tableColumnTournamentTitle);
 	}
 
@@ -79,7 +83,9 @@ public class EventSetupPhaseController implements EventUser {
 			this.unloadEvent();
 		}
 		MainWindow.getInstance().getEventPhaseViewController()
-				.setActiveUndoManager(this.undoManager);
+		.setActiveUndoManager(this.undoManager);
+		
+		this.tableTournaments.getSelectionModel().clearSelection();
 
 		this.loadedEvent = event;
 
@@ -116,7 +122,7 @@ public class EventSetupPhaseController implements EventUser {
 			return;
 		}
 		MainWindow.getInstance().getEventPhaseViewController()
-				.unsetUndoManager();
+		.unsetUndoManager();
 
 		// TODO: unregister all listeners we registered to anything in the event
 		Event event = this.loadedEvent;
@@ -151,19 +157,18 @@ public class EventSetupPhaseController implements EventUser {
 	private void onButtonAddTournamentClicked(ActionEvent event) {
 		log.fine("Add Tournament Button clicked");
 		this.checkEventLoaded();
-		new TournamentDialog()
-				.modalDialog()
-				.properties(new Tournament())
-				.onResult(
-						(result, returnValue) -> {
-							if (result == DialogResult.OK
-									&& returnValue != null) {
-								this.loadedEvent.getTournaments().add(
-										returnValue);
-							}
-							returnValue.setId(String.valueOf(this.loadedEvent
-									.getTournaments().size()));
-						}).show();
+		this.tournamentDialog
+		.properties(new Tournament())
+		.onResult(
+				(result, returnValue) -> {
+					if (result == DialogResult.OK
+							&& returnValue != null) {
+						this.loadedEvent.getTournaments().add(
+								returnValue);
+					}
+					returnValue.setId(String.valueOf(this.loadedEvent
+							.getTournaments().size()));
+				}).show();
 	}
 
 	@FXML
@@ -178,19 +183,18 @@ public class EventSetupPhaseController implements EventUser {
 		log.fine("Edit Tournament Button clicked");
 		this.checkEventLoaded();
 		final Tournament selectedTournament = this.getSelectedTournament();
-		new TournamentDialog()
-				.modalDialog()
-				.properties(selectedTournament)
-				.onResult((result, returnValue) -> {
-					// TODO: well, this obviously won't work like that.
-						if (result == DialogResult.OK && returnValue != null) {
-							this.undoManager.beginUndoBatch();
-							this.loadedEvent.getTournaments().remove(
-									selectedTournament);
-							this.loadedEvent.getTournaments().add(returnValue);
-							this.undoManager.endUndoBatch();
-						}
-					}).show();
+		this.tournamentDialog
+		.properties(selectedTournament)
+		.onResult((result, returnValue) -> {
+			// TODO: well, this obviously won't work like that.
+			if (result == DialogResult.OK && returnValue != null) {
+				this.undoManager.beginUndoBatch();
+				this.loadedEvent.getTournaments().remove(
+						selectedTournament);
+				this.loadedEvent.getTournaments().add(returnValue);
+				this.undoManager.endUndoBatch();
+			}
+		}).show();
 	}
 
 	private Tournament getSelectedTournament() {

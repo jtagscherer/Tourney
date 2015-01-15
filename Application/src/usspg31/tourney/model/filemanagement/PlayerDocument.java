@@ -29,8 +29,10 @@ public class PlayerDocument {
 	public PlayerDocument(Document document) {
 		this.document = document;
 
-		this.rootElement = this.document.createElement("players");
-		this.document.appendChild(this.rootElement);
+		if (this.document.getFirstChild() == null) {
+			this.rootElement = this.document.createElement("players");
+			this.document.appendChild(this.rootElement);
+		}
 	}
 
 	/**

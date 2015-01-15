@@ -18,6 +18,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.TournamentModule;
@@ -54,6 +59,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 	@FXML private Button buttonRemoveScore;
 	@FXML private Button buttonEditScore;
 
+	private ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+
 	private TournamentModule loadedModule;
 
 	public TournamentModuleEditorDialog() {
@@ -68,7 +75,10 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 	}
 
 	@FXML private void initialize() {
+		this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
 
+		this.initTournamentPhaseTable();
+		this.initPossibleScoresTable();
 	}
 
 	private void initTournamentPhaseTable() {
@@ -110,11 +120,10 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 				cellData -> cellData.getValue().getPriority().asString());
 		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
 
-		// TODO: somehow put the map in a string
-		//		this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
-		//		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
-		//				cellData -> cellData.getValue().getScores().);
-		//		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
+		this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
+		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
+				cellData -> new SimpleStringProperty(""));
+		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresScores);
 	}
 
 	@Override
@@ -177,6 +186,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 				selectedPhase.isNull());
 
 		// TODO: add bindings for the possible score table's buttons (see TournamentDialog#loadTournament())
+		this.tableColumnPossibleScoresScores.setCellValueFactory(cellValue ->
+		new MapToStringBinding<>(cellValue.getValue().getScores()).getStringProperty());
 
 		log.fine("Tournament Module loaded");
 	}
@@ -217,7 +228,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 	@FXML private void onButtonAddPhaseClicked(ActionEvent event) {
 		// TODO: update the phase numbers correctly
 		log.fine("Add Tournament Phase Button was clicked");
-		new TournamentPhaseDialog().modalDialog()
+		this.tournamentPhaseDialog
 		.properties(new GamePhase())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
@@ -234,7 +245,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 
 	@FXML private void onButtonEditPhaseClicked(ActionEvent event) {
 		log.fine("Edit Tournament Phase Button was clicked");
-		new TournamentPhaseDialog().modalDialog()
+		this.tournamentPhaseDialog
 		.properties(this.getSelectedPhase())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {

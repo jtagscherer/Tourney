@@ -1,4 +1,4 @@
-package usspg31.tourney.controller.dialogs;
+package usspg31.tourney.controller.dialogs.modal;
 
 public enum DialogButtons {
 	NONE(false, false, false, false),

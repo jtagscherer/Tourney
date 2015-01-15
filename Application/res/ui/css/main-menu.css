@@ -20,6 +20,7 @@
 }
 
 .button-heading {
+	-fx-font-family: "Roboto Regular";
 	-fx-alignment: center;
 	-fx-max-width: -t-max-value;
 	-fx-padding: 0 0 2pt 0;
@@ -27,6 +28,7 @@
 }
 
 .button-description {
+	-fx-font-family: "Roboto Regular";
 	-fx-min-width: 0;
 	-fx-pref-width: 0;
 	-fx-alignment: center;
