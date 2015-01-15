@@ -52,25 +52,25 @@ public class PreRegistrationPhaseController implements EventUser {
 
 	@FXML
 	private void initialize() {
-		this.preRegistrationDialog =
-				new PlayerPreRegistrationDialog().modalDialog();
+		this.preRegistrationDialog = new PlayerPreRegistrationDialog()
+				.modalDialog();
 
 		this.initPlayerTable();
 
 		// Bind the button's availability to the list selection
 		this.buttonRemovePlayer.disableProperty().bind(
 				this.tablePreRegisteredPlayers.getSelectionModel()
-				.selectedItemProperty().isNull());
+						.selectedItemProperty().isNull());
 		this.buttonEditPlayer.disableProperty().bind(
 				this.tablePreRegisteredPlayers.getSelectionModel()
-				.selectedItemProperty().isNull());
+						.selectedItemProperty().isNull());
 	}
 
 	private void initPlayerTable() {
 		this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
 		this.tableColumnPlayerFirstName
-		.setCellValueFactory(cellData -> cellData.getValue()
-				.firstNameProperty());
+				.setCellValueFactory(cellData -> cellData.getValue()
+						.firstNameProperty());
 		this.tablePreRegisteredPlayers.getColumns().add(
 				this.tableColumnPlayerFirstName);
 
@@ -88,8 +88,8 @@ public class PreRegistrationPhaseController implements EventUser {
 
 		this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
 		this.tableColumnPlayerMailAddress
-		.setCellValueFactory(cellData -> cellData.getValue()
-				.mailAdressProperty());
+				.setCellValueFactory(cellData -> cellData.getValue()
+						.mailAdressProperty());
 		this.tablePreRegisteredPlayers.getColumns().add(
 				this.tableColumnPlayerMailAddress);
 	}
@@ -118,10 +118,10 @@ public class PreRegistrationPhaseController implements EventUser {
 								player.getFirstName(), newValue)
 								|| SearchUtilities.fuzzyMatches(
 										player.getLastName(), newValue)
-										|| SearchUtilities.fuzzyMatches(
-												player.getNickName(), newValue)
-												|| SearchUtilities.fuzzyMatches(
-														player.getMailAddress(), newValue);
+								|| SearchUtilities.fuzzyMatches(
+										player.getNickName(), newValue)
+								|| SearchUtilities.fuzzyMatches(
+										player.getMailAddress(), newValue);
 					});
 				});
 
@@ -151,22 +151,25 @@ public class PreRegistrationPhaseController implements EventUser {
 		log.fine("Add Player Button clicked");
 		this.checkEventLoaded();
 		this.preRegistrationDialog
-		.properties(new Player())
-		.properties(this.loadedEvent)
-		.onResult((result, returnValue) -> {
-			if (result == DialogResult.OK && returnValue != null) {
-				this.loadedEvent.getRegisteredPlayers().add(
-						returnValue);
-				returnValue.setId(String
-						.valueOf(this.loadedEvent
-								.getRegisteredPlayers().size()));
-			}
-		}).show();
+				.properties(new Player())
+				.properties(this.loadedEvent)
+				.onResult(
+						(result, returnValue) -> {
+							if (result == DialogResult.OK
+									&& returnValue != null) {
+								this.loadedEvent.getRegisteredPlayers().add(
+										returnValue);
+								returnValue.setId(String
+										.valueOf(this.loadedEvent
+												.getRegisteredPlayers().size()));
+							}
+						}).show();
 	}
 
 	@FXML
 	private void onButtonRemovePlayerClicked(ActionEvent event) {
-		// TODO: no-one should be able to remove a player that has already played in a tournament
+		// TODO: no-one should be able to remove a player that has already
+		// played in a tournament
 
 		log.fine("Remove Player Button clicked");
 		this.checkEventLoaded();
@@ -175,10 +178,10 @@ public class PreRegistrationPhaseController implements EventUser {
 				.getSelectionModel().getSelectedItem();
 		if (selectedPlayer == null) {
 			Dialogs.create()
-			.owner(EntryPoint.getPrimaryStage())
-			.title("Fehler")
-			.message(
-					"Bitte wählen Sie einen Spieler aus der Liste aus.")
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Fehler")
+					.message(
+							"Bitte wählen Sie einen Spieler aus der Liste aus.")
 					.showError();
 		} else {
 			Action response = Dialogs
@@ -189,7 +192,8 @@ public class PreRegistrationPhaseController implements EventUser {
 							"Wollen Sie den Spieler \""
 									+ selectedPlayer.getFirstName() + " "
 									+ selectedPlayer.getLastName()
-									+ "\" wirklich löschen?").showConfirm();
+									+ "\" wirklich löschen?")
+					.actions(Dialog.ACTION_YES, Dialog.ACTION_NO).showConfirm();
 
 			if (response == Dialog.ACTION_YES) {
 				this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
@@ -206,23 +210,25 @@ public class PreRegistrationPhaseController implements EventUser {
 				.getSelectionModel().getSelectedItem();
 		if (selectedPlayer == null) {
 			Dialogs.create()
-			.owner(EntryPoint.getPrimaryStage())
-			.title("Fehler")
-			.message(
-					"Bitte wählen Sie einen Spieler aus der Liste aus.")
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Fehler")
+					.message(
+							"Bitte wählen Sie einen Spieler aus der Liste aus.")
 					.showError();
 		} else {
 			this.preRegistrationDialog
-			.properties(selectedPlayer)
-			.properties(this.loadedEvent)
-			.onResult((result, returnValue) -> {
-				if (result == DialogResult.OK && returnValue != null) {
-					this.loadedEvent.getRegisteredPlayers()
-					.remove(selectedPlayer);
-					this.loadedEvent.getRegisteredPlayers()
-					.add(returnValue);
-				}
-			}).show();
+					.properties(selectedPlayer)
+					.properties(this.loadedEvent)
+					.onResult(
+							(result, returnValue) -> {
+								if (result == DialogResult.OK
+										&& returnValue != null) {
+									this.loadedEvent.getRegisteredPlayers()
+											.remove(selectedPlayer);
+									this.loadedEvent.getRegisteredPlayers()
+											.add(returnValue);
+								}
+							}).show();
 		}
 	}
 
