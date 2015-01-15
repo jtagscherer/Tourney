@@ -65,7 +65,6 @@ public class EventSetupPhaseController implements EventUser {
 		this.buttonRemoveTournament.disableProperty().bind(
 				this.tableTournaments.getSelectionModel()
 				.selectedItemProperty().isNull());
-
 	}
 
 	private void initTournamentTable() {
@@ -85,6 +84,8 @@ public class EventSetupPhaseController implements EventUser {
 		}
 		MainWindow.getInstance().getEventPhaseViewController()
 		.setActiveUndoManager(this.undoManager);
+		
+		this.tableTournaments.getSelectionModel().clearSelection();
 
 		this.loadedEvent = event;
 

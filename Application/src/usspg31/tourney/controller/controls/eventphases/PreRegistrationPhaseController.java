@@ -100,6 +100,8 @@ public class PreRegistrationPhaseController implements EventUser {
 		if (this.loadedEvent != null) {
 			this.unloadEvent();
 		}
+		
+		this.tablePreRegisteredPlayers.getSelectionModel().clearSelection();
 
 		this.loadedEvent = event;
 
