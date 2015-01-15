@@ -178,6 +178,8 @@ IModalDialogProvider<Object, Player> {
 	}
 
 	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
+		// TODO: it should be impossible to remove a player from a tournament he alredy played in
+
 		Tournament selectedTournament = this.tableTournaments
 				.getSelectionModel().getSelectedItem();
 
