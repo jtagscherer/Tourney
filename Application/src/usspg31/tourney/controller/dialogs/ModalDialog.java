@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,20 +16,36 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.layout.RelativityPane;
 
 public final class ModalDialog<P, R> extends StackPane {
 
 	private final static Logger log = Logger.getLogger(ModalDialog.class.getName());
 
-	private @FXML StackPane mainWindowRootContainer;
+	@FXML private StackPane mainWindowRootContainer;
 
-	private @FXML Label labelTitle;
-	private @FXML StackPane contentContainer;
-	private @FXML HBox dialogButtonContainer;
+	@FXML private VBox dialogRoot;
+	@FXML private RelativityPane dialogBackground;
+
+	@FXML private Label labelTitle;
+	@FXML private StackPane contentContainer;
+	@FXML private HBox dialogButtonContainer;
 
 	private DialogContent<P, R> dialogContent;
 	private DialogResultListener<R> dialogResultListener;
+
+	private Timeline fadeInTransition;
+	private Timeline fadeOutTransition;
+
+	private static final double backgroundBlurAmount = 10;
+	private static final double scaleInFrom = .7;
+	private static final double scaleOutTo = 1.3;
+	private static final Interpolator fadeInterpolator = Interpolator.SPLINE(.4, 0, 0, 1);
+	private GaussianBlur backgroundBlur;
+	private static final Duration transitionDuration = Duration.millis(300);
 
 	public ModalDialog(DialogContent<P, R> dialogContent) {
 		this.dialogContent = dialogContent;
@@ -48,7 +68,33 @@ public final class ModalDialog<P, R> extends StackPane {
 	}
 
 	@FXML private void initialize() {
-		this.mainWindowRootContainer.setEffect(new GaussianBlur(10));
+		this.backgroundBlur = new GaussianBlur();
+
+		this.fadeInTransition = new Timeline(
+				new KeyFrame(Duration.ZERO,
+						new KeyValue(this.backgroundBlur.radiusProperty(), 0.0),
+						new KeyValue(this.dialogRoot.scaleXProperty(), scaleInFrom),
+						new KeyValue(this.dialogRoot.scaleYProperty(), scaleInFrom),
+						new KeyValue(this.dialogBackground.opacityProperty(), 0.0)),
+						new KeyFrame(transitionDuration,
+								new KeyValue(this.backgroundBlur.radiusProperty(), backgroundBlurAmount),
+								new KeyValue(this.dialogRoot.scaleXProperty(), 1.0, fadeInterpolator),
+								new KeyValue(this.dialogRoot.scaleYProperty(), 1.0, fadeInterpolator),
+								new KeyValue(this.dialogBackground.opacityProperty(), 1.0, fadeInterpolator)));
+
+		this.fadeOutTransition = new Timeline(
+				new KeyFrame(Duration.ZERO,
+						new KeyValue(this.backgroundBlur.radiusProperty(), backgroundBlurAmount),
+						new KeyValue(this.dialogRoot.scaleXProperty(), 1.0),
+						new KeyValue(this.dialogRoot.scaleYProperty(), 1.0),
+						new KeyValue(this.dialogBackground.opacityProperty(), 1.0)),
+						new KeyFrame(transitionDuration,
+								new KeyValue(this.backgroundBlur.radiusProperty(), 0.0),
+								new KeyValue(this.dialogRoot.scaleXProperty(), scaleOutTo, fadeInterpolator),
+								new KeyValue(this.dialogRoot.scaleYProperty(), scaleOutTo, fadeInterpolator),
+								new KeyValue(this.dialogBackground.opacityProperty(), 0.0, fadeInterpolator)));
+
+		this.mainWindowRootContainer.setEffect(this.backgroundBlur);
 	}
 
 	public ModalDialog<P, R> title(String title) {
@@ -94,10 +140,17 @@ public final class ModalDialog<P, R> extends StackPane {
 	}
 
 	public void show() {
+		long time = System.currentTimeMillis();
+
 		Parent mainWindowRoot = EntryPoint.getPrimaryStage().getScene().getRoot();
 
 		EntryPoint.getPrimaryStage().getScene().setRoot(this);
 		this.mainWindowRootContainer.getChildren().add(mainWindowRoot);
+
+		log.finer("Showing dialog for " + this.dialogContent.getClass().getSimpleName()
+				+ " (" + (System.currentTimeMillis() - time) + "ms)");
+
+		this.fadeInTransition.play();
 	}
 
 	public void exitWith(DialogResult result) {
@@ -108,9 +161,12 @@ public final class ModalDialog<P, R> extends StackPane {
 	}
 
 	private void hide() {
-		Parent mainWindowRoot = (Parent) this.mainWindowRootContainer.getChildren().get(0);
+		this.fadeOutTransition.setOnFinished(event -> {
+			Parent mainWindowRoot = (Parent) this.mainWindowRootContainer.getChildren().get(0);
 
-		this.mainWindowRootContainer.getChildren().clear();
-		EntryPoint.getPrimaryStage().getScene().setRoot(mainWindowRoot);
+			this.mainWindowRootContainer.getChildren().clear();
+			EntryPoint.getPrimaryStage().getScene().setRoot(mainWindowRoot);
+		});
+		this.fadeOutTransition.play();
 	}
 }
