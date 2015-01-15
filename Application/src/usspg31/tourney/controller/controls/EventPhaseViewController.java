@@ -310,7 +310,27 @@ public class EventPhaseViewController implements EventUser {
 	@FXML
 	private void onButtonCloseClicked(ActionEvent event) {
 		log.fine("Close Button was clicked");
-		this.onButtonSaveClicked(null);
+
+		if (this.activeUndoManager.undoAvailable()) {
+			Action response = Dialogs
+					.create()
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Warnung")
+					.message(
+							"Es sind ungesicherte Änderungen vorhanden.\n"
+									+ "Möchten Sie diese vor dem Beenden speichern?")
+					.actions(Dialog.ACTION_YES, Dialog.ACTION_NO,
+							Dialog.ACTION_CANCEL).showWarning();
+
+			if (response == Dialog.ACTION_CANCEL) {
+				return;
+			} else if (response == Dialog.ACTION_YES) {
+				Action saveResponse = this.saveEvent();
+				if (saveResponse != Dialog.ACTION_OK) {
+					return;
+				}
+			}
+		}
 
 		this.unloadEvent();
 		MainWindow.getInstance().slideDown(
