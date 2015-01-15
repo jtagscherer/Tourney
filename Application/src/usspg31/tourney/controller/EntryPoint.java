@@ -13,7 +13,7 @@ public class EntryPoint extends Application {
 
 	private static Stage primaryStage;
 
-	public static void main(String[] args) throws ClassNotFoundException {
+	public static void main(String[] args) {
 		log.info("Starting Application");
 		log.info("Running JavaFX Version " + System.getProperty("javafx.runtime.version"));
 
