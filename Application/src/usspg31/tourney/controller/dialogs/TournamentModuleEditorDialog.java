@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
+import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.TournamentModule;
@@ -68,7 +69,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 	}
 
 	@FXML private void initialize() {
-
+		this.initTournamentPhaseTable();
+		this.initPossibleScoresTable();
 	}
 
 	private void initTournamentPhaseTable() {
@@ -110,11 +112,10 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 				cellData -> cellData.getValue().getPriority().asString());
 		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
 
-		// TODO: somehow put the map in a string
-		//		this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
-		//		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
-		//				cellData -> cellData.getValue().getScores().);
-		//		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresPriority);
+		this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
+		this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
+				cellData -> new SimpleStringProperty(""));
+		this.tablePossibleScores.getColumns().add(this.tableColumnPossibleScoresScores);
 	}
 
 	@Override
@@ -177,6 +178,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 				selectedPhase.isNull());
 
 		// TODO: add bindings for the possible score table's buttons (see TournamentDialog#loadTournament())
+		this.tableColumnPossibleScoresScores.setCellValueFactory(cellValue ->
+		new MapToStringBinding<>(cellValue.getValue().getScores()).getStringProperty());
 
 		log.fine("Tournament Module loaded");
 	}
