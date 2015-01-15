@@ -30,11 +30,11 @@ import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 
 @SuppressWarnings("deprecation")
-public class PlayerPreRegistrationDialogController extends VBox implements
+public class PlayerPreRegistrationDialog extends VBox implements
 IModalDialogProvider<Object, Player> {
 
 	private static final Logger log = Logger
-			.getLogger(PlayerPreRegistrationDialogController.class.getName());
+			.getLogger(PlayerPreRegistrationDialog.class.getName());
 
 	@FXML private TextField textFieldFirstName;
 	@FXML private TextField textFieldLastName;
@@ -53,7 +53,7 @@ IModalDialogProvider<Object, Player> {
 	private Player loadedPlayer;
 	private Event loadedEvent;
 
-	public PlayerPreRegistrationDialogController() {
+	public PlayerPreRegistrationDialog() {
 		try {
 			FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
 					"/ui/fxml/dialogs/player-pre-registration-dialog.fxml"));

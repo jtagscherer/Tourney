@@ -22,7 +22,7 @@ import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialogController;
+import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
@@ -58,7 +58,7 @@ public class RegistrationPhaseController implements EventUser {
 	private Event loadedEvent;
 
 	@FXML private void initialize() {
-		this.registrationDialog = new PlayerPreRegistrationDialogController().modalDialog();
+		this.registrationDialog = new PlayerPreRegistrationDialog().modalDialog();
 	}
 
 	@Override
