@@ -26,7 +26,7 @@ import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentRound;
 
-public class PairingView implements TournamentUser {
+public class PairingView extends VBox implements TournamentUser {
 
 	private static final Logger log = Logger.getLogger(PairingView.class.getName());
 
@@ -50,19 +50,18 @@ public class PairingView implements TournamentUser {
 		} catch (IOException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
-		this.selectedRound = new SimpleIntegerProperty(-1);
 	}
 
 	@FXML private void initialize() {
+		this.selectedRound = new SimpleIntegerProperty(-1);
 		this.selectedRound.addListener((ov, o, n) -> {
 			this.selectedPairing.set(null);
-			if (n.intValue() < this.loadedTournament.getRounds().size()) {
-				for (int i = 0; i < this.loadedTournament.getRounds().size(); i++) {
-					Pairing p = this.loadedTournament.getRounds().get(n.intValue()).getPairings().get(i);
-					this.pairingContainer.getChildren().add(this.createPairingNode(this.loadedTournament, p, i));
-				}
-			} else {
-				this.pairingContainer.getChildren().clear();
+			TournamentRound round = this.loadedTournament.getRounds().get(n.intValue());
+			this.pairingContainer.getChildren().clear();
+			for (int i = 0; i < round.getPairings().size(); i++) {
+				this.pairingContainer.getChildren().add(
+						this.createPairingNode(this.loadedTournament,
+								round.getPairings().get(i), i));
 			}
 		});
 	}

@@ -73,9 +73,7 @@ public class EventPhaseViewController implements EventUser {
 	private Node registrationPhase;
 	private RegistrationPhaseController registrationPhaseController;
 
-	@SuppressWarnings("unused") // TODO: remove
 	private Node tournamentExecutionPhase;
-	@SuppressWarnings("unused") // TODO: remove
 	private TournamentExecutionPhaseController tournamentExecutionPhaseController;
 
 	// Animations
@@ -99,8 +97,12 @@ public class EventPhaseViewController implements EventUser {
 		this.initBreadcrumbs();
 
 		// add all event phase views to the event phase container
-		this.eventPhaseContainer.getChildren().addAll(this.eventSetupPhase,
-				this.preRegistrationPhase, this.registrationPhase);
+		this.eventPhaseContainer.getChildren().addAll(
+				this.eventSetupPhase,
+				this.preRegistrationPhase,
+				this.registrationPhase,
+				this.tournamentExecutionPhase
+				);
 	}
 
 	private void initBreadcrumbs() {
@@ -108,34 +110,28 @@ public class EventPhaseViewController implements EventUser {
 
 	private void loadSubViews() throws IOException {
 		FXMLLoader eventSetupPhaseLoader = new FXMLLoader(this.getClass()
-				.getResource(
-						"/ui/fxml/controls/eventphases/event-setup-phase.fxml"));
+				.getResource("/ui/fxml/controls/eventphases/event-setup-phase.fxml"));
 		this.eventSetupPhase = eventSetupPhaseLoader.load();
 		this.eventSetupPhaseController = eventSetupPhaseLoader.getController();
 		this.eventSetupPhase.setVisible(true);
 
-		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(
-				this.getClass()
-				.getResource(
-						"/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
+		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(this.getClass()
+				.getResource("/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
 		this.preRegistrationPhase = preRegistrationPhaseLoader.load();
 		this.preRegistrationPhaseController = preRegistrationPhaseLoader.getController();
 		this.preRegistrationPhase.setVisible(true);
 
-		FXMLLoader registrationPhaseLoader = new FXMLLoader(
-				this.getClass()
-				.getResource(
-						"/ui/fxml/controls/eventphases/registration-phase.fxml"));
+		FXMLLoader registrationPhaseLoader = new FXMLLoader(this.getClass()
+				.getResource("/ui/fxml/controls/eventphases/registration-phase.fxml"));
 		this.registrationPhase = registrationPhaseLoader.load();
 		this.registrationPhaseController = registrationPhaseLoader.getController();
 		this.registrationPhase.setVisible(true);
 
-		// FXMLLoader tournamentExecutionPhaseLoader = new
-		// FXMLLoader(this.getClass()
-		// .getResource("/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
-		// this.tournamentExecutionPhase =
-		// tournamentExecutionPhaseLoader.load();
-		// this.tournamentExecutionPhase.setVisible(true);
+		FXMLLoader tournamentExecutionPhaseLoader = new FXMLLoader(this.getClass()
+				.getResource("/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
+		this.tournamentExecutionPhase = tournamentExecutionPhaseLoader.load();
+		this.tournamentExecutionPhaseController = tournamentExecutionPhaseLoader.getController();
+		this.tournamentExecutionPhase.setVisible(true);
 
 		// bind the phase view's translateX property to the phasePosition
 		// property, so the pages scroll all together, when the phasePosition
@@ -165,6 +161,13 @@ public class EventPhaseViewController implements EventUser {
 						this.eventPhaseContainer.widthProperty()
 						.multiply(this.phasePosition)));
 
+		this.tournamentExecutionPhase.translateXProperty().bind(
+				this.eventPhaseContainer
+				.widthProperty()
+				.multiply(3)
+				.subtract(
+						this.eventPhaseContainer.widthProperty()
+						.multiply(this.phasePosition)));
 	}
 
 	private void slideToPhase(int phaseNumber) {
