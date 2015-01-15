@@ -1,18 +1,14 @@
 package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.controls.UndoTextField;
+import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
@@ -29,34 +26,6 @@ import usspg31.tourney.model.TournamentModule;
 public class TournamentDialog extends VBox implements IModalDialogProvider<Tournament, Tournament> {
 
 	private static final Logger log = Logger.getLogger(TournamentDialog.class.getName());
-
-	private static class MapToStringBinding<K, V> extends StringBinding {
-		private final ObservableMap<K, V> map;
-
-		public MapToStringBinding(ObservableMap<K, V> map) {
-			this.map = map;
-			this.bind(this.map);
-		}
-
-		public StringProperty getStringProperty() {
-			SimpleStringProperty sp = new SimpleStringProperty();
-			sp.bind(this);
-			return sp;
-		}
-
-		@Override
-		protected String computeValue() {
-			StringBuilder ret = new StringBuilder();
-			int i = 0;
-			for (Entry<K, V> entry : this.map.entrySet()) {
-				ret.append(entry.getKey() + ": " + entry.getValue());
-				if (++i != this.map.size()) {
-					ret.append(", ");
-				}
-			}
-			return ret.toString();
-		}
-	}
 
 	@FXML private UndoTextField textFieldTournamentTitle;
 
