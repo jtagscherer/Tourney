@@ -23,6 +23,7 @@ import org.controlsfx.dialog.Dialogs;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.DialogResult;
+import usspg31.tourney.controller.dialogs.ModalDialog;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialogController;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
@@ -52,7 +53,13 @@ public class RegistrationPhaseController implements EventUser {
 	private TableColumn<Player, Boolean> tableColumnPlayerPayed;
 	private TableColumn<Player, String> tableColumnPlayerStartNumber;
 
+	private ModalDialog<Object, Player> registrationDialog;
+
 	private Event loadedEvent;
+
+	@FXML private void initialize() {
+		this.registrationDialog = new PlayerPreRegistrationDialogController().modalDialog();
+	}
 
 	@Override
 	public void loadEvent(Event event) {
@@ -190,8 +197,7 @@ public class RegistrationPhaseController implements EventUser {
 	private void onButtonAddPlayerClicked(ActionEvent event) {
 		log.fine("Add Player Button clicked");
 		this.checkEventLoaded();
-		new PlayerPreRegistrationDialogController()
-		.modalDialog()
+		this.registrationDialog
 		.properties(new Player())
 		.properties(this.loadedEvent)
 		.onResult(
@@ -250,8 +256,7 @@ public class RegistrationPhaseController implements EventUser {
 					"Bitte wählen Sie einen Spieler aus der Liste aus.")
 					.showError();
 		} else {
-			new PlayerPreRegistrationDialogController()
-			.modalDialog()
+			this.registrationDialog
 			.properties(selectedPlayer)
 			.properties(this.loadedEvent)
 			.onResult(

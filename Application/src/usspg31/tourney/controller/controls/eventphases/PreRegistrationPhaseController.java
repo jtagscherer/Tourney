@@ -50,12 +50,11 @@ public class PreRegistrationPhaseController implements EventUser {
 
 	private ModalDialog<Object, Player> preRegistrationDialog;
 
-	public PreRegistrationPhaseController() {
-		this.preRegistrationDialog = new PlayerPreRegistrationDialogController().modalDialog();
-	}
-
 	@FXML
 	private void initialize() {
+		this.preRegistrationDialog =
+				new PlayerPreRegistrationDialogController().modalDialog();
+
 		this.initPlayerTable();
 
 		// Bind the button's availability to the list selection
@@ -154,21 +153,21 @@ public class PreRegistrationPhaseController implements EventUser {
 		this.preRegistrationDialog
 		.properties(new Player())
 		.properties(this.loadedEvent)
-		.onResult(
-				(result, returnValue) -> {
-					if (result == DialogResult.OK
-							&& returnValue != null) {
-						this.loadedEvent.getRegisteredPlayers().add(
-								returnValue);
-						returnValue.setId(String
-								.valueOf(this.loadedEvent
-										.getRegisteredPlayers().size()));
-					}
-				}).show();
+		.onResult((result, returnValue) -> {
+			if (result == DialogResult.OK && returnValue != null) {
+				this.loadedEvent.getRegisteredPlayers().add(
+						returnValue);
+				returnValue.setId(String
+						.valueOf(this.loadedEvent
+								.getRegisteredPlayers().size()));
+			}
+		}).show();
 	}
 
 	@FXML
 	private void onButtonRemovePlayerClicked(ActionEvent event) {
+		// TODO: no-one should be able to remove a player that has already played in a tournament
+
 		log.fine("Remove Player Button clicked");
 		this.checkEventLoaded();
 
@@ -216,16 +215,14 @@ public class PreRegistrationPhaseController implements EventUser {
 			this.preRegistrationDialog
 			.properties(selectedPlayer)
 			.properties(this.loadedEvent)
-			.onResult(
-					(result, returnValue) -> {
-						if (result == DialogResult.OK
-								&& returnValue != null) {
-							this.loadedEvent.getRegisteredPlayers()
-							.remove(selectedPlayer);
-							this.loadedEvent.getRegisteredPlayers()
-							.add(returnValue);
-						}
-					}).show();
+			.onResult((result, returnValue) -> {
+				if (result == DialogResult.OK && returnValue != null) {
+					this.loadedEvent.getRegisteredPlayers()
+					.remove(selectedPlayer);
+					this.loadedEvent.getRegisteredPlayers()
+					.add(returnValue);
+				}
+			}).show();
 		}
 	}
 
