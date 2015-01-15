@@ -18,6 +18,7 @@ import org.controlsfx.dialog.Dialogs;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.DialogResult;
+import usspg31.tourney.controller.dialogs.ModalDialog;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialogController;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
@@ -47,6 +48,12 @@ public class PreRegistrationPhaseController implements EventUser {
 
 	private Event loadedEvent;
 
+	private ModalDialog<Object, Player> preRegistrationDialog;
+
+	public PreRegistrationPhaseController() {
+		this.preRegistrationDialog = new PlayerPreRegistrationDialogController().modalDialog();
+	}
+
 	@FXML
 	private void initialize() {
 		this.initPlayerTable();
@@ -54,17 +61,17 @@ public class PreRegistrationPhaseController implements EventUser {
 		// Bind the button's availability to the list selection
 		this.buttonRemovePlayer.disableProperty().bind(
 				this.tablePreRegisteredPlayers.getSelectionModel()
-						.selectedItemProperty().isNull());
+				.selectedItemProperty().isNull());
 		this.buttonEditPlayer.disableProperty().bind(
 				this.tablePreRegisteredPlayers.getSelectionModel()
-						.selectedItemProperty().isNull());
+				.selectedItemProperty().isNull());
 	}
 
 	private void initPlayerTable() {
 		this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
 		this.tableColumnPlayerFirstName
-				.setCellValueFactory(cellData -> cellData.getValue()
-						.firstNameProperty());
+		.setCellValueFactory(cellData -> cellData.getValue()
+				.firstNameProperty());
 		this.tablePreRegisteredPlayers.getColumns().add(
 				this.tableColumnPlayerFirstName);
 
@@ -82,8 +89,8 @@ public class PreRegistrationPhaseController implements EventUser {
 
 		this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
 		this.tableColumnPlayerMailAddress
-				.setCellValueFactory(cellData -> cellData.getValue()
-						.mailAdressProperty());
+		.setCellValueFactory(cellData -> cellData.getValue()
+				.mailAdressProperty());
 		this.tablePreRegisteredPlayers.getColumns().add(
 				this.tableColumnPlayerMailAddress);
 	}
@@ -101,7 +108,7 @@ public class PreRegistrationPhaseController implements EventUser {
 		FilteredList<Player> filteredPlayerList = new FilteredList<>(
 				this.loadedEvent.getRegisteredPlayers(), p -> true);
 
-		textFieldPlayerSearch.textProperty().addListener(
+		this.textFieldPlayerSearch.textProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					filteredPlayerList.setPredicate(player -> {
 						if (newValue == null || newValue.isEmpty()) {
@@ -112,10 +119,10 @@ public class PreRegistrationPhaseController implements EventUser {
 								player.getFirstName(), newValue)
 								|| SearchUtilities.fuzzyMatches(
 										player.getLastName(), newValue)
-								|| SearchUtilities.fuzzyMatches(
-										player.getNickName(), newValue)
-								|| SearchUtilities.fuzzyMatches(
-										player.getMailAddress(), newValue);
+										|| SearchUtilities.fuzzyMatches(
+												player.getNickName(), newValue)
+												|| SearchUtilities.fuzzyMatches(
+														player.getMailAddress(), newValue);
 					});
 				});
 
@@ -144,21 +151,20 @@ public class PreRegistrationPhaseController implements EventUser {
 	private void onButtonAddPlayerClicked(ActionEvent event) {
 		log.fine("Add Player Button clicked");
 		this.checkEventLoaded();
-		new PlayerPreRegistrationDialogController()
-				.modalDialog()
-				.properties(new Player())
-				.properties(this.loadedEvent)
-				.onResult(
-						(result, returnValue) -> {
-							if (result == DialogResult.OK
-									&& returnValue != null) {
-								this.loadedEvent.getRegisteredPlayers().add(
-										returnValue);
-								returnValue.setId(String
-										.valueOf(this.loadedEvent
-												.getRegisteredPlayers().size()));
-							}
-						}).show();
+		this.preRegistrationDialog
+		.properties(new Player())
+		.properties(this.loadedEvent)
+		.onResult(
+				(result, returnValue) -> {
+					if (result == DialogResult.OK
+							&& returnValue != null) {
+						this.loadedEvent.getRegisteredPlayers().add(
+								returnValue);
+						returnValue.setId(String
+								.valueOf(this.loadedEvent
+										.getRegisteredPlayers().size()));
+					}
+				}).show();
 	}
 
 	@FXML
@@ -170,10 +176,10 @@ public class PreRegistrationPhaseController implements EventUser {
 				.getSelectionModel().getSelectedItem();
 		if (selectedPlayer == null) {
 			Dialogs.create()
-					.owner(EntryPoint.getPrimaryStage())
-					.title("Fehler")
-					.message(
-							"Bitte wählen Sie einen Spieler aus der Liste aus.")
+			.owner(EntryPoint.getPrimaryStage())
+			.title("Fehler")
+			.message(
+					"Bitte wählen Sie einen Spieler aus der Liste aus.")
 					.showError();
 		} else {
 			Action response = Dialogs
@@ -201,26 +207,25 @@ public class PreRegistrationPhaseController implements EventUser {
 				.getSelectionModel().getSelectedItem();
 		if (selectedPlayer == null) {
 			Dialogs.create()
-					.owner(EntryPoint.getPrimaryStage())
-					.title("Fehler")
-					.message(
-							"Bitte wählen Sie einen Spieler aus der Liste aus.")
+			.owner(EntryPoint.getPrimaryStage())
+			.title("Fehler")
+			.message(
+					"Bitte wählen Sie einen Spieler aus der Liste aus.")
 					.showError();
 		} else {
-			new PlayerPreRegistrationDialogController()
-					.modalDialog()
-					.properties(selectedPlayer)
-					.properties(this.loadedEvent)
-					.onResult(
-							(result, returnValue) -> {
-								if (result == DialogResult.OK
-										&& returnValue != null) {
-									this.loadedEvent.getRegisteredPlayers()
-											.remove(selectedPlayer);
-									this.loadedEvent.getRegisteredPlayers()
-											.add(returnValue);
-								}
-							}).show();
+			this.preRegistrationDialog
+			.properties(selectedPlayer)
+			.properties(this.loadedEvent)
+			.onResult(
+					(result, returnValue) -> {
+						if (result == DialogResult.OK
+								&& returnValue != null) {
+							this.loadedEvent.getRegisteredPlayers()
+							.remove(selectedPlayer);
+							this.loadedEvent.getRegisteredPlayers()
+							.add(returnValue);
+						}
+					}).show();
 		}
 	}
 
