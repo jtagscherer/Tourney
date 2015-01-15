@@ -42,7 +42,7 @@ public final class ModalDialog<P, R> extends StackPane {
 
 	private static final double backgroundBlurAmount = 10;
 	private static final double scaleInFrom = .7;
-	private static final double scaleOutTo = 1.3;
+	private static final double scaleOutTo = .7;
 	private static final Interpolator fadeInterpolator = Interpolator.SPLINE(.4, 0, 0, 1);
 	private GaussianBlur backgroundBlur;
 	private static final Duration transitionDuration = Duration.millis(300);
@@ -109,23 +109,28 @@ public final class ModalDialog<P, R> extends StackPane {
 			this.addDialogButton("Ja", DialogResult.YES);
 		}
 		if (dialogButtons.containsNo()) {
-			this.addDialogButton("Nein", DialogResult.NO);
+			this.addDialogButton("Nein", DialogResult.NO, !dialogButtons.containsCancel());
 		}
 		if (dialogButtons.containsOk()) {
 			this.addDialogButton("Ok", DialogResult.OK);
 		}
 		if (dialogButtons.containsCancel()) {
-			this.addDialogButton("Abbrechen", DialogResult.CANCEL);
+			this.addDialogButton("Abbrechen", DialogResult.CANCEL, true);
 		}
 		return this;
 	}
 
 	private void addDialogButton(String text, DialogResult result) {
+		this.addDialogButton(text, result, false);
+	}
+
+	private void addDialogButton(String text, DialogResult result, boolean isCancel) {
 		Button button = new Button(text);
 		button.getStyleClass().add("dialog-button");
 		button.setOnAction(event -> {
 			this.exitWith(result);
 		});
+		button.setCancelButton(isCancel);
 		this.dialogButtonContainer.getChildren().add(button);
 	}
 
@@ -143,6 +148,7 @@ public final class ModalDialog<P, R> extends StackPane {
 		long time = System.currentTimeMillis();
 
 		Parent mainWindowRoot = EntryPoint.getPrimaryStage().getScene().getRoot();
+		mainWindowRoot.setDisable(true);
 
 		EntryPoint.getPrimaryStage().getScene().setRoot(this);
 		this.mainWindowRootContainer.getChildren().add(mainWindowRoot);
@@ -161,6 +167,8 @@ public final class ModalDialog<P, R> extends StackPane {
 	}
 
 	private void hide() {
+		((Parent) this.mainWindowRootContainer.getChildren().get(0)).setDisable(false);
+
 		this.fadeOutTransition.setOnFinished(event -> {
 			Parent mainWindowRoot = (Parent) this.mainWindowRootContainer.getChildren().get(0);
 
