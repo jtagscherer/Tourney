@@ -27,7 +27,7 @@ import usspg31.tourney.model.Tournament;
 
 @SuppressWarnings("deprecation")
 public class PlayerPreRegistrationDialogController extends VBox implements
-		IModalDialogProvider<Object, Player> {
+IModalDialogProvider<Object, Player> {
 
 	private static final Logger log = Logger
 			.getLogger(PlayerPreRegistrationDialogController.class.getName());
@@ -68,7 +68,7 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 		// Bind the remove button's availability to the selected item
 		this.buttonRemoveTournament.disableProperty().bind(
 				this.tableTournaments.getSelectionModel()
-						.selectedItemProperty().isNull());
+				.selectedItemProperty().isNull());
 	}
 
 	private void initTournamentTable() {
@@ -92,31 +92,10 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 	@Override
 	public void setProperties(Object properties) {
 		if (properties instanceof Player) {
-			this.loadedPlayer = (Player) properties;
-			// Clone the loaded player
-			this.editedPlayer = new Player();
-			this.editedPlayer.setFirstName(this.loadedPlayer.getFirstName());
-			this.editedPlayer.setLastName(this.loadedPlayer.getId());
-			this.editedPlayer.setId(this.loadedPlayer.getId());
-			this.editedPlayer.setMailAdress(this.loadedPlayer.getMailAddress());
-			this.editedPlayer.setNickName(this.loadedPlayer.getNickName());
-			this.editedPlayer.setPayed(this.loadedPlayer.getPayed());
-			this.editedPlayer.setDisqualified(this.loadedPlayer
-					.getDisqualified());
-			this.editedPlayer.setStartingNumber(this.loadedPlayer
-					.getStartingNumber());
-
-			// Bind dialog controls to the copied player
-			this.textFieldFirstName.textProperty().bindBidirectional(
-					this.editedPlayer.firstNameProperty());
-			this.textFieldLastName.textProperty().bindBidirectional(
-					this.editedPlayer.lastNameProperty());
-			this.textFieldEmail.textProperty().bindBidirectional(
-					this.editedPlayer.mailAdressProperty());
-			this.textFieldNickname.textProperty().bindBidirectional(
-					this.editedPlayer.nickNameProperty());
-			this.checkBoxPayed.selectedProperty().bindBidirectional(
-					this.editedPlayer.payedProperty());
+			if (this.loadedPlayer != null) {
+				this.unloadPlayer();
+			}
+			this.loadPlayer((Player) ((Player) properties).clone());
 		} else if (properties instanceof Event) {
 			this.loadedEvent = (Event) properties;
 		}
@@ -127,6 +106,36 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 			// create table bindings
 			this.tableTournaments.setItems(this.registeredTournaments);
 		}
+	}
+
+	private void loadPlayer(Player player) {
+		this.loadedPlayer = player;
+
+		this.textFieldFirstName.textProperty().bindBidirectional(
+				this.editedPlayer.firstNameProperty());
+		this.textFieldLastName.textProperty().bindBidirectional(
+				this.editedPlayer.lastNameProperty());
+		this.textFieldEmail.textProperty().bindBidirectional(
+				this.editedPlayer.mailAdressProperty());
+		this.textFieldNickname.textProperty().bindBidirectional(
+				this.editedPlayer.nickNameProperty());
+		this.checkBoxPayed.selectedProperty().bindBidirectional(
+				this.editedPlayer.payedProperty());
+	}
+
+	private void unloadPlayer() {
+		this.textFieldFirstName.textProperty().unbindBidirectional(
+				this.editedPlayer.firstNameProperty());
+		this.textFieldLastName.textProperty().unbindBidirectional(
+				this.editedPlayer.lastNameProperty());
+		this.textFieldEmail.textProperty().unbindBidirectional(
+				this.editedPlayer.mailAdressProperty());
+		this.textFieldNickname.textProperty().unbindBidirectional(
+				this.editedPlayer.nickNameProperty());
+		this.checkBoxPayed.selectedProperty().unbindBidirectional(
+				this.editedPlayer.payedProperty());
+
+		this.loadedPlayer = null;
 	}
 
 	@Override
@@ -140,8 +149,7 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 				DialogButtons.OK_CANCEL);
 	}
 
-	@FXML
-	private void onButtonAddTournamentClicked(ActionEvent event) {
+	@FXML private void onButtonAddTournamentClicked(ActionEvent event) {
 		ObservableList<Tournament> unregisteredTournaments = FXCollections
 				.observableArrayList();
 		for (Tournament tournament : this.loadedEvent.getTournaments()) {
@@ -157,48 +165,40 @@ public class PlayerPreRegistrationDialogController extends VBox implements
 		}
 
 		new TournamentSelectionDialog()
-				.modalDialog()
-				.properties(unregisteredTournaments)
-				.onResult(
-						(result, returnValue) -> {
-							if (result == DialogResult.OK
-									&& returnValue != null) {
-								returnValue.getRegisteredPlayers().add(
-										this.editedPlayer);
-								this.updateTournamentList();
-							}
-						}).show();
+		.modalDialog()
+		.properties(unregisteredTournaments)
+		.onResult(
+				(result, returnValue) -> {
+					if (result == DialogResult.OK
+							&& returnValue != null) {
+						returnValue.getRegisteredPlayers().add(
+								this.editedPlayer);
+						this.updateTournamentList();
+					}
+				}).show();
 	}
 
-	@FXML
-	private void onButtonRemoveTournamentClicked(ActionEvent event) {
+	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
 		Tournament selectedTournament = this.tableTournaments
 				.getSelectionModel().getSelectedItem();
-		if (selectedTournament == null) {
-			Dialogs.create()
-					.owner(EntryPoint.getPrimaryStage())
-					.title("Fehler")
-					.message("Bitte wählen Sie eine Turnier aus der Liste aus.")
-					.showError();
-		} else {
-			Action response = Dialogs
-					.create()
-					.owner(EntryPoint.getPrimaryStage())
-					.title("Turnier löschen")
-					.message(
-							"Wollen Sie den Spieler \""
-									+ this.loadedPlayer.getFirstName() + " "
-									+ this.loadedPlayer.getLastName()
-									+ "\" wirklich vom Turnier \""
-									+ selectedTournament.getName()
-									+ "\" abmelden?").showConfirm();
 
-			if (response == Dialog.ACTION_YES) {
-				for (Player player : selectedTournament.getRegisteredPlayers()) {
-					if (player.getId().equals(this.loadedPlayer.getId())) {
-						selectedTournament.getRegisteredPlayers()
-								.remove(player);
-					}
+		Action response = Dialogs
+				.create()
+				.owner(EntryPoint.getPrimaryStage())
+				.title("Turnier löschen")
+				.message(
+						"Wollen Sie den Spieler \""
+								+ this.loadedPlayer.getFirstName() + " "
+								+ this.loadedPlayer.getLastName()
+								+ "\" wirklich vom Turnier \""
+								+ selectedTournament.getName()
+								+ "\" abmelden?").showConfirm();
+
+		if (response == Dialog.ACTION_YES) {
+			for (Player player : selectedTournament.getRegisteredPlayers()) {
+				if (player.getId().equals(this.loadedPlayer.getId())) {
+					selectedTournament.getRegisteredPlayers()
+					.remove(player);
 				}
 			}
 		}
