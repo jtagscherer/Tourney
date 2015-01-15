@@ -55,6 +55,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 	@FXML private Button buttonRemoveScore;
 	@FXML private Button buttonEditScore;
 
+	private ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+
 	private TournamentModule loadedModule;
 
 	public TournamentModuleEditorDialog() {
@@ -69,6 +71,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 	}
 
 	@FXML private void initialize() {
+		this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
+
 		this.initTournamentPhaseTable();
 		this.initPossibleScoresTable();
 	}
@@ -220,7 +224,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 	@FXML private void onButtonAddPhaseClicked(ActionEvent event) {
 		// TODO: update the phase numbers correctly
 		log.fine("Add Tournament Phase Button was clicked");
-		new TournamentPhaseDialog().modalDialog()
+		this.tournamentPhaseDialog
 		.properties(new GamePhase())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
@@ -237,7 +241,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements IModalDia
 
 	@FXML private void onButtonEditPhaseClicked(ActionEvent event) {
 		log.fine("Edit Tournament Phase Button was clicked");
-		new TournamentPhaseDialog().modalDialog()
+		this.tournamentPhaseDialog
 		.properties(this.getSelectedPhase())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
