@@ -110,16 +110,16 @@ IModalDialogProvider<Object, Player> {
 	private void loadPlayer(Player player) {
 		this.loadedPlayer = player;
 
-		this.textFieldFirstName.textProperty().bindBidirectional(
-				this.loadedPlayer.firstNameProperty());
-		this.textFieldLastName.textProperty().bindBidirectional(
-				this.loadedPlayer.lastNameProperty());
-		this.textFieldEmail.textProperty().bindBidirectional(
-				this.loadedPlayer.mailAdressProperty());
-		this.textFieldNickname.textProperty().bindBidirectional(
-				this.loadedPlayer.nickNameProperty());
-		this.checkBoxPayed.selectedProperty().bindBidirectional(
-				this.loadedPlayer.payedProperty());
+		this.loadedPlayer.firstNameProperty().bindBidirectional(
+				this.textFieldFirstName.textProperty());
+		this.loadedPlayer.lastNameProperty().bindBidirectional(
+				this.textFieldLastName.textProperty());
+		this.loadedPlayer.mailAdressProperty().bindBidirectional(
+				this.textFieldEmail.textProperty());
+		this.loadedPlayer.nickNameProperty().bindBidirectional(
+				this.textFieldNickname.textProperty());
+		this.loadedPlayer.payedProperty().bindBidirectional(
+				this.checkBoxPayed.selectedProperty());
 	}
 
 	private void unloadPlayer() {
