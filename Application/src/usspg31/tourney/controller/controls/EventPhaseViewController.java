@@ -16,8 +16,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
@@ -74,6 +76,8 @@ public class EventPhaseViewController implements EventUser {
 	@FXML
 	private Button breadcrumbTournamentExecution;
 
+	private InnerShadow highlightedBreadcrumbEffect;
+
 	// Event phases
 	@FXML
 	private StackPane eventPhaseContainer;
@@ -118,6 +122,9 @@ public class EventPhaseViewController implements EventUser {
 	}
 
 	private void initBreadcrumbs() {
+		this.highlightedBreadcrumbEffect = new InnerShadow();
+		this.highlightedBreadcrumbEffect.setColor(Color.rgb(130, 130, 130));
+		this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
 	}
 
 	private void loadSubViews() throws IOException {
@@ -382,6 +389,11 @@ public class EventPhaseViewController implements EventUser {
 		log.fine("Event Setup Breadcrumb was clicked");
 		this.slideToPhase(0);
 		this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
+
+		this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
+		this.breadcrumbPreRegistration.setEffect(null);
+		this.breadcrumbRegistration.setEffect(null);
+		this.breadcrumbTournamentExecution.setEffect(null);
 	}
 
 	@FXML
@@ -389,6 +401,12 @@ public class EventPhaseViewController implements EventUser {
 		log.fine("Pre Registration Breadcrumb was clicked");
 		this.slideToPhase(1);
 		this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
+
+		this.breadcrumbEventSetup.setEffect(null);
+		this.breadcrumbPreRegistration
+				.setEffect(this.highlightedBreadcrumbEffect);
+		this.breadcrumbRegistration.setEffect(null);
+		this.breadcrumbTournamentExecution.setEffect(null);
 	}
 
 	@FXML
@@ -396,6 +414,11 @@ public class EventPhaseViewController implements EventUser {
 		log.fine("Registration Breadcrumb was clicked");
 		this.slideToPhase(2);
 		this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
+
+		this.breadcrumbEventSetup.setEffect(null);
+		this.breadcrumbPreRegistration.setEffect(null);
+		this.breadcrumbRegistration.setEffect(this.highlightedBreadcrumbEffect);
+		this.breadcrumbTournamentExecution.setEffect(null);
 	}
 
 	@FXML
@@ -403,5 +426,11 @@ public class EventPhaseViewController implements EventUser {
 		log.fine("Tournament Execution Breadcrumb was clicked");
 		this.slideToPhase(3);
 		this.loadedEvent.setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
+
+		this.breadcrumbEventSetup.setEffect(null);
+		this.breadcrumbPreRegistration.setEffect(null);
+		this.breadcrumbRegistration.setEffect(null);
+		this.breadcrumbTournamentExecution
+				.setEffect(this.highlightedBreadcrumbEffect);
 	}
 }
