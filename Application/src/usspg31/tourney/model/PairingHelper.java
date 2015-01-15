@@ -60,4 +60,12 @@ public class PairingHelper {
 		// TODO implement checking for similar pairings in the same GamePhase
 		return false;
 	}
+
+	public static PlayerScore generateEmptyScore(Player opponent,
+			Integer numberOfScores) {
+		PlayerScore result = new PlayerScore();
+		result.setPlayer(opponent);
+		result.getScore().addAll(new Integer[numberOfScores]);
+		return result;
+	}
 }

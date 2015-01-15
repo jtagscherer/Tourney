@@ -41,20 +41,20 @@ public class FreeForAll implements PairingStrategy {
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
+					// adds an empty score table to the Pairing
+					partResult.getScoreTable().add(
+							PairingHelper.generateEmptyScore(
+									randomList.get(randomNumber), tournament
+											.getRuleSet().getPossibleScores()
+											.size()));
 
-					score = new PlayerScore();
-					score.setPlayer(randomList.get(randomNumber));
-					numberOfScores = new Integer[tournament.getRuleSet()
-							.getPossibleScores().size()];
-					score.getScore().addAll(numberOfScores);
-					partResult.getScoreTable().add(score);
-
+					// adds an opponent to the pairing
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
 				result.add(partResult);
 			}
-			// checks if the round is the first in his gamephase
+			// checks if the round is the first in his game phase
 		} else if (PairingHelper
 				.findPhase(tournament.getRounds().size() - 1, tournament)
 				.getPairingMethod().getClass() != FreeForAll.class) {
@@ -81,6 +81,7 @@ public class FreeForAll implements PairingStrategy {
 				result.add(partResult);
 			}
 		} else {
+
 			while (randomList.size() >= PairingHelper.findPhase(
 					tournament.getRounds().size(), tournament)
 					.getNumberOfOpponents()) {
@@ -104,7 +105,8 @@ public class FreeForAll implements PairingStrategy {
 
 				if (!PairingHelper.checkForSimiliarPairings(partResult,
 						tournament)) {
-					// TODO finish checking
+					// TODO finish checking for similar pairings in previous
+					// rounds in the same game phase
 					result.add(partResult);
 				}
 			}
