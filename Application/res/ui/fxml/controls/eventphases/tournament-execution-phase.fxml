@@ -13,12 +13,15 @@
 	fx:controller="usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
 		<Label styleClass="heading" text="Turnierdurchführung" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-			<PairingView fx:id="pairingView" />
+			<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">
 				<Button disable="true" fx:id="buttonStartRound" styleClass="table-edit-button" 
 				onAction="#onButtonStartRoundClicked">
@@ -29,7 +32,7 @@
 				<Button disable="true" fx:id="buttonEnterResult" styleClass="table-edit-button"
 					onAction="#onButtonEnterResultClicked">
 					<graphic>
-						<IconPane styleClass="icon-remove, half" />
+						<IconPane styleClass="icon-edit, half" />
 					</graphic>
 				</Button>
 			</VBox>

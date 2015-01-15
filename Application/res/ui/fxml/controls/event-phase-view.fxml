@@ -7,16 +7,19 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<RelativityPane xmlns="http://javafx.com/javafx/8"
+<AnchorPane xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.controls.EventPhaseViewController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
 		<HBox fx:id="menuButtonBar" spacing="10.0"
-			RelativityPane.relLeft="0px" RelativityPane.relRight="0px"
-			RelativityPane.relTop="0px">
+			AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+			AnchorPane.topAnchor="0">
 			<Button fx:id="buttonClose" styleClass="menu-button" onAction="#onButtonCloseClicked">
 				<graphic>
 					<IconPane styleClass="icon-close, half" />
@@ -43,8 +46,8 @@
 			</HBox>
 		</HBox>
 		<HBox fx:id="secondaryMenuButtonBar" alignment="TOP_RIGHT"
-			pickOnBounds="false" spacing="10.0" RelativityPane.relLeft="0px"
-			RelativityPane.relRight="0px" RelativityPane.relTop="0px">
+			pickOnBounds="false" spacing="10.0" AnchorPane.leftAnchor="0"
+			AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 			<Button fx:id="buttonLock" styleClass="menu-button" onAction="#onButtonLockClicked">
 				<graphic>
 					<IconPane styleClass="icon-lock, half" />
@@ -57,8 +60,8 @@
 				</graphic>
 			</Button>
 		</HBox>
-		<HBox fx:id="breadcrumbContainer" RelativityPane.relLeft="0px"
-			RelativityPane.relRight="0px" RelativityPane.relTop="42px">
+		<HBox fx:id="breadcrumbContainer" AnchorPane.topAnchor="42"
+			AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 			<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, multi-button, left"
 				text="Event Einstellungen" HBox.hgrow="ALWAYS"
 				onAction="#onBreadcrumbEventSetupClicked" />
@@ -71,7 +74,7 @@
 				onAction="#onBreadcrumbTournamentExecutionClicked" />
 		</HBox>
 		<StackPane fx:id="eventPhaseContainer"
-			RelativityPane.relBottom="0px" RelativityPane.relLeft="0px"
-			RelativityPane.relRight="0px" RelativityPane.relTop="84px" />
+			AnchorPane.topAnchor="84" AnchorPane.rightAnchor="0"
+			AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" />
 	</children>
-</RelativityPane>
+</AnchorPane>

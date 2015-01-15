@@ -11,6 +11,9 @@
 <VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
 	</stylesheets>
 	<children>
 		<UndoTextField fx:id="textFieldScoringTitle" promptText="Wertungsbezeichnung" />

@@ -13,6 +13,9 @@
 	dividerPositions="0.29797979797979796">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<items>
