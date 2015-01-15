@@ -27,6 +27,8 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 	@FXML private Button buttonRemoveTournamentModule;
 	@FXML private Button buttonEditTournamentModule;
 
+	private ModalDialog<TournamentModule, TournamentModule> tournamentmoduleEditorDialog;
+
 	public TournamentModuleListDialog() {
 		try {
 			FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/ui/fxml/dialogs/tournament-module-list-dialog.fxml"));
@@ -39,6 +41,8 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 	}
 
 	@FXML private void initialize() {
+		this.tournamentmoduleEditorDialog = new TournamentModuleEditorDialog().modalDialog();
+
 		this.tableColumnModuleName = new TableColumn<TournamentModule, String>("Name");
 		this.tableColumnModuleName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		this.tableTournamentModules.getColumns().add(this.tableColumnModuleName);
@@ -68,8 +72,7 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 
 	@FXML private void onButtonAddTournamentModuleClicked(ActionEvent event) {
 		log.fine("Add Tournament Module Button clicked");
-		new TournamentModuleEditorDialog()
-		.modalDialog()
+		this.tournamentmoduleEditorDialog
 		.properties(new TournamentModule())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
@@ -89,8 +92,7 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 
 	@FXML private void onButtonEditTournamentModuleClicked(ActionEvent event) {
 		log.fine("Edit Tournament Module Button clicked");
-		new TournamentModuleEditorDialog()
-		.modalDialog()
+		this.tournamentmoduleEditorDialog
 		.properties(this.tableTournamentModules.getSelectionModel().getSelectedItem())
 		.onResult((result, returnValue) -> {
 			if (result == DialogResult.OK && returnValue != null) {
