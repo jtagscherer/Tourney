@@ -28,15 +28,15 @@
 	-fx-margin: -20px 0px 0px 0px;
 }
 
-.left {
+.breadcrumb-button.left {
 	-fx-shape: "M 0,50 0,0 l 97,0 L 100,25 97,50 z";
 }
 
-.middle {
+.breadcrumb-button.middle {
 	-fx-shape: "M 0,50 3,25 0,0 l 97,0 L 100,25 97,50 z";
 }
 
-.right {
+.breadcrumb-button.right {
 	-fx-shape: "M 0,50 3,25 0,0 l 100,0 L 100,50 z";
 }
 
