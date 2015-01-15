@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Player extends Person {
+public class Player extends Person implements Cloneable {
 
 	private final StringProperty nickName;
 	private final StringProperty startingNumber;
@@ -81,5 +81,18 @@ public class Player extends Person {
 
 	public StringProperty idProperty() {
 		return this.id;
+	}
+
+	@Override
+	public Object clone() {
+		Player clone = new Player();
+
+		clone.setNickName(this.getNickName());
+		clone.setStartingNumber(this.getStartingNumber());
+		clone.setPayed(this.getPayed());
+		clone.setDisqualified(this.getDisqualified());
+		clone.setId(this.getId());
+
+		return clone;
 	}
 }
