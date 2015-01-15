@@ -31,8 +31,10 @@ public class EventDocument {
 	public EventDocument(Document document) {
 		this.document = document;
 
-		this.rootElement = this.document.createElement("event");
-		this.document.appendChild(this.rootElement);
+		if (this.document.getFirstChild() == null) {
+			this.rootElement = this.document.createElement("event");
+			this.document.appendChild(this.rootElement);
+		}
 	}
 
 	/**

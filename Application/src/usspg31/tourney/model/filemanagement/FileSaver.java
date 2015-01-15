@@ -116,6 +116,17 @@ public class FileSaver {
 					zipOutputStream);
 		}
 
+		String flag = null;
+		switch (event.getUserFlag()) {
+		case TOURNAMENT_EXECUTION:
+			flag = "Tournament ID=" + event.getExecutedTournament().getId();
+			break;
+		default:
+			flag = event.getUserFlag().toString();
+			break;
+		}
+		FileSaver.saveMetaFlags(flag, "Meta.xml", zipOutputStream);
+
 		try {
 			zipOutputStream.close();
 		} catch (IOException e) {
@@ -160,6 +171,27 @@ public class FileSaver {
 
 		document.appendMetaData(event);
 		document.appendTournamentList(event.getTournaments());
+
+		FileSaver.saveDocumentToZip(document.getDocument(), fileName,
+				zipOutputStream);
+	}
+
+	/**
+	 * Save a meta string to the zip archive
+	 * 
+	 * @param flag
+	 *            Flag to be saved
+	 * @param fileName
+	 *            File name where the flag will be saved
+	 * @param zipOutputStream
+	 *            Output stream to save the flag to
+	 */
+	private static void saveMetaFlags(String flag, String fileName,
+			ZipOutputStream zipOutputStream) {
+		MetaDocument document = new MetaDocument(
+				FileSaver.documentBuilder.newDocument());
+
+		document.setMetaData(flag);
 
 		FileSaver.saveDocumentToZip(document.getDocument(), fileName,
 				zipOutputStream);
