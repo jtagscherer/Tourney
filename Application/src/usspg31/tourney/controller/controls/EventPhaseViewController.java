@@ -14,9 +14,14 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -123,7 +128,10 @@ public class EventPhaseViewController implements EventUser {
 
 	private void initBreadcrumbs() {
 		this.highlightedBreadcrumbEffect = new InnerShadow();
-		this.highlightedBreadcrumbEffect.setColor(Color.rgb(130, 130, 130));
+		this.highlightedBreadcrumbEffect.setColor(Color.rgb(150, 150, 150));
+		ColorAdjust colorAdjust = new ColorAdjust();
+		colorAdjust.setBrightness(-0.04);
+		this.highlightedBreadcrumbEffect.setInput(colorAdjust);
 		this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
 	}
 

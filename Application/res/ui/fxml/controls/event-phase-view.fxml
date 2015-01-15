@@ -63,7 +63,7 @@
 		<HBox fx:id="breadcrumbContainer" AnchorPane.topAnchor="42"
 			AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 			<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, multi-button, left"
-				text="Event Einstellungen" HBox.hgrow="ALWAYS"
+				text="Event-Einstellungen" HBox.hgrow="ALWAYS"
 				onAction="#onBreadcrumbEventSetupClicked" />
 			<Button fx:id="breadcrumbPreRegistration" styleClass="breadcrumb-button, multi-button, middle"
 				text="Voranmeldung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbPreRegistrationClicked" />
