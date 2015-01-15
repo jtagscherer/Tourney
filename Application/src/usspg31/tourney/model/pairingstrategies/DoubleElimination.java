@@ -9,7 +9,8 @@ public class DoubleElimination implements PairingStrategy {
 
 	@Override
 	public ArrayList<Pairing> generatePairing(Tournament tournament) {
-		// TODO Auto-generated method stub
+		ArrayList<Pairing> result = new ArrayList<>();
+
 		return null;
 	}
 

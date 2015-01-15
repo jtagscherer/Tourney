@@ -2,6 +2,8 @@ package usspg31.tourney.controller.controls.eventphases;
 
 import java.util.logging.Logger;
 
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +19,7 @@ import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.DialogResult;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialogController;
+import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
 
@@ -26,11 +29,16 @@ public class PreRegistrationPhaseController implements EventUser {
 	private static final Logger log = Logger
 			.getLogger(PreRegistrationPhaseController.class.getName());
 
-	@FXML private TextField textFieldPlayerSearch;
-	@FXML private TableView<Player> tablePreRegisteredPlayers;
-	@FXML private Button buttonAddPlayer;
-	@FXML private Button buttonRemovePlayer;
-	@FXML private Button buttonEditPlayer;
+	@FXML
+	private TextField textFieldPlayerSearch;
+	@FXML
+	private TableView<Player> tablePreRegisteredPlayers;
+	@FXML
+	private Button buttonAddPlayer;
+	@FXML
+	private Button buttonRemovePlayer;
+	@FXML
+	private Button buttonEditPlayer;
 
 	private TableColumn<Player, String> tableColumnPlayerFirstName;
 	private TableColumn<Player, String> tableColumnPlayerLastName;
@@ -89,9 +97,34 @@ public class PreRegistrationPhaseController implements EventUser {
 
 		this.loadedEvent = event;
 
-		// create table bindings
-		this.tablePreRegisteredPlayers.setItems(this.loadedEvent
-				.getRegisteredPlayers());
+		// Add all registered players to the table view and enable searching
+		FilteredList<Player> filteredPlayerList = new FilteredList<>(
+				this.loadedEvent.getRegisteredPlayers(), p -> true);
+
+		textFieldPlayerSearch.textProperty().addListener(
+				(observable, oldValue, newValue) -> {
+					filteredPlayerList.setPredicate(player -> {
+						if (newValue == null || newValue.isEmpty()) {
+							return true;
+						}
+
+						return SearchUtilities.fuzzyMatches(
+								player.getFirstName(), newValue)
+								|| SearchUtilities.fuzzyMatches(
+										player.getLastName(), newValue)
+								|| SearchUtilities.fuzzyMatches(
+										player.getNickName(), newValue)
+								|| SearchUtilities.fuzzyMatches(
+										player.getMailAddress(), newValue);
+					});
+				});
+
+		SortedList<Player> sortedPlayerList = new SortedList<>(
+				filteredPlayerList);
+		sortedPlayerList.comparatorProperty().bind(
+				this.tablePreRegisteredPlayers.comparatorProperty());
+
+		this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
 	}
 
 	@Override

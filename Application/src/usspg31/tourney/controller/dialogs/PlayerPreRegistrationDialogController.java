@@ -27,7 +27,7 @@ import usspg31.tourney.model.Tournament;
 
 @SuppressWarnings("deprecation")
 public class PlayerPreRegistrationDialogController extends VBox implements
-IModalDialogProvider<Object, Player> {
+		IModalDialogProvider<Object, Player> {
 
 	private static final Logger log = Logger
 			.getLogger(PlayerPreRegistrationDialogController.class.getName());
@@ -165,17 +165,17 @@ IModalDialogProvider<Object, Player> {
 		}
 
 		new TournamentSelectionDialog()
-		.modalDialog()
-		.properties(unregisteredTournaments)
-		.onResult(
-				(result, returnValue) -> {
-					if (result == DialogResult.OK
-							&& returnValue != null) {
-						returnValue.getRegisteredPlayers().add(
-								this.editedPlayer);
-						this.updateTournamentList();
-					}
-				}).show();
+				.modalDialog()
+				.properties(unregisteredTournaments)
+				.onResult(
+						(result, returnValue) -> {
+							if (result == DialogResult.OK
+									&& returnValue != null) {
+								returnValue.getRegisteredPlayers().add(
+										this.editedPlayer);
+								this.updateTournamentList();
+							}
+						}).show();
 	}
 
 	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
