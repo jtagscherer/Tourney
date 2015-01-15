@@ -44,6 +44,8 @@ IModalDialogProvider<Object, Player> {
 	private TableColumn<Tournament, String> tableColumnTournamentName;
 	private ObservableList<Tournament> registeredTournaments;
 
+	private ModalDialog<ObservableList<Tournament>, Tournament> tournamentSelectionDialog;
+
 	private Player loadedPlayer;
 	private Event loadedEvent;
 
@@ -61,6 +63,8 @@ IModalDialogProvider<Object, Player> {
 
 	@FXML
 	private void initialize() {
+		this.tournamentSelectionDialog = new TournamentSelectionDialog().modalDialog();
+
 		this.registeredTournaments = FXCollections.observableArrayList();
 		this.initTournamentTable();
 
@@ -163,8 +167,7 @@ IModalDialogProvider<Object, Player> {
 			}
 		}
 
-		new TournamentSelectionDialog()
-		.modalDialog()
+		this.tournamentSelectionDialog
 		.properties(unregisteredTournaments)
 		.onResult(
 				(result, returnValue) -> {
@@ -178,7 +181,7 @@ IModalDialogProvider<Object, Player> {
 	}
 
 	@FXML private void onButtonRemoveTournamentClicked(ActionEvent event) {
-		// TODO: it should be impossible to remove a player from a tournament he alredy played in
+		// TODO: it should be impossible to remove a player from a tournament he already played in
 
 		Tournament selectedTournament = this.tableTournaments
 				.getSelectionModel().getSelectedItem();
