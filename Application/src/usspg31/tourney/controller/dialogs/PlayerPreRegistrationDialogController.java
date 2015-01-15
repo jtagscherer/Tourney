@@ -21,6 +21,10 @@ import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;

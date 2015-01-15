@@ -1,4 +1,4 @@
-package usspg31.tourney.controller.dialogs;
+package usspg31.tourney.controller.dialogs.modal;
 
 public interface IModalDialogProvider<P, R> extends DialogContent<P, R> {
 

@@ -22,9 +22,9 @@ import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.dialogs.DialogResult;
-import usspg31.tourney.controller.dialogs.ModalDialog;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialogController;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;

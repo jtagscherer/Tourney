@@ -13,6 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.TournamentModule;
 
 public class TournamentModuleListDialog extends HBox implements IModalDialogProvider<ObservableList<TournamentModule>, Object> {

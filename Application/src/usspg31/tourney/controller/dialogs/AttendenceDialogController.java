@@ -10,6 +10,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Player;
 
 public class AttendenceDialogController extends VBox implements IModalDialogProvider<List<Player>, List<Player>> {

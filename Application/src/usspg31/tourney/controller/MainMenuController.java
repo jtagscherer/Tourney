@@ -16,8 +16,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.controls.EventPhaseViewController;
-import usspg31.tourney.controller.dialogs.ModalDialog;
 import usspg31.tourney.controller.dialogs.TournamentModuleListDialog;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.TournamentModule;
 import usspg31.tourney.model.filemanagement.FileLoader;

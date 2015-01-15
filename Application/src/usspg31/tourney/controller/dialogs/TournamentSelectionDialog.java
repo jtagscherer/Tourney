@@ -10,6 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Tournament;
 
 public class TournamentSelectionDialog extends VBox implements
