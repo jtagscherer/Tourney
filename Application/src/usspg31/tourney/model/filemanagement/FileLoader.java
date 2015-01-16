@@ -66,6 +66,7 @@ public class FileLoader {
 			FileLoader.initialize();
 		}
 
+		/* Initialize all data objects */
 		Event event = new Event();
 		String executedTournamentId = null;
 
@@ -73,10 +74,14 @@ public class FileLoader {
 		PlayerDocument playerDocument = null;
 		ArrayList<TournamentDocument> tournamentDocuments = new ArrayList<TournamentDocument>();
 
+		/* Open the given zip file */
 		ZipFile zipFile = new ZipFile(path);
-
 		Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
+		/*
+		 * Iterate over the files the zip archive contains and extract them as
+		 * documents depending on their names
+		 */
 		while (entries.hasMoreElements()) {
 			ZipEntry entry = entries.nextElement();
 			InputStream stream = zipFile.getInputStream(entry);
@@ -111,6 +116,10 @@ public class FileLoader {
 
 		zipFile.close();
 
+		/*
+		 * Get the event meta data from its document and apply it to the new
+		 * event
+		 */
 		EventMetaData eventMeta = eventDocument.getMetaData();
 		event.setName(eventMeta.getName());
 		event.setLocation(eventMeta.getLocation());
@@ -119,9 +128,15 @@ public class FileLoader {
 		event.setEventPhase(eventMeta.getEventPhase());
 		event.getAdministrators().setAll(eventMeta.getAdministrators());
 
+		/* Load the list of players from its document */
 		ArrayList<Player> playerList = playerDocument.getPlayerList();
 		ArrayList<Tournament> tournamentList = new ArrayList<Tournament>();
 
+		/*
+		 * Add all tournaments from their files to the event while setting all
+		 * their data to the fields from the file and piecing together player
+		 * ids and the actual players from the list
+		 */
 		for (TournamentDocument tournamentDocument : tournamentDocuments) {
 			Tournament newTournament = new Tournament();
 			newTournament.setId(tournamentDocument.getId());
@@ -129,15 +144,24 @@ public class FileLoader {
 			newTournament.getAdministrators().setAll(
 					tournamentDocument.getTournamentAdministrators());
 
-			newTournament.getAttendingPlayers().setAll(
-					tournamentDocument.getPlayerList(
-							TournamentDocument.ATTENDANT_PLAYERS, playerList));
-			newTournament.getRegisteredPlayers().setAll(
-					tournamentDocument.getPlayerList(
-							TournamentDocument.REGISTERED_PLAYERS, playerList));
-			newTournament.getRemainingPlayers().setAll(
-					tournamentDocument.getPlayerList(
-							TournamentDocument.REMAINING_PLAYERS, playerList));
+			newTournament
+					.getAttendingPlayers()
+					.setAll(tournamentDocument
+							.getPlayerList(
+									TournamentDocument.PlayerListType.ATTENDANT_PLAYERS,
+									playerList));
+			newTournament
+					.getRegisteredPlayers()
+					.setAll(tournamentDocument
+							.getPlayerList(
+									TournamentDocument.PlayerListType.REGISTERED_PLAYERS,
+									playerList));
+			newTournament
+					.getRemainingPlayers()
+					.setAll(tournamentDocument
+							.getPlayerList(
+									TournamentDocument.PlayerListType.REMAINING_PLAYERS,
+									playerList));
 
 			newTournament.getRounds().setAll(
 					tournamentDocument.getTournamentRounds(playerList));
@@ -149,6 +173,10 @@ public class FileLoader {
 		event.getTournaments().setAll(tournamentList);
 		event.getRegisteredPlayers().setAll(playerList);
 
+		/*
+		 * Set the currently executed tournament if this event has been saved
+		 * for a tournament administrator
+		 */
 		if (executedTournamentId != null) {
 			for (Tournament tournament : event.getTournaments()) {
 				if (tournament.getId().equals(executedTournamentId)) {
@@ -178,11 +206,14 @@ public class FileLoader {
 			FileLoader.initialize();
 		}
 
+		/* Initialize a new tournament module to apply all data to */
 		TournamentModule module = new TournamentModule();
 
+		/* Load module information from a new file */
 		TournamentModuleDocument moduleDocument = new TournamentModuleDocument(
 				FileLoader.documentBuilder.parse(new File(path)));
 
+		/* Apply all data from the document to the module */
 		module.setName(moduleDocument.getName());
 		module.setDescription(moduleDocument.getDescription());
 
@@ -204,6 +235,10 @@ public class FileLoader {
 	public static ArrayList<Node> getChildNodesByTag(Node parent, String tag) {
 		ArrayList<Node> childNodes = new ArrayList<Node>();
 
+		/*
+		 * Iterate over all child nodes of the parent node and add them to the
+		 * returned list if they are direct children and have the specified tag
+		 */
 		NodeList children = parent.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
 			Node childNode = children.item(i);

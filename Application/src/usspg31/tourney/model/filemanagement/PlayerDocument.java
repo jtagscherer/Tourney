@@ -12,7 +12,8 @@ import org.w3c.dom.Node;
 import usspg31.tourney.model.Player;
 
 /**
- * An XML document that represents a list of players
+ * Wrapper class for the XML document holding a list of players registered to an
+ * event. Contains methods to read and write said players.
  * 
  * @author Jan Tagscherer
  */
@@ -29,6 +30,7 @@ public class PlayerDocument {
 	public PlayerDocument(Document document) {
 		this.document = document;
 
+		/* Create the root element of the XML document */
 		if (this.document.getFirstChild() == null) {
 			this.rootElement = this.document.createElement("players");
 			this.document.appendChild(this.rootElement);
@@ -43,14 +45,14 @@ public class PlayerDocument {
 	 */
 	public void appendPlayerList(ObservableList<Player> players) {
 		for (Player player : players) {
-			// Add a new player
+			/* Add an XML element holding the new player */
 			Element playerElement = this.document.createElement("player");
 			Attr playerId = this.document.createAttribute("id");
 			playerId.setValue(player.getId());
 			playerElement.setAttributeNode(playerId);
 			this.rootElement.appendChild(playerElement);
 
-			// Add the name of the player
+			/* Add the name of the player */
 			Element name = this.document.createElement("name");
 			playerElement.appendChild(name);
 
@@ -64,32 +66,32 @@ public class PlayerDocument {
 			lastName.appendChild(this.document.createTextNode(player
 					.getLastName()));
 
-			// Add the mail address of the player
+			/* Add the mail address of the player */
 			Element mailAddress = this.document.createElement("mail-address");
 			playerElement.appendChild(mailAddress);
 			mailAddress.appendChild(this.document.createTextNode(player
 					.getMailAddress()));
 
-			// Add the nick name of the player
+			/* Add the nick name of the player */
 			Element nickname = this.document.createElement("nickname");
 			playerElement.appendChild(nickname);
 			nickname.appendChild(this.document.createTextNode(player
 					.getNickName()));
 
-			// Add the starting number of the player
+			/* Add the starting number of the player */
 			Element startingNumber = this.document
 					.createElement("starting-number");
 			playerElement.appendChild(startingNumber);
 			startingNumber.appendChild(this.document.createTextNode(player
 					.getStartingNumber()));
 
-			// Add the payment status of the player
+			/* Add the payment status of the player */
 			Element payed = this.document.createElement("payed");
 			playerElement.appendChild(payed);
 			payed.appendChild(this.document.createTextNode(String
 					.valueOf(player.getPayed())));
 
-			// Add the disqualification status of the player
+			/* Add the disqualification status of the player */
 			Element disqualified = this.document.createElement("disqualified");
 			playerElement.appendChild(disqualified);
 			disqualified.appendChild(this.document.createTextNode(String
@@ -108,25 +110,34 @@ public class PlayerDocument {
 		Node playersNode = this.document.getElementsByTagName("players")
 				.item(0);
 
+		/* Iterate over all players in this document */
 		for (Node player : FileLoader.getChildNodesByTag(playersNode, "player")) {
 			Player newPlayer = new Player();
 
+			/* Get the player id from the attribute of the parent tag */
 			newPlayer.setId(player.getAttributes().getNamedItem("id")
 					.getTextContent());
 
+			/* Load the player name */
 			Node playerName = FileLoader.getFirstChildNodeByTag(player, "name");
 			newPlayer.setFirstName(FileLoader.getFirstChildNodeByTag(
 					playerName, "first-name").getTextContent());
 			newPlayer.setLastName(FileLoader.getFirstChildNodeByTag(playerName,
 					"last-name").getTextContent());
 
+			/* Load the mail address of the player */
 			newPlayer.setMailAdress(FileLoader.getFirstChildNodeByTag(player,
 					"mail-address").getTextContent());
+
+			/* Load the nick name of the player */
 			newPlayer.setNickName(FileLoader.getFirstChildNodeByTag(player,
 					"nickname").getTextContent());
+
+			/* Load the starting number of the player */
 			newPlayer.setStartingNumber(FileLoader.getFirstChildNodeByTag(
 					player, "starting-number").getTextContent());
 
+			/* Load both the payment and disqualification status of the player */
 			newPlayer.setPayed(Boolean.parseBoolean(FileLoader
 					.getFirstChildNodeByTag(player, "payed").getTextContent()));
 			newPlayer.setDisqualified(Boolean.parseBoolean(FileLoader

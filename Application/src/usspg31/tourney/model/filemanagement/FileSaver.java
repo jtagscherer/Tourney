@@ -50,14 +50,22 @@ public class FileSaver {
 	 * Initialize the file manager. Has to be called before all other methods.
 	 */
 	public static void initialize() {
+		/* Initialize the document factory used in other methods */
 		FileSaver.documentFactory = DocumentBuilderFactory.newInstance();
 		try {
+			/* Initialize the document builder that creates new documents */
 			FileSaver.documentBuilder = FileSaver.documentFactory
 					.newDocumentBuilder();
 
+			/*
+			 * Initialize the transformer factory that is used for transforming
+			 * documents into XML files
+			 */
 			TransformerFactory transformerFactory = TransformerFactory
 					.newInstance();
 			FileSaver.transformer = transformerFactory.newTransformer();
+
+			/* Configure the transformer to indent blocks with four spaces */
 			FileSaver.transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			FileSaver.transformer.setOutputProperty(
 					"{http://xml.apache.org/xslt}indent-amount", "4");
@@ -88,6 +96,10 @@ public class FileSaver {
 			FileSaver.initialize();
 		}
 
+		/*
+		 * Initialize a new file object for the specified path and create all
+		 * missing folders leading up to the file
+		 */
 		File zipFile = new File(path);
 		try {
 			if (zipFile.getParentFile() != null) {
@@ -98,6 +110,10 @@ public class FileSaver {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 
+		/*
+		 * Create a new zip output stream where files can be written to. This
+		 * way they will be saved in the zip archive directly
+		 */
 		FileOutputStream fileOutputStream;
 		ZipOutputStream zipOutputStream = null;
 		try {
@@ -107,15 +123,24 @@ public class FileSaver {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 
+		/* Save the event itself */
 		FileSaver.saveEvent(event, "Event.xml", zipOutputStream);
+
+		/* Save all players in the event to a new file */
 		FileSaver.savePlayersToFile(event.getRegisteredPlayers(),
 				"Players.xml", zipOutputStream);
+
+		/* Save all tournaments to separate files */
 		for (Tournament tournament : event.getTournaments()) {
 			FileSaver.saveTournament(tournament,
 					"Tournament_" + tournament.getId() + ".xml",
 					zipOutputStream);
 		}
 
+		/*
+		 * Append the usage flag which indicates in what perspective the event
+		 * should be opened again
+		 */
 		String flag = null;
 		switch (event.getUserFlag()) {
 		case TOURNAMENT_EXECUTION:
@@ -215,11 +240,11 @@ public class FileSaver {
 		document.appendAdministratorList(tournament.getAdministrators());
 
 		document.appendPlayerList(tournament.getRegisteredPlayers(),
-				TournamentDocument.REGISTERED_PLAYERS);
+				TournamentDocument.PlayerListType.REGISTERED_PLAYERS);
 		document.appendPlayerList(tournament.getAttendingPlayers(),
-				TournamentDocument.ATTENDANT_PLAYERS);
+				TournamentDocument.PlayerListType.ATTENDANT_PLAYERS);
 		document.appendPlayerList(tournament.getRemainingPlayers(),
-				TournamentDocument.REMAINING_PLAYERS);
+				TournamentDocument.PlayerListType.REMAINING_PLAYERS);
 
 		document.appendTournamentRounds(tournament.getRounds());
 
@@ -306,6 +331,10 @@ public class FileSaver {
 	private static void saveDocumentToZip(Document document, String fileName,
 			ZipOutputStream zipOutputStream) {
 		try {
+			/*
+			 * Open all necessary streams and write to them using the
+			 * transformer object
+			 */
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			DOMSource source = new DOMSource(document);
 			StreamResult outputTarget = new StreamResult(outputStream);
@@ -313,6 +342,7 @@ public class FileSaver {
 			InputStream inputStream = new ByteArrayInputStream(
 					outputStream.toByteArray());
 
+			/* Create a new file in this archive using a new zip entry */
 			ZipEntry zipEntry = new ZipEntry(fileName);
 			zipOutputStream.putNextEntry(zipEntry);
 

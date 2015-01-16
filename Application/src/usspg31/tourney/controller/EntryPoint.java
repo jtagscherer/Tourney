@@ -3,11 +3,6 @@ package usspg31.tourney.controller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
-import usspg31.tourney.model.undo.UndoManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -15,6 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.model.undo.UndoManager;
 
 @SuppressWarnings("deprecation")
 public class EntryPoint extends Application {
@@ -69,18 +71,18 @@ public class EntryPoint extends Application {
 									.message(
 											"Es sind ungesicherte Änderungen vorhanden.\n"
 													+ "Möchten Sie diese vor dem Beenden speichern?")
-									.actions(Dialog.ACTION_YES,
-											Dialog.ACTION_NO,
-											Dialog.ACTION_CANCEL).showWarning();
+													.actions(Dialog.ACTION_YES,
+															Dialog.ACTION_NO,
+															Dialog.ACTION_CANCEL).showWarning();
 
 							if (response == Dialog.ACTION_CANCEL) {
 								return;
 							} else if (response == Dialog.ACTION_YES) {
-								Action saveResponse = MainWindow.getInstance()
+								DialogResult saveResponse = MainWindow.getInstance()
 										.getEventPhaseViewController()
 										.saveEvent();
 
-								if (saveResponse != Dialog.ACTION_OK) {
+								if (saveResponse != DialogResult.OK) {
 									return;
 								}
 							}

@@ -4,7 +4,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Implements a parser for meta data for a saved event
+ * Wrapper class for a XML document that saves the meta data attached to an
+ * event which can be extracted using its methods
  * 
  * @author Jan Tagscherer
  */
@@ -47,11 +48,12 @@ public class MetaDocument {
 				.getTextContent();
 	}
 
+	/**
+	 * Get the underlying document of this meta document
+	 * 
+	 * @return The actual XML document
+	 */
 	public Document getDocument() {
-		return document;
-	}
-
-	public void setDocument(Document document) {
-		this.document = document;
+		return this.document;
 	}
 }

@@ -17,10 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
@@ -48,38 +46,26 @@ public class EventPhaseViewController implements EventUser {
 	private File loadedEventFile;
 
 	// Menu bar
-	@FXML
-	private Button buttonClose;
-	@FXML
-	private Button buttonSave;
+	@FXML private Button buttonClose;
+	@FXML private Button buttonSave;
 
-	@FXML
-	private Button buttonUndo;
-	@FXML
-	private Button buttonRedo;
+	@FXML private Button buttonUndo;
+	@FXML private Button buttonRedo;
 
-	@FXML
-	private Button buttonLock;
-	@FXML
-	private Button buttonOptions;
+	@FXML private Button buttonLock;
+	@FXML private Button buttonOptions;
 
 	// Breadcrumb controls
-	@FXML
-	private HBox breadcrumbContainer;
-	@FXML
-	private Button breadcrumbEventSetup;
-	@FXML
-	private Button breadcrumbPreRegistration;
-	@FXML
-	private Button breadcrumbRegistration;
-	@FXML
-	private Button breadcrumbTournamentExecution;
+	@FXML private HBox breadcrumbContainer;
+	@FXML private Button breadcrumbEventSetup;
+	@FXML private Button breadcrumbPreRegistration;
+	@FXML private Button breadcrumbRegistration;
+	@FXML private Button breadcrumbTournamentExecution;
 
-	private InnerShadow highlightedBreadcrumbEffect;
+	private ColorAdjust highlightedBreadcrumbEffect;
 
 	// Event phases
-	@FXML
-	private StackPane eventPhaseContainer;
+	@FXML private StackPane eventPhaseContainer;
 
 	private Node eventSetupPhase;
 	private EventSetupPhaseController eventSetupPhaseController;
@@ -121,11 +107,8 @@ public class EventPhaseViewController implements EventUser {
 	}
 
 	private void initBreadcrumbs() {
-		this.highlightedBreadcrumbEffect = new InnerShadow();
-		this.highlightedBreadcrumbEffect.setColor(Color.rgb(150, 150, 150));
-		ColorAdjust colorAdjust = new ColorAdjust();
-		colorAdjust.setBrightness(-0.04);
-		this.highlightedBreadcrumbEffect.setInput(colorAdjust);
+		this.highlightedBreadcrumbEffect = new ColorAdjust();
+		this.highlightedBreadcrumbEffect.setBrightness(-0.05);
 		this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
 	}
 
@@ -303,6 +286,7 @@ public class EventPhaseViewController implements EventUser {
 					.getLoadedEventFile().getAbsolutePath());
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Could not save the event.", e);
+
 			new SimpleDialog<>("Das Event konnte nicht gespeichert werden.\n"
 					+ "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
 					+ "alle Berechtigungen besitzen.")
@@ -381,8 +365,7 @@ public class EventPhaseViewController implements EventUser {
 		mainWindow.getOptionsViewController().setExitProperties(
 				"settings.returnto.eventview",
 				"settings.returnto.eventview.description",
-				"settings.returnto.eventview.explanation",
-				() -> {
+				"settings.returnto.eventview.explanation", () -> {
 					mainWindow.slideDown(mainWindow.getEventPhaseView());
 				});
 		mainWindow.slideUp(mainWindow.getOptionsView());
