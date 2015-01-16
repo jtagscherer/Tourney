@@ -96,11 +96,11 @@ public class TestTournamentDocument {
 
 		// Write the data to the document
 		this.document.appendPlayerList(playerList,
-				TournamentDocument.ATTENDANT_PLAYERS);
+				TournamentDocument.PlayerListType.ATTENDANT_PLAYERS);
 		this.document.appendPlayerList(playerList,
-				TournamentDocument.REGISTERED_PLAYERS);
+				TournamentDocument.PlayerListType.REGISTERED_PLAYERS);
 		this.document.appendPlayerList(playerList,
-				TournamentDocument.REMAINING_PLAYERS);
+				TournamentDocument.PlayerListType.REMAINING_PLAYERS);
 
 		// Read the data from the document
 		ArrayList<Player> playerArrayList = new ArrayList<Player>(playerList);
@@ -108,37 +108,41 @@ public class TestTournamentDocument {
 		assertEquals(
 				1,
 				this.document.getPlayerList(
-						TournamentDocument.ATTENDANT_PLAYERS, playerArrayList)
-						.size());
+						TournamentDocument.PlayerListType.ATTENDANT_PLAYERS,
+						playerArrayList).size());
 		assertEquals(
 				1,
 				this.document.getPlayerList(
-						TournamentDocument.REMAINING_PLAYERS, playerArrayList)
-						.size());
+						TournamentDocument.PlayerListType.REMAINING_PLAYERS,
+						playerArrayList).size());
 		assertEquals(
 				1,
 				this.document.getPlayerList(
-						TournamentDocument.REGISTERED_PLAYERS, playerArrayList)
-						.size());
+						TournamentDocument.PlayerListType.REGISTERED_PLAYERS,
+						playerArrayList).size());
 
 		assertEquals(
 				"2",
 				this.document
-						.getPlayerList(TournamentDocument.ATTENDANT_PLAYERS,
+						.getPlayerList(
+								TournamentDocument.PlayerListType.ATTENDANT_PLAYERS,
 								playerArrayList).get(0).getId());
 		assertEquals(
 				"2",
 				this.document
-						.getPlayerList(TournamentDocument.REMAINING_PLAYERS,
+						.getPlayerList(
+								TournamentDocument.PlayerListType.REMAINING_PLAYERS,
 								playerArrayList).get(0).getId());
 		assertEquals(
 				"2",
 				this.document
-						.getPlayerList(TournamentDocument.REGISTERED_PLAYERS,
+						.getPlayerList(
+								TournamentDocument.PlayerListType.REGISTERED_PLAYERS,
 								playerArrayList).get(0).getId());
 
 		Player readPlayer = this.document.getPlayerList(
-				TournamentDocument.ATTENDANT_PLAYERS, playerArrayList).get(0);
+				TournamentDocument.PlayerListType.ATTENDANT_PLAYERS,
+				playerArrayList).get(0);
 		assertEquals("Peter", readPlayer.getFirstName());
 		assertEquals("Player", readPlayer.getLastName());
 		assertEquals("p.player@mail.com", readPlayer.getMailAddress());
