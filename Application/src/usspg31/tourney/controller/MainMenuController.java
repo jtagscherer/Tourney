@@ -110,9 +110,9 @@ public class MainMenuController {
 		log.fine("Options Button was clicked");
 
 		MainWindow.getInstance().getOptionsViewController().setExitProperties(
-				"Hauptmenü",
-				"Zurückkehren",
-				"Kehren Sie zum Hauptmenü zurück",
+				"settings.returnto.mainmenu",
+				"settings.returnto.mainmenu.description",
+				"settings.returnto.mainmenu.explanation",
 				() -> {
 					MainWindow.getInstance().slideDown(
 							MainWindow.getInstance()

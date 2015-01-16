@@ -26,11 +26,12 @@ public class OptionsViewController {
 		this.exitButtonCallback = null;
 	}
 
-	public void setExitProperties(String title, String description,
-			String explanation, Runnable exitCallback) {
-		this.labelExitHeading.setText(title);
-		this.labelExitDescription.setText(description);
-		this.labelExitExplanation.setText(explanation);
+	public void setExitProperties(String titleKey, String descriptionKey,
+			String explanationKey, Runnable exitCallback) {
+		PreferencesManager preferences = PreferencesManager.getInstance();
+		this.labelExitHeading.setText(preferences.localizeString(titleKey));
+		this.labelExitDescription.setText(preferences.localizeString(descriptionKey));
+		this.labelExitExplanation.setText(preferences.localizeString(explanationKey));
 		this.exitButtonCallback = exitCallback;
 	}
 
