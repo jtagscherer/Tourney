@@ -24,14 +24,14 @@
 	</stylesheets>
 	<children>
 		<Label minHeight="-Infinity" minWidth="-Infinity" styleClass="heading"
-			text="Hauptmenü" RelativityPane.relLeft="50%"
+			text="%mainmenu" RelativityPane.relLeft="50%"
 			RelativityPane.relRight="50%" RelativityPane.relTop="5% 5px 30px" />
 		<RelativityPane styleClass="menu-button-container"
 			RelativityPane.relTop="33% 40px" RelativityPane.relRight="5% 10px"
 			RelativityPane.relBottom="0px" RelativityPane.relLeft="5% 10px">
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="70%" RelativityPane.relLeft="0%">
-				<Label styleClass="button-heading" text="Event" />
+				<Label styleClass="button-heading" text="%mainmenu.event" />
 				<HBox fx:id="eventButtonsContainer" styleClass="multi-button-container">
 					<VBox fx:id="eventButtonsLeft" HBox.hgrow="ALWAYS">
 						<Button fx:id="buttonNewEvent" styleClass="menu-button, multi-button, left" onAction="#onButtonNewEventClicked">
@@ -39,7 +39,7 @@
 								<IconPane styleClass="icon-add" />
 							</graphic>
 						</Button>
-						<Label styleClass="button-description" text="Neu" />
+						<Label styleClass="button-description" text="%mainmenu.event.new.description" />
 					</VBox>
 					<VBox fx:id="eventButtonsRight" HBox.hgrow="ALWAYS">
 						<Button fx:id="buttonOpenEvent" styleClass="menu-button, multi-button, right" onAction="#onButtonOpenEventClicked">
@@ -47,16 +47,16 @@
 								<IconPane styleClass="icon-folder-open" />
 							</graphic>
 						</Button>
-						<Label styleClass="button-description" text="Öffnen" />
+						<Label styleClass="button-description" text="%mainmenu.event.open.description" />
 					</VBox>
 				</HBox>
 				<Pane styleClass="vertical-seperator" />
 				<Label styleClass="button-explanation"
-					text="Erstellen oder laden Sie ein Event, um Turniere zu planen, Anmeldungen entgegenzunehmen und Turniere durchzuführen." />
+					text="%mainmenu.event.explanation" />
 			</VBox>
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="35%" RelativityPane.relLeft="35%">
-				<Label styleClass="button-heading" text="Turniermodule" />
+				<Label styleClass="button-heading" text="%mainmenu.tournamentmodules" />
 				<Button fx:id="buttonEditTournamentModules" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
 					AnchorPane.rightAnchor="0" onAction="#onButtonOpenTournamentModuleEditorClicked">
@@ -64,14 +64,14 @@
 						<IconPane styleClass="icon-edit" />
 					</graphic>
 				</Button>
-				<Label styleClass="button-description" text="Bearbeiten" />
+				<Label styleClass="button-description" text="%mainmenu.tournamentmodules.description" />
 				<Pane styleClass="vertical-seperator" />
 				<Label styleClass="button-explanation"
-					text="Verwalten und erstellen Sie Turniermodule - Die grundlegenden Bausteine um im Turnier Paarungen zu generieren und Partien auszuwerten." />
+					text="%mainmenu.tournamentmodules.explanation" />
 			</VBox>
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="0%" RelativityPane.relLeft="70%">
-				<Label styleClass="button-heading" text="Einstellungen" />
+				<Label styleClass="button-heading" text="%mainmenu.settings" />
 				<Button fx:id="buttonOpenOptions" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
 					AnchorPane.rightAnchor="0" onAction="#onButtonOpenOptionsClicked">
@@ -79,10 +79,10 @@
 						<IconPane styleClass="icon-settings" />
 					</graphic>
 				</Button>
-				<Label styleClass="button-description" text="Anpassen" />
+				<Label styleClass="button-description" text="%mainmenu.settings.description" />
 				<Pane styleClass="vertical-seperator" />
 				<Label styleClass="button-explanation"
-					text="Passen Sie Tourney nach Ihren Wünschen und Vorstellungen an." />
+					text="%mainmenu.settings.explanation" />
 			</VBox>
 		</RelativityPane>
 	</children>

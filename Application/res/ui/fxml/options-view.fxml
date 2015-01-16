@@ -24,27 +24,27 @@
 	</stylesheets>
 	<children>
 		<Label minHeight="-Infinity" minWidth="-Infinity" styleClass="heading"
-			text="Einstellungen" RelativityPane.relLeft="50%"
+			text="%settings" RelativityPane.relLeft="50%"
 			RelativityPane.relRight="50%" RelativityPane.relTop="5% 5px 30px" />
 		<RelativityPane styleClass="menu-button-container"
 			RelativityPane.relTop="33% 40px" RelativityPane.relRight="5% 10px"
 			RelativityPane.relBottom="0px" RelativityPane.relLeft="5% 10px">
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="70%" RelativityPane.relLeft="0%">
-				<Label styleClass="button-heading" text="Sprache" />
+				<Label styleClass="button-heading" text="%settings.language" />
 				<Button fx:id="buttonChangeLanguage" styleClass="menu-button" onAction="#onButtonChangeLanguageClicked">
 					<graphic>
 						<IconPane styleClass="icon-language" />
 					</graphic>
 				</Button>
-				<Label styleClass="button-description" text="Ändern" />
+				<Label styleClass="button-description" text="%settings.language.description" />
 				<Pane styleClass="vertical-seperator" />
 				<Label styleClass="button-explanation"
-					text="Legen Sie fest, welche Sprache Tourney verwenden soll." />
+					text="%settings.language.explanation" />
 			</VBox>
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="35%" RelativityPane.relLeft="35%">
-				<Label styleClass="button-heading" text="Passwort" />
+				<Label styleClass="button-heading" text="%settings.password" />
 				<Button fx:id="buttonChangePassword" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
 					AnchorPane.rightAnchor="0" onAction="#onButtonChangePasswordClicked">
@@ -52,14 +52,14 @@
 						<IconPane styleClass="icon-key" />
 					</graphic>
 				</Button>
-				<Label styleClass="button-description" text="Festlegen" />
+				<Label styleClass="button-description" text="%settings.password.description" />
 				<Pane styleClass="vertical-seperator" />
 				<Label styleClass="button-explanation"
-					text="Bestimmen Sie das Passwort, mit dem Tourney vor unberechtigen Zugriff geschützt werden kann." />
+					text="%settings.password.explanation" />
 			</VBox>
 			<VBox RelativityPane.relTop="0px" RelativityPane.relBottom="0px"
 				RelativityPane.relRight="0%" RelativityPane.relLeft="70%">
-				<Label fx:id="labelExitHeading" styleClass="button-heading" text="Hauptmenü" />
+				<Label fx:id="labelExitHeading" styleClass="button-heading" text="%settings.returnto.mainmenu" />
 				<Button fx:id="buttonExit" styleClass="menu-button"
 					AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
 					AnchorPane.rightAnchor="0" onAction="#onButtonExitClicked">
@@ -67,9 +67,9 @@
 						<IconPane styleClass="icon-close" />
 					</graphic>
 				</Button>
-				<Label fx:id="labelExitDescription" styleClass="button-description" text="Zurückkehren" />
+				<Label fx:id="labelExitDescription" styleClass="button-description" text="%settings.returnto.mainmenu.description" />
 				<Pane styleClass="vertical-seperator" />
-				<Label fx:id="labelExitExplanation" styleClass="button-explanation" text="Kehren Sie zum Hauptmenü zurück." />
+				<Label fx:id="labelExitExplanation" styleClass="button-explanation" text="%settings.returnto.mainmenu.explanation" />
 			</VBox>
 		</RelativityPane>
 	</children>
