@@ -1,6 +1,7 @@
 package usspg31.tourney.controller;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,20 +75,21 @@ public class MainWindow extends StackPane {
 	}
 
 	private void loadSubViews() throws IOException {
+		ResourceBundle localization = PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle();
 		FXMLLoader mainMenuLoader = new FXMLLoader(this.getClass()
-				.getResource("/ui/fxml/main-menu.fxml"));
+				.getResource("/ui/fxml/main-menu.fxml"), localization);
 		this.mainMenu = mainMenuLoader.load();
 		this.mainMenuController = mainMenuLoader.getController();
 		this.mainMenu.setVisible(true);
 
 		FXMLLoader optionsViewLoader = new FXMLLoader(this.getClass()
-				.getResource("/ui/fxml/options-view.fxml"));
+				.getResource("/ui/fxml/options-view.fxml"), localization);
 		this.optionsView = optionsViewLoader.load();
 		this.optionsViewController = optionsViewLoader.getController();
 		this.optionsView.setVisible(false);
 
 		FXMLLoader eventPhaseViewLoader = new FXMLLoader(this.getClass()
-				.getResource("/ui/fxml/controls/event-phase-view.fxml"));
+				.getResource("/ui/fxml/controls/event-phase-view.fxml"), localization);
 		this.eventPhaseView = eventPhaseViewLoader.load();
 		this.eventPhaseViewController = eventPhaseViewLoader.getController();
 		this.eventPhaseView.setVisible(false);
