@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
+<?import usspg31.tourney.controller.layout.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -21,15 +23,17 @@
 		<StackPane fx:id="mainWindowRootContainer" mouseTransparent="true"
 			styleClass="modal-dialog-root-container" />
 		<RelativityPane fx:id="dialogBackground" styleClass="modal-dialog-background">
-			<VBox fx:id="dialogRoot" RelativityPane.relTop="5% 5px" RelativityPane.relRight="5% 5px"
-				RelativityPane.relBottom="5% 5px" RelativityPane.relLeft="5% 5px"
-				styleClass="modal-dialog-container">
+			<VBox fx:id="dialogRoot" maxHeight="-Infinity" maxWidth="-Infinity"
+				styleClass="modal-dialog-container" RelativityPane.relBottom="5% 5px"
+				RelativityPane.relLeft="5% 5px" RelativityPane.relRight="5% 5px"
+				RelativityPane.relTop="5% 5px">
 				<Label fx:id="labelTitle" styleClass="heading" text="labelTitle">
 					<VBox.margin>
 						<Insets left="5.0" />
 					</VBox.margin>
 				</Label>
-				<StackPane fx:id="contentContainer" VBox.vgrow="ALWAYS" />
+				<StackPane fx:id="contentContainer" maxHeight="-Infinity"
+					maxWidth="-Infinity" VBox.vgrow="ALWAYS" />
 				<HBox fx:id="dialogButtonContainer" alignment="BOTTOM_RIGHT"
 					spacing="5.0" />
 			</VBox>
