@@ -24,11 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
-
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainMenuController;
 import usspg31.tourney.controller.MainWindow;
@@ -36,6 +31,9 @@ import usspg31.tourney.controller.controls.eventphases.EventSetupPhaseController
 import usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.RegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.filemanagement.FileSaver;
 import usspg31.tourney.model.undo.UndoManager;
@@ -283,7 +281,7 @@ public class EventPhaseViewController implements EventUser {
 		this.loadedEvent = null;
 	}
 
-	public Action saveEvent() {
+	public DialogResult saveEvent() {
 		if (this.getLoadedEventFile() == null) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Eventdatei speichern");
@@ -292,7 +290,7 @@ public class EventPhaseViewController implements EventUser {
 			File selectedFile = fileChooser.showSaveDialog(EntryPoint
 					.getPrimaryStage());
 			if (selectedFile == null) {
-				return Dialog.ACTION_CANCEL;
+				return DialogResult.CANCEL;
 			}
 			if (!selectedFile.getName().endsWith(".tef")) {
 				selectedFile = new File(selectedFile.getAbsolutePath() + ".tef");
@@ -305,17 +303,24 @@ public class EventPhaseViewController implements EventUser {
 					.getLoadedEventFile().getAbsolutePath());
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Could not save the event.", e);
-			Dialogs.create()
-			.owner(EntryPoint.getPrimaryStage())
-			.title("Fehler")
-			.message(
-					"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
-					.showError();
+			new SimpleDialog<>("Das Event konnte nicht gespeichert werden.\n"
+					+ "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
+					+ "alle Berechtigungen besitzen.")
+					.modalDialog()
+					.title("Fehler")
+					.show();
 
-			return Dialog.ACTION_CANCEL;
+			//			Dialogs.create()
+			//			.owner(EntryPoint.getPrimaryStage())
+			//			.title("Fehler")
+			//			.message(
+			//					"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
+			//					.showError();
+
+			return DialogResult.CANCEL;
 		}
 
-		return Dialog.ACTION_OK;
+		return DialogResult.OK;
 	}
 
 	@FXML
@@ -323,29 +328,23 @@ public class EventPhaseViewController implements EventUser {
 		log.fine("Close Button was clicked");
 
 		if (this.activeUndoManager.undoAvailable()) {
-			Action response = Dialogs
-					.create()
-					.owner(EntryPoint.getPrimaryStage())
-					.title("Warnung")
-					.message(
-							"Es sind ungesicherte Änderungen vorhanden.\n"
-									+ "Möchten Sie diese vor dem Beenden speichern?")
-									.actions(Dialog.ACTION_YES, Dialog.ACTION_NO,
-											Dialog.ACTION_CANCEL).showWarning();
-
-			if (response == Dialog.ACTION_CANCEL) {
-				return;
-			} else if (response == Dialog.ACTION_YES) {
-				Action saveResponse = this.saveEvent();
-				if (saveResponse != Dialog.ACTION_OK) {
-					return;
-				}
-			}
+			new SimpleDialog<>("Es sind ungesicherte Änderungen vorhanden.\n"
+					+ "Möchten Sie diese vor dem Beenden speichern?")
+					.modalDialog().title("Warnung")
+					.dialogButtons(DialogButtons.YES_NO_CANCEL)
+					.onResult((result, returnValue) -> {
+						switch (result) {
+						case YES:
+							this.saveEvent();
+						case NO: // fall-through: both yes and no will close the event
+							this.unloadEvent();
+							MainWindow.getInstance().slideDown(
+									MainWindow.getInstance().getMainMenu());
+						default: // do nothing
+						}
+					})
+					.show();
 		}
-
-		this.unloadEvent();
-		MainWindow.getInstance().slideDown(
-				MainWindow.getInstance().getMainMenu());
 	}
 
 	@FXML
