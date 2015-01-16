@@ -29,15 +29,15 @@
 }
 
 .breadcrumb-button.left {
-	-fx-shape: "M 0,50 0,0 l 97,0 L 100,25 97,50 z";
+	-fx-shape: "M 0,50 0,0 l 98.5,0 L 100,25 98.5,50 z";
 }
 
 .breadcrumb-button.middle {
-	-fx-shape: "M 0,50 3,25 0,0 l 97,0 L 100,25 97,50 z";
+	-fx-shape: "M 0,50 1.5,25 0,0 l 98.5,0 L 100,25 98.5,50 z";
 }
 
 .breadcrumb-button.right {
-	-fx-shape: "M 0,50 3,25 0,0 l 100,0 L 100,50 z";
+	-fx-shape: "M 0,50 1.5,25 0,0 l 100,0 L 100,50 z";
 }
 
 .table-edit-button-container {

@@ -17,10 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
@@ -50,38 +48,26 @@ public class EventPhaseViewController implements EventUser {
 	private File loadedEventFile;
 
 	// Menu bar
-	@FXML
-	private Button buttonClose;
-	@FXML
-	private Button buttonSave;
+	@FXML private Button buttonClose;
+	@FXML private Button buttonSave;
 
-	@FXML
-	private Button buttonUndo;
-	@FXML
-	private Button buttonRedo;
+	@FXML private Button buttonUndo;
+	@FXML private Button buttonRedo;
 
-	@FXML
-	private Button buttonLock;
-	@FXML
-	private Button buttonOptions;
+	@FXML private Button buttonLock;
+	@FXML private Button buttonOptions;
 
 	// Breadcrumb controls
-	@FXML
-	private HBox breadcrumbContainer;
-	@FXML
-	private Button breadcrumbEventSetup;
-	@FXML
-	private Button breadcrumbPreRegistration;
-	@FXML
-	private Button breadcrumbRegistration;
-	@FXML
-	private Button breadcrumbTournamentExecution;
+	@FXML private HBox breadcrumbContainer;
+	@FXML private Button breadcrumbEventSetup;
+	@FXML private Button breadcrumbPreRegistration;
+	@FXML private Button breadcrumbRegistration;
+	@FXML private Button breadcrumbTournamentExecution;
 
-	private InnerShadow highlightedBreadcrumbEffect;
+	private ColorAdjust highlightedBreadcrumbEffect;
 
 	// Event phases
-	@FXML
-	private StackPane eventPhaseContainer;
+	@FXML private StackPane eventPhaseContainer;
 
 	private Node eventSetupPhase;
 	private EventSetupPhaseController eventSetupPhaseController;
@@ -123,11 +109,8 @@ public class EventPhaseViewController implements EventUser {
 	}
 
 	private void initBreadcrumbs() {
-		this.highlightedBreadcrumbEffect = new InnerShadow();
-		this.highlightedBreadcrumbEffect.setColor(Color.rgb(150, 150, 150));
-		ColorAdjust colorAdjust = new ColorAdjust();
-		colorAdjust.setBrightness(-0.04);
-		this.highlightedBreadcrumbEffect.setInput(colorAdjust);
+		this.highlightedBreadcrumbEffect = new ColorAdjust();
+		this.highlightedBreadcrumbEffect.setBrightness(-0.05);
 		this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
 	}
 
@@ -141,8 +124,8 @@ public class EventPhaseViewController implements EventUser {
 
 		FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(
 				this.getClass()
-				.getResource(
-						"/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
+						.getResource(
+								"/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
 		this.preRegistrationPhase = preRegistrationPhaseLoader.load();
 		this.preRegistrationPhaseController = preRegistrationPhaseLoader
 				.getController();
@@ -150,8 +133,8 @@ public class EventPhaseViewController implements EventUser {
 
 		FXMLLoader registrationPhaseLoader = new FXMLLoader(
 				this.getClass()
-				.getResource(
-						"/ui/fxml/controls/eventphases/registration-phase.fxml"));
+						.getResource(
+								"/ui/fxml/controls/eventphases/registration-phase.fxml"));
 		this.registrationPhase = registrationPhaseLoader.load();
 		this.registrationPhaseController = registrationPhaseLoader
 				.getController();
@@ -159,8 +142,8 @@ public class EventPhaseViewController implements EventUser {
 
 		FXMLLoader tournamentExecutionPhaseLoader = new FXMLLoader(
 				this.getClass()
-				.getResource(
-						"/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
+						.getResource(
+								"/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
 		this.tournamentExecutionPhase = tournamentExecutionPhaseLoader.load();
 		this.tournamentExecutionPhaseController = tournamentExecutionPhaseLoader
 				.getController();
@@ -172,35 +155,35 @@ public class EventPhaseViewController implements EventUser {
 
 		this.eventSetupPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(0)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(0)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 
 		this.preRegistrationPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(1)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(1)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 
 		this.registrationPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(2)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(2)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 
 		this.tournamentExecutionPhase.translateXProperty().bind(
 				this.eventPhaseContainer
-				.widthProperty()
-				.multiply(3)
-				.subtract(
-						this.eventPhaseContainer.widthProperty()
-						.multiply(this.phasePosition)));
+						.widthProperty()
+						.multiply(3)
+						.subtract(
+								this.eventPhaseContainer.widthProperty()
+										.multiply(this.phasePosition)));
 	}
 
 	private void slideToPhase(int phaseNumber) {
@@ -306,10 +289,10 @@ public class EventPhaseViewController implements EventUser {
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Could not save the event.", e);
 			Dialogs.create()
-			.owner(EntryPoint.getPrimaryStage())
-			.title("Fehler")
-			.message(
-					"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
+					.owner(EntryPoint.getPrimaryStage())
+					.title("Fehler")
+					.message(
+							"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
 					.showError();
 
 			return Dialog.ACTION_CANCEL;
@@ -330,8 +313,8 @@ public class EventPhaseViewController implements EventUser {
 					.message(
 							"Es sind ungesicherte Änderungen vorhanden.\n"
 									+ "Möchten Sie diese vor dem Beenden speichern?")
-									.actions(Dialog.ACTION_YES, Dialog.ACTION_NO,
-											Dialog.ACTION_CANCEL).showWarning();
+					.actions(Dialog.ACTION_YES, Dialog.ACTION_NO,
+							Dialog.ACTION_CANCEL).showWarning();
 
 			if (response == Dialog.ACTION_CANCEL) {
 				return;
@@ -382,8 +365,7 @@ public class EventPhaseViewController implements EventUser {
 		mainWindow.getOptionsViewController().setExitProperties(
 				"settings.returnto.eventview",
 				"settings.returnto.eventview.description",
-				"settings.returnto.eventview.explanation",
-				() -> {
+				"settings.returnto.eventview.explanation", () -> {
 					mainWindow.slideDown(mainWindow.getEventPhaseView());
 				});
 		mainWindow.slideUp(mainWindow.getOptionsView());
@@ -409,7 +391,7 @@ public class EventPhaseViewController implements EventUser {
 
 		this.breadcrumbEventSetup.setEffect(null);
 		this.breadcrumbPreRegistration
-		.setEffect(this.highlightedBreadcrumbEffect);
+				.setEffect(this.highlightedBreadcrumbEffect);
 		this.breadcrumbRegistration.setEffect(null);
 		this.breadcrumbTournamentExecution.setEffect(null);
 	}
@@ -436,6 +418,6 @@ public class EventPhaseViewController implements EventUser {
 		this.breadcrumbPreRegistration.setEffect(null);
 		this.breadcrumbRegistration.setEffect(null);
 		this.breadcrumbTournamentExecution
-		.setEffect(this.highlightedBreadcrumbEffect);
+				.setEffect(this.highlightedBreadcrumbEffect);
 	}
 }
