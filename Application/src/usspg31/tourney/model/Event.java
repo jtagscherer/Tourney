@@ -9,136 +9,276 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Represents an event that bundles tournaments and players
+ */
 public class Event {
 
-	public static enum EventPhase {
-		EVENT_SETUP, PRE_REGISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
-	}
+    /**
+     * The phases an event can be in
+     */
+    public static enum EventPhase {
+	EVENT_SETUP, PRE_REGISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
+    }
 
-	public static enum UserFlag {
-		ADMINISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
-	}
+    /**
+     * The flag with which this event was saved and how it is supposed to be
+     * opened again
+     */
+    public static enum UserFlag {
+	ADMINISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
+    }
 
-	private final ObservableList<Tournament> tournaments;
-	private final ObservableList<Player> registeredPlayers;
-	private final StringProperty name;
-	private final ObjectProperty<LocalDate> startDate;
-	private final ObjectProperty<LocalDate> endDate;
-	private final StringProperty location;
-	private final ObservableList<EventAdministrator> administrators;
-	private final ObjectProperty<EventPhase> eventPhase;
+    private final ObservableList<Tournament> tournaments;
+    private final ObservableList<Player> registeredPlayers;
+    private final StringProperty name;
+    private final ObjectProperty<LocalDate> startDate;
+    private final ObjectProperty<LocalDate> endDate;
+    private final StringProperty location;
+    private final ObservableList<EventAdministrator> administrators;
+    private final ObjectProperty<EventPhase> eventPhase;
 
-	private final ObjectProperty<Tournament> executedTournament;
-	private final ObjectProperty<UserFlag> userFlag;
+    private final ObjectProperty<Tournament> executedTournament;
+    private final ObjectProperty<UserFlag> userFlag;
 
-	public Event() {
-		this.tournaments = FXCollections.observableArrayList();
-		this.registeredPlayers = FXCollections.observableArrayList();
-		this.name = new SimpleStringProperty("");
-		this.startDate = new SimpleObjectProperty<LocalDate>();
-		this.endDate = new SimpleObjectProperty<LocalDate>();
-		this.location = new SimpleStringProperty("");
-		this.administrators = FXCollections.observableArrayList();
-		this.eventPhase = new SimpleObjectProperty<Event.EventPhase>();
-		this.setEventPhase(Event.EventPhase.EVENT_SETUP);
-		this.executedTournament = new SimpleObjectProperty<Tournament>();
-		this.userFlag = new SimpleObjectProperty<Event.UserFlag>();
-		this.setUserFlag(UserFlag.ADMINISTRATION);
-	}
+    /**
+     * Create a new event and initialize all properties
+     */
+    public Event() {
+	this.tournaments = FXCollections.observableArrayList();
+	this.registeredPlayers = FXCollections.observableArrayList();
+	this.name = new SimpleStringProperty("");
+	this.startDate = new SimpleObjectProperty<LocalDate>();
+	this.endDate = new SimpleObjectProperty<LocalDate>();
+	this.location = new SimpleStringProperty("");
+	this.administrators = FXCollections.observableArrayList();
+	this.eventPhase = new SimpleObjectProperty<Event.EventPhase>();
+	this.setEventPhase(Event.EventPhase.EVENT_SETUP);
+	this.executedTournament = new SimpleObjectProperty<Tournament>();
+	this.userFlag = new SimpleObjectProperty<Event.UserFlag>();
+	this.setUserFlag(UserFlag.ADMINISTRATION);
+    }
 
-	public ObservableList<Tournament> getTournaments() {
-		return this.tournaments;
-	}
+    /**
+     * Get a list of all tournaments in this event
+     * 
+     * @return List of all tournaments
+     */
+    public ObservableList<Tournament> getTournaments() {
+	return this.tournaments;
+    }
 
-	public ObservableList<Player> getRegisteredPlayers() {
-		return this.registeredPlayers;
-	}
+    /**
+     * Get a list of all registered players in this event
+     * 
+     * @return List of all registered players
+     */
+    public ObservableList<Player> getRegisteredPlayers() {
+	return this.registeredPlayers;
+    }
 
-	public String getName() {
-		return this.name.get();
-	}
+    /**
+     * Get the name of this event
+     * 
+     * @return Current name of this event
+     */
+    public String getName() {
+	return this.name.get();
+    }
 
-	public void setName(String value) {
-		this.name.set(value);
-	}
+    /**
+     * Set the name of this event
+     * 
+     * @param value
+     *            New name of this event
+     */
+    public void setName(String value) {
+	this.name.set(value);
+    }
 
-	public StringProperty nameProperty() {
-		return this.name;
-	}
+    /**
+     * Get the name property of this event
+     * 
+     * @return Name property of this event
+     */
+    public StringProperty nameProperty() {
+	return this.name;
+    }
 
-	public LocalDate getStartDate() {
-		return this.startDate.get();
-	}
+    /**
+     * Get the start date of this event
+     * 
+     * @return Current start date of this event
+     */
+    public LocalDate getStartDate() {
+	return this.startDate.get();
+    }
 
-	public void setStartDate(LocalDate value) {
-		this.startDate.set(value);
-	}
+    /**
+     * Set the start date of this event
+     * 
+     * @param value
+     *            New start date of this event
+     */
+    public void setStartDate(LocalDate value) {
+	this.startDate.set(value);
+    }
 
-	public ObjectProperty<LocalDate> startDateProperty() {
-		return this.startDate;
-	}
+    /**
+     * Get the start date property of this event
+     * 
+     * @return Start date property of this event
+     */
+    public ObjectProperty<LocalDate> startDateProperty() {
+	return this.startDate;
+    }
 
-	public LocalDate getEndDate() {
-		return this.endDate.get();
-	}
+    /**
+     * Get the end date of this event
+     * 
+     * @return Current end date of this event
+     */
+    public LocalDate getEndDate() {
+	return this.endDate.get();
+    }
 
-	public void setEndDate(LocalDate value) {
-		this.endDate.set(value);
-	}
+    /**
+     * Set the end date of this event
+     * 
+     * @param value
+     *            New end date of this event
+     */
+    public void setEndDate(LocalDate value) {
+	this.endDate.set(value);
+    }
 
-	public ObjectProperty<LocalDate> endDateProperty() {
-		return this.endDate;
-	}
+    /**
+     * Get the end date property of this event
+     * 
+     * @return End date property of this event
+     */
+    public ObjectProperty<LocalDate> endDateProperty() {
+	return this.endDate;
+    }
 
-	public String getLocation() {
-		return this.location.get();
-	}
+    /**
+     * Get the location of this event
+     * 
+     * @return Current location of this event
+     */
+    public String getLocation() {
+	return this.location.get();
+    }
 
-	public void setLocation(String value) {
-		this.location.set(value);
-	}
+    /**
+     * Set the location of this event
+     * 
+     * @param value
+     *            New location of this event
+     */
+    public void setLocation(String value) {
+	this.location.set(value);
+    }
 
-	public StringProperty locationProperty() {
-		return this.location;
-	}
+    /**
+     * Get the location property of this event
+     * 
+     * @return Location property of this event
+     */
+    public StringProperty locationProperty() {
+	return this.location;
+    }
 
-	public ObservableList<EventAdministrator> getAdministrators() {
-		return this.administrators;
-	}
+    /**
+     * Get a list of event administrators in this event
+     * 
+     * @return List of current event administrators in this event
+     */
+    public ObservableList<EventAdministrator> getAdministrators() {
+	return this.administrators;
+    }
 
-	public EventPhase getEventPhase() {
-		return this.eventPhase.get();
-	}
+    /**
+     * Get the phase this event is currently in
+     * 
+     * @return Current phase of this event
+     */
+    public EventPhase getEventPhase() {
+	return this.eventPhase.get();
+    }
 
-	public void setEventPhase(EventPhase value) {
-		this.eventPhase.set(value);
-	}
+    /**
+     * Set the event phase of this event
+     * 
+     * @param value
+     *            New event phase of this event
+     */
+    public void setEventPhase(EventPhase value) {
+	this.eventPhase.set(value);
+    }
 
-	public ObjectProperty<EventPhase> eventPhaseProperty() {
-		return this.eventPhase;
-	}
+    /**
+     * Get the event phase property of this event
+     * 
+     * @return Event phase property of this event
+     */
+    public ObjectProperty<EventPhase> eventPhaseProperty() {
+	return this.eventPhase;
+    }
 
-	public void setUserFlag(UserFlag value) {
-		this.userFlag.set(value);
-	}
+    /**
+     * Set the user flag of this event
+     * 
+     * @param value
+     *            New user flag of this event
+     */
+    public void setUserFlag(UserFlag value) {
+	this.userFlag.set(value);
+    }
 
-	public UserFlag getUserFlag() {
-		return this.userFlag.get();
-	}
+    /**
+     * Get the user flag of this event
+     * 
+     * @return Current user flag of this event
+     */
+    public UserFlag getUserFlag() {
+	return this.userFlag.get();
+    }
 
-	public ObjectProperty<UserFlag> userFlagProperty() {
-		return this.userFlag;
-	}
+    /**
+     * Get the user flag property of this event
+     * 
+     * @return User flag property of this event
+     */
+    public ObjectProperty<UserFlag> userFlagProperty() {
+	return this.userFlag;
+    }
 
-	public void setExecutedTournament(Tournament value) {
-		this.executedTournament.set(value);
-	}
+    /**
+     * Set the tournament that is currently being executed
+     * 
+     * @param value
+     *            Tournament that is currently being executed
+     */
+    public void setExecutedTournament(Tournament value) {
+	this.executedTournament.set(value);
+    }
 
-	public Tournament getExecutedTournament() {
-		return this.executedTournament.get();
-	}
+    /**
+     * Get the tournament that is currently being executed
+     * 
+     * @return Tournament that is currently being executed
+     */
+    public Tournament getExecutedTournament() {
+	return this.executedTournament.get();
+    }
 
-	public ObjectProperty<Tournament> executedTournamentProperty() {
-		return this.executedTournament;
-	}
+    /**
+     * Get the executed tournament property of this event
+     * 
+     * @return Executed tournament property of this event
+     */
+    public ObjectProperty<Tournament> executedTournamentProperty() {
+	return this.executedTournament;
+    }
 }
