@@ -328,6 +328,10 @@ public class EventPhaseViewController implements EventUser {
 						}
 					})
 					.show();
+		} else {
+		    this.unloadEvent();
+			MainWindow.getInstance().slideDown(
+					MainWindow.getInstance().getMainMenu());
 		}
 	}
 
