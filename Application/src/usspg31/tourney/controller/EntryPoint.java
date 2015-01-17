@@ -20,6 +20,7 @@ public class EntryPoint extends Application {
 	    .getName());
 
     private static Stage primaryStage;
+    private boolean closeRequested;
 
     public static void main(String[] args) {
 	log.info("Starting Application");
@@ -58,8 +59,9 @@ public class EntryPoint extends Application {
 		    UndoManager undoManager = MainWindow.getInstance()
 			    .getEventPhaseViewController()
 			    .getActiveUndoManager();
-		    if (undoManager != null) {
+		    if (undoManager != null && !closeRequested) {
 			if (undoManager.undoAvailable()) {
+			    closeRequested = true;
 			    new SimpleDialog<>(
 				    "Es sind ungesicherte Änderungen vorhanden.\n"
 					    + "Möchten Sie diese vor dem Beenden speichern?")
@@ -70,12 +72,14 @@ public class EntryPoint extends Application {
 					    (result, returnValue) -> {
 						switch (result) {
 						case CANCEL:
+						    closeRequested = false;
 						    return;
 						case YES:
 						    DialogResult saveResponse = MainWindow
 							    .getInstance()
 							    .getEventPhaseViewController()
 							    .saveEvent();
+						    closeRequested = false;
 
 						    if (saveResponse != DialogResult.OK) {
 							return;
@@ -86,6 +90,7 @@ public class EntryPoint extends Application {
 						     * no return yet
 						     */
 						default:
+						    closeRequested = false;
 						    primaryStage.close();
 						    Platform.exit();
 						    break;
