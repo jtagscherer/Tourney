@@ -193,7 +193,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     @Override
     public void initModalDialog(
 	    ModalDialog<TournamentModule, TournamentModule> modalDialog) {
-	modalDialog.title("Turniermodul").dialogButtons(DialogButtons.OK);
+	modalDialog.title("Turniermodul")
+		.dialogButtons(DialogButtons.OK_CANCEL);
     }
 
     private void loadModule(TournamentModule module) {
