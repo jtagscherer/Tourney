@@ -186,6 +186,11 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     }
 
     @Override
+    public boolean hasNoInput() {
+	return this.loadedModule.getName().equals("");
+    }
+
+    @Override
     public void initModalDialog(
 	    ModalDialog<TournamentModule, TournamentModule> modalDialog) {
 	modalDialog.title("Turniermodul").dialogButtons(DialogButtons.OK);

@@ -195,6 +195,11 @@ public class TournamentDialog extends VBox implements
     }
 
     @Override
+    public boolean hasNoInput() {
+	return this.loadedTournament.getName().equals("");
+    }
+
+    @Override
     public void initModalDialog(ModalDialog<Tournament, Tournament> modalDialog) {
 	modalDialog.title("Turniere").dialogButtons(DialogButtons.OK_CANCEL);
     }
