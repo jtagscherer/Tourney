@@ -128,7 +128,7 @@ public final class ModalDialog<P, R> extends StackPane {
 		    !dialogButtons.containsCancel());
 	}
 	if (dialogButtons.containsOk()) {
-	    this.addDialogButton("Ok", DialogResult.OK);
+	    this.addDialogButton("OK", DialogResult.OK);
 	}
 	if (dialogButtons.containsCancel()) {
 	    this.addDialogButton("Abbrechen", DialogResult.CANCEL, true);
