@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.EventPhase;
+import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.EventAdministrator;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Player;
@@ -193,6 +194,7 @@ public class TestFileManagement {
 	}
 
 	event.setEventPhase(EventPhase.PRE_REGISTRATION);
+	event.setUserFlag(UserFlag.ADMINISTRATION);
 	event.setName("TestEvent");
 	event.setLocation("TestLocation");
 	LocalDate start = LocalDate.of(2015, 02, 01);
