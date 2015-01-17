@@ -1,6 +1,7 @@
 package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import usspg31.tourney.controller.controls.UndoTextArea;
@@ -44,7 +46,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private TableColumn<GamePhase, String> tableColumnPhasesPairingMethod;
     private TableColumn<GamePhase, String> tableColumnPhasesRoundCount;
     private TableColumn<GamePhase, String> tableColumnPhasesCutoff;
-    private TableColumn<GamePhase, String> tableColumnPhasesRoundDuration;
+    private TableColumn<GamePhase, Duration> tableColumnPhasesRoundDuration;
     private TableColumn<GamePhase, String> tableColumnPhasesNumberOfOpponents;
 
     @FXML
@@ -129,9 +131,21 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 		this.tableColumnPhasesCutoff);
 
 	this.tableColumnPhasesRoundDuration = new TableColumn<>("Rundendauer");
-	this.tableColumnPhasesRoundDuration.cellValueFactoryProperty().set(
-		cellData -> cellData.getValue().roundDurationProperty()
-			.asString());
+	this.tableColumnPhasesRoundDuration
+		.setCellValueFactory(cellData -> cellData.getValue()
+			.roundDurationProperty());
+	this.tableColumnPhasesRoundDuration.setCellFactory(column -> {
+	    return new TableCell<GamePhase, Duration>() {
+		@Override
+		protected void updateItem(Duration item, boolean empty) {
+		    super.updateItem(item, empty);
+		    if (item != null) {
+			setText(String.format("%02d:%02d Minuten",
+				item.getSeconds() / 60, item.getSeconds() % 60));
+		    }
+		}
+	    };
+	});
 	this.tableTournamentPhases.getColumns().add(
 		this.tableColumnPhasesRoundDuration);
 
