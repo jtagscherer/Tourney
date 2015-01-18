@@ -19,11 +19,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
-
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
@@ -37,7 +32,6 @@ import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.filemanagement.FileLoader;
 
-@SuppressWarnings("deprecation")
 public class RegistrationPhaseController implements EventUser {
 
     private static final Logger log = Logger
@@ -233,26 +227,24 @@ public class RegistrationPhaseController implements EventUser {
 	Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
 		.getSelectedItem();
 	if (selectedPlayer == null) {
-	    Dialogs.create()
-		    .owner(EntryPoint.getPrimaryStage())
-		    .title("Fehler")
-		    .message(
-			    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-		    .showError();
+	    new SimpleDialog<>(
+		    "Bitte wählen Sie einen Spieler aus der Liste aus.")
+		    .modalDialog().dialogButtons(DialogButtons.OK)
+		    .title("Fehler").show();
 	} else {
-	    Action response = Dialogs
-		    .create()
-		    .owner(EntryPoint.getPrimaryStage())
-		    .title("Spieler löschen")
-		    .message(
-			    "Wollen Sie den Spieler \""
-				    + selectedPlayer.getFirstName() + " "
-				    + selectedPlayer.getLastName()
-				    + "\" wirklich löschen?").showConfirm();
-
-	    if (response == Dialog.ACTION_YES) {
-		this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
-	    }
+	    new SimpleDialog<>("Wollen Sie den Spieler \""
+		    + selectedPlayer.getFirstName() + " "
+		    + selectedPlayer.getLastName() + "\" wirklich löschen?")
+		    .modalDialog()
+		    .dialogButtons(DialogButtons.YES_NO)
+		    .title("Löschen bestätigen")
+		    .onResult(
+			    (result, returnValue) -> {
+				if (result == DialogResult.YES) {
+				    this.loadedEvent.getRegisteredPlayers()
+					    .remove(selectedPlayer);
+				}
+			    }).show();
 	}
     }
 
@@ -264,12 +256,10 @@ public class RegistrationPhaseController implements EventUser {
 	final Player selectedPlayer = this.tableRegisteredPlayers
 		.getSelectionModel().getSelectedItem();
 	if (selectedPlayer == null) {
-	    Dialogs.create()
-		    .owner(EntryPoint.getPrimaryStage())
-		    .title("Fehler")
-		    .message(
-			    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-		    .showError();
+	    new SimpleDialog<>(
+		    "Bitte wählen Sie einen Spieler aus der Liste aus.")
+		    .modalDialog().dialogButtons(DialogButtons.OK)
+		    .title("Fehler").show();
 	} else {
 	    this.registrationDialog
 		    .properties(selectedPlayer)
