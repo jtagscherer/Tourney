@@ -19,10 +19,10 @@ import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Player;
 
-public class AttendenceDialog extends VBox implements
-IModalDialogProvider<ObservableList<Player>, ObservableList<Player>> {
+public class AttendanceDialog extends VBox implements
+	IModalDialogProvider<ObservableList<Player>, ObservableList<Player>> {
 
-    private static final Logger log = Logger.getLogger(AttendenceDialog.class
+    private static final Logger log = Logger.getLogger(AttendanceDialog.class
 	    .getName());
 
     @FXML
@@ -36,10 +36,10 @@ IModalDialogProvider<ObservableList<Player>, ObservableList<Player>> {
     @FXML
     private Button buttonStartTournament;
 
-    public AttendenceDialog() {
+    public AttendanceDialog() {
 	try {
 	    FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-		    "/ui/fxml/dialogs/attendence-dialog.fxml"));
+		    "/ui/fxml/dialogs/attendance-dialog.fxml"));
 	    loader.setController(this);
 	    loader.setRoot(this);
 	    loader.load();
@@ -60,10 +60,10 @@ IModalDialogProvider<ObservableList<Player>, ObservableList<Player>> {
 
 	this.buttonAddAttendee.disableProperty().bind(
 		this.tableRegisteredPlayers.getSelectionModel()
-			.selectedItemProperty().isNull());
+		.selectedItemProperty().isNull());
 	this.buttonRemoveAttendee.disableProperty().bind(
 		this.tableAttendingPlayers.getSelectionModel()
-			.selectedItemProperty().isNull());
+		.selectedItemProperty().isNull());
     }
 
     @Override
@@ -71,8 +71,8 @@ IModalDialogProvider<ObservableList<Player>, ObservableList<Player>> {
 	    ModalDialog<ObservableList<Player>, ObservableList<Player>> dialogRoot) {
 	this.buttonStartTournament.setOnAction(event -> {
 	    // TODO: ask the user if he really intends to start the tournament
-	    dialogRoot.exitWith(DialogResult.OK);
-	});
+		dialogRoot.exitWith(DialogResult.OK);
+	    });
     }
 
     @Override
@@ -80,7 +80,7 @@ IModalDialogProvider<ObservableList<Player>, ObservableList<Player>> {
 	this.tableRegisteredPlayers.setItems(FXCollections
 		.observableArrayList());
 	this.tableAttendingPlayers
-		.setItems(FXCollections.observableArrayList());
+	.setItems(FXCollections.observableArrayList());
 
 	this.tableRegisteredPlayers.getItems().addAll(properties);
     }
