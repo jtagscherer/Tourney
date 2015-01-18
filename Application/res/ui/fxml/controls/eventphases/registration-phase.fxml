@@ -43,6 +43,12 @@
 							<IconPane styleClass="icon-edit, half" />
 						</graphic>
 					</Button>
+					<Button fx:id="buttonRegisterPlayer" styleClass="table-edit-button"
+						onAction="#onButtonRegisterPlayerClicked">
+						<graphic>
+							<IconPane styleClass="icon-register, half" />
+						</graphic>
+					</Button>
 				</VBox>
 				<VBox alignment="BOTTOM_LEFT" spacing="5.0" styleClass="distribution-button-container" VBox.vgrow="ALWAYS">
  					<Button fx:id="buttonDistributeRegistration" styleClass="distribution-button"

@@ -24,6 +24,7 @@ import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.RegistrationDistributionDialog;
+import usspg31.tourney.controller.dialogs.RegistrationDistributionNumberSelectionDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
@@ -50,6 +51,8 @@ public class RegistrationPhaseController implements EventUser {
     private Button buttonRemovePlayer;
     @FXML
     private Button buttonEditPlayer;
+    @FXML
+    private Button buttonRegisterPlayer;
 
     @FXML
     private Button buttonDistributeRegistration;
@@ -65,14 +68,18 @@ public class RegistrationPhaseController implements EventUser {
 
     private ModalDialog<Object, Player> registrationDialog;
     private ModalDialog<String, Integer> distributionDialog;
+    private ModalDialog<String, Integer> distributionNumberSelectionDialog;
 
     private Event loadedEvent;
+    private int startNumberStep = 1;
 
     @FXML
     private void initialize() {
 	this.registrationDialog = new PlayerPreRegistrationDialog()
 		.modalDialog();
 	this.distributionDialog = new RegistrationDistributionDialog()
+		.modalDialog();
+	this.distributionNumberSelectionDialog = new RegistrationDistributionNumberSelectionDialog()
 		.modalDialog();
     }
 
@@ -88,6 +95,14 @@ public class RegistrationPhaseController implements EventUser {
 	if (this.loadedEvent.getUserFlag() == UserFlag.REGISTRATION) {
 	    this.buttonDistributeRegistration.setDisable(true);
 	    this.buttonImportRegistration.setDisable(true);
+
+	    this.distributionNumberSelectionDialog.onResult(
+		    (result, returnValue) -> {
+			if (result != DialogResult.OK) {
+			    return;
+			}
+			startNumberStep = returnValue;
+		    }).show();
 	}
 
 	this.tableRegisteredPlayers.getSelectionModel().clearSelection();
@@ -128,6 +143,9 @@ public class RegistrationPhaseController implements EventUser {
 		this.tableRegisteredPlayers.getSelectionModel()
 			.selectedItemProperty().isNull());
 	this.buttonEditPlayer.disableProperty().bind(
+		this.tableRegisteredPlayers.getSelectionModel()
+			.selectedItemProperty().isNull());
+	this.buttonRegisterPlayer.disableProperty().bind(
 		this.tableRegisteredPlayers.getSelectionModel()
 			.selectedItemProperty().isNull());
     }
@@ -297,8 +315,66 @@ public class RegistrationPhaseController implements EventUser {
     }
 
     @FXML
+    private void onButtonRegisterPlayerClicked(ActionEvent event) {
+	log.fine("Edit Player Button clicked");
+	this.checkEventLoaded();
+
+	Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
+		.getSelectedItem();
+	if (selectedPlayer == null) {
+	    new SimpleDialog<>(
+		    "Bitte wählen Sie einen Spieler aus der Liste aus.")
+		    .modalDialog().dialogButtons(DialogButtons.OK)
+		    .title("Fehler").show();
+	} else {
+	    /*
+	     * Get the currently highest starting number to generate the next
+	     * one
+	     */
+	    int nextStartingNumber = 0;
+	    for (Player player : this.loadedEvent.getRegisteredPlayers()) {
+		if (!player.getStartingNumber().equals("")) {
+		    if (Integer.parseInt(player.getStartingNumber()) > nextStartingNumber) {
+			nextStartingNumber = Integer.parseInt(player
+				.getStartingNumber());
+		    }
+		}
+	    }
+	    final int currentStartingNumber = nextStartingNumber
+		    + this.startNumberStep;
+
+	    new SimpleDialog<>("Wollen Sie den Spieler \""
+		    + selectedPlayer.getFirstName() + " "
+		    + selectedPlayer.getLastName()
+		    + "\" wirklich als anwesend markieren?")
+		    .modalDialog()
+		    .dialogButtons(DialogButtons.YES_NO)
+		    .title("Registrieren mit der Startnummer "
+			    + currentStartingNumber + " bestätigen")
+		    .onResult(
+			    (result, returnValue) -> {
+				if (result == DialogResult.YES) {
+				    selectedPlayer.setStartingNumber(String
+					    .valueOf(currentStartingNumber));
+				}
+			    }).show();
+	}
+    }
+
+    @FXML
     private void onButtonDistributeRegistrationClicked(ActionEvent event) {
 	log.fine("Distribute Registration Button clicked");
+
+	for (Player player : this.loadedEvent.getRegisteredPlayers()) {
+	    if (!player.getStartingNumber().equals("")) {
+		new SimpleDialog<>(
+			"Damit sichergestellt werden kann, dass alle Arbeitsplätze unterschiedliche Startnummern verteilen,\n"
+				+ "kann die Anmeldung nur verteilt werden, wenn noch keine anwesenden Spieler registriert wurden.")
+			.modalDialog().dialogButtons(DialogButtons.OK)
+			.title("Fehler").show();
+		return;
+	    }
+	}
 
 	this.distributionDialog
 		.onResult(
