@@ -39,6 +39,7 @@ public class Event {
     private final ObjectProperty<EventPhase> eventPhase;
 
     private final ObjectProperty<Tournament> executedTournament;
+    private int numberOfRegistrators;
     private final ObjectProperty<UserFlag> userFlag;
 
     /**
@@ -280,5 +281,24 @@ public class Event {
      */
     public ObjectProperty<Tournament> executedTournamentProperty() {
 	return this.executedTournament;
+    }
+
+    /**
+     * Get the number of registration desktops using this event
+     * 
+     * @return Number of registration desktops
+     */
+    public int getNumberOfRegistrators() {
+	return this.numberOfRegistrators;
+    }
+
+    /**
+     * Set the number of registration desktops using this event
+     * 
+     * @param numberOfRegistrators
+     *            New number of registration desktops
+     */
+    public void setNumberOfRegistrators(int numberOfRegistrators) {
+	this.numberOfRegistrators = numberOfRegistrators;
     }
 }

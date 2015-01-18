@@ -29,8 +29,10 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.filemanagement.FileLoader;
+import usspg31.tourney.model.filemanagement.FileSaver;
 
 public class RegistrationPhaseController implements EventUser {
 
@@ -281,11 +283,51 @@ public class RegistrationPhaseController implements EventUser {
     private void onButtonDistributeRegistrationClicked(ActionEvent event) {
 	log.fine("Distribute Registration Button clicked");
 
-	this.distributionDialog.onResult((result, returnValue) -> {
-	    if (result == DialogResult.OK && returnValue != null) {
-		System.out.println(returnValue);
-	    }
-	}).show();
+	this.distributionDialog
+		.onResult(
+			(result, returnValue) -> {
+			    if (result != DialogResult.OK) {
+				return;
+			    }
+
+			    FileChooser fileChooser = new FileChooser();
+			    fileChooser
+				    .setTitle("Eventdatei für andere Anmeldungsarbeitsplätze speichern");
+			    fileChooser.getExtensionFilters().add(
+				    new ExtensionFilter(
+					    "Tourney Eventdatei (*.tef)",
+					    "*.tef"));
+			    File selectedFile = fileChooser
+				    .showSaveDialog(EntryPoint
+					    .getPrimaryStage());
+			    if (selectedFile == null) {
+				return;
+			    }
+			    if (!selectedFile.getName().endsWith(".tef")) {
+				selectedFile = new File(selectedFile
+					.getAbsolutePath() + ".tef");
+			    }
+
+			    loadedEvent.setUserFlag(UserFlag.REGISTRATION);
+			    loadedEvent.setNumberOfRegistrators(returnValue);
+
+			    try {
+				FileSaver.saveEventToFile(this.loadedEvent,
+					selectedFile.getAbsolutePath());
+			    } catch (Exception e) {
+				log.log(Level.SEVERE,
+					"Could not save the event.", e);
+
+				new SimpleDialog<>(
+					"Das Event konnte nicht gespeichert werden.\n"
+						+ "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
+						+ "alle Berechtigungen besitzen.")
+					.modalDialog().title("Fehler").show();
+			    }
+
+			    loadedEvent.setUserFlag(UserFlag.ADMINISTRATION);
+			    loadedEvent.setNumberOfRegistrators(0);
+			}).show();
     }
 
     @FXML
@@ -323,7 +365,7 @@ public class RegistrationPhaseController implements EventUser {
 
     private void checkEventLoaded() {
 	if (this.loadedEvent == null) {
-	    throw new IllegalStateException("An Event must be loaded in order "
+	    throw new IllegalStateException("An event must be loaded in order "
 		    + "to perform actions on this controller");
 	}
     }

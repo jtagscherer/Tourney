@@ -57,7 +57,8 @@ public class RegistrationDistributionDialog extends VBox implements
 
     @Override
     public boolean hasNoInput() {
-	return this.textFieldNumberOfRegistrators.getText().length() == 0;
+	return this.textFieldNumberOfRegistrators.getText().length() == 0
+		|| this.getReturnValue() <= 1;
     }
 
     @FXML
@@ -68,17 +69,18 @@ public class RegistrationDistributionDialog extends VBox implements
 			+ "Gehen Sie dazu folgendermaßen vor:\n\n"
 			+ " \u2022 Tragen Sie die Anzahl der Arbeitsplätze inklusive des "
 			+ "Administrationsrechners ein,\n    an denen Anmeldungen vorgenommen werden "
-			+ "sollen.\n\n"
+			+ "sollen. Dies müssen also mindestens zwei sein.\n\n"
 			+ " \u2022 Bestätigen Sie Ihre Eingabe und speichern Sie das Event ab. Hierzu ist "
 			+ "ein portables Speichermedium\n    wie ein USB-Stick zu empfehlen, um "
 			+ "die Daten transportieren zu können.\n\n"
 			+ " \u2022 Öffnen Sie das gespeicherte Event an den anderen Anmeldungsarbeitsplätzen. "
-			+ "Die Software wechselt automatisch in die Ansicht\n    der angemeldeten Spieler. "
+			+ "Wählen Sie eine einzigartige\n    Nummer für jeden Arbeitsplatz aus. "
+			+ "Die Software wechselt automatisch in die Ansicht der angemeldeten Spieler.\n    "
 			+ "Hier können Anmeldungen wie gehabt vorgenommen werden.\n\n"
 			+ " \u2022 Die Anmeldungsarbeitsplätze speichern die Anmeldungen über das "
-			+ "Speichern-Symbol wieder auf dem Speichermedium ab.\n    Der Administrator "
-			+ "betätigt die Import-Schaltfläche in der Spieleranmeldung und wählt "
-			+ "die Eventdatei\n    vom Anmeldungsarbeitsplatz aus.\n    Alle Daten werden "
+			+ "Speichern-Symbol wieder auf\n    dem Speichermedium ab. Der Administrator "
+			+ "betätigt die Import-Schaltfläche in der Spieleranmeldung\n    und wählt "
+			+ "die Eventdatei  vom Anmeldungsarbeitsplatz aus.\n    Alle Daten werden "
 			+ "importiert und zusammengefügt.").modalDialog()
 		.dialogButtons(DialogButtons.OK)
 		.title("Informationen zur Anmeldungsverteilung").show();
