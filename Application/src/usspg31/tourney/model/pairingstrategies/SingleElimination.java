@@ -36,14 +36,6 @@ public class SingleElimination implements PairingStrategy {
 			ArrayList<Player> randomList = new ArrayList<>();
 			randomList.addAll(tournament.getRemainingPlayers());
 			int randomNumber;
-			// System.out.println(randomList.size());
-			System.out.println(tournament.getRemainingPlayers().size());
-
-			for (Player output : tournament.getRemainingPlayers()) {
-
-				System.out.println(System.currentTimeMillis() + ": "
-						+ output.getId());
-			}
 
 			while (randomList.size() >= PairingHelper.findPhase(
 					tournament.getRounds().size(), tournament)
@@ -54,20 +46,19 @@ public class SingleElimination implements PairingStrategy {
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
+
 					partResult.getScoreTable().add(
 							PairingHelper.generateEmptyScore(
-									randomList.get(tournament.getRuleSet()
-											.getPossibleScores().size()),
-									tournament.getRuleSet().getPossibleScores()
+									randomList.get(randomNumber), tournament
+											.getRuleSet().getPossibleScores()
 											.size()));
-					System.out.println(tournament.getRuleSet()
-							.getPossibleScores().size());
 
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
 				result.add(partResult);
 			}
+
 		} else if (PairingHelper.isFirstInPhase(tournament.getRounds().size(),
 				tournament, PairingHelper.findPhase(tournament.getRounds()
 						.size(), tournament))) {

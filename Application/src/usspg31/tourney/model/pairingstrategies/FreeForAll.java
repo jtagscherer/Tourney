@@ -97,12 +97,13 @@ public class FreeForAll implements PairingStrategy {
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
-
+				// checking if there is an similar pairing in the tournament
 				if (!PairingHelper.checkForSimiliarPairings(partResult,
 						tournament)) {
 					// TODO finish checking for similar pairings in previous
 					// rounds in the same game phase
 					result.add(partResult);
+
 				}
 			}
 		}

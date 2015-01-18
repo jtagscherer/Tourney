@@ -104,6 +104,9 @@ public class PairingHelper {
 		PlayerScore result = new PlayerScore();
 		result.setPlayer(opponent);
 		result.getScore().addAll(new Integer[numberOfScores]);
+		for (Integer score : result.getScore()) {
+			score = 0;
+		}
 		return result;
 	}
 }

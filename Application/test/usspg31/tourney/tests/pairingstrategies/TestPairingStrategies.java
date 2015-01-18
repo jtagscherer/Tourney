@@ -62,20 +62,25 @@ public class TestPairingStrategies {
 				testRoundGenerator.generateRound(testTournament));
 
 		// the second player in each pairing wins
-		Integer[] prePlayerScore = { 0, 4 };
+
 		for (Pairing testPairing : testTournament.getRounds().get(0)
 				.getPairings()) {
 			for (PlayerScore testPlayerScore : testPairing.getScoreTable()) {
-				testPlayerScore.getScore().addAll(prePlayerScore);
+				for (int i = 0; i < 2; i++) {
+					if (i == 0) {
+						testPlayerScore.getScore().set(i, 0);
+					}
+					testPlayerScore.getScore().set(i, 3);
+				}
 			}
 		}
+
 		testTournament.getRounds().add(
 				testRoundGenerator.generateRound(testTournament));
-		/*
-		 * assertEquals(testTournament.getRounds().get(0).getPairings().get(0)
-		 * .getOpponents().get(1), testTournament.getRounds().get(1)
-		 * .getPairings().get(0).getOpponents().get(0));
-		 */
+
+		assertEquals(testTournament.getRounds().get(0).getPairings().get(0)
+				.getOpponents().get(1), testTournament.getRounds().get(1)
+				.getPairings().get(0).getOpponents().get(0));
 
 	}
 
