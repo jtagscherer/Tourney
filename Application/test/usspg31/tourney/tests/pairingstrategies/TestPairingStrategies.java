@@ -171,4 +171,50 @@ public class TestPairingStrategies {
 
 	}
 
+	@Test
+	public void testFreeForAllFirstInPhase() {
+		Tournament testTournament = new Tournament();
+		TournamentModule testTournamentModule = new TournamentModule();
+		GamePhase testGamePhase = new GamePhase();
+
+		testGamePhase.setNumberOfOpponents(2);
+		testGamePhase.setPhaseNumber(0);
+		testGamePhase.setRoundCount(1);
+		testGamePhase.setPairingMethod(new FreeForAll());
+
+		testTournamentModule.getPhaseList().add(testGamePhase);
+
+		testGamePhase = new GamePhase();
+
+		testGamePhase.setNumberOfOpponents(2);
+		testGamePhase.setPhaseNumber(2);
+		testGamePhase.setRoundCount(1);
+		testGamePhase.setPairingMethod(new FreeForAll());
+
+		testTournamentModule.getPhaseList().add(testGamePhase);
+
+		testTournament.setRuleSet(testTournamentModule);
+
+		ArrayList<Player> testRemainingPlayer = new ArrayList<>();
+		Player testPlayer;
+		for (int i = 0; i < 8; i++) {
+			testPlayer = new Player();
+			testPlayer.setId(Integer.toString(i));
+
+			testRemainingPlayer.add(testPlayer);
+		}
+		testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
+
+		RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
+
+		testTournament.getRounds().add(
+				roundGenerator.generateRound(testTournament));
+
+		testTournament.getRounds().add(
+				roundGenerator.generateRound(testTournament));
+
+		assertTrue(testTournament.getRounds().get(0).getPairings().size() == testTournament
+				.getRounds().get(1).getPairings().size());
+	}
+
 }

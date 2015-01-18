@@ -17,7 +17,7 @@ public class PairingHelper {
 	 */
 	public static GamePhase findPhase(int roundcount, Tournament value) {
 		for (GamePhase actPhase : value.getRuleSet().getPhaseList()) {
-			if (roundcount - actPhase.getRoundCount() < 0) {
+			if (roundcount - actPhase.getRoundCount() <= 0) {
 				return actPhase;
 			}
 		}
