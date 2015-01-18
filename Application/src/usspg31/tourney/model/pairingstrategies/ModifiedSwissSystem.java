@@ -22,7 +22,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
 		PlayerScore score;
 
 		// TODO refactor name
-		ArrayList<ArrayList<PlayerScore>> subList = new ArrayList<>();
+		ArrayList<ArrayList<PlayerScore>> subList;
 
 		if (tournament.getRounds().size() == 0) {
 
@@ -54,55 +54,12 @@ public class ModifiedSwissSystem implements PairingStrategy {
 				}
 				result.add(partResult);
 			}
-		} else if (PairingHelper.isFirstInPhase(tournament.getRounds().size(),
-				tournament, PairingHelper.findPhase(tournament.getRounds()
-						.size(), tournament))) {
-			for (ArrayList<PlayerScore> sameScore : subList) {
-				while (sameScore.size() >= PairingHelper.findPhase(
-						tournament.getRounds().size(), tournament)
-						.getNumberOfOpponents()) {
-					partResult = new Pairing();
+		} else {
+			ArrayList<PlayerScore> tmp = new ArrayList<>();
+			tmp = PairingHelper.mergeScoreRemainingPlayer(tournament);
+			while (tmp.size() > 0) {
 
-					for (int i = 0; i < PairingHelper.findPhase(
-							tournament.getRounds().size(), tournament)
-							.getNumberOfOpponents(); i++) {
-						score = new PlayerScore();
-						score.setPlayer(sameScore.get(sameScore.size() - 1)
-								.getPlayer());
-						numberOfScores = new Integer[tournament.getRuleSet()
-								.getPossibleScores().size()];
-						score.getScore().addAll(numberOfScores);
-						partResult.getScoreTable().add(score);
-						if (i == 0) {
-							partResult.getOpponents().add(
-									sameScore.get(sameScore.size() - 1)
-											.getPlayer());
-							sameScore.remove(sameScore.size() - 1);
-						} else {
-							partResult.getOpponents().add(
-									sameScore.get(sameScore.size() - i)
-											.getPlayer());
-							if (i == PairingHelper.findPhase(
-									tournament.getRounds().size(), tournament)
-									.getNumberOfOpponents() - 1) {
-								if (PairingHelper.checkForSimiliarPairings(
-										partResult, tournament)) {
-
-									// TODO finish the procedure for similar
-									// pairings
-									result.add(partResult);
-								} else {
-									sameScore.remove(sameScore.size() - 1);
-
-									result.add(partResult);
-								}
-							}
-						}
-
-					}
-				}
 			}
-
 		}
 		return result;
 	}
