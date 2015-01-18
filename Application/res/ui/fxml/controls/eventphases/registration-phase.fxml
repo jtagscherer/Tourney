@@ -45,7 +45,8 @@
 					</Button>
 				</VBox>
 				<VBox alignment="BOTTOM_LEFT" spacing="5.0" styleClass="distribution-button-container" VBox.vgrow="ALWAYS">
- 					<Button fx:id="buttonDistributeRegistration" styleClass="distribution-button">
+ 					<Button fx:id="buttonDistributeRegistration" styleClass="distribution-button"
+ 					onAction="#onButtonDistributeRegistrationClicked">
  						<graphic>
  							<IconPane styleClass="icon-distribute, half" />
  						</graphic>
