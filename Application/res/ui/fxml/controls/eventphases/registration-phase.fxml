@@ -51,6 +51,12 @@
  							<IconPane styleClass="icon-distribute, half" />
  						</graphic>
  					</Button>
+ 					<Button fx:id="buttonImportRegistration" styleClass="distribution-button"
+ 					onAction="#onButtonImportRegistrationClicked">
+ 						<graphic>
+ 							<IconPane styleClass="icon-merge, half" />
+ 						</graphic>
+ 					</Button>
       			</VBox>
 			</VBox>
 		</HBox>

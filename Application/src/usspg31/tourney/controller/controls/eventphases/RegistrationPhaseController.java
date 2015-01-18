@@ -1,5 +1,7 @@
 package usspg31.tourney.controller.controls.eventphases;
 
+import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -14,22 +16,22 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
-
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
+import usspg31.tourney.controller.dialogs.RegistrationDistributionDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.filemanagement.FileLoader;
 
-@SuppressWarnings("deprecation")
 public class RegistrationPhaseController implements EventUser {
 
     private static final Logger log = Logger
@@ -54,12 +56,15 @@ public class RegistrationPhaseController implements EventUser {
     private TableColumn<Player, String> tableColumnPlayerStartNumber;
 
     private ModalDialog<Object, Player> registrationDialog;
+    private ModalDialog<String, Integer> distributionDialog;
 
     private Event loadedEvent;
 
     @FXML
     private void initialize() {
 	this.registrationDialog = new PlayerPreRegistrationDialog()
+		.modalDialog();
+	this.distributionDialog = new RegistrationDistributionDialog()
 		.modalDialog();
     }
 
@@ -222,26 +227,24 @@ public class RegistrationPhaseController implements EventUser {
 	Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
 		.getSelectedItem();
 	if (selectedPlayer == null) {
-	    Dialogs.create()
-		    .owner(EntryPoint.getPrimaryStage())
-		    .title("Fehler")
-		    .message(
-			    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-		    .showError();
+	    new SimpleDialog<>(
+		    "Bitte wählen Sie einen Spieler aus der Liste aus.")
+		    .modalDialog().dialogButtons(DialogButtons.OK)
+		    .title("Fehler").show();
 	} else {
-	    Action response = Dialogs
-		    .create()
-		    .owner(EntryPoint.getPrimaryStage())
-		    .title("Spieler löschen")
-		    .message(
-			    "Wollen Sie den Spieler \""
-				    + selectedPlayer.getFirstName() + " "
-				    + selectedPlayer.getLastName()
-				    + "\" wirklich löschen?").showConfirm();
-
-	    if (response == Dialog.ACTION_YES) {
-		this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
-	    }
+	    new SimpleDialog<>("Wollen Sie den Spieler \""
+		    + selectedPlayer.getFirstName() + " "
+		    + selectedPlayer.getLastName() + "\" wirklich löschen?")
+		    .modalDialog()
+		    .dialogButtons(DialogButtons.YES_NO)
+		    .title("Löschen bestätigen")
+		    .onResult(
+			    (result, returnValue) -> {
+				if (result == DialogResult.YES) {
+				    this.loadedEvent.getRegisteredPlayers()
+					    .remove(selectedPlayer);
+				}
+			    }).show();
 	}
     }
 
@@ -253,12 +256,10 @@ public class RegistrationPhaseController implements EventUser {
 	final Player selectedPlayer = this.tableRegisteredPlayers
 		.getSelectionModel().getSelectedItem();
 	if (selectedPlayer == null) {
-	    Dialogs.create()
-		    .owner(EntryPoint.getPrimaryStage())
-		    .title("Fehler")
-		    .message(
-			    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-		    .showError();
+	    new SimpleDialog<>(
+		    "Bitte wählen Sie einen Spieler aus der Liste aus.")
+		    .modalDialog().dialogButtons(DialogButtons.OK)
+		    .title("Fehler").show();
 	} else {
 	    this.registrationDialog
 		    .properties(selectedPlayer)
@@ -279,6 +280,45 @@ public class RegistrationPhaseController implements EventUser {
     @FXML
     private void onButtonDistributeRegistrationClicked(ActionEvent event) {
 	log.fine("Distribute Registration Button clicked");
+
+	this.distributionDialog.onResult((result, returnValue) -> {
+	    if (result == DialogResult.OK && returnValue != null) {
+		System.out.println(returnValue);
+	    }
+	}).show();
+    }
+
+    @FXML
+    private void onButtonImportRegistrationClicked(ActionEvent event) {
+	log.fine("Merge Registration Button clicked");
+
+	FileChooser fileChooser = new FileChooser();
+	fileChooser.setTitle("Anmeldedaten aus Eventdatei importieren");
+	fileChooser.getExtensionFilters().add(
+		new ExtensionFilter("Tourney Eventdateien (*.tef)", "*.tef"));
+	File selectedFile = fileChooser.showOpenDialog(EntryPoint
+		.getPrimaryStage());
+	if (selectedFile != null) {
+	    Event loadedEvent = null;
+
+	    try {
+		loadedEvent = FileLoader.loadEventFromFile(selectedFile
+			.getAbsolutePath());
+	    } catch (Exception e) {
+		log.log(Level.SEVERE, "Could not load the specified event.", e);
+		new SimpleDialog<>(
+			"Die Eventdatei \""
+				+ selectedFile.getName()
+				+ "\" konnte nicht geladen werden.\nBitte stellen Sie sicher, "
+				+ "dass es sich dabei um eine gültige Eventdatei handelt.")
+			.modalDialog().dialogButtons(DialogButtons.OK)
+			.title("Fehler").show();
+	    }
+
+	    if (loadedEvent != null) {
+		// TODO: Merge players
+	    }
+	}
     }
 
     private void checkEventLoaded() {

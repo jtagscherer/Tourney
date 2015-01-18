@@ -181,9 +181,8 @@ public final class ModalDialog<P, R> extends StackPane {
     public void exitWith(DialogResult result) {
 	if (this.dialogContent.hasNoInput() && result == DialogResult.OK) {
 	    new SimpleDialog<>(
-		    "Bitte tragen Sie Daten ein, bevor Sie ein neues Element hinzufügen können.")
-		    .modalDialog()
-		    .dialogButtons(DialogButtons.OK)
+		    "Bitte tragen Sie Daten ein, bevor Sie diese Aktion ausführen können.")
+		    .modalDialog().dialogButtons(DialogButtons.OK)
 		    .title("Fehler").show();
 	} else {
 	    this.hide();
