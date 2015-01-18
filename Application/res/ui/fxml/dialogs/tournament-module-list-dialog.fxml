@@ -23,18 +23,27 @@
 				<graphic>
 					<IconPane styleClass="icon-add, half" />
 				</graphic>
+				<tooltip>
+					<Tooltip text="Neues Turniermodul hinzufügen" />
+				</tooltip>
 			</Button>
 			<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button"
 				onAction="#onButtonRemoveTournamentModuleClicked">
 				<graphic>
 					<IconPane styleClass="icon-remove, half" />
 				</graphic>
+				<tooltip>
+					<Tooltip text="Ausgewähltes Turniermodul entfernen" />
+				</tooltip>
 			</Button>
 			<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button"
 				onAction="#onButtonEditTournamentModuleClicked">
 				<graphic>
 					<IconPane styleClass="icon-edit, half" />
 				</graphic>
+				<tooltip>
+					<Tooltip text="Ausgewähltes Turniermodul ändern" />
+				</tooltip>
 			</Button>
 		</VBox>
 	</children>
