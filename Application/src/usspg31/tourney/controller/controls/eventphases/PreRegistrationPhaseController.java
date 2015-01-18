@@ -154,11 +154,14 @@ public class PreRegistrationPhaseController implements EventUser {
 			(result, returnValue) -> {
 			    if (result == DialogResult.OK
 				    && returnValue != null) {
+				returnValue.setId(String.valueOf(new String(
+					returnValue.getFirstName()
+						+ returnValue.getLastName()
+						+ returnValue.getMailAddress()
+						+ returnValue.getNickName())
+					.hashCode()));
 				this.loadedEvent.getRegisteredPlayers().add(
 					returnValue);
-				returnValue.setId(String
-					.valueOf(this.loadedEvent
-						.getRegisteredPlayers().size()));
 			    }
 			}).show();
     }

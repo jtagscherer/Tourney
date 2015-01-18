@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentModule;
@@ -190,6 +191,7 @@ public class FileLoader {
 		    break;
 		}
 	    }
+	    event.setUserFlag(UserFlag.TOURNAMENT_EXECUTION);
 	}
 
 	/*
@@ -197,6 +199,7 @@ public class FileLoader {
 	 */
 	if (numberOfRegistrators > 0) {
 	    event.setNumberOfRegistrators(numberOfRegistrators);
+	    event.setUserFlag(UserFlag.REGISTRATION);
 	}
 
 	return event;

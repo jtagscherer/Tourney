@@ -1,6 +1,7 @@
 package usspg31.tourney.controller.controls.eventphases;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +51,11 @@ public class RegistrationPhaseController implements EventUser {
     @FXML
     private Button buttonEditPlayer;
 
+    @FXML
+    private Button buttonDistributeRegistration;
+    @FXML
+    private Button buttonImportRegistration;
+
     private TableColumn<Player, String> tableColumnPlayerFirstName;
     private TableColumn<Player, String> tableColumnPlayerLastName;
     private TableColumn<Player, String> tableColumnPlayerNickName;
@@ -78,6 +84,11 @@ public class RegistrationPhaseController implements EventUser {
 	}
 
 	this.loadedEvent = event;
+
+	if (this.loadedEvent.getUserFlag() == UserFlag.REGISTRATION) {
+	    this.buttonDistributeRegistration.setDisable(true);
+	    this.buttonImportRegistration.setDisable(true);
+	}
 
 	this.tableRegisteredPlayers.getSelectionModel().clearSelection();
 
@@ -215,6 +226,12 @@ public class RegistrationPhaseController implements EventUser {
 			(result, returnValue) -> {
 			    if (result == DialogResult.OK
 				    && returnValue != null) {
+				returnValue.setId(String.valueOf(new String(
+					returnValue.getFirstName()
+						+ returnValue.getLastName()
+						+ returnValue.getMailAddress()
+						+ returnValue.getNickName())
+					.hashCode()));
 				this.loadedEvent.getRegisteredPlayers().add(
 					returnValue);
 			    }
@@ -341,10 +358,10 @@ public class RegistrationPhaseController implements EventUser {
 	File selectedFile = fileChooser.showOpenDialog(EntryPoint
 		.getPrimaryStage());
 	if (selectedFile != null) {
-	    Event loadedEvent = null;
+	    Event importedEvent = null;
 
 	    try {
-		loadedEvent = FileLoader.loadEventFromFile(selectedFile
+		importedEvent = FileLoader.loadEventFromFile(selectedFile
 			.getAbsolutePath());
 	    } catch (Exception e) {
 		log.log(Level.SEVERE, "Could not load the specified event.", e);
@@ -357,8 +374,33 @@ public class RegistrationPhaseController implements EventUser {
 			.title("Fehler").show();
 	    }
 
-	    if (loadedEvent != null) {
-		// TODO: Merge players
+	    if (importedEvent != null) {
+		ArrayList<Player> newPlayers = new ArrayList<Player>();
+		/* Add all players that were already existent */
+		loaded_players: for (Player loadedPlayer : importedEvent
+			.getRegisteredPlayers()) {
+		    for (Player player : this.loadedEvent
+			    .getRegisteredPlayers()) {
+			if (player.getId().equals(loadedPlayer.getId())) {
+			    this.loadedEvent.getRegisteredPlayers().remove(
+				    player);
+			    this.loadedEvent.getRegisteredPlayers().add(
+				    loadedPlayer);
+			    continue loaded_players;
+			}
+		    }
+		    newPlayers.add(loadedPlayer);
+		}
+
+		/* Add all new players from the imported event */
+		for (Player loadedPlayer : newPlayers) {
+		    this.loadedEvent.getRegisteredPlayers().add(loadedPlayer);
+		}
+
+		new SimpleDialog<>(
+			"Alle Spielerdaten wurden erfolgreich importiert.")
+			.modalDialog().dialogButtons(DialogButtons.OK)
+			.title("Import der Anmeldungen").show();
 	    }
 	}
     }
