@@ -26,7 +26,7 @@
 			<VBox fx:id="dialogRoot" maxHeight="-Infinity" maxWidth="-Infinity"
 				styleClass="modal-dialog-container" RelativityPane.relBottom="5% 5px"
 				RelativityPane.relLeft="5% 5px" RelativityPane.relRight="5% 5px"
-				RelativityPane.relTop="5% 5px">
+				RelativityPane.relTop="5% 5px" spacing="20">
 				<Label fx:id="labelTitle" styleClass="heading" text="labelTitle">
 					<VBox.margin>
 						<Insets left="5.0" />

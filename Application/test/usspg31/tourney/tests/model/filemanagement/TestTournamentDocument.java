@@ -259,4 +259,10 @@ public class TestTournamentDocument {
 	assertEquals(4, readPhase.getRoundCount());
 	assertEquals(Duration.ofMinutes(10), readPhase.getRoundDuration());
     }
+
+    @Test
+    public void testSetDocument() {
+	this.document.setDocument(null);
+	assertTrue(this.document.getDocument() == null);
+    }
 }

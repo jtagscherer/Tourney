@@ -36,7 +36,6 @@ import usspg31.tourney.model.Event;
 import usspg31.tourney.model.filemanagement.FileSaver;
 import usspg31.tourney.model.undo.UndoManager;
 
-@SuppressWarnings("deprecation")
 public class EventPhaseViewController implements EventUser {
 
 	private static final Logger log = Logger.getLogger(MainMenuController.class
@@ -294,13 +293,6 @@ public class EventPhaseViewController implements EventUser {
 					.title("Fehler")
 					.show();
 
-			//			Dialogs.create()
-			//			.owner(EntryPoint.getPrimaryStage())
-			//			.title("Fehler")
-			//			.message(
-			//					"Das Event konnte nicht gespeichert werden.\nBitte stellen Sie sicher, dass Sie für die Zieldatei alle Berechtigungen besitzen.")
-			//					.showError();
-
 			return DialogResult.CANCEL;
 		}
 
@@ -328,6 +320,10 @@ public class EventPhaseViewController implements EventUser {
 						}
 					})
 					.show();
+		} else {
+		    this.unloadEvent();
+			MainWindow.getInstance().slideDown(
+					MainWindow.getInstance().getMainMenu());
 		}
 	}
 

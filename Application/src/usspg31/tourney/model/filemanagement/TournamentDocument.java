@@ -210,9 +210,6 @@ public class TournamentDocument {
 	case REMAINING_PLAYERS:
 	    playersElement = this.document.createElement("remaining-players");
 	    break;
-	default:
-	    throw new IllegalArgumentException("The player type " + playerType
-		    + " is not valid.");
 	}
 
 	this.rootElement.appendChild(playersElement);
