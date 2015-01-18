@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -19,7 +18,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.util.Callback;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
@@ -208,24 +206,23 @@ public class RegistrationPhaseController implements EventUser {
 	this.tableColumnPlayerStartNumber = new TableColumn<Player, String>(
 		"Startnummer");
 	this.tableColumnPlayerStartNumber
-		.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Player, String>, ObservableValue<String>>() {
-		    @Override
-		    public ObservableValue<String> call(
-			    TableColumn.CellDataFeatures<Player, String> cellData) {
-			if (cellData.getValue() != null) {
-			    if (cellData.getValue().getStartingNumber()
-				    .equals("")) {
-				return new SimpleStringProperty(
-					"Nicht anwesend");
-			    } else {
-				return new SimpleStringProperty(cellData
-					.getValue().getStartingNumber());
-			    }
+		.setCellValueFactory(cellData -> cellData.getValue()
+			.startingNumberProperty());
+	this.tableColumnPlayerStartNumber.setCellFactory(column -> {
+	    return new TableCell<Player, String>() {
+		@Override
+		protected void updateItem(String item, boolean empty) {
+		    super.updateItem(item, empty);
+		    if (item != null) {
+			if (item.equals("")) {
+			    setText("Nicht anwesend");
 			} else {
-			    return new SimpleStringProperty("");
+			    setText(item);
 			}
 		    }
-		});
+		}
+	    };
+	});
 	this.tableColumnPlayerStartNumber.setEditable(false);
 	this.tableRegisteredPlayers.getColumns().add(
 		this.tableColumnPlayerStartNumber);
@@ -327,6 +324,14 @@ public class RegistrationPhaseController implements EventUser {
 		    .modalDialog().dialogButtons(DialogButtons.OK)
 		    .title("Fehler").show();
 	} else {
+	    if (!selectedPlayer.getStartingNumber().equals("")) {
+		new SimpleDialog<>(
+			"Dieser Spieler wurde bereits registriert und hat eine Startnummer erhalten.")
+			.modalDialog().dialogButtons(DialogButtons.OK)
+			.title("Fehler").show();
+		return;
+	    }
+
 	    /*
 	     * Get the currently highest starting number to generate the next
 	     * one
@@ -343,6 +348,10 @@ public class RegistrationPhaseController implements EventUser {
 	    final int currentStartingNumber = nextStartingNumber
 		    + this.startNumberStep;
 
+	    /*
+	     * Ask the user for confirmation and register the player if
+	     * necessary
+	     */
 	    new SimpleDialog<>("Wollen Sie den Spieler \""
 		    + selectedPlayer.getFirstName() + " "
 		    + selectedPlayer.getLastName()

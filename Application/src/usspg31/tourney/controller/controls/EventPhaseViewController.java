@@ -346,6 +346,7 @@ public class EventPhaseViewController implements EventUser {
 	    this.unloadEvent();
 	    MainWindow.getInstance().slideDown(
 		    MainWindow.getInstance().getMainMenu());
+	    return;
 	}
 
 	if (this.activeUndoManager.undoAvailable()) {
