@@ -137,42 +137,7 @@ public class TestPairingStrategies {
 	}
 
 	@Test
-	public void testFreeForAllFirstInTournament() {
-		Tournament testTournament = new Tournament();
-		TournamentModule testTournamentMoudle = new TournamentModule();
-		GamePhase testGamePhase = new GamePhase();
-
-		testGamePhase.setNumberOfOpponents(2);
-		testGamePhase.setPhaseNumber(0);
-		testGamePhase.setRoundCount(1);
-		testGamePhase.setPairingMethod(new FreeForAll());
-
-		testTournamentMoudle.getPhaseList().add(testGamePhase);
-		testTournament.setRuleSet(testTournamentMoudle);
-
-		ArrayList<Player> testRemainingPlayer = new ArrayList<>();
-		Player testPlayer;
-		for (int i = 0; i < 8; i++) {
-			testPlayer = new Player();
-			testPlayer.setId(Integer.toString(i));
-
-			testRemainingPlayer.add(testPlayer);
-		}
-		testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
-
-		RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
-
-		testTournament.getRounds().add(
-				roundGenerator.generateRound(testTournament));
-
-		System.out.println(testTournament.getRounds().get(0).getPairings()
-				.size());
-		assertTrue(testTournament.getRounds().get(0).getPairings().size() * 2 == 8);
-
-	}
-
-	@Test
-	public void testFreeForAllFirstInPhase() {
+	public void testFreeForAllComplete() {
 		Tournament testTournament = new Tournament();
 		TournamentModule testTournamentModule = new TournamentModule();
 		GamePhase testGamePhase = new GamePhase();
@@ -188,7 +153,7 @@ public class TestPairingStrategies {
 
 		testGamePhase.setNumberOfOpponents(2);
 		testGamePhase.setPhaseNumber(2);
-		testGamePhase.setRoundCount(1);
+		testGamePhase.setRoundCount(2);
 		testGamePhase.setPairingMethod(new FreeForAll());
 
 		testTournamentModule.getPhaseList().add(testGamePhase);
@@ -213,8 +178,13 @@ public class TestPairingStrategies {
 		testTournament.getRounds().add(
 				roundGenerator.generateRound(testTournament));
 
+		testTournament.getRounds().add(
+				roundGenerator.generateRound(testTournament));
+
+		assertTrue(testTournament.getRounds().get(0).getPairings().size() * 2 == 8);
 		assertTrue(testTournament.getRounds().get(0).getPairings().size() == testTournament
 				.getRounds().get(1).getPairings().size());
+
 	}
 
 }
