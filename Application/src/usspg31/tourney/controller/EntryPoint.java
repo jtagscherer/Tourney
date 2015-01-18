@@ -59,9 +59,9 @@ public class EntryPoint extends Application {
 		    UndoManager undoManager = MainWindow.getInstance()
 			    .getEventPhaseViewController()
 			    .getActiveUndoManager();
-		    if (undoManager != null && !closeRequested) {
+		    if (undoManager != null && !EntryPoint.this.closeRequested) {
 			if (undoManager.undoAvailable()) {
-			    closeRequested = true;
+			    EntryPoint.this.closeRequested = true;
 			    new SimpleDialog<>(
 				    "Es sind ungesicherte Änderungen vorhanden.\n"
 					    + "Möchten Sie diese vor dem Beenden speichern?")
@@ -72,14 +72,14 @@ public class EntryPoint extends Application {
 					    (result, returnValue) -> {
 						switch (result) {
 						case CANCEL:
-						    closeRequested = false;
+						    EntryPoint.this.closeRequested = false;
 						    return;
 						case YES:
 						    DialogResult saveResponse = MainWindow
 							    .getInstance()
 							    .getEventPhaseViewController()
 							    .saveEvent();
-						    closeRequested = false;
+						    EntryPoint.this.closeRequested = false;
 
 						    if (saveResponse != DialogResult.OK) {
 							return;
@@ -90,13 +90,21 @@ public class EntryPoint extends Application {
 						     * no return yet
 						     */
 						default:
-						    closeRequested = false;
+						    EntryPoint.this.closeRequested = false;
 						    primaryStage.close();
 						    Platform.exit();
 						    break;
 						}
 					    }).show();
+			} else {
+			    EntryPoint.this.closeRequested = false;
+			    primaryStage.close();
+			    Platform.exit();
 			}
+		    } else {
+			EntryPoint.this.closeRequested = false;
+			primaryStage.close();
+			Platform.exit();
 		    }
 		}
 	    });

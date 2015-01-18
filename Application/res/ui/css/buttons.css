@@ -44,3 +44,13 @@
 	-fx-min-width: 50px;
 	-fx-max-height: -t-max-value;
 }
+
+.distribution-button {
+	-fx-min-width: 100px;
+	-fx-min-height: 35px;
+}
+
+.distribution-button.half {
+	-fx-min-width: 50px;
+	-fx-max-height: -t-max-value;
+}
