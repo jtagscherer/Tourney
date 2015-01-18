@@ -22,11 +22,12 @@ public class SwissSystem implements PairingStrategy {
 		PlayerScore score;
 		Integer[] numberOfScores;
 
+		// generate the score table for the remaining player in the tournament
 		mergedScoreTable = PairingHelper.mergeScoreRemainingPlayer(tournament);
 		Collections.sort(mergedScoreTable);
 
 		if (tournament.getRounds().size() == 0) {
-
+			// random pairings in the first round of the tournament
 			Random randomGenerator = new Random();
 			ArrayList<Player> randomList = new ArrayList<>();
 			randomList.addAll(tournament.getRemainingPlayers());
@@ -62,13 +63,12 @@ public class SwissSystem implements PairingStrategy {
 				for (int i = 0; i < PairingHelper.findPhase(
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
-					score = new PlayerScore();
-					score.setPlayer(mergedScoreTable.get(
-							mergedScoreTable.size() - 1).getPlayer());
-					numberOfScores = new Integer[tournament.getRuleSet()
-							.getPossibleScores().size()];
-					score.getScore().addAll(numberOfScores);
-					partResult.getScoreTable().add(score);
+
+					partResult.getScoreTable().add(
+							PairingHelper.generateEmptyScore(mergedScoreTable
+									.get(mergedScoreTable.size() - 1)
+									.getPlayer(), tournament.getRuleSet()
+									.getPossibleScores().size()));
 					if (i == 0) {
 						partResult.getOpponents().add(
 								mergedScoreTable.get(

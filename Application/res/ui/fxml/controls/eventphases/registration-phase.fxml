@@ -23,25 +23,65 @@
 			promptText="Teilnehmer suchen" HBox.hgrow="ALWAYS" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS" />
-			<VBox spacing="5.0" styleClass="table-edit-button-container">
-				<Button fx:id="buttonAddPlayer" styleClass="table-edit-button"
-					onAction="#onButtonAddPlayerClicked">
-					<graphic>
-						<IconPane styleClass="icon-add, half" />
-					</graphic>
-				</Button>
-				<Button fx:id="buttonRemovePlayer" styleClass="table-edit-button"
-					onAction="#onButtonRemovePlayerClicked">
-					<graphic>
-						<IconPane styleClass="icon-remove, half" />
-					</graphic>
-				</Button>
-				<Button fx:id="buttonEditPlayer" styleClass="table-edit-button"
-					onAction="#onButtonEditPlayerClicked">
-					<graphic>
-						<IconPane styleClass="icon-edit, half" />
-					</graphic>
-				</Button>
+			<VBox spacing="5.0">
+				<VBox spacing="5.0" styleClass="table-edit-button-container">
+					<Button fx:id="buttonAddPlayer" styleClass="table-edit-button"
+						onAction="#onButtonAddPlayerClicked">
+						<graphic>
+							<IconPane styleClass="icon-add, half" />
+						</graphic>
+						<tooltip>
+							<Tooltip text="Neuen Spieler hinzufügen" />
+						</tooltip>
+					</Button>
+					<Button fx:id="buttonRemovePlayer" styleClass="table-edit-button"
+						onAction="#onButtonRemovePlayerClicked">
+						<graphic>
+							<IconPane styleClass="icon-remove, half" />
+						</graphic>
+						<tooltip>
+							<Tooltip text="Ausgewählten Spieler entfernen" />
+						</tooltip>
+					</Button>
+					<Button fx:id="buttonEditPlayer" styleClass="table-edit-button"
+						onAction="#onButtonEditPlayerClicked">
+						<graphic>
+							<IconPane styleClass="icon-edit, half" />
+						</graphic>
+						<tooltip>
+							<Tooltip text="Ausgewählten Spieler ändern" />
+						</tooltip>
+					</Button>
+					<Button fx:id="buttonRegisterPlayer" styleClass="table-edit-button"
+						onAction="#onButtonRegisterPlayerClicked">
+						<graphic>
+							<IconPane styleClass="icon-register, half" />
+						</graphic>
+						<tooltip>
+							<Tooltip text="Ausgewählten Spieler als anwesend markieren" />
+						</tooltip>
+					</Button>
+				</VBox>
+				<VBox alignment="BOTTOM_LEFT" spacing="5.0" styleClass="distribution-button-container" VBox.vgrow="ALWAYS">
+ 					<Button fx:id="buttonDistributeRegistration" styleClass="distribution-button"
+ 					onAction="#onButtonDistributeRegistrationClicked">
+ 						<graphic>
+ 							<IconPane styleClass="icon-distribute, half" />
+ 						</graphic>
+ 						<tooltip>
+							<Tooltip text="Spieleranmeldung verteilen" />
+						</tooltip>
+ 					</Button>
+ 					<Button fx:id="buttonImportRegistration" styleClass="distribution-button"
+ 					onAction="#onButtonImportRegistrationClicked">
+ 						<graphic>
+ 							<IconPane styleClass="icon-merge, half" />
+ 						</graphic>
+ 						<tooltip>
+							<Tooltip text="Angemeldete Spieler importieren" />
+						</tooltip>
+ 					</Button>
+      			</VBox>
 			</VBox>
 		</HBox>
 	</children>

@@ -44,6 +44,9 @@
 								<graphic>
 									<IconPane styleClass="icon-arrow-up, half" />
 								</graphic>
+								<tooltip>
+									<Tooltip text="Ausgewählte Turnierphase nach oben bewegen" />
+								</tooltip>
 							</Button>
 							<Button fx:id="buttonMovePhaseDown" HBox.hgrow="ALWAYS"
 								styleClass="multi-button, right, table-edit-button, half"
@@ -51,6 +54,9 @@
 								<graphic>
 									<IconPane styleClass="icon-arrow-down, half" />
 								</graphic>
+								<tooltip>
+									<Tooltip text="Ausgewählte Turnierphase nach unten bewegen" />
+								</tooltip>
 							</Button>
 						</HBox>
 						<Button fx:id="buttonAddPhase" styleClass="table-edit-button"
@@ -58,18 +64,27 @@
 							<graphic>
 								<IconPane styleClass="icon-add, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="Neue Turnierphase hinzufügen" />
+							</tooltip>
 						</Button>
 						<Button fx:id="buttonRemovePhase" styleClass="table-edit-button"
 							onAction="#onButtonRemovePhaseClicked">
 							<graphic>
 								<IconPane styleClass="icon-remove, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="Ausgewählte Turnierphase entfernen" />
+							</tooltip>
 						</Button>
 						<Button fx:id="buttonEditPhase" styleClass="table-edit-button"
 							onAction="#onButtonEditPhaseClicked">
 							<graphic>
 								<IconPane styleClass="icon-edit, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="Ausgewählte Turnierphase ändern" />
+							</tooltip>
 						</Button>
 					</VBox>
 				</HBox>
@@ -84,6 +99,9 @@
 								<graphic>
 									<IconPane styleClass="icon-arrow-up, half" />
 								</graphic>
+								<tooltip>
+									<Tooltip text="Ausgewählte Wertung nach oben bewegen" />
+								</tooltip>
 							</Button>
 							<Button fx:id="buttonMoveScoreDown" HBox.hgrow="ALWAYS"
 								styleClass="multi-button, right, table-edit-button, half"
@@ -91,6 +109,9 @@
 								<graphic>
 									<IconPane styleClass="icon-arrow-down, half" />
 								</graphic>
+								<tooltip>
+									<Tooltip text="Ausgewählte Wertung nach unten bewegen" />
+								</tooltip>
 							</Button>
 						</HBox>
 						<Button fx:id="buttonAddScore" styleClass="table-edit-button"
@@ -98,18 +119,27 @@
 							<graphic>
 								<IconPane styleClass="icon-add, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="Neue Wertung hinzufügen" />
+							</tooltip>
 						</Button>
 						<Button fx:id="buttonRemoveScore" styleClass="table-edit-button"
 							onAction="#onButtonRemoveScoreClicked">
 							<graphic>
 								<IconPane styleClass="icon-remove, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="Ausgewählte Wertung entfernen" />
+							</tooltip>
 						</Button>
 						<Button fx:id="buttonEditScore" styleClass="table-edit-button"
 							onAction="#onButtonRemoveScoreClicked">
 							<graphic>
 								<IconPane styleClass="icon-edit, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="Ausgewählte Wertung ändern" />
+							</tooltip>
 						</Button>
 					</VBox>
 				</HBox>

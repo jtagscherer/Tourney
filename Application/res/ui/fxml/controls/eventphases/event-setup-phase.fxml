@@ -48,18 +48,27 @@
 						<graphic>
 							<IconPane styleClass="icon-add, half" />
 						</graphic>
+						<tooltip>
+							<Tooltip text="Neues Turnier hinzufügen" />
+						</tooltip>
 					</Button>
 					<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button"
 						onAction="#onButtonRemoveTournamentClicked">
 						<graphic>
 							<IconPane styleClass="icon-remove, half" />
 						</graphic>
+						<tooltip>
+							<Tooltip text="Ausgewähltes Turnier entfernen" />
+						</tooltip>
 					</Button>
 					<Button fx:id="buttonEditTournament" styleClass="table-edit-button"
 						onAction="#onButtonEditTournamentClicked">
 						<graphic>
 							<IconPane styleClass="icon-edit, half" />
 						</graphic>
+						<tooltip>
+							<Tooltip text="Ausgewähltes Turnier ändern" />
+						</tooltip>
 					</Button>
 				</VBox>
 			</HBox>

@@ -172,11 +172,10 @@ public class PairingView extends VBox implements TournamentUser {
 	for (PossibleScoring scoring : tournament.getRuleSet()
 		.getPossibleScores()) {
 	    TableColumn<PlayerScore, String> scoreColumn = new TableColumn<>(
-		    Integer.toString(scoring.getPriority().get()));
+		    Integer.toString(scoring.getPriority()));
 	    scoreColumn.setCellValueFactory(score -> {
-		return new SimpleStringProperty(Integer
-			.toString(score.getValue().getScore()
-				.get(scoring.getPriority().get())));
+		return new SimpleStringProperty(Integer.toString(score
+			.getValue().getScore().get(scoring.getPriority())));
 	    });
 	}
 

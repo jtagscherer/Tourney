@@ -29,18 +29,27 @@
 					<graphic>
 						<IconPane styleClass="icon-add, half" />
 					</graphic>
+					<tooltip>
+						<Tooltip text="Neuen Spieler hinzufügen" />
+					</tooltip>
 				</Button>
 				<Button fx:id="buttonRemovePlayer" styleClass="table-edit-button"
 					onAction="#onButtonRemovePlayerClicked">
 					<graphic>
 						<IconPane styleClass="icon-remove, half" />
 					</graphic>
+					<tooltip>
+						<Tooltip text="Ausgewählten Spieler entfernen" />
+					</tooltip>
 				</Button>
 				<Button fx:id="buttonEditPlayer" styleClass="table-edit-button"
 					onAction="#onButtonEditPlayerClicked">
 					<graphic>
 						<IconPane styleClass="icon-edit, half" />
 					</graphic>
+					<tooltip>
+						<Tooltip text="Ausgewählten Spieler ändern" />
+					</tooltip>
 				</Button>
 			</VBox>
 		</HBox>

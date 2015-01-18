@@ -8,5 +8,6 @@ public interface DialogContent<P, R> {
 	default Node getRoot() { return (Node) this; }
 	default void setProperties(P properties) { }
 	default R getReturnValue() { return null; }
+	default boolean hasNoInput() { return false; }
 
 }

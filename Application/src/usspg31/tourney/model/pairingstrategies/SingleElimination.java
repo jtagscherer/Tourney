@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
-import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.Tournament;
 
 public class SingleElimination implements PairingStrategy {
@@ -28,13 +27,13 @@ public class SingleElimination implements PairingStrategy {
 
 		ArrayList<Pairing> result = new ArrayList<>();
 		Pairing partResult = new Pairing();
-		ArrayList<PlayerScore> opponents = new ArrayList<>();
-		PlayerScore score;
-		Integer[] numberOfScores;
 
 		// checks if this round is the first round in the gamephase and modify
 		// the pairing strategy for this round
-		if (tournament.getRounds().size() == 0) {
+		if (tournament.getRounds().size() == 0
+				|| PairingHelper.isFirstInPhase(tournament.getRounds().size(),
+						tournament, PairingHelper.findPhase(tournament
+								.getRounds().size(), tournament))) {
 
 			Random randomGenerator = new Random();
 			ArrayList<Player> randomList = new ArrayList<>();
@@ -45,43 +44,10 @@ public class SingleElimination implements PairingStrategy {
 					tournament.getRounds().size(), tournament)
 					.getNumberOfOpponents()) {
 				partResult = new Pairing();
-				partResult.getScoreTable().addAll(opponents);
 
 				for (int i = 0; i < PairingHelper.findPhase(
 						tournament.getRounds().size(), tournament)
 						.getNumberOfOpponents(); i++) {
-					randomNumber = randomGenerator.nextInt(randomList.size());
-
-					partResult.getScoreTable().add(
-							PairingHelper.generateEmptyScore(
-									randomList.get(tournament.getRuleSet()
-											.getPossibleScores().size()),
-									tournament.getRuleSet().getPossibleScores()
-											.size()));
-
-					partResult.getOpponents().add(randomList.get(randomNumber));
-					randomList.remove(randomNumber);
-				}
-				result.add(partResult);
-			}
-		} else if (PairingHelper.isFirstInPhase(tournament.getRounds().size(),
-				tournament, PairingHelper.findPhase(tournament.getRounds()
-						.size(), tournament))) {
-			Random randomGenerator = new Random();
-			ArrayList<Player> randomList = new ArrayList<>();
-			randomList.addAll(tournament.getRemainingPlayers());
-			int randomNumber;
-
-			while (randomList.size() >= PairingHelper.findPhase(
-					tournament.getRounds().size(), tournament)
-					.getNumberOfOpponents()) {
-				partResult = new Pairing();
-				partResult.getScoreTable().addAll(opponents);
-
-				for (int i = 0; i < PairingHelper.findPhase(
-						tournament.getRounds().size(), tournament)
-						.getNumberOfOpponents(); i++) {
-
 					randomNumber = randomGenerator.nextInt(randomList.size());
 
 					partResult.getScoreTable().add(
@@ -91,11 +57,11 @@ public class SingleElimination implements PairingStrategy {
 											.size()));
 
 					partResult.getOpponents().add(randomList.get(randomNumber));
-
 					randomList.remove(randomNumber);
 				}
 				result.add(partResult);
 			}
+
 		} else {
 			ArrayList<Pairing> tmp = new ArrayList<>();
 			tmp.addAll(tournament.getRounds()
@@ -104,7 +70,6 @@ public class SingleElimination implements PairingStrategy {
 					tournament.getRounds().size(), tournament)
 					.getNumberOfOpponents() - 1) {
 				partResult = new Pairing();
-				partResult.getScoreTable().addAll(opponents);
 
 				for (int i = 0; i < PairingHelper.findPhase(
 						tournament.getRounds().size(), tournament)

@@ -14,167 +14,183 @@ import org.junit.Test;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class TestUndoManager {
-	private UndoManager undoManager;
+    private UndoManager undoManager;
 
-	@Before
-	public void init() {
-		this.undoManager = new UndoManager();
-	}
+    @Before
+    public void init() {
+	this.undoManager = new UndoManager();
+    }
 
-	@Test
-	public void testSimpleProperty() {
-		StringProperty testProperty = new SimpleStringProperty();
-		testProperty.set("FirstState");
+    @Test
+    public void testSimpleProperty() {
+	StringProperty testProperty = new SimpleStringProperty();
+	testProperty.set("FirstState");
 
-		this.undoManager.registerUndoProperty(testProperty);
+	this.undoManager.registerUndoProperty(testProperty);
+	this.undoManager.undo();
+	this.undoManager.redo();
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	assertFalse(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		testProperty.set("SecondState");
+	testProperty.set("SecondState");
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		this.undoManager.undo();
+	this.undoManager.undo();
 
-		assertEquals("FirstState", testProperty.get());
+	assertEquals("FirstState", testProperty.get());
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertTrue(this.undoManager.redoAvailable());
+	assertFalse(this.undoManager.undoAvailable());
+	assertTrue(this.undoManager.redoAvailable());
 
-		this.undoManager.redo();
+	this.undoManager.redo();
 
-		assertEquals("SecondState", testProperty.get());
+	assertEquals("SecondState", testProperty.get());
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		this.undoManager.unregisterUndoProperty(testProperty);
-	}
+	assertTrue(this.undoManager.toString().length() > 0);
 
-	@Test
-	public void testListProperty() {
-		ObservableList<String> testProperty = FXCollections
-				.observableArrayList();
-		testProperty.add("FirstItem");
+	testProperty.set("ThirdState");
+	testProperty.set("FourthState");
+	this.undoManager.undo();
+	assertTrue(this.undoManager.toString().length() > 0);
 
-		this.undoManager.registerUndoProperty(testProperty);
+	assertTrue(this.undoManager.getNodeInformation().length() > 0);
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	this.undoManager.unregisterUndoProperty(testProperty);
 
-		testProperty.add("SecondItem");
+	assertTrue(this.undoManager.undoAvailableProperty() != null);
+	assertTrue(this.undoManager.redoAvailableProperty() != null);
+    }
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+    @Test
+    public void testListProperty() {
+	ObservableList<String> testProperty = FXCollections
+		.observableArrayList();
+	testProperty.add("FirstItem");
 
-		this.undoManager.undo();
+	this.undoManager.registerUndoProperty(testProperty);
 
-		assertEquals(1, testProperty.size());
+	assertFalse(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertTrue(this.undoManager.redoAvailable());
+	testProperty.add("SecondItem");
 
-		this.undoManager.redo();
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		assertEquals(2, testProperty.size());
-		assertTrue(testProperty.contains("FirstItem"));
-		assertTrue(testProperty.contains("SecondItem"));
+	this.undoManager.undo();
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	assertEquals(1, testProperty.size());
 
-		this.undoManager.unregisterUndoProperty(testProperty);
-	}
+	assertFalse(this.undoManager.undoAvailable());
+	assertTrue(this.undoManager.redoAvailable());
 
-	@Test
-	public void testSimplePropertyBatch() {
-		StringProperty testProperty = new SimpleStringProperty();
-		testProperty.set("FirstState");
+	this.undoManager.redo();
 
-		this.undoManager.registerUndoProperty(testProperty);
-		this.undoManager.beginUndoBatch();
+	assertEquals(2, testProperty.size());
+	assertTrue(testProperty.contains("FirstItem"));
+	assertTrue(testProperty.contains("SecondItem"));
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		testProperty.set("Second");
-		testProperty.set("SecondState");
+	assertTrue(this.undoManager.getNodeInformation().length() > 0);
 
-		this.undoManager.endUndoBatch();
+	this.undoManager.unregisterUndoProperty(testProperty);
+    }
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+    @Test
+    public void testSimplePropertyBatch() {
+	StringProperty testProperty = new SimpleStringProperty();
+	testProperty.set("FirstState");
 
-		this.undoManager.undo();
+	this.undoManager.registerUndoProperty(testProperty);
+	this.undoManager.beginUndoBatch();
 
-		assertEquals("FirstState", testProperty.get());
+	assertFalse(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertTrue(this.undoManager.redoAvailable());
+	testProperty.set("Second");
+	testProperty.set("SecondState");
 
-		this.undoManager.redo();
+	this.undoManager.endUndoBatch();
 
-		assertEquals("SecondState", testProperty.get());
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
-	}
+	this.undoManager.undo();
 
-	@Test
-	public void testListPropertyBatch() {
+	assertEquals("FirstState", testProperty.get());
 
-		ObservableList<String> testProperty = FXCollections
-				.observableArrayList();
-		testProperty.add("FirstItem");
+	assertFalse(this.undoManager.undoAvailable());
+	assertTrue(this.undoManager.redoAvailable());
 
-		this.undoManager.registerUndoProperty(testProperty);
-		this.undoManager.beginUndoBatch();
+	this.undoManager.redo();
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	assertEquals("SecondState", testProperty.get());
 
-		testProperty.add("SecondItem");
-		testProperty.add("ThirdItem");
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
+    }
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+    @Test
+    public void testListPropertyBatch() {
 
-		this.undoManager.undo();
+	ObservableList<String> testProperty = FXCollections
+		.observableArrayList();
+	testProperty.add("FirstItem");
 
-		assertEquals(1, testProperty.size());
+	this.undoManager.registerUndoProperty(testProperty);
+	this.undoManager.beginUndoBatch();
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertTrue(this.undoManager.redoAvailable());
+	assertFalse(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		this.undoManager.redo();
+	testProperty.add("SecondItem");
+	testProperty.add("ThirdItem");
 
-		assertEquals(3, testProperty.size());
-		assertTrue(testProperty.contains("FirstItem"));
-		assertTrue(testProperty.contains("SecondItem"));
-		assertTrue(testProperty.contains("ThirdItem"));
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		assertTrue(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	this.undoManager.undo();
 
-		this.undoManager.unregisterUndoProperty(testProperty);
-	}
+	assertEquals(1, testProperty.size());
 
-	@Test
-	public void testClearHistory() {
-		StringProperty testProperty = new SimpleStringProperty();
-		testProperty.set("FirstState");
+	assertFalse(this.undoManager.undoAvailable());
+	assertTrue(this.undoManager.redoAvailable());
 
-		this.undoManager.registerUndoProperty(testProperty);
+	this.undoManager.redo();
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
+	assertEquals(3, testProperty.size());
+	assertTrue(testProperty.contains("FirstItem"));
+	assertTrue(testProperty.contains("SecondItem"));
+	assertTrue(testProperty.contains("ThirdItem"));
 
-		testProperty.set("SecondState");
-		this.undoManager.clearHistory();
+	assertTrue(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
 
-		assertFalse(this.undoManager.undoAvailable());
-		assertFalse(this.undoManager.redoAvailable());
-	}
+	this.undoManager.unregisterUndoProperty(testProperty);
+    }
+
+    @Test
+    public void testClearHistory() {
+	StringProperty testProperty = new SimpleStringProperty();
+	testProperty.set("FirstState");
+
+	this.undoManager.registerUndoProperty(testProperty);
+
+	assertFalse(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
+
+	testProperty.set("SecondState");
+	this.undoManager.clearHistory();
+
+	assertFalse(this.undoManager.undoAvailable());
+	assertFalse(this.undoManager.redoAvailable());
+    }
 }

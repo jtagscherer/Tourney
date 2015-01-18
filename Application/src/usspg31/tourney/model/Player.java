@@ -5,94 +5,180 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Represents a player that can be registered in an event and play a tournament
+ */
 public class Player extends Person implements Cloneable {
 
-	private final StringProperty nickName;
-	private final StringProperty startingNumber;
-	private final BooleanProperty payed;
-	private final BooleanProperty disqualified;
-	private final StringProperty id;
+    private final StringProperty nickName;
+    private final StringProperty startingNumber;
+    private final BooleanProperty payed;
+    private final BooleanProperty disqualified;
+    private final StringProperty id;
 
-	public Player() {
-		super();
-		this.nickName = new SimpleStringProperty("");
-		this.startingNumber = new SimpleStringProperty("");
-		this.payed = new SimpleBooleanProperty();
-		this.disqualified = new SimpleBooleanProperty();
-		this.id = new SimpleStringProperty("");
-	}
+    /**
+     * Create a new player and initialize all its properties
+     */
+    public Player() {
+	super();
+	this.nickName = new SimpleStringProperty("");
+	this.startingNumber = new SimpleStringProperty("");
+	this.payed = new SimpleBooleanProperty();
+	this.disqualified = new SimpleBooleanProperty();
+	this.id = new SimpleStringProperty("");
+    }
 
-	public String getNickName() {
-		return this.nickName.get();
+    /**
+     * Get the nick name of this player
+     * 
+     * @return Current nick name of this player
+     */
+    public String getNickName() {
+	return this.nickName.get();
 
-	}
+    }
 
-	public void setNickName(String value) {
-		this.nickName.set(value);
-	}
+    /**
+     * Set the nick name of this player
+     * 
+     * @param value
+     *            New nick name of this player
+     */
+    public void setNickName(String value) {
+	this.nickName.set(value);
+    }
 
-	public StringProperty nickNameProperty() {
-		return this.nickName;
-	}
+    /**
+     * Get the nick name property of this player
+     * 
+     * @return Nick name property of this player
+     */
+    public StringProperty nickNameProperty() {
+	return this.nickName;
+    }
 
-	public String getStartingNumber() {
-		return this.startingNumber.get();
-	}
+    /**
+     * Get the starting number of this player
+     * 
+     * @return Current starting number of this player
+     */
+    public String getStartingNumber() {
+	return this.startingNumber.get();
+    }
 
-	public void setStartingNumber(String value) {
-		this.startingNumber.set(value);
-	}
+    /**
+     * Set the starting number of this player
+     * 
+     * @param value
+     *            New starting number of this player
+     */
+    public void setStartingNumber(String value) {
+	this.startingNumber.set(value);
+    }
 
-	public StringProperty startingNumberProperty() {
-		return this.startingNumber;
-	}
+    /**
+     * Get the starting number property of this player
+     * 
+     * @return Starting number property of this player
+     */
+    public StringProperty startingNumberProperty() {
+	return this.startingNumber;
+    }
 
-	public boolean getPayed() {
-		return this.payed.get();
-	}
+    /**
+     * Get the payment status of this player
+     * 
+     * @return Current payment status of this player
+     */
+    public boolean hasPayed() {
+	return this.payed.get();
+    }
 
-	public void setPayed(boolean value) {
-		this.payed.set(value);
-	}
+    /**
+     * Set the payment status of this player
+     * 
+     * @param value
+     *            New payment status of this player
+     */
+    public void setPayed(boolean value) {
+	this.payed.set(value);
+    }
 
-	public BooleanProperty payedProperty() {
-		return this.payed;
-	}
+    /**
+     * Get the payment status property of this player
+     * 
+     * @return Payment status property of this player
+     */
+    public BooleanProperty payedProperty() {
+	return this.payed;
+    }
 
-	public boolean getDisqualified() {
-		return this.disqualified.get();
-	}
+    /**
+     * Get the disqualification status of this player
+     * 
+     * @return Current disqualification status of this player
+     */
+    public boolean isDisqualified() {
+	return this.disqualified.get();
+    }
 
-	public void setDisqualified(boolean value) {
-		this.disqualified.set(value);
-	}
+    /**
+     * Set the disqualification status of this player
+     * 
+     * @param value
+     *            New disqualification status of this player
+     */
+    public void setDisqualified(boolean value) {
+	this.disqualified.set(value);
+    }
 
-	public BooleanProperty disqualifiedProperty() {
-		return this.disqualified;
-	}
+    /**
+     * Get the disqualification status property of this player
+     * 
+     * @return Disqualification status property of this player
+     */
+    public BooleanProperty disqualifiedProperty() {
+	return this.disqualified;
+    }
 
-	public String getId() {
-		return this.id.get();
-	}
+    /**
+     * Get the ID of this player
+     * 
+     * @return Current ID of this player
+     */
+    public String getId() {
+	return this.id.get();
+    }
 
-	public void setId(String value) {
-		this.id.set(value);
-	}
+    /**
+     * Set the ID of this player
+     * 
+     * @param value
+     *            New ID of this player
+     */
+    public void setId(String value) {
+	this.id.set(value);
+    }
 
-	public StringProperty idProperty() {
-		return this.id;
-	}
+    /**
+     * Get the ID property of this player
+     * 
+     * @return ID property of this player
+     */
+    public StringProperty idProperty() {
+	return this.id;
+    }
 
-	@Override
-	public Object clone() {
-		Player clone = new Player();
+    @Override
+    public Object clone() {
+	Player clone = new Player();
 
-		clone.setNickName(this.getNickName());
-		clone.setStartingNumber(this.getStartingNumber());
-		clone.setPayed(this.getPayed());
-		clone.setDisqualified(this.getDisqualified());
-		clone.setId(this.getId());
+	clone.setNickName(this.getNickName());
+	clone.setStartingNumber(this.getStartingNumber());
+	clone.setPayed(this.hasPayed());
+	clone.setDisqualified(this.isDisqualified());
+	clone.setId(this.getId());
 
-		return clone;
-	}
+	return clone;
+    }
 }

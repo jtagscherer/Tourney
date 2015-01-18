@@ -24,11 +24,17 @@
 				<graphic>
 					<IconPane styleClass="icon-close, half" />
 				</graphic>
+				<tooltip>
+					<Tooltip text="Geöffnetes Event schließen" />
+				</tooltip>
 			</Button>
 			<Button fx:id="buttonSave" styleClass="menu-button" onAction="#onButtonSaveClicked">
 				<graphic>
 					<IconPane styleClass="icon-save, half" />
 				</graphic>
+				<tooltip>
+					<Tooltip text="Geöffnetes Event speichern" />
+				</tooltip>
 			</Button>
 			<HBox>
 				<Button fx:id="buttonUndo" disable="true"
@@ -36,12 +42,18 @@
 					<graphic>
 						<IconPane styleClass="icon-undo, half" />
 					</graphic>
+					<tooltip>
+						<Tooltip text="Letzte Aktion rückgängig machen" />
+					</tooltip>
 				</Button>
 				<Button fx:id="buttonRedo" disable="true"
 					styleClass="menu-button, multi-button, right" onAction="#onButtonRedoClicked">
 					<graphic>
 						<IconPane styleClass="icon-redo, half" />
 					</graphic>
+					<tooltip>
+						<Tooltip text="Letzte Aktion wiederherstellen" />
+					</tooltip>
 				</Button>
 			</HBox>
 		</HBox>
@@ -52,12 +64,18 @@
 				<graphic>
 					<IconPane styleClass="icon-lock, half" />
 				</graphic>
+				<tooltip>
+					<Tooltip text="Fenster sperren" />
+				</tooltip>
 			</Button>
 			<Button fx:id="buttonOptions" styleClass="menu-button"
 				onAction="#onButtonOptionsClicked">
 				<graphic>
 					<IconPane styleClass="icon-settings, half" />
 				</graphic>
+				<tooltip>
+					<Tooltip text="Programmeinstellungen öffnen" />
+				</tooltip>
 			</Button>
 		</HBox>
 		<HBox fx:id="breadcrumbContainer" AnchorPane.topAnchor="42"

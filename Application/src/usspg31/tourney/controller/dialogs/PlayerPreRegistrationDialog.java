@@ -156,6 +156,13 @@ IModalDialogProvider<Object, Player> {
 				DialogButtons.OK_CANCEL);
 	}
 
+    @Override
+    public boolean hasNoInput() {
+	return this.loadedPlayer.getFirstName().equals("")
+		&& this.loadedPlayer.getLastName().equals("")
+		&& this.loadedPlayer.getNickName().equals("");
+    };
+
 	@FXML private void onButtonAddTournamentClicked(ActionEvent event) {
 		ObservableList<Tournament> unregisteredTournaments = FXCollections
 				.observableArrayList();

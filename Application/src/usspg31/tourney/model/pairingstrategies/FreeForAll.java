@@ -6,7 +6,6 @@ import java.util.Random;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
-import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.Tournament;
 
 public class FreeForAll implements PairingStrategy {
@@ -25,10 +24,8 @@ public class FreeForAll implements PairingStrategy {
 		Random randomGenerator = new Random();
 		ArrayList<Player> randomList = new ArrayList<>();
 		Pairing partResult;
-		randomList.addAll(tournament.getRegisteredPlayers());
+		randomList.addAll(tournament.getRemainingPlayers());
 		int randomNumber;
-		PlayerScore score;
-		Integer[] numberOfScores;
 
 		// checks if this is the first round in the tournament
 		if (tournament.getRounds().size() == 0) {
@@ -68,12 +65,11 @@ public class FreeForAll implements PairingStrategy {
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
 
-					score = new PlayerScore();
-					score.setPlayer(randomList.get(randomNumber));
-					numberOfScores = new Integer[tournament.getRuleSet()
-							.getPossibleScores().size()];
-					score.getScore().addAll(numberOfScores);
-					partResult.getScoreTable().add(score);
+					partResult.getScoreTable().add(
+							PairingHelper.generateEmptyScore(
+									randomList.get(randomNumber), tournament
+											.getRuleSet().getPossibleScores()
+											.size()));
 
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
@@ -92,22 +88,22 @@ public class FreeForAll implements PairingStrategy {
 						.getNumberOfOpponents(); i++) {
 					randomNumber = randomGenerator.nextInt(randomList.size());
 
-					score = new PlayerScore();
-					score.setPlayer(randomList.get(randomNumber));
-					numberOfScores = new Integer[tournament.getRuleSet()
-							.getPossibleScores().size()];
-					score.getScore().addAll(numberOfScores);
-					partResult.getScoreTable().add(score);
+					partResult.getScoreTable().add(
+							PairingHelper.generateEmptyScore(
+									randomList.get(randomNumber), tournament
+											.getRuleSet().getPossibleScores()
+											.size()));
 
 					partResult.getOpponents().add(randomList.get(randomNumber));
 					randomList.remove(randomNumber);
 				}
-
+				// checking if there is an similar pairing in the tournament
 				if (!PairingHelper.checkForSimiliarPairings(partResult,
 						tournament)) {
 					// TODO finish checking for similar pairings in previous
 					// rounds in the same game phase
 					result.add(partResult);
+
 				}
 			}
 		}
