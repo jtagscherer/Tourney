@@ -23,12 +23,14 @@
 			</VBox>
 			<VBox spacing="5.0">
 				<Pane VBox.vgrow="ALWAYS" />
-				<Button fx:id="buttonAddAttendee" styleClass="table-edit-button">
+				<Button fx:id="buttonAddAttendee" styleClass="table-edit-button"
+				onAction="#onButtonAddAttendeeClicked">
 					<graphic>
 						<IconPane styleClass="icon-arrow-right, half" />
 					</graphic>
 				</Button>
-				<Button fx:id="buttonRemoveAttendee" styleClass="table-edit-button">
+				<Button fx:id="buttonRemoveAttendee" styleClass="table-edit-button"
+				onAction="#onButtonRemoveAttendeeClicked">
 					<graphic>
 						<IconPane styleClass="icon-arrow-left, half" />
 					</graphic>
