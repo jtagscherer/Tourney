@@ -11,92 +11,92 @@ import usspg31.tourney.model.Tournament;
 
 public class SingleElimination implements PairingStrategy {
 
-	private static final Logger log = Logger.getLogger(SingleElimination.class
-			.getName());
+    private static final Logger log = Logger.getLogger(SingleElimination.class
+	    .getName());
 
-	/*
-	 * (non-Javadoc)Level.FINER,
-	 * 
-	 * @see
-	 * usspg31.tourney.model.pairingstrategies.PairingStrategy#generatePairing
-	 * (usspg31.tourney.model.Tournament)
-	 */
-	@Override
-	public ArrayList<Pairing> generatePairing(Tournament tournament) {
-		log.finer(this.getClass().toString());
+    /*
+     * (non-Javadoc)Level.FINER,
+     * 
+     * @see
+     * usspg31.tourney.model.pairingstrategies.PairingStrategy#generatePairing
+     * (usspg31.tourney.model.Tournament)
+     */
+    @Override
+    public ArrayList<Pairing> generatePairing(Tournament tournament) {
+	log.finer(this.getClass().toString());
 
-		ArrayList<Pairing> result = new ArrayList<>();
-		Pairing partResult = new Pairing();
+	ArrayList<Pairing> result = new ArrayList<>();
+	Pairing partResult = new Pairing();
 
-		// checks if this round is the first round in the gamephase and modify
-		// the pairing strategy for this round
-		if (tournament.getRounds().size() == 0
-				|| PairingHelper.isFirstInPhase(tournament.getRounds().size(),
-						tournament, PairingHelper.findPhase(tournament
-								.getRounds().size(), tournament))) {
+	// checks if this round is the first round in the gamephase and modify
+	// the pairing strategy for this round
+	if (tournament.getRounds().size() == 0
+		|| PairingHelper.isFirstInPhase(tournament.getRounds().size(),
+			tournament, PairingHelper.findPhase(tournament
+				.getRounds().size(), tournament))) {
 
-			Random randomGenerator = new Random();
-			ArrayList<Player> randomList = new ArrayList<>();
-			randomList.addAll(tournament.getRemainingPlayers());
-			int randomNumber;
+	    Random randomGenerator = new Random();
+	    ArrayList<Player> randomList = new ArrayList<>();
+	    randomList.addAll(tournament.getRemainingPlayers());
+	    int randomNumber;
 
-			while (randomList.size() >= PairingHelper.findPhase(
-					tournament.getRounds().size(), tournament)
-					.getNumberOfOpponents()) {
-				partResult = new Pairing();
+	    while (randomList.size() >= PairingHelper.findPhase(
+		    tournament.getRounds().size(), tournament)
+		    .getNumberOfOpponents()) {
+		partResult = new Pairing();
 
-				for (int i = 0; i < PairingHelper.findPhase(
-						tournament.getRounds().size(), tournament)
-						.getNumberOfOpponents(); i++) {
-					randomNumber = randomGenerator.nextInt(randomList.size());
+		for (int i = 0; i < PairingHelper.findPhase(
+			tournament.getRounds().size(), tournament)
+			.getNumberOfOpponents(); i++) {
+		    randomNumber = randomGenerator.nextInt(randomList.size());
 
-					partResult.getScoreTable().add(
-							PairingHelper.generateEmptyScore(
-									randomList.get(randomNumber), tournament
-											.getRuleSet().getPossibleScores()
-											.size()));
+		    partResult.getScoreTable().add(
+			    PairingHelper.generateEmptyScore(
+				    randomList.get(randomNumber), tournament
+					    .getRuleSet().getPossibleScores()
+					    .get(0).getScores().size()));
 
-					partResult.getOpponents().add(randomList.get(randomNumber));
-					randomList.remove(randomNumber);
-				}
-				result.add(partResult);
-			}
-
-		} else {
-			ArrayList<Pairing> tmp = new ArrayList<>();
-			tmp.addAll(tournament.getRounds()
-					.get(tournament.getRounds().size() - 1).getPairings());
-			while (tmp.size() > PairingHelper.findPhase(
-					tournament.getRounds().size(), tournament)
-					.getNumberOfOpponents() - 1) {
-				partResult = new Pairing();
-
-				for (int i = 0; i < PairingHelper.findPhase(
-						tournament.getRounds().size(), tournament)
-						.getNumberOfOpponents(); i++) {
-
-					partResult.getScoreTable().add(
-							PairingHelper.generateEmptyScore(
-									PairingHelper.identifyWinner(tmp.get(0)),
-									tournament.getRuleSet().getPossibleScores()
-											.size()));
-
-					partResult.getOpponents().add(
-							PairingHelper.identifyWinner(tmp.get(0)));
-
-					tmp.remove(0);
-				}
-
-				result.add(partResult);
-
-			}
-
+		    partResult.getOpponents().add(randomList.get(randomNumber));
+		    randomList.remove(randomNumber);
 		}
-		return result;
-	}
+		result.add(partResult);
+	    }
 
-	@Override
-	public String getName() {
-		return "K.O.-System";
+	} else {
+	    ArrayList<Pairing> tmp = new ArrayList<>();
+	    tmp.addAll(tournament.getRounds()
+		    .get(tournament.getRounds().size() - 1).getPairings());
+	    while (tmp.size() > PairingHelper.findPhase(
+		    tournament.getRounds().size(), tournament)
+		    .getNumberOfOpponents() - 1) {
+		partResult = new Pairing();
+
+		for (int i = 0; i < PairingHelper.findPhase(
+			tournament.getRounds().size(), tournament)
+			.getNumberOfOpponents(); i++) {
+
+		    partResult.getScoreTable().add(
+			    PairingHelper.generateEmptyScore(
+				    PairingHelper.identifyWinner(tmp.get(0)),
+				    tournament.getRuleSet().getPossibleScores()
+					    .get(0).getScores().size()));
+
+		    partResult.getOpponents().add(
+			    PairingHelper.identifyWinner(tmp.get(0)));
+
+		    tmp.remove(0);
+		}
+
+		result.add(partResult);
+
+	    }
+
 	}
+	return result;
+    }
+
+    @Override
+    public String getName() {
+	return "K.O.-System";
+    }
 }
