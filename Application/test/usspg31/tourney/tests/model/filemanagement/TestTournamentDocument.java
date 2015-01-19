@@ -168,12 +168,18 @@ public class TestTournamentDocument {
 	player.setStartingNumber("3");
 	player.setPayed(true);
 	player.setDisqualified(false);
+
+	Player player2 = (Player) player.clone();
+	player2.setFirstName("Aaron");
+	player2.setId("3");
+	playerList.add(player2);
 	playerList.add(player);
 
 	// Add a new tournament round
 	TournamentRound round = new TournamentRound(1);
 	Pairing pairing = new Pairing();
 	pairing.getOpponents().add(player);
+	pairing.getOpponents().add(player2);
 	PlayerScore score = new PlayerScore();
 	score.setPlayer(player);
 	score.getScore().add(10);
@@ -195,7 +201,7 @@ public class TestTournamentDocument {
 	assertEquals(1, readRound.getPairings().size());
 
 	Pairing readPairing = readRound.getPairings().get(0);
-	assertEquals(1, readPairing.getOpponents().size());
+	assertEquals(2, readPairing.getOpponents().size());
 
 	Player readOpponent = readPairing.getOpponents().get(0);
 	assertEquals("Peter", readOpponent.getFirstName());
@@ -207,13 +213,55 @@ public class TestTournamentDocument {
 	assertEquals(true, readOpponent.hasPayed());
 	assertEquals(false, readOpponent.isDisqualified());
 
-	assertEquals(1, readPairing.getScoreTable().size());
+	assertEquals(2, readPairing.getScoreTable().size());
 	PlayerScore readScore = readPairing.getScoreTable().get(0);
 
 	assertEquals("2", readScore.getPlayer().getId());
 
 	assertEquals(1, readScore.getScore().size());
 	assertEquals(10, readScore.getScore().get(0).intValue());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidPlayerList() {
+	ObservableList<TournamentRound> tournamentRounds = FXCollections
+		.observableArrayList();
+
+	// Create a player list
+	ArrayList<Player> playerList = new ArrayList<Player>();
+	ArrayList<Player> incompletePlayerList = new ArrayList<Player>();
+	Player player = new Player();
+	player.setFirstName("Peter");
+	player.setLastName("Player");
+	player.setId("2");
+	player.setMailAdress("p.player@mail.com");
+	player.setNickName("pplayer");
+	player.setStartingNumber("3");
+	player.setPayed(true);
+	player.setDisqualified(false);
+	playerList.add(player);
+
+	Player player2 = (Player) player.clone();
+	player2.setFirstName("Aaron");
+	player2.setId("3");
+	playerList.add(player);
+	incompletePlayerList.add(player);
+
+	// Add a new tournament round
+	TournamentRound round = new TournamentRound(1);
+	Pairing pairing = new Pairing();
+	pairing.getOpponents().add(player);
+	PlayerScore score = new PlayerScore();
+	score.setPlayer(player);
+	score.getScore().add(10);
+	pairing.getScoreTable().add(score);
+	round.getPairings().add(pairing);
+	tournamentRounds.add(round);
+
+	this.document.appendTournamentRounds(tournamentRounds);
+
+	System.out.println(this.document.getTournamentRounds(
+		new ArrayList<Player>()).size());
     }
 
     @Test

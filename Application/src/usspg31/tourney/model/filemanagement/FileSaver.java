@@ -138,24 +138,10 @@ public class FileSaver {
 	}
 
 	/*
-	 * Append the usage flag which indicates in what perspective the event
-	 * should be opened again
+	 * Append some meta data for the user perspective, currently executed
+	 * event and number of registrators
 	 */
-	String flag = null;
-	switch (event.getUserFlag()) {
-	case TOURNAMENT_EXECUTION:
-	    flag = "TOURNAMENT_EXECUTION ID="
-		    + event.getExecutedTournament().getId();
-	    break;
-	case REGISTRATION:
-	    flag = "REGISTRATION Amount="
-		    + String.valueOf(event.getNumberOfRegistrators());
-	    break;
-	default:
-	    flag = event.getUserFlag().toString();
-	    break;
-	}
-	FileSaver.saveMetaFlags(flag, "Meta.xml", zipOutputStream);
+	FileSaver.saveMetaFlags(event, "Meta.xml", zipOutputStream);
 
 	try {
 	    zipOutputStream.close();
@@ -209,19 +195,26 @@ public class FileSaver {
     /**
      * Save a meta string to the zip archive
      * 
-     * @param flag
-     *            Flag to be saved
+     * @param event
+     *            Event to read the flags from
      * @param fileName
      *            File name where the flag will be saved
      * @param zipOutputStream
      *            Output stream to save the flag to
      */
-    private static void saveMetaFlags(String flag, String fileName,
+    private static void saveMetaFlags(Event event, String fileName,
 	    ZipOutputStream zipOutputStream) {
 	MetaDocument document = new MetaDocument(
 		FileSaver.documentBuilder.newDocument());
 
-	document.setMetaData(flag);
+	document.setUserFlag(event.getUserFlag());
+	if (event.getExecutedTournament() != null) {
+	    document.setExecutedTournamentId(event.getExecutedTournament()
+		    .getId());
+	}
+	if (event.getNumberOfRegistrators() > 0) {
+	    document.setNumberOfRegistrators(event.getNumberOfRegistrators());
+	}
 
 	FileSaver.saveDocumentToZip(document.getDocument(), fileName,
 		zipOutputStream);

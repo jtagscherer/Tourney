@@ -236,6 +236,7 @@ public class EventPhaseViewController implements EventUser {
 
     public void setLoadedEventFile(File loadedEventFile) {
 	this.loadedEventFile = loadedEventFile;
+	this.registrationPhaseController.setLoadedEventFile(loadedEventFile);
     }
 
     @Override

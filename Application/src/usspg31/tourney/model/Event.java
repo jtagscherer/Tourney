@@ -58,6 +58,7 @@ public class Event {
 	this.executedTournament = new SimpleObjectProperty<Tournament>();
 	this.userFlag = new SimpleObjectProperty<Event.UserFlag>();
 	this.setUserFlag(UserFlag.ADMINISTRATION);
+	numberOfRegistrators = 0;
     }
 
     /**

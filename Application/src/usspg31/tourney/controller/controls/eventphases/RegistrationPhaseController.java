@@ -66,10 +66,11 @@ public class RegistrationPhaseController implements EventUser {
 
     private ModalDialog<Object, Player> registrationDialog;
     private ModalDialog<String, Integer> distributionDialog;
-    private ModalDialog<String, Integer> distributionNumberSelectionDialog;
+    private ModalDialog<Integer, Integer> distributionNumberSelectionDialog;
 
     private Event loadedEvent;
-    private int startNumberStep = 1;
+    private int registratorNumber = 1;
+    private File loadedEventFile;
 
     @FXML
     private void initialize() {
@@ -94,12 +95,13 @@ public class RegistrationPhaseController implements EventUser {
 	    this.buttonDistributeRegistration.setDisable(true);
 	    this.buttonImportRegistration.setDisable(true);
 
-	    this.distributionNumberSelectionDialog.onResult(
-		    (result, returnValue) -> {
+	    this.distributionNumberSelectionDialog
+		    .properties(this.loadedEvent.getNumberOfRegistrators())
+		    .onResult((result, returnValue) -> {
 			if (result != DialogResult.OK) {
 			    return;
 			}
-			startNumberStep = returnValue;
+			registratorNumber = returnValue;
 		    }).show();
 	}
 
@@ -336,37 +338,57 @@ public class RegistrationPhaseController implements EventUser {
 	     * Get the currently highest starting number to generate the next
 	     * one
 	     */
-	    int nextStartingNumber = 0;
+	    int highestStartingNumber = 0;
 	    for (Player player : this.loadedEvent.getRegisteredPlayers()) {
 		if (!player.getStartingNumber().equals("")) {
-		    if (Integer.parseInt(player.getStartingNumber()) > nextStartingNumber) {
-			nextStartingNumber = Integer.parseInt(player
+		    if (Integer.parseInt(player.getStartingNumber()) > highestStartingNumber) {
+			highestStartingNumber = Integer.parseInt(player
 				.getStartingNumber());
 		    }
 		}
 	    }
-	    final int currentStartingNumber = nextStartingNumber
-		    + this.startNumberStep;
 
 	    /*
 	     * Ask the user for confirmation and register the player if
 	     * necessary
 	     */
-	    new SimpleDialog<>("Wollen Sie den Spieler \""
-		    + selectedPlayer.getFirstName() + " "
-		    + selectedPlayer.getLastName()
-		    + "\" wirklich als anwesend markieren?")
-		    .modalDialog()
-		    .dialogButtons(DialogButtons.YES_NO)
-		    .title("Registrieren mit der Startnummer "
-			    + currentStartingNumber + " bestätigen")
-		    .onResult(
-			    (result, returnValue) -> {
-				if (result == DialogResult.YES) {
-				    selectedPlayer.setStartingNumber(String
-					    .valueOf(currentStartingNumber));
-				}
-			    }).show();
+	    if (highestStartingNumber == 0) {
+		final int currentStartingNumber = this.registratorNumber;
+		new SimpleDialog<>("Wollen Sie den Spieler \""
+			+ selectedPlayer.getFirstName() + " "
+			+ selectedPlayer.getLastName()
+			+ "\" wirklich als anwesend markieren?")
+			.modalDialog()
+			.dialogButtons(DialogButtons.YES_NO)
+			.title("Registrieren mit der Startnummer "
+				+ currentStartingNumber + " bestätigen")
+			.onResult(
+				(result, returnValue) -> {
+				    if (result == DialogResult.YES) {
+					selectedPlayer.setStartingNumber(String
+						.valueOf(currentStartingNumber));
+				    }
+				}).show();
+	    } else {
+		final int currentStartingNumber = highestStartingNumber
+			+ Math.max(this.loadedEvent.getNumberOfRegistrators(),
+				1);
+		new SimpleDialog<>("Wollen Sie den Spieler \""
+			+ selectedPlayer.getFirstName() + " "
+			+ selectedPlayer.getLastName()
+			+ "\" wirklich als anwesend markieren?")
+			.modalDialog()
+			.dialogButtons(DialogButtons.YES_NO)
+			.title("Registrieren mit der Startnummer "
+				+ currentStartingNumber + " bestätigen")
+			.onResult(
+				(result, returnValue) -> {
+				    if (result == DialogResult.YES) {
+					selectedPlayer.setStartingNumber(String
+						.valueOf(currentStartingNumber));
+				    }
+				}).show();
+	    }
 	}
     }
 
@@ -428,7 +450,8 @@ public class RegistrationPhaseController implements EventUser {
 			    }
 
 			    loadedEvent.setUserFlag(UserFlag.ADMINISTRATION);
-			    loadedEvent.setNumberOfRegistrators(0);
+			    FileSaver.saveEventToFile(loadedEvent, this
+				    .getLoadedEventFile().getAbsolutePath());
 			}).show();
     }
 
@@ -467,10 +490,20 @@ public class RegistrationPhaseController implements EventUser {
 		    for (Player player : this.loadedEvent
 			    .getRegisteredPlayers()) {
 			if (player.getId().equals(loadedPlayer.getId())) {
-			    this.loadedEvent.getRegisteredPlayers().remove(
-				    player);
-			    this.loadedEvent.getRegisteredPlayers().add(
-				    loadedPlayer);
+			    if (player.getStartingNumber().equals("")
+				    && !loadedPlayer.getStartingNumber()
+					    .equals("")) {
+				/*
+				 * The loaded player has a starting number and
+				 * should be preferred compared to the existent
+				 * player that has none
+				 */
+				this.loadedEvent.getRegisteredPlayers().remove(
+					player);
+				this.loadedEvent.getRegisteredPlayers().add(
+					loadedPlayer);
+			    }
+
 			    continue loaded_players;
 			}
 		    }
@@ -495,5 +528,13 @@ public class RegistrationPhaseController implements EventUser {
 	    throw new IllegalStateException("An event must be loaded in order "
 		    + "to perform actions on this controller");
 	}
+    }
+
+    public File getLoadedEventFile() {
+	return this.loadedEventFile;
+    }
+
+    public void setLoadedEventFile(File loadedEventFile) {
+	this.loadedEventFile = loadedEventFile;
     }
 }

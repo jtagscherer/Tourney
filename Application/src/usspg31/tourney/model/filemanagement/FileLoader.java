@@ -71,6 +71,7 @@ public class FileLoader {
 	Event event = new Event();
 	String executedTournamentId = null;
 	Integer numberOfRegistrators = 0;
+	UserFlag userFlag = null;
 
 	EventDocument eventDocument = null;
 	PlayerDocument playerDocument = null;
@@ -104,18 +105,9 @@ public class FileLoader {
 	    } else if (entry.getName().equals("Meta.xml")) {
 		MetaDocument metaDocument = new MetaDocument(
 			FileLoader.documentBuilder.parse(stream));
-		if (metaDocument.getMetaData().startsWith(
-			"TOURNAMENT_EXECUTION")) {
-		    executedTournamentId = metaDocument.getMetaData()
-			    .substring(24);
-		} else if (metaDocument.getMetaData()
-			.startsWith("REGISTRATION")) {
-		    numberOfRegistrators = Integer.valueOf(metaDocument
-			    .getMetaData().substring(20));
-		} else {
-		    event.setUserFlag(Event.UserFlag.valueOf(metaDocument
-			    .getMetaData()));
-		}
+		userFlag = metaDocument.getUserFlag();
+		executedTournamentId = metaDocument.getExecutedTournamentId();
+		numberOfRegistrators = metaDocument.getNumberOfRegistrators();
 	    }
 
 	    stream.close();
@@ -191,7 +183,6 @@ public class FileLoader {
 		    break;
 		}
 	    }
-	    event.setUserFlag(UserFlag.TOURNAMENT_EXECUTION);
 	}
 
 	/*
@@ -199,7 +190,13 @@ public class FileLoader {
 	 */
 	if (numberOfRegistrators > 0) {
 	    event.setNumberOfRegistrators(numberOfRegistrators);
-	    event.setUserFlag(UserFlag.REGISTRATION);
+	}
+
+	/*
+	 * Set the loaded user flag
+	 */
+	if (userFlag != null) {
+	    event.setUserFlag(userFlag);
 	}
 
 	return event;

@@ -12,101 +12,101 @@ import usspg31.tourney.model.Tournament;
 
 public class SwissSystem implements PairingStrategy {
 
-	@Override
-	public ArrayList<Pairing> generatePairing(Tournament tournament) {
+    @Override
+    public ArrayList<Pairing> generatePairing(Tournament tournament) {
 
-		ArrayList<Pairing> result = new ArrayList<>();
-		Pairing partResult;
-		ArrayList<PlayerScore> mergedScoreTable = new ArrayList<>();
+	ArrayList<Pairing> result = new ArrayList<>();
+	Pairing partResult;
+	ArrayList<PlayerScore> mergedScoreTable = new ArrayList<>();
 
-		PlayerScore score;
-		Integer[] numberOfScores;
+	// generate the score table for the remaining player in the tournament
+	mergedScoreTable = PairingHelper.mergeScoreRemainingPlayer(tournament);
+	Collections.sort(mergedScoreTable);
 
-		// generate the score table for the remaining player in the tournament
-		mergedScoreTable = PairingHelper.mergeScoreRemainingPlayer(tournament);
-		Collections.sort(mergedScoreTable);
+	if (tournament.getRounds().size() == 0) {
+	    // random pairings in the first round of the tournament
+	    Random randomGenerator = new Random();
+	    ArrayList<Player> randomList = new ArrayList<>();
+	    randomList.addAll(tournament.getRemainingPlayers());
+	    int randomNumber;
 
-		if (tournament.getRounds().size() == 0) {
-			// random pairings in the first round of the tournament
-			Random randomGenerator = new Random();
-			ArrayList<Player> randomList = new ArrayList<>();
-			randomList.addAll(tournament.getRemainingPlayers());
-			int randomNumber;
+	    while (randomList.size() >= PairingHelper.findPhase(
+		    tournament.getRounds().size(), tournament)
+		    .getNumberOfOpponents()) {
+		partResult = new Pairing();
 
-			while (randomList.size() >= PairingHelper.findPhase(
-					tournament.getRounds().size(), tournament)
-					.getNumberOfOpponents()) {
-				partResult = new Pairing();
+		for (int i = 0; i < PairingHelper.findPhase(
+			tournament.getRounds().size(), tournament)
+			.getNumberOfOpponents(); i++) {
+		    randomNumber = randomGenerator.nextInt(randomList.size());
 
-				for (int i = 0; i < PairingHelper.findPhase(
-						tournament.getRounds().size(), tournament)
-						.getNumberOfOpponents(); i++) {
-					randomNumber = randomGenerator.nextInt(randomList.size());
+		    partResult.getScoreTable().add(
+			    PairingHelper.generateEmptyScore(
+				    randomList.get(randomNumber), tournament
+					    .getRuleSet().getPossibleScores()
+					    .get(0).getScores().size()));
 
-					score = new PlayerScore();
-					score.setPlayer(randomList.get(randomNumber));
-					numberOfScores = new Integer[tournament.getRuleSet()
-							.getPossibleScores().size()];
-					score.getScore().addAll(numberOfScores);
-					partResult.getScoreTable().add(score);
-
-					partResult.getOpponents().add(randomList.get(randomNumber));
-					randomList.remove(randomNumber);
-				}
-			}
-		} else {
-			while (mergedScoreTable.size() >= PairingHelper.findPhase(
-					tournament.getRounds().size(), tournament)
-					.getNumberOfOpponents()) {
-				partResult = new Pairing();
-
-				for (int i = 0; i < PairingHelper.findPhase(
-						tournament.getRounds().size(), tournament)
-						.getNumberOfOpponents(); i++) {
-
-					partResult.getScoreTable().add(
-							PairingHelper.generateEmptyScore(mergedScoreTable
-									.get(mergedScoreTable.size() - 1)
-									.getPlayer(), tournament.getRuleSet()
-									.getPossibleScores().size()));
-					if (i == 0) {
-						partResult.getOpponents().add(
-								mergedScoreTable.get(
-										mergedScoreTable.size() - 1)
-										.getPlayer());
-						mergedScoreTable.remove(mergedScoreTable.size() - 1);
-					} else {
-						partResult.getOpponents().add(
-								mergedScoreTable.get(
-										mergedScoreTable.size() - i)
-										.getPlayer());
-						if (i == PairingHelper.findPhase(
-								tournament.getRounds().size(), tournament)
-								.getNumberOfOpponents() - 1) {
-							if (PairingHelper.checkForSimiliarPairings(
-									partResult, tournament)) {
-
-								// TODO finish the procedure for similar
-								// pairings
-								result.add(partResult);
-							} else {
-								mergedScoreTable
-										.remove(mergedScoreTable.size() - 1);
-
-								result.add(partResult);
-							}
-						}
-					}
-
-				}
-			}
+		    partResult.getOpponents().add(randomList.get(randomNumber));
+		    randomList.remove(randomNumber);
 		}
-		return result;
+
+		result.add(partResult);
+	    }
+	} else {
+	    while (mergedScoreTable.size() >= PairingHelper.findPhase(
+		    tournament.getRounds().size(), tournament)
+		    .getNumberOfOpponents()) {
+		partResult = new Pairing();
+
+		for (int i = 0; i < PairingHelper.findPhase(
+			tournament.getRounds().size(), tournament)
+			.getNumberOfOpponents(); i++) {
+
+		    partResult.getScoreTable().add(
+			    PairingHelper.generateEmptyScore(mergedScoreTable
+				    .get(mergedScoreTable.size() - 1)
+				    .getPlayer(), tournament.getRuleSet()
+				    .getPossibleScores().get(0).getScores()
+				    .size()));
+		    if (i == 0) {
+			partResult.getOpponents().add(
+				mergedScoreTable.get(
+					mergedScoreTable.size() - 1)
+					.getPlayer());
+			mergedScoreTable.remove(mergedScoreTable.size() - 1);
+		    } else {
+			partResult.getOpponents().add(
+				mergedScoreTable.get(
+					mergedScoreTable.size() - i)
+					.getPlayer());
+			if (i == PairingHelper.findPhase(
+				tournament.getRounds().size(), tournament)
+				.getNumberOfOpponents() - 1) {
+			    if (PairingHelper.checkForSimiliarPairings(
+				    partResult, tournament)) {
+
+				// TODO finish the procedure for similar
+				// pairings
+			    } else {
+				mergedScoreTable
+					.remove(mergedScoreTable.size() - 1);
+
+			    }
+			}
+		    }
+
+		}
+		result.add(partResult);
+
+	    }
 
 	}
+	return result;
 
-	@Override
-	public String getName() {
-		return "Schweizer System";
-	}
+    }
+
+    @Override
+    public String getName() {
+	return "Schweizer System";
+    }
 }
