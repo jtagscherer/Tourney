@@ -1,14 +1,19 @@
 package usspg31.tourney.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,12 +85,12 @@ public class PreferencesManager {
     private static final String languageFilePackage = "ui.language";
     private static final String languageFilePrefix = "language_";
     private static final String languageFileSuffix = ".properties";
+    private static final String availableLanguagesFile = "available_languages";
 
-    private static final Pattern languageFilePattern = Pattern.compile("^"
-	    + languageFilePrefix + "(?<language>[a-z]+)_(?<country>[A-Z]+)"
-	    + languageFileSuffix + "$");
+    private static final Pattern localeCodePattern = Pattern.compile(
+	    "^(?<language>[a-z]+)_(?<country>[A-Z]+)$");
 
-    private static final String defaultPreferencesFile = "/defaultPreferences.properties";
+    private static final String defaultPreferencesFile = "defaultPreferences.properties";
     private static final String preferencesFolder = "preferences";
     private static final String preferencesFile = "preferences.properties";
 
@@ -127,30 +132,66 @@ public class PreferencesManager {
 	log.info("Loading available languages...");
 	this.availableLanguages = FXCollections.observableArrayList();
 
-	URL languageFileFolder = this.getClass().getResource(languageFilePath);
-	if (languageFileFolder == null) {
-	    throw new Error("Language File Path must be a valid path!");
+	List<String> availableLanguages = this.findAvailableLanguages();
+
+	for (String language : availableLanguages) {
+	    try {
+                URL languageFile = this.getClass().getResource(languageFilePath
+                       + languageFilePrefix + language + languageFileSuffix);
+
+                if (languageFile == null) {
+                    log.warning("LanguageFile " + languageFile + " wasn't found");
+                }
+
+        	Matcher languageMatcher = localeCodePattern.matcher(language);
+        	languageMatcher.find();
+
+        	Locale locale = new Locale(languageMatcher.group("language"), 
+        	        languageMatcher.group("country"));
+        	ResourceBundle languageBundle = new PropertyResourceBundle(
+        		languageFile.openStream());
+
+        	this.availableLanguages.add(new Language(locale, languageBundle));
+	    } catch (Exception e) {
+		log.log(Level.WARNING, "Error loading language: "
+			+ e.getMessage(), e);
+	    }
 	}
+
+	if (this.availableLanguages.size() == 0) {
+	    throw new Error("No languages could be loaded successfully!");
+	}
+    }
+
+    private List<String> findAvailableLanguages() {
+	String langFile = languageFilePath + availableLanguagesFile;
+	URL availableLangaugesFile = this.getClass().getResource(langFile);
+
+	if (availableLangaugesFile == null) {
+	    throw new Error("AvailableLanguagesFile not found! (" + langFile + ")");
+	}
+
 	try {
-	    File languageFolder = new File(languageFileFolder.toURI());
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(
+		    availableLangaugesFile.openStream()));
 
-	    for (File f : languageFolder.listFiles()) {
-		// is the file really a language file?
-		Matcher matcher = languageFilePattern.matcher(f.getName());
-		if (matcher.find()) {
-		    Locale locale = new Locale(matcher.group("language"),
-			    matcher.group("country"));
-		    ResourceBundle languageBundle = ResourceBundle.getBundle(
-			    languageFilePackage + '.'
-				    + f.getName().replace(".properties", ""),
-			    locale);
+	    List<String> availableLanguages = new ArrayList<>();
 
-		    this.availableLanguages.add(new Language(locale,
-			    languageBundle));
+	    String input = null;
+	    while ((input = reader.readLine()) != null) {
+		if (localeCodePattern.matcher(input).matches()) {
+		    availableLanguages.add(input);
 		}
 	    }
-	} catch (URISyntaxException e) { // can't actually happen
-	    log.log(Level.SEVERE, e.getMessage(), e);
+
+	    if (availableLanguages.size() == 0) {
+		throw new Error("AvailableLanguagesFile does not contain any "
+			+ "valid languages!");
+	    }
+
+	    return availableLanguages;
+	} catch (IOException e) {
+	    throw new Error(e);
 	}
     }
 
@@ -164,8 +205,8 @@ public class PreferencesManager {
 	// load the default preferences file
 	Properties defaultPreferences = new Properties();
 	try {
-	    defaultPreferences.load(this.getClass().getResourceAsStream(
-		    defaultPreferencesFile));
+	    defaultPreferences.load(this.getClass().getClassLoader()
+		    .getResourceAsStream(defaultPreferencesFile));
 	} catch (IOException e) {
 	    // must never happen if the project setup is correct
 	    log.log(Level.SEVERE, e.getMessage(), e);
