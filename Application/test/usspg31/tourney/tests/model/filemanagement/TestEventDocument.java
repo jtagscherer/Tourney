@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Event.EventPhase;
 import usspg31.tourney.model.EventAdministrator;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Player;
@@ -89,6 +90,75 @@ public class TestEventDocument {
 		.getMailAddress());
 	assertEquals("123456", metaData.getAdministrators().get(0)
 		.getPhoneNumber());
+    }
+
+    @Test
+    public void testEmptyDate() {
+	Event event = new Event();
+	// Set some meta data for the new event
+	event.setName("TestEvent");
+	event.setLocation("TestLocation");
+
+	// Add a list of event administrators
+	ArrayList<EventAdministrator> eventAdministrators = new ArrayList<EventAdministrator>();
+	EventAdministrator administrator = new EventAdministrator();
+	administrator.setFirstName("Aaron");
+	administrator.setLastName("Admin");
+	administrator.setMailAdress("a.admin@mail.com");
+	administrator.setPhoneNumber("123456");
+	eventAdministrators.add(administrator);
+
+	event.getAdministrators().setAll(eventAdministrators);
+
+	// Write all data to the document
+	this.document.appendMetaData(event);
+
+	// Read the meta data from the document
+	EventMetaData metaData = this.document.getMetaData();
+
+	// Test the meta data
+	assertEquals("TestEvent", metaData.getName());
+	assertEquals("TestLocation", metaData.getLocation());
+	assertEquals(null, metaData.getStartDate());
+	assertEquals(null, metaData.getEndDate());
+	assertEquals(EventPhase.EVENT_SETUP, metaData.getEventPhase());
+
+	// Test the administrator list
+	assertEquals(1, metaData.getAdministrators().size());
+	assertEquals("Aaron", metaData.getAdministrators().get(0)
+		.getFirstName());
+	assertEquals("Admin", metaData.getAdministrators().get(0).getLastName());
+	assertEquals("a.admin@mail.com", metaData.getAdministrators().get(0)
+		.getMailAddress());
+	assertEquals("123456", metaData.getAdministrators().get(0)
+		.getPhoneNumber());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyEventPhase() {
+	Event event = new Event();
+	// Set some meta data for the new event
+	event.setName("TestEvent");
+	event.setLocation("TestLocation");
+	event.setEventPhase(null);
+
+	// Add a list of event administrators
+	ArrayList<EventAdministrator> eventAdministrators = new ArrayList<EventAdministrator>();
+	EventAdministrator administrator = new EventAdministrator();
+	administrator.setFirstName("Aaron");
+	administrator.setLastName("Admin");
+	administrator.setMailAdress("a.admin@mail.com");
+	administrator.setPhoneNumber("123456");
+	eventAdministrators.add(administrator);
+
+	event.getAdministrators().setAll(eventAdministrators);
+
+	// Write all data to the document
+	this.document.appendMetaData(event);
+
+	// Read the meta data from the document, should throw an exception due
+	// to the empty event phase
+	EventMetaData metaData = this.document.getMetaData();
     }
 
     @Test
@@ -202,5 +272,11 @@ public class TestEventDocument {
 	assertTrue(readPhase.getPairingMethod() instanceof SwissSystem);
 	assertEquals(4, readPhase.getRoundCount());
 	assertEquals(Duration.ofMinutes(10), readPhase.getRoundDuration());
+    }
+
+    @Test
+    public void testSetDocument() {
+	this.document.setDocument(null);
+	assertEquals(null, this.document.getDocument());
     }
 }

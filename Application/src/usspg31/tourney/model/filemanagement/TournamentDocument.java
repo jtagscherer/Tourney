@@ -402,15 +402,28 @@ public class TournamentDocument {
 		     * Connect the id that has been read to the player from the
 		     * list
 		     */
+		    boolean referenced = false;
 		    for (Player listedPlayer : playerList) {
 			if (listedPlayer.getId().equals(id)) {
 			    player = listedPlayer;
+			    referenced = true;
 			    break;
 			}
+		    }
 
+		    if (!referenced) {
 			throw new IllegalArgumentException(
 				"A player that is referenced in a tournament round is not present in the given player list.");
 		    }
+		    // for (Player listedPlayer : playerList) {
+		    // if (listedPlayer.getId().equals(id)) {
+		    // player = listedPlayer;
+		    // break;
+		    // }
+		    //
+		    // throw new IllegalArgumentException(
+		    // "A player that is referenced in a tournament round is not present in the given player list.");
+		    // }
 
 		    roundPairing.getOpponents().add(player);
 
