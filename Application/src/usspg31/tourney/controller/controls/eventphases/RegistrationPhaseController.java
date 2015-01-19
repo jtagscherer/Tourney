@@ -66,7 +66,7 @@ public class RegistrationPhaseController implements EventUser {
 
     private ModalDialog<Object, Player> registrationDialog;
     private ModalDialog<String, Integer> distributionDialog;
-    private ModalDialog<String, Integer> distributionNumberSelectionDialog;
+    private ModalDialog<Integer, Integer> distributionNumberSelectionDialog;
 
     private Event loadedEvent;
     private int registratorNumber = 1;
@@ -95,8 +95,9 @@ public class RegistrationPhaseController implements EventUser {
 	    this.buttonDistributeRegistration.setDisable(true);
 	    this.buttonImportRegistration.setDisable(true);
 
-	    this.distributionNumberSelectionDialog.onResult(
-		    (result, returnValue) -> {
+	    this.distributionNumberSelectionDialog
+		    .properties(this.loadedEvent.getNumberOfRegistrators())
+		    .onResult((result, returnValue) -> {
 			if (result != DialogResult.OK) {
 			    return;
 			}

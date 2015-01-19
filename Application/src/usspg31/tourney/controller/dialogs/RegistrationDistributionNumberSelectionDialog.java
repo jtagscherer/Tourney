@@ -13,11 +13,13 @@ import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 
 public class RegistrationDistributionNumberSelectionDialog extends VBox
-	implements IModalDialogProvider<String, Integer> {
+	implements IModalDialogProvider<Integer, Integer> {
 
     private static final Logger log = Logger
 	    .getLogger(RegistrationDistributionNumberSelectionDialog.class
 		    .getName());
+
+    private int maximumRegistratorNumber;
 
     @FXML
     private NumberTextField textFieldNumberOfRegistrator;
@@ -38,12 +40,12 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
 
     @FXML
     private void initialize() {
-
+	this.maximumRegistratorNumber = Integer.MAX_VALUE;
     }
 
     @Override
-    public void setProperties(String properties) {
-
+    public void setProperties(Integer properties) {
+	this.maximumRegistratorNumber = (Integer) properties;
     }
 
     @Override
@@ -58,11 +60,12 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
     @Override
     public boolean hasNoInput() {
 	return this.textFieldNumberOfRegistrator.getText().length() == 0
-		|| this.getReturnValue() <= 1;
+		|| this.getReturnValue() <= 1
+		|| this.getReturnValue() > this.maximumRegistratorNumber;
     }
 
     @Override
-    public void initModalDialog(ModalDialog<String, Integer> modalDialog) {
+    public void initModalDialog(ModalDialog<Integer, Integer> modalDialog) {
 	modalDialog.title("Arbeitsplatznummer wählen").dialogButtons(
 		DialogButtons.OK);
     }
