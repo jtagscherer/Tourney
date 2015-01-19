@@ -158,7 +158,7 @@ public class TestEventDocument {
 
 	// Read the meta data from the document, should throw an exception due
 	// to the empty event phase
-	EventMetaData metaData = this.document.getMetaData();
+	this.document.getMetaData();
     }
 
     @Test
