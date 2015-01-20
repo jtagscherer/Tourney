@@ -70,14 +70,12 @@ public class EntryPoint extends Application {
     }
 
     private void requestSaveBeforeClose() {
-        if (MainWindow.getInstance().getEventPhaseViewController()
-                .getActiveUndoManager().undoAvailable()) {
-
+        if (MainWindow.getInstance().getEventPhaseViewController().getActiveUndoManager().undoAvailable()) {
             EntryPoint.this.closeRequested = true;
             new SimpleDialog<>("Es sind ungesicherte Änderungen vorhanden.\n"
                     + "Möchten Sie diese vor dem Beenden speichern?")
                     .modalDialog()
-                    .title("Warnung")
+                    .title("dialogs.titles.warning")
                     .dialogButtons(DialogButtons.YES_NO_CANCEL)
                     .onResult((result, returnValue) -> {
                         switch (result) {
@@ -94,10 +92,7 @@ public class EntryPoint extends Application {
                             if (saveResponse != DialogResult.OK) {
                                 return;
                             }
-
-                            // Fall through if there was
-                            // no return yet
-                        default:
+                        default: // Fall through if there was no return yet
                             EntryPoint.this.closeRequested = false;
                             primaryStage.close();
                             Platform.exit();

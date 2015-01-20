@@ -89,19 +89,18 @@ public class TournamentDialog extends VBox implements
     private Tournament loadedTournament;
 
     public TournamentDialog() {
-        try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-                    "/ui/fxml/dialogs/tournament-dialog.fxml"),
-                    PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
-            loader.setController(this);
-            loader.setRoot(this);
-            loader.load();
-        } catch (IOException e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
-        }
+	try {
+	    FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+		    "/ui/fxml/dialogs/tournament-dialog.fxml"),
+		    PreferencesManager.getInstance().getSelectedLanguage()
+			    .getLanguageBundle());
+	    loader.setController(this);
+	    loader.setRoot(this);
+	    loader.load();
+	} catch (IOException e) {
+	    log.log(Level.SEVERE, e.getMessage(), e);
+	}
     }
-
-
 
     @FXML
     private void initialize() {
@@ -114,74 +113,77 @@ public class TournamentDialog extends VBox implements
     }
 
     private void initTournamentPhaseTable() {
-        PreferencesManager preferences = PreferencesManager.getInstance();
+	PreferencesManager preferences = PreferencesManager.getInstance();
 
-        // setup all table columns
+	// setup all table columns
 
-        // tournament phase number
-        this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
-        this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().phaseNumberProperty()
-                .asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesPhaseNumber);
+	// tournament phase number
+	this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
+	this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().phaseNumberProperty()
+			.asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesPhaseNumber);
 
-        // pairing method
-        this.tableColumnPhasesPairingMethod = new TableColumn<>(
-                preferences.localizeString("dialogs.tournament.pairingmethod"));
-        this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
-                cellData -> new SimpleStringProperty(cellData.getValue()
-                        .getPairingMethod().getName()));
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesPairingMethod);
+	// pairing method
+	this.tableColumnPhasesPairingMethod = new TableColumn<>(
+		preferences.localizeString("dialogs.tournament.pairingmethod"));
+	this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
+		cellData -> new SimpleStringProperty(cellData.getValue()
+			.getPairingMethod().getName()));
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesPairingMethod);
 
-        // round count
-        this.tableColumnPhasesRoundCount = new TableColumn<>(
-                preferences.localizeString("dialogs.tournament.roundcount"));
-        this.tableColumnPhasesRoundCount.cellValueFactoryProperty()
-        .set(cellData -> cellData.getValue().roundCountProperty()
-                .asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesRoundCount);
+	// round count
+	this.tableColumnPhasesRoundCount = new TableColumn<>(
+		preferences.localizeString("dialogs.tournament.roundcount"));
+	this.tableColumnPhasesRoundCount.cellValueFactoryProperty()
+		.set(cellData -> cellData.getValue().roundCountProperty()
+			.asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesRoundCount);
 
-        // cutoff
-        this.tableColumnPhasesCutoff = new TableColumn<>(
-                preferences.localizeString("dialogs.tournament.cutoff"));
-        this.tableColumnPhasesCutoff.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().cutoffProperty().asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesCutoff);
+	// cutoff
+	this.tableColumnPhasesCutoff = new TableColumn<>(
+		preferences.localizeString("dialogs.tournament.cutoff"));
+	this.tableColumnPhasesCutoff.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().cutoffProperty().asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesCutoff);
 
-        // round duration
-        this.tableColumnPhasesRoundDuration = new TableColumn<>(
-                preferences.localizeString("dialogs.tournament.roundduration"));
-        this.tableColumnPhasesRoundDuration
-        .setCellValueFactory(cellData -> cellData.getValue()
-                .roundDurationProperty());
-        this.tableColumnPhasesRoundDuration.setCellFactory(column -> {
-            return new TableCell<GamePhase, Duration>() {
-                @Override
-                protected void updateItem(Duration item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null) {
-                        this.setText(String.format("%02d:%02d " +
-                                preferences.localizeString("dialogs.tournament.minutes"),
-                                item.getSeconds() / 60, item.getSeconds() % 60));
-                    }
-                }
-            };
-        });
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesRoundDuration);
+	// round duration
+	this.tableColumnPhasesRoundDuration = new TableColumn<>(
+		preferences.localizeString("dialogs.tournament.roundduration"));
+	this.tableColumnPhasesRoundDuration
+		.setCellValueFactory(cellData -> cellData.getValue()
+			.roundDurationProperty());
+	this.tableColumnPhasesRoundDuration.setCellFactory(column -> {
+	    return new TableCell<GamePhase, Duration>() {
+		@Override
+		protected void updateItem(Duration item, boolean empty) {
+		    super.updateItem(item, empty);
+		    if (item != null) {
+			this.setText(String.format(
+				"%02d:%02d "
+					+ preferences
+						.localizeString("dialogs.tournament.minutes"),
+				item.getSeconds() / 60, item.getSeconds() % 60));
+		    }
+		}
+	    };
+	});
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesRoundDuration);
 
-        // number of opponents
-        this.tableColumnPhasesNumberOfOpponents = new TableColumn<>(
-                preferences.localizeString("dialogs.tournamentmodule.playersperpairing"));
-        this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().numberOfOpponentsProperty()
-                .asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesNumberOfOpponents);
+	// number of opponents
+	this.tableColumnPhasesNumberOfOpponents = new TableColumn<>(
+		preferences
+			.localizeString("dialogs.tournamentmodule.playersperpairing"));
+	this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().numberOfOpponentsProperty()
+			.asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesNumberOfOpponents);
     }
 
     /**
@@ -205,15 +207,14 @@ public class TournamentDialog extends VBox implements
 	this.buttonMoveTournamentPhaseDown.disableProperty().bind(
 		selectedIndex.greaterThanOrEqualTo(
 			Bindings.size(this.tableTournamentPhases.getItems())
-			.subtract(1))
-			.or(selectedItem.isNull()));
+				.subtract(1)).or(selectedItem.isNull()));
 
 	// only enable remove button if an item is selected and there is more
 	// than one possible score
 	this.buttonRemoveTournamentPhase.disableProperty().bind(
 		selectedItem.isNull().or(
 			Bindings.size(this.tableTournamentPhases.getItems())
-			.lessThanOrEqualTo(1)));
+				.lessThanOrEqualTo(1)));
 
 	// only enable edit button if an item is selected
 	this.buttonEditTournamentPhase.disableProperty().bind(
@@ -228,25 +229,23 @@ public class TournamentDialog extends VBox implements
     }
 
     private void initPossibleScoresTable() {
-        PreferencesManager preferences = PreferencesManager.getInstance();
+	PreferencesManager preferences = PreferencesManager.getInstance();
 
-        this.tableColumnPossibleScoresPriority = new TableColumn<>(
-                preferences.localizeString("dialogs.tournament.priority"));
-        this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().priorityProperty().asString());
-        this.tablePossibleScores.getColumns().add(
-                this.tableColumnPossibleScoresPriority);
+	this.tableColumnPossibleScoresPriority = new TableColumn<>(
+		preferences.localizeString("dialogs.tournament.priority"));
+	this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().priorityProperty().asString());
+	this.tablePossibleScores.getColumns().add(
+		this.tableColumnPossibleScoresPriority);
 
-        this.tableColumnPossibleScoresScores = new TableColumn<>(
-                preferences.localizeString("dialogs.tournament.scores"));
-        this.tableColumnPossibleScoresScores
-        .setCellValueFactory(cellData -> new MapToStringBinding<>(
-                cellData.getValue().getScores()).getStringProperty());
-        this.tablePossibleScores.getColumns().add(
-                this.tableColumnPossibleScoresScores);
+	this.tableColumnPossibleScoresScores = new TableColumn<>(
+		preferences.localizeString("dialogs.tournament.scores"));
+	this.tableColumnPossibleScoresScores
+		.setCellValueFactory(cellData -> new MapToStringBinding<>(
+			cellData.getValue().getScores()).getStringProperty());
+	this.tablePossibleScores.getColumns().add(
+		this.tableColumnPossibleScoresScores);
     }
-
-
 
     /**
      * Adds listeners to the selection property of the possible scores table to
@@ -269,14 +268,14 @@ public class TournamentDialog extends VBox implements
 	this.buttonMovePossibleScoreDown.disableProperty().bind(
 		selectedIndex.greaterThanOrEqualTo(
 			Bindings.size(this.tableTournamentPhases.getItems())
-			.subtract(1)).or(selectedItem.isNull()));
+				.subtract(1)).or(selectedItem.isNull()));
 
 	// only enable remove button if an item is selected and there is more
 	// than one possible score
 	this.buttonRemovePossibleScore.disableProperty().bind(
 		selectedItem.isNull().or(
 			Bindings.size(this.tableTournamentPhases.getItems())
-			.lessThanOrEqualTo(1)));
+				.lessThanOrEqualTo(1)));
 
 	// only enable edit button if an item is selected
 	this.buttonEditPossibleScore.disableProperty().bind(
@@ -304,16 +303,20 @@ public class TournamentDialog extends VBox implements
     }
 
     @Override
-    public boolean hasNoInput() {
-	return this.loadedTournament.getName().equals("");
+    public String getInputErrorString() {
+	if (this.loadedTournament.getName().equals("")) {
+	    return PreferencesManager.getInstance().localizeString(
+		    "dialogs.tournament.errors.emptydata");
+	} else {
+	    return null;
+	}
     }
 
     @Override
     public void initModalDialog(ModalDialog<Tournament, Tournament> modalDialog) {
-        modalDialog.title("dialogs.tournament").dialogButtons(DialogButtons.OK_CANCEL);
+	modalDialog.title("dialogs.tournament").dialogButtons(
+		DialogButtons.OK_CANCEL);
     }
-
-
 
     private void loadTournament(Tournament tournament) {
 	log.fine("Loading Tournament");
@@ -347,8 +350,6 @@ public class TournamentDialog extends VBox implements
 	log.fine("Tournament unloaded");
     }
 
-
-
     @FXML
     private void onButtonLoadTournamentModuleClicked(ActionEvent event) {
 	// TODO: show all available modules and let the use choose one
@@ -361,8 +362,6 @@ public class TournamentDialog extends VBox implements
 	// TODO: actually load tournament modules (-> preferencesManager?)
 	this.tournamentModuleListDialog.properties(null).show();
     }
-
-
 
     @FXML
     private void onButtonMoveTournamentPhaseUpClicked(ActionEvent event) {
@@ -383,8 +382,10 @@ public class TournamentDialog extends VBox implements
      * indexB.
      */
     private void swapGamePhases(int indexA, int indexB) {
-	log.finer("Swapping gamephases with indices " + indexA + " and " + indexB);
-	ObservableList<GamePhase> phases = this.tableTournamentPhases.getItems();
+	log.finer("Swapping gamephases with indices " + indexA + " and "
+		+ indexB);
+	ObservableList<GamePhase> phases = this.tableTournamentPhases
+		.getItems();
 
 	// swap phase numbers
 	int tmpId = phases.get(indexA).getPhaseNumber();
@@ -402,17 +403,19 @@ public class TournamentDialog extends VBox implements
     private void onButtonAddTournamentPhaseClicked(ActionEvent event) {
 	log.fine("Add Tournament Phase Button was clicked");
 	GamePhase newGamePhase = new GamePhase();
-	newGamePhase.setPhaseNumber(this.tableTournamentPhases.getItems().size());
+	newGamePhase.setPhaseNumber(this.tableTournamentPhases.getItems()
+		.size());
 
 	this.tournamentPhaseDialog
 		.properties(newGamePhase)
-		.onResult((result, returnValue) -> {
-		    if (result == DialogResult.OK
-			    && returnValue != null) {
-			this.loadedTournament.getRuleSet()
-			.getPhaseList().add(returnValue);
-		    }
-		}).show();
+		.onResult(
+			(result, returnValue) -> {
+			    if (result == DialogResult.OK
+				    && returnValue != null) {
+				this.loadedTournament.getRuleSet()
+					.getPhaseList().add(returnValue);
+			    }
+			}).show();
     }
 
     @FXML
@@ -422,15 +425,16 @@ public class TournamentDialog extends VBox implements
 	// update indices of all following GamePhases
 	int selectedTournamentPhase = this.getSelectedTournamentPhaseIndex();
 	int itemCount = this.tableTournamentPhases.getItems().size();
-	ObservableList<GamePhase> phases = this.tableTournamentPhases.getItems();
+	ObservableList<GamePhase> phases = this.tableTournamentPhases
+		.getItems();
 	for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
 	    phases.get(i).setPhaseNumber(i - 1);
 	}
 
 	// actually remove the selected GamePhase
-	this.loadedTournament.getRuleSet().getPhaseList().remove(selectedTournamentPhase);
+	this.loadedTournament.getRuleSet().getPhaseList()
+		.remove(selectedTournamentPhase);
     }
-
 
     @FXML
     private void onButtonEditTournamentPhaseClicked(ActionEvent event) {
@@ -452,15 +456,14 @@ public class TournamentDialog extends VBox implements
     }
 
     /**
-     * @return the index of the currently selected row in the tournament phase table
+     * @return the index of the currently selected row in the tournament phase
+     *         table
      */
 
     private int getSelectedTournamentPhaseIndex() {
-	return this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
+	return this.tableTournamentPhases.getSelectionModel()
+		.getSelectedIndex();
     }
-
-
-
 
     @FXML
     private void onButtonMovePossibleScoreUpClicked(ActionEvent event) {
@@ -481,8 +484,10 @@ public class TournamentDialog extends VBox implements
      * indexB.
      */
     private void swapPossibleScores(int indexA, int indexB) {
-	log.finer("Swapping possible scores with indices " + indexA + " and " + indexB);
-	ObservableList<PossibleScoring> scores = this.tablePossibleScores.getItems();
+	log.finer("Swapping possible scores with indices " + indexA + " and "
+		+ indexB);
+	ObservableList<PossibleScoring> scores = this.tablePossibleScores
+		.getItems();
 
 	// swap phase numbers
 	int tmpId = scores.get(indexA).getPriority();
@@ -508,13 +513,15 @@ public class TournamentDialog extends VBox implements
 	// update indices of all following PossibleScores
 	int selectedPossibleScore = this.getSelectedPossibleScoreIndex();
 	int itemCount = this.tablePossibleScores.getItems().size();
-	ObservableList<PossibleScoring> phases = this.tablePossibleScores.getItems();
+	ObservableList<PossibleScoring> phases = this.tablePossibleScores
+		.getItems();
 	for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
 	    phases.get(i).setPriority(i - 1);
 	}
 
 	// actually remove the selected PossibleScore
-	this.loadedTournament.getRuleSet().getPossibleScores().remove(selectedPossibleScore);
+	this.loadedTournament.getRuleSet().getPossibleScores()
+		.remove(selectedPossibleScore);
     }
 
     @FXML
@@ -530,7 +537,8 @@ public class TournamentDialog extends VBox implements
     }
 
     /**
-     * @return the index of the currently selected row in the tournament phase table
+     * @return the index of the currently selected row in the tournament phase
+     *         table
      */
     private int getSelectedPossibleScoreIndex() {
 	return this.tablePossibleScores.getSelectionModel().getSelectedIndex();

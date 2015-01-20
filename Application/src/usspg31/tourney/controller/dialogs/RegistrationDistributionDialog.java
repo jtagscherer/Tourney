@@ -25,16 +25,17 @@ public class RegistrationDistributionDialog extends VBox implements
     private NumberTextField textFieldNumberOfRegistrators;
 
     public RegistrationDistributionDialog() {
-        try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-                    "/ui/fxml/dialogs/registration-distribution-dialog.fxml"),
-                    PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
-            loader.setController(this);
-            loader.setRoot(this);
-            loader.load();
-        } catch (IOException e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
-        }
+	try {
+	    FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+		    "/ui/fxml/dialogs/registration-distribution-dialog.fxml"),
+		    PreferencesManager.getInstance().getSelectedLanguage()
+			    .getLanguageBundle());
+	    loader.setController(this);
+	    loader.setRoot(this);
+	    loader.load();
+	} catch (IOException e) {
+	    log.log(Level.SEVERE, e.getMessage(), e);
+	}
     }
 
     @FXML
@@ -58,9 +59,16 @@ public class RegistrationDistributionDialog extends VBox implements
     }
 
     @Override
-    public boolean hasNoInput() {
-	return this.textFieldNumberOfRegistrators.getText().length() == 0
-		|| this.getReturnValue() <= 1;
+    public String getInputErrorString() {
+	if (this.textFieldNumberOfRegistrators.getText().length() == 0) {
+	    return PreferencesManager.getInstance().localizeString(
+		    "dialogs.registrationdistribution.errors.emptydata");
+	} else if (this.getReturnValue() <= 1) {
+	    return PreferencesManager.getInstance().localizeString(
+		    "dialogs.registrationdistribution.errors.numbertoolow");
+	} else {
+	    return null;
+	}
     }
 
     @FXML
