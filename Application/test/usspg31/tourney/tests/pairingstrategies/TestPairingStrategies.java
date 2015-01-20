@@ -16,6 +16,7 @@ import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentModule;
 import usspg31.tourney.model.pairingstrategies.FreeForAll;
+import usspg31.tourney.model.pairingstrategies.ModifiedSwissSystem;
 import usspg31.tourney.model.pairingstrategies.SingleElimination;
 import usspg31.tourney.model.pairingstrategies.SwissSystem;
 
@@ -274,13 +275,13 @@ public class TestPairingStrategies {
 	testGamePhase.setNumberOfOpponents(2);
 	testGamePhase.setPhaseNumber(0);
 	testGamePhase.setRoundCount(0);
-	testGamePhase.setPairingMethod(new SwissSystem());
+	testGamePhase.setPairingMethod(new ModifiedSwissSystem());
 	testTournamentModule.getPhaseList().add(testGamePhase);
 
 	testGamePhase.setNumberOfOpponents(2);
 	testGamePhase.setPhaseNumber(1);
-	testGamePhase.setRoundCount(1);
-	testGamePhase.setPairingMethod(new SwissSystem());
+	testGamePhase.setRoundCount(2);
+	testGamePhase.setPairingMethod(new ModifiedSwissSystem());
 	testTournamentModule.getPhaseList().add(testGamePhase);
 
 	testTournamentModule.getPossibleScores().add(testPossibleScoring);

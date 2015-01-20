@@ -52,13 +52,14 @@ public class FreeForAll implements PairingStrategy {
 		result.add(partResult);
 	    }
 	    // checks if the round is the first in his game phase
-	} else if (PairingHelper
-		.findPhase(tournament.getRounds().size() - 1, tournament)
-		.getPairingMethod().getClass() != FreeForAll.class) {
+	} else if (PairingHelper.isFirstInPhase(tournament.getRounds().size(),
+		tournament, PairingHelper.findPhase(tournament.getRounds()
+			.size(), tournament))) {
 	    while (randomList.size() >= PairingHelper.findPhase(
 		    tournament.getRounds().size(), tournament)
 		    .getNumberOfOpponents()) {
 		partResult = new Pairing();
+		partResult.setFlag(Pairing.PairingFlag.IGNORE);
 
 		for (int i = 0; i < PairingHelper.findPhase(
 			tournament.getRounds().size(), tournament)

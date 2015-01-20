@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class Bye {
     public enum ByeType {
-	NORMALBYE, SUPERBYE;
+	NORMAL_BYE, SUPER_BYE;
     }
 
     private ObjectProperty<PlayerScore> byePoints;

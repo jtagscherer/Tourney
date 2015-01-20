@@ -44,7 +44,7 @@ public class SingleElimination implements PairingStrategy {
 		    tournament.getRounds().size(), tournament)
 		    .getNumberOfOpponents()) {
 		partResult = new Pairing();
-
+		partResult.setFlag(Pairing.PairingFlag.IGNORE);
 		for (int i = 0; i < PairingHelper.findPhase(
 			tournament.getRounds().size(), tournament)
 			.getNumberOfOpponents(); i++) {

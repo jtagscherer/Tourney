@@ -33,7 +33,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
 		    tournament.getRounds().size(), tournament)
 		    .getNumberOfOpponents()) {
 		partResult = new Pairing();
-		partResult.getScoreTable().addAll(opponents);
+		partResult.setFlag(Pairing.PairingFlag.IGNORE);
 
 		for (int i = 0; i < PairingHelper.findPhase(
 			tournament.getRounds().size(), tournament)
@@ -83,6 +83,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
 			tournament.getRounds().size(), tournament)
 			.getNumberOfOpponents()) {
 		    partResult = new Pairing();
+		    partResult.setFlag(Pairing.PairingFlag.IGNORE);
 
 		    for (int i = 0; i < PairingHelper.findPhase(
 			    tournament.getRounds().size(), tournament)
