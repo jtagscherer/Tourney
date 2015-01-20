@@ -12,7 +12,7 @@ public class Bye {
 	NORMAL_BYE, SUPER_BYE;
     }
 
-    private ObjectProperty<PlayerScore> byePoints;
+    private ObjectProperty<Integer> byePoints;
     private ObjectProperty<ByeType> byeType;
 
     public Bye() {
@@ -20,15 +20,15 @@ public class Bye {
 	this.byeType = new SimpleObjectProperty<>();
     }
 
-    public PlayerScore getByePoints() {
+    public Integer getByePoints() {
 	return this.byePoints.get();
     }
 
-    public void setByePoints(PlayerScore value) {
+    public void setByePoints(Integer value) {
 	this.byePoints.set(value);
     }
 
-    public ObjectProperty<PlayerScore> byePointsProperty() {
+    public ObjectProperty<Integer> byePointsProperty() {
 	return this.byePoints;
     }
 
