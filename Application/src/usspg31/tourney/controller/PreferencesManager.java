@@ -146,7 +146,7 @@ public class PreferencesManager {
         	Matcher languageMatcher = localeCodePattern.matcher(language);
         	languageMatcher.find();
 
-        	Locale locale = new Locale(languageMatcher.group("language"), 
+        	Locale locale = new Locale(languageMatcher.group("language"),
         	        languageMatcher.group("country"));
         	ResourceBundle languageBundle = new PropertyResourceBundle(
         		languageFile.openStream());
@@ -336,7 +336,10 @@ public class PreferencesManager {
      * @return
      */
     public boolean isPasswordCorrect(String password) {
-	return this.passwordHash.get().equals(this.getHash(password));
+        if (this.passwordHash.get().isEmpty()) {
+            return true;
+        }
+        return this.passwordHash.get().equals(this.getHash(password));
     }
 
     /**
@@ -387,7 +390,7 @@ public class PreferencesManager {
 	try {
 	    // use SHA-256 to calculate the hash for the input
 	    MessageDigest stringDigest;
-	    stringDigest = MessageDigest.getInstance("SHA-265");
+	    stringDigest = MessageDigest.getInstance("SHA-256");
 	    stringDigest.update(input.getBytes());
 	    return new String(stringDigest.digest());
 	} catch (NoSuchAlgorithmException e) {

@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import usspg31.tourney.controller.dialogs.PasswordSelectionDialog;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 
 
 public class OptionsViewController {
@@ -22,6 +24,8 @@ public class OptionsViewController {
 
 	private Runnable exitButtonCallback;
 
+	private ModalDialog<Object, Object> passwordSelectionDialog;
+
 	@FXML private void initialize() {
 		this.exitButtonCallback = null;
 	}
@@ -33,6 +37,8 @@ public class OptionsViewController {
 		this.labelExitDescription.setText(preferences.localizeString(descriptionKey));
 		this.labelExitExplanation.setText(preferences.localizeString(explanationKey));
 		this.exitButtonCallback = exitCallback;
+
+		this.passwordSelectionDialog = new PasswordSelectionDialog().modalDialog();
 	}
 
 	@FXML private void onButtonChangeLanguageClicked(ActionEvent event) {
@@ -41,6 +47,7 @@ public class OptionsViewController {
 
 	@FXML private void onButtonChangePasswordClicked(ActionEvent event) {
 		log.fine("Change Password Button was clicked");
+		this.passwordSelectionDialog.show();
 	}
 
 	@FXML private void onButtonExitClicked(ActionEvent event) {
