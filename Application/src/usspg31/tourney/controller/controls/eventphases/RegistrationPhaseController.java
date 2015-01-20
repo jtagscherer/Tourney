@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -68,11 +70,11 @@ public class RegistrationPhaseController implements EventUser {
     @FXML
     private void initialize() {
         this.registrationDialog = new PlayerPreRegistrationDialog()
-        .modalDialog();
+                .modalDialog();
         this.distributionDialog = new RegistrationDistributionDialog()
-        .modalDialog();
+                .modalDialog();
         this.distributionNumberSelectionDialog = new RegistrationDistributionNumberSelectionDialog()
-        .modalDialog();
+                .modalDialog();
     }
 
     @Override
@@ -89,13 +91,13 @@ public class RegistrationPhaseController implements EventUser {
             this.buttonImportRegistration.setDisable(true);
 
             this.distributionNumberSelectionDialog
-            .properties(this.loadedEvent.getNumberOfRegistrators())
-            .onResult((result, returnValue) -> {
-                if (result != DialogResult.OK) {
-                    return;
-                }
-                this.registratorNumber = returnValue;
-            }).show();
+                    .properties(this.loadedEvent.getNumberOfRegistrators())
+                    .onResult((result, returnValue) -> {
+                        if (result != DialogResult.OK) {
+                            return;
+                        }
+                        this.registratorNumber = returnValue;
+                    }).show();
         }
 
         this.tableRegisteredPlayers.getSelectionModel().clearSelection();
@@ -117,10 +119,10 @@ public class RegistrationPhaseController implements EventUser {
                                 player.getFirstName(), newValue)
                                 || SearchUtilities.fuzzyMatches(
                                         player.getLastName(), newValue)
-                                        || SearchUtilities.fuzzyMatches(
-                                                player.getNickName(), newValue)
-                                                || SearchUtilities.fuzzyMatches(
-                                                        player.getMailAddress(), newValue);
+                                || SearchUtilities.fuzzyMatches(
+                                        player.getNickName(), newValue)
+                                || SearchUtilities.fuzzyMatches(
+                                        player.getMailAddress(), newValue);
                     });
                 });
 
@@ -134,17 +136,35 @@ public class RegistrationPhaseController implements EventUser {
         // Bind the button's availability to the list selection
         this.buttonRemovePlayer.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
-                .selectedItemProperty().isNull());
+                        .selectedItemProperty().isNull());
         this.buttonEditPlayer.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
-                .selectedItemProperty().isNull());
+                        .selectedItemProperty().isNull());
 
-        this.buttonRegisterPlayer.disableProperty().bind(
-                this.tableRegisteredPlayers.getSelectionModel()
-                .selectedItemProperty().isNull());
-        this.buttonUnregisterPlayer.disableProperty().bind(
-                this.tableRegisteredPlayers.getSelectionModel()
-                .selectedItemProperty().isNull());
+        /*
+         * Bind the availability of the register and unregister buttons to
+         * whether a player from the list is selected and is registered
+         */
+        this.tableRegisteredPlayers.getSelectionModel().selectedItemProperty()
+                .addListener(new ChangeListener<Player>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Player> arg0,
+                            Player oldVal, Player newVal) {
+                        if (newVal != null) {
+                            if (((Player) newVal).getStartingNumber()
+                                    .equals("")) {
+                                buttonRegisterPlayer.setDisable(false);
+                                buttonUnregisterPlayer.setDisable(true);
+                            } else {
+                                buttonRegisterPlayer.setDisable(true);
+                                buttonUnregisterPlayer.setDisable(false);
+                            }
+                        }
+                    }
+                });
+
+        this.buttonRegisterPlayer.setDisable(true);
+        this.buttonUnregisterPlayer.setDisable(true);
     }
 
     @Override
@@ -164,8 +184,8 @@ public class RegistrationPhaseController implements EventUser {
     private void initPlayerTable() {
         this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
         this.tableColumnPlayerFirstName
-        .setCellValueFactory(cellData -> cellData.getValue()
-                .firstNameProperty());
+                .setCellValueFactory(cellData -> cellData.getValue()
+                        .firstNameProperty());
         this.tableColumnPlayerFirstName.setEditable(false);
         this.tableRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerFirstName);
@@ -186,16 +206,16 @@ public class RegistrationPhaseController implements EventUser {
 
         this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
         this.tableColumnPlayerMailAddress
-        .setCellValueFactory(cellData -> cellData.getValue()
-                .mailAdressProperty());
+                .setCellValueFactory(cellData -> cellData.getValue()
+                        .mailAdressProperty());
         this.tableColumnPlayerMailAddress.setEditable(false);
         this.tableRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerMailAddress);
 
         this.tableColumnPlayerPayed = new TableColumn<>("Bezahlt");
         this.tableColumnPlayerPayed
-        .setCellValueFactory(new PropertyValueFactory<Player, Boolean>(
-                "payed"));
+                .setCellValueFactory(new PropertyValueFactory<Player, Boolean>(
+                        "payed"));
         this.tableColumnPlayerPayed.setCellFactory(CheckBoxTableCell
                 .forTableColumn(this.tableColumnPlayerPayed));
         this.tableColumnPlayerPayed.setEditable(true);
@@ -205,8 +225,8 @@ public class RegistrationPhaseController implements EventUser {
         this.tableColumnPlayerStartNumber = new TableColumn<Player, String>(
                 "Startnummer");
         this.tableColumnPlayerStartNumber
-        .setCellValueFactory(cellData -> cellData.getValue()
-                .startingNumberProperty());
+                .setCellValueFactory(cellData -> cellData.getValue()
+                        .startingNumberProperty());
         this.tableColumnPlayerStartNumber.setCellFactory(column -> {
             return new TableCell<Player, String>() {
                 @Override
@@ -234,22 +254,22 @@ public class RegistrationPhaseController implements EventUser {
         log.fine("Add Player Button clicked");
         this.checkEventLoaded();
         this.registrationDialog
-        .properties(new Player())
-        .properties(this.loadedEvent)
-        .onResult(
-                (result, returnValue) -> {
-                    if (result == DialogResult.OK
-                            && returnValue != null) {
-                        returnValue.setId(String.valueOf(new String(
-                                returnValue.getFirstName()
-                                + returnValue.getLastName()
-                                + returnValue.getMailAddress()
-                                + returnValue.getNickName())
-                        .hashCode()));
-                        this.loadedEvent.getRegisteredPlayers().add(
-                                returnValue);
-                    }
-                }).show();
+                .properties(new Player())
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                returnValue.setId(String.valueOf(new String(
+                                        returnValue.getFirstName()
+                                                + returnValue.getLastName()
+                                                + returnValue.getMailAddress()
+                                                + returnValue.getNickName())
+                                        .hashCode()));
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                            }
+                        }).show();
     }
 
     @FXML
@@ -275,7 +295,7 @@ public class RegistrationPhaseController implements EventUser {
                             (result, returnValue) -> {
                                 if (result == DialogResult.YES) {
                                     this.loadedEvent.getRegisteredPlayers()
-                                    .remove(selectedPlayer);
+                                            .remove(selectedPlayer);
                                 }
                             }).show();
         }
@@ -295,18 +315,18 @@ public class RegistrationPhaseController implements EventUser {
                     .title("Fehler").show();
         } else {
             this.registrationDialog
-            .properties(selectedPlayer)
-            .properties(this.loadedEvent)
-            .onResult(
-                    (result, returnValue) -> {
-                        if (result == DialogResult.OK
-                                && returnValue != null) {
-                            this.loadedEvent.getRegisteredPlayers()
-                            .remove(selectedPlayer);
-                            this.loadedEvent.getRegisteredPlayers()
-                            .add(returnValue);
-                        }
-                    }).show();
+                    .properties(selectedPlayer)
+                    .properties(this.loadedEvent)
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.OK
+                                        && returnValue != null) {
+                                    this.loadedEvent.getRegisteredPlayers()
+                                            .remove(selectedPlayer);
+                                    this.loadedEvent.getRegisteredPlayers()
+                                            .add(returnValue);
+                                }
+                            }).show();
         }
     }
 
@@ -359,14 +379,18 @@ public class RegistrationPhaseController implements EventUser {
                         .modalDialog()
                         .dialogButtons(DialogButtons.YES_NO)
                         .title("Registrieren mit der Startnummer "
-                                + currentStartingNumber + " bestätigen")
-                                .onResult(
-                                        (result, returnValue) -> {
-                                            if (result == DialogResult.YES) {
-                                                selectedPlayer.setStartingNumber(String
-                                                        .valueOf(currentStartingNumber));
-                                            }
-                                        }).show();
+                                + currentStartingNumber + " bestätigen", false)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        selectedPlayer.setStartingNumber(String
+                                                .valueOf(currentStartingNumber));
+                                        this.buttonRegisterPlayer
+                                                .setDisable(true);
+                                        this.buttonUnregisterPlayer
+                                                .setDisable(false);
+                                    }
+                                }).show();
             } else {
                 final int currentStartingNumber = highestStartingNumber
                         + Math.max(this.loadedEvent.getNumberOfRegistrators(),
@@ -378,14 +402,18 @@ public class RegistrationPhaseController implements EventUser {
                         .modalDialog()
                         .dialogButtons(DialogButtons.YES_NO)
                         .title("Registrieren mit der Startnummer "
-                                + currentStartingNumber + " bestätigen")
-                                .onResult(
-                                        (result, returnValue) -> {
-                                            if (result == DialogResult.YES) {
-                                                selectedPlayer.setStartingNumber(String
-                                                        .valueOf(currentStartingNumber));
-                                            }
-                                        }).show();
+                                + currentStartingNumber + " bestätigen", false)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        selectedPlayer.setStartingNumber(String
+                                                .valueOf(currentStartingNumber));
+                                        this.buttonRegisterPlayer
+                                                .setDisable(true);
+                                        this.buttonUnregisterPlayer
+                                                .setDisable(false);
+                                    }
+                                }).show();
             }
         }
     }
@@ -401,13 +429,13 @@ public class RegistrationPhaseController implements EventUser {
             new SimpleDialog<>(
                     "Bitte wählen Sie einen Spieler aus der Liste aus.")
                     .modalDialog().dialogButtons(DialogButtons.OK)
-                    .title("Fehler").show();
+                    .title("dialogs.titles.error").show();
         } else {
             if (selectedPlayer.getStartingNumber().equals("")) {
                 new SimpleDialog<>(
                         "Dieser Spieler ist noch nicht registriert und kann daher nicht abgemeldet werden.")
                         .modalDialog().dialogButtons(DialogButtons.OK)
-                        .title("Fehler").show();
+                        .title("dialogs.titles.error").show();
                 return;
             }
 
@@ -420,10 +448,12 @@ public class RegistrationPhaseController implements EventUser {
                     + selectedPlayer.getLastName()
                     + "\" wirklich als abwesend markieren?").modalDialog()
                     .dialogButtons(DialogButtons.YES_NO)
-                    .title("Abmelden bestätigen")
+                    .title("registrationphase.dialogs.unregister.title")
                     .onResult((result, returnValue) -> {
                         if (result == DialogResult.YES) {
                             selectedPlayer.setStartingNumber("");
+                            this.buttonRegisterPlayer.setDisable(false);
+                            this.buttonUnregisterPlayer.setDisable(true);
                         }
                     }).show();
         }
@@ -438,58 +468,60 @@ public class RegistrationPhaseController implements EventUser {
                 new SimpleDialog<>(
                         "Damit sichergestellt werden kann, dass alle Arbeitsplätze unterschiedliche Startnummern verteilen,\n"
                                 + "kann die Anmeldung nur verteilt werden, wenn noch keine anwesenden Spieler registriert wurden.")
-                                .modalDialog().dialogButtons(DialogButtons.OK)
-                                .title("Fehler").show();
+                        .modalDialog().dialogButtons(DialogButtons.OK)
+                        .title("Fehler").show();
                 return;
             }
         }
 
         this.distributionDialog
-        .onResult(
-                (result, returnValue) -> {
-                    if (result != DialogResult.OK) {
-                        return;
-                    }
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result != DialogResult.OK) {
+                                return;
+                            }
 
-                    FileChooser fileChooser = new FileChooser();
-                    fileChooser
-                    .setTitle("Eventdatei für andere Anmeldungsarbeitsplätze speichern");
-                    fileChooser.getExtensionFilters().add(
-                            new ExtensionFilter(
-                                    "Tourney Eventdatei (*.tef)",
-                                    "*.tef"));
-                    File selectedFile = fileChooser
-                            .showSaveDialog(EntryPoint
-                                    .getPrimaryStage());
-                    if (selectedFile == null) {
-                        return;
-                    }
-                    if (!selectedFile.getName().endsWith(".tef")) {
-                        selectedFile = new File(selectedFile
-                                .getAbsolutePath() + ".tef");
-                    }
+                            FileChooser fileChooser = new FileChooser();
+                            fileChooser
+                                    .setTitle("Eventdatei für andere Anmeldungsarbeitsplätze speichern");
+                            fileChooser.getExtensionFilters().add(
+                                    new ExtensionFilter(
+                                            "Tourney Eventdatei (*.tef)",
+                                            "*.tef"));
+                            File selectedFile = fileChooser
+                                    .showSaveDialog(EntryPoint
+                                            .getPrimaryStage());
+                            if (selectedFile == null) {
+                                return;
+                            }
+                            if (!selectedFile.getName().endsWith(".tef")) {
+                                selectedFile = new File(selectedFile
+                                        .getAbsolutePath() + ".tef");
+                            }
 
-                    this.loadedEvent.setUserFlag(UserFlag.REGISTRATION);
-                    this.loadedEvent.setNumberOfRegistrators(returnValue);
+                            this.loadedEvent.setUserFlag(UserFlag.REGISTRATION);
+                            this.loadedEvent
+                                    .setNumberOfRegistrators(returnValue);
 
-                    try {
-                        FileSaver.saveEventToFile(this.loadedEvent,
-                                selectedFile.getAbsolutePath());
-                    } catch (Exception e) {
-                        log.log(Level.SEVERE,
-                                "Could not save the event.", e);
+                            try {
+                                FileSaver.saveEventToFile(this.loadedEvent,
+                                        selectedFile.getAbsolutePath());
+                            } catch (Exception e) {
+                                log.log(Level.SEVERE,
+                                        "Could not save the event.", e);
 
-                        new SimpleDialog<>(
-                                "Das Event konnte nicht gespeichert werden.\n"
-                                        + "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
-                                        + "alle Berechtigungen besitzen.")
+                                new SimpleDialog<>(
+                                        "Das Event konnte nicht gespeichert werden.\n"
+                                                + "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
+                                                + "alle Berechtigungen besitzen.")
                                         .modalDialog().title("Fehler").show();
-                    }
+                            }
 
-                    this.loadedEvent.setUserFlag(UserFlag.ADMINISTRATION);
-                    FileSaver.saveEventToFile(this.loadedEvent, this
-                            .getLoadedEventFile().getAbsolutePath());
-                }).show();
+                            this.loadedEvent
+                                    .setUserFlag(UserFlag.ADMINISTRATION);
+                            FileSaver.saveEventToFile(this.loadedEvent, this
+                                    .getLoadedEventFile().getAbsolutePath());
+                        }).show();
     }
 
     @FXML
@@ -515,8 +547,8 @@ public class RegistrationPhaseController implements EventUser {
                                 + selectedFile.getName()
                                 + "\" konnte nicht geladen werden.\nBitte stellen Sie sicher, "
                                 + "dass es sich dabei um eine gültige Eventdatei handelt.")
-                                .modalDialog().dialogButtons(DialogButtons.OK)
-                                .title("Fehler").show();
+                        .modalDialog().dialogButtons(DialogButtons.OK)
+                        .title("Fehler").show();
             }
 
             if (importedEvent != null) {
@@ -529,7 +561,7 @@ public class RegistrationPhaseController implements EventUser {
                         if (player.getId().equals(loadedPlayer.getId())) {
                             if (player.getStartingNumber().equals("")
                                     && !loadedPlayer.getStartingNumber()
-                                    .equals("")) {
+                                            .equals("")) {
                                 /*
                                  * The loaded player has a starting number and
                                  * should be preferred compared to the existent
