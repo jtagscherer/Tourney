@@ -2,6 +2,7 @@ package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -87,16 +89,19 @@ public class TournamentDialog extends VBox implements
     private Tournament loadedTournament;
 
     public TournamentDialog() {
-	try {
-	    FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-		    "/ui/fxml/dialogs/tournament-dialog.fxml"));
-	    loader.setController(this);
-	    loader.setRoot(this);
-	    loader.load();
-	} catch (IOException e) {
-	    log.log(Level.SEVERE, e.getMessage(), e);
-	}
+        try {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+                    "/ui/fxml/dialogs/tournament-dialog.fxml"),
+                    PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+            loader.setController(this);
+            loader.setRoot(this);
+            loader.load();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
+
+
 
     @FXML
     private void initialize() {
@@ -109,76 +114,180 @@ public class TournamentDialog extends VBox implements
     }
 
     private void initTournamentPhaseTable() {
-	// setup all table columns
-	this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
-	this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
-		cellData -> cellData.getValue().phaseNumberProperty()
-			.asString());
-	this.tableTournamentPhases.getColumns().add(
-		this.tableColumnPhasesPhaseNumber);
+        PreferencesManager preferences = PreferencesManager.getInstance();
 
-	this.tableColumnPhasesPairingMethod = new TableColumn<>(
-		"Paarungsmethode");
-	this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
-		cellData -> new SimpleStringProperty(cellData.getValue()
-			.getPairingMethod().getName()));
-	this.tableTournamentPhases.getColumns().add(
-		this.tableColumnPhasesPairingMethod);
+        // setup all table columns
 
-	this.tableColumnPhasesRoundCount = new TableColumn<>("Rundendanzahl");
-	this.tableColumnPhasesRoundCount.cellValueFactoryProperty()
-		.set(cellData -> cellData.getValue().roundCountProperty()
-			.asString());
-	this.tableTournamentPhases.getColumns().add(
-		this.tableColumnPhasesRoundCount);
+        // tournament phase number
+        this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
+        this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
+                cellData -> cellData.getValue().phaseNumberProperty()
+                .asString());
+        this.tableTournamentPhases.getColumns().add(
+                this.tableColumnPhasesPhaseNumber);
 
-	this.tableColumnPhasesCutoff = new TableColumn<>("Cutoff");
-	this.tableColumnPhasesCutoff.cellValueFactoryProperty().set(
-		cellData -> cellData.getValue().cutoffProperty().asString());
-	this.tableTournamentPhases.getColumns().add(
-		this.tableColumnPhasesCutoff);
+        // pairing method
+        this.tableColumnPhasesPairingMethod = new TableColumn<>(
+                preferences.localizeString("dialogs.tournament.pairingmethod"));
+        this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
+                cellData -> new SimpleStringProperty(cellData.getValue()
+                        .getPairingMethod().getName()));
+        this.tableTournamentPhases.getColumns().add(
+                this.tableColumnPhasesPairingMethod);
 
-	this.tableColumnPhasesRoundDuration = new TableColumn<>("Rundendauer");
-	this.tableColumnPhasesRoundDuration
-		.setCellValueFactory(cellData -> cellData.getValue()
-			.roundDurationProperty());
-	this.tableColumnPhasesRoundDuration.setCellFactory(column -> {
-	    return new TableCell<GamePhase, Duration>() {
-		@Override
-		protected void updateItem(Duration item, boolean empty) {
-		    super.updateItem(item, empty);
-		    if (item != null) {
-			setText(String.format("%02d:%02d Minuten",
-				item.getSeconds() / 60, item.getSeconds() % 60));
-		    }
-		}
-	    };
-	});
-	this.tableTournamentPhases.getColumns().add(
-		this.tableColumnPhasesRoundDuration);
+        // round count
+        this.tableColumnPhasesRoundCount = new TableColumn<>(
+                preferences.localizeString("dialogs.tournament.roundcount"));
+        this.tableColumnPhasesRoundCount.cellValueFactoryProperty()
+        .set(cellData -> cellData.getValue().roundCountProperty()
+                .asString());
+        this.tableTournamentPhases.getColumns().add(
+                this.tableColumnPhasesRoundCount);
 
-	this.tableColumnPhasesNumberOfOpponents = new TableColumn<>(
-		"Spieler je Paarung");
-	this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
-		cellData -> cellData.getValue().numberOfOpponentsProperty()
-			.asString());
-	this.tableTournamentPhases.getColumns().add(
-		this.tableColumnPhasesNumberOfOpponents);
+        // cutoff
+        this.tableColumnPhasesCutoff = new TableColumn<>(
+                preferences.localizeString("dialogs.tournament.cutoff"));
+        this.tableColumnPhasesCutoff.cellValueFactoryProperty().set(
+                cellData -> cellData.getValue().cutoffProperty().asString());
+        this.tableTournamentPhases.getColumns().add(
+                this.tableColumnPhasesCutoff);
+
+        // round duration
+        this.tableColumnPhasesRoundDuration = new TableColumn<>(
+                preferences.localizeString("dialogs.tournament.roundduration"));
+        this.tableColumnPhasesRoundDuration
+        .setCellValueFactory(cellData -> cellData.getValue()
+                .roundDurationProperty());
+        this.tableColumnPhasesRoundDuration.setCellFactory(column -> {
+            return new TableCell<GamePhase, Duration>() {
+                @Override
+                protected void updateItem(Duration item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null) {
+                        this.setText(String.format("%02d:%02d " +
+                                preferences.localizeString("dialogs.tournament.minutes"),
+                                item.getSeconds() / 60, item.getSeconds() % 60));
+                    }
+                }
+            };
+        });
+        this.tableTournamentPhases.getColumns().add(
+                this.tableColumnPhasesRoundDuration);
+
+        // number of opponents
+        this.tableColumnPhasesNumberOfOpponents = new TableColumn<>(
+                preferences.localizeString("dialogs.tournamentmodule.playersperpairing"));
+        this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
+                cellData -> cellData.getValue().numberOfOpponentsProperty()
+                .asString());
+        this.tableTournamentPhases.getColumns().add(
+                this.tableColumnPhasesNumberOfOpponents);
+    }
+
+    /**
+     * Adds listeners to the selection property of the tournament phase table to
+     * dis-/enable table buttons accordingly
+     */
+    private void bindTournamentPhaseTableButtons() {
+	ReadOnlyIntegerProperty selectedIndex = this.tableTournamentPhases
+		.getSelectionModel().selectedIndexProperty();
+	ReadOnlyObjectProperty<GamePhase> selectedItem = this.tableTournamentPhases
+		.getSelectionModel().selectedItemProperty();
+
+	// only enable move-up button if an item other than the topmost is
+	// selected
+	this.buttonMoveTournamentPhaseUp.disableProperty().bind(
+		selectedIndex.isEqualTo(0).or(selectedItem.isNull()));
+
+	// only enable move-down button if an item other than the last
+	// one is selected
+	// index < size - 1 && selected != null
+	this.buttonMoveTournamentPhaseDown.disableProperty().bind(
+		selectedIndex.greaterThanOrEqualTo(
+			Bindings.size(this.tableTournamentPhases.getItems())
+			.subtract(1))
+			.or(selectedItem.isNull()));
+
+	// only enable remove button if an item is selected and there is more
+	// than one possible score
+	this.buttonRemoveTournamentPhase.disableProperty().bind(
+		selectedItem.isNull().or(
+			Bindings.size(this.tableTournamentPhases.getItems())
+			.lessThanOrEqualTo(1)));
+
+	// only enable edit button if an item is selected
+	this.buttonEditTournamentPhase.disableProperty().bind(
+		selectedItem.isNull());
+    }
+
+    private void unbindTournamentPhaseTableButtons() {
+	this.buttonMoveTournamentPhaseUp.disableProperty().unbind();
+	this.buttonMoveTournamentPhaseDown.disableProperty().unbind();
+	this.buttonRemoveTournamentPhase.disableProperty().unbind();
+	this.buttonEditTournamentPhase.disableProperty().unbind();
     }
 
     private void initPossibleScoresTable() {
-	this.tableColumnPossibleScoresPriority = new TableColumn<>("Priorität");
-	this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
-		cellData -> cellData.getValue().priorityProperty().asString());
-	this.tablePossibleScores.getColumns().add(
-		this.tableColumnPossibleScoresPriority);
+        PreferencesManager preferences = PreferencesManager.getInstance();
 
-	// TODO: somehow put the map in a string
-	this.tableColumnPossibleScoresScores = new TableColumn<>("Wertungen");
-	this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
-		cellData -> new SimpleStringProperty(""));
-	this.tablePossibleScores.getColumns().add(
-		this.tableColumnPossibleScoresScores);
+        this.tableColumnPossibleScoresPriority = new TableColumn<>(
+                preferences.localizeString("dialogs.tournament.priority"));
+        this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
+                cellData -> cellData.getValue().priorityProperty().asString());
+        this.tablePossibleScores.getColumns().add(
+                this.tableColumnPossibleScoresPriority);
+
+        this.tableColumnPossibleScoresScores = new TableColumn<>(
+                preferences.localizeString("dialogs.tournament.scores"));
+        this.tableColumnPossibleScoresScores
+        .setCellValueFactory(cellData -> new MapToStringBinding<>(
+                cellData.getValue().getScores()).getStringProperty());
+        this.tablePossibleScores.getColumns().add(
+                this.tableColumnPossibleScoresScores);
+    }
+
+
+
+    /**
+     * Adds listeners to the selection property of the possible scores table to
+     * dis-/enable table buttons accordingly
+     */
+    private void bindPossibleScoresTableButtons() {
+	ReadOnlyIntegerProperty selectedIndex = this.tablePossibleScores
+		.getSelectionModel().selectedIndexProperty();
+	ReadOnlyObjectProperty<PossibleScoring> selectedItem = this.tablePossibleScores
+		.getSelectionModel().selectedItemProperty();
+
+	// only enable move-up button if an item other than the topmost is
+	// selected
+	this.buttonMovePossibleScoreUp.disableProperty().bind(
+		selectedIndex.isEqualTo(0).or(selectedItem.isNull()));
+
+	// only enable move-down button if an item other than the last one is
+	// selected
+	// index < size - 1 && selected != null
+	this.buttonMovePossibleScoreDown.disableProperty().bind(
+		selectedIndex.greaterThanOrEqualTo(
+			Bindings.size(this.tableTournamentPhases.getItems())
+			.subtract(1)).or(selectedItem.isNull()));
+
+	// only enable remove button if an item is selected and there is more
+	// than one possible score
+	this.buttonRemovePossibleScore.disableProperty().bind(
+		selectedItem.isNull().or(
+			Bindings.size(this.tableTournamentPhases.getItems())
+			.lessThanOrEqualTo(1)));
+
+	// only enable edit button if an item is selected
+	this.buttonEditPossibleScore.disableProperty().bind(
+		selectedItem.isNull());
+    }
+
+    private void unbindPossibleScoresTableButtons() {
+	this.buttonMovePossibleScoreUp.disableProperty().unbind();
+	this.buttonMovePossibleScoreDown.disableProperty().unbind();
+	this.buttonRemovePossibleScore.disableProperty().unbind();
+	this.buttonAddPossibleScore.disableProperty().unbind();
     }
 
     @Override
@@ -201,8 +310,10 @@ public class TournamentDialog extends VBox implements
 
     @Override
     public void initModalDialog(ModalDialog<Tournament, Tournament> modalDialog) {
-	modalDialog.title("Turniere").dialogButtons(DialogButtons.OK_CANCEL);
+        modalDialog.title("dialogs.tournament").dialogButtons(DialogButtons.OK_CANCEL);
     }
+
+
 
     private void loadTournament(Tournament tournament) {
 	log.fine("Loading Tournament");
@@ -219,42 +330,8 @@ public class TournamentDialog extends VBox implements
 	this.tablePossibleScores.setItems(tournament.getRuleSet()
 		.getPossibleScores());
 
-	// add listeners to the selection property of the table to dis-/enable
-	// table buttons accordingly
-	ReadOnlyIntegerProperty selectedIndex = this.tableTournamentPhases
-		.getSelectionModel().selectedIndexProperty();
-	ReadOnlyObjectProperty<GamePhase> selectedItem = this.tableTournamentPhases
-		.getSelectionModel().selectedItemProperty();
-
-	// only enable move-up button if an item other than the topmost is
-	// selected
-	this.buttonMoveTournamentPhaseUp.disableProperty().bind(
-		selectedIndex.isEqualTo(0).or(selectedItem.isNull()));
-
-	// only enable move-down button if an item other than the last one is
-	// selected
-	// index < size - 1 && selected != null
-	this.buttonMoveTournamentPhaseDown.disableProperty().bind(
-		selectedIndex.greaterThanOrEqualTo(
-			Bindings.size(this.tableTournamentPhases.getItems())
-				.subtract(1)).or(selectedItem.isNull()));
-
-	// only enable remove button if an item is selected and there is more
-	// than one possible score
-	this.buttonRemoveTournamentPhase.disableProperty().bind(
-		selectedItem.isNull().or(
-			Bindings.size(this.tableTournamentPhases.getItems())
-				.lessThanOrEqualTo(1)));
-
-	// only enable edit button if an item is selected
-	this.buttonEditTournamentPhase.disableProperty().bind(
-		selectedItem.isNull());
-
-	// TODO: add bindings for the possible score table's buttons (see
-	// TournamentModuleEditorDialog)
-	this.tableColumnPossibleScoresScores
-		.setCellValueFactory(cellValue -> new MapToStringBinding<>(
-			cellValue.getValue().getScores()).getStringProperty());
+	this.bindTournamentPhaseTableButtons();
+	this.bindPossibleScoresTableButtons();
 
 	log.fine("Tournament loaded");
     }
@@ -263,8 +340,14 @@ public class TournamentDialog extends VBox implements
 	log.fine("Unloading Tournament");
 	this.textFieldTournamentTitle.textProperty().unbindBidirectional(
 		this.loadedTournament.nameProperty());
+
+	this.unbindTournamentPhaseTableButtons();
+	this.unbindPossibleScoresTableButtons();
+
 	log.fine("Tournament unloaded");
     }
+
+
 
     @FXML
     private void onButtonLoadTournamentModuleClicked(ActionEvent event) {
@@ -274,66 +357,80 @@ public class TournamentDialog extends VBox implements
     @FXML
     private void onButtonEditTournamentModulesClicked(ActionEvent event) {
 	log.fine("Edit Tournament Modules Button was clicked");
-	this.tournamentModuleListDialog.properties(null) // TODO: actually load
-							 // tournament modules
-							 // (->
-							 // preferencesManager?)
-		.show();
+
+	// TODO: actually load tournament modules (-> preferencesManager?)
+	this.tournamentModuleListDialog.properties(null).show();
     }
+
+
 
     @FXML
     private void onButtonMoveTournamentPhaseUpClicked(ActionEvent event) {
-	// TODO: update the phase numbers correctly
 	log.fine("Move Tournament Phase Up Button was clicked");
-	int selectedIndex = this.tableTournamentPhases.getSelectionModel()
-		.getSelectedIndex();
-	int indexToSwap = selectedIndex - 1;
-	GamePhase tmp = this.getSelectedTournamentPhase();
-	ObservableList<GamePhase> phases = this.tableTournamentPhases
-		.getItems();
-	phases.set(selectedIndex, phases.get(indexToSwap));
-	phases.set(indexToSwap, tmp);
-	this.tableTournamentPhases.getSelectionModel().select(indexToSwap);
+	int selectedIndex = this.getSelectedTournamentPhaseIndex();
+	this.swapGamePhases(selectedIndex, selectedIndex - 1);
     }
 
     @FXML
     private void onButtonMoveTournamentPhaseDownClicked(ActionEvent event) {
-	// TODO: update the phase numbers correctly
 	log.fine("Move Tournament Phase Down Button was clicked");
-	int selectedIndex = this.tableTournamentPhases.getSelectionModel()
-		.getSelectedIndex();
-	int indexToSwap = selectedIndex + 1;
-	GamePhase tmp = this.getSelectedTournamentPhase();
-	ObservableList<GamePhase> phases = this.tableTournamentPhases
-		.getItems();
-	phases.set(selectedIndex, phases.get(indexToSwap));
-	phases.set(indexToSwap, tmp);
-	this.tableTournamentPhases.getSelectionModel().select(indexToSwap);
+	int selectedIndex = this.getSelectedTournamentPhaseIndex();
+	this.swapGamePhases(selectedIndex, selectedIndex + 1);
+    }
+
+    /**
+     * Swaps the game phases with the given indices and selects the row with
+     * indexB.
+     */
+    private void swapGamePhases(int indexA, int indexB) {
+	log.finer("Swapping gamephases with indices " + indexA + " and " + indexB);
+	ObservableList<GamePhase> phases = this.tableTournamentPhases.getItems();
+
+	// swap phase numbers
+	int tmpId = phases.get(indexA).getPhaseNumber();
+	phases.get(indexA).setPhaseNumber(phases.get(indexB).getPhaseNumber());
+	phases.get(indexB).setPhaseNumber(tmpId);
+
+	// swap the actual items in the list
+	Collections.swap(phases, indexA, indexB);
+
+	// select the previously selected item which is now at a different index
+	this.tableTournamentPhases.getSelectionModel().select(indexB);
     }
 
     @FXML
     private void onButtonAddTournamentPhaseClicked(ActionEvent event) {
-	// TODO: update the phase numbers correctly
 	log.fine("Add Tournament Phase Button was clicked");
+	GamePhase newGamePhase = new GamePhase();
+	newGamePhase.setPhaseNumber(this.tableTournamentPhases.getItems().size());
+
 	this.tournamentPhaseDialog
-		.properties(new GamePhase())
-		.onResult(
-			(result, returnValue) -> {
-			    if (result == DialogResult.OK
-				    && returnValue != null) {
-				this.loadedTournament.getRuleSet()
-					.getPhaseList().add(returnValue);
-			    }
-			}).show();
+		.properties(newGamePhase)
+		.onResult((result, returnValue) -> {
+		    if (result == DialogResult.OK
+			    && returnValue != null) {
+			this.loadedTournament.getRuleSet()
+			.getPhaseList().add(returnValue);
+		    }
+		}).show();
     }
 
     @FXML
     private void onButtonRemoveTournamentPhaseClicked(ActionEvent event) {
-	// TODO: update the phase numbers correctly
 	log.fine("Remove Tournament Phase Button was clicked");
-	this.loadedTournament.getRuleSet().getPhaseList()
-		.remove(this.getSelectedTournamentPhase());
+
+	// update indices of all following GamePhases
+	int selectedTournamentPhase = this.getSelectedTournamentPhaseIndex();
+	int itemCount = this.tableTournamentPhases.getItems().size();
+	ObservableList<GamePhase> phases = this.tableTournamentPhases.getItems();
+	for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
+	    phases.get(i).setPhaseNumber(i - 1);
+	}
+
+	// actually remove the selected GamePhase
+	this.loadedTournament.getRuleSet().getPhaseList().remove(selectedTournamentPhase);
     }
+
 
     @FXML
     private void onButtonEditTournamentPhaseClicked(ActionEvent event) {
@@ -347,18 +444,56 @@ public class TournamentDialog extends VBox implements
 		}).show();
     }
 
+    /**
+     * @return the currently selected GamePhase in the tournament phase table
+     */
     private GamePhase getSelectedTournamentPhase() {
 	return this.tableTournamentPhases.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     * @return the index of the currently selected row in the tournament phase table
+     */
+
+    private int getSelectedTournamentPhaseIndex() {
+	return this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
+    }
+
+
+
+
     @FXML
     private void onButtonMovePossibleScoreUpClicked(ActionEvent event) {
-
+	log.fine("Move Possible Score Up Button was clicked");
+	int selectedIndex = this.getSelectedPossibleScoreIndex();
+	this.swapPossibleScores(selectedIndex, selectedIndex - 1);
     }
 
     @FXML
     private void onButtonMovePossibleScoreDownClicked(ActionEvent event) {
+	log.fine("Move Possible Score Down Button was clicked");
+	int selectedIndex = this.getSelectedPossibleScoreIndex();
+	this.swapPossibleScores(selectedIndex, selectedIndex + 1);
+    }
 
+    /**
+     * Swaps the game phases with the given indices and selects the row with
+     * indexB.
+     */
+    private void swapPossibleScores(int indexA, int indexB) {
+	log.finer("Swapping possible scores with indices " + indexA + " and " + indexB);
+	ObservableList<PossibleScoring> scores = this.tablePossibleScores.getItems();
+
+	// swap phase numbers
+	int tmpId = scores.get(indexA).getPriority();
+	scores.get(indexA).setPriority(scores.get(indexB).getPriority());
+	scores.get(indexB).setPriority(tmpId);
+
+	// swap the actual items in the list
+	Collections.swap(scores, indexA, indexB);
+
+	// select the previously selected item which is now at a different index
+	this.tablePossibleScores.getSelectionModel().select(indexB);
     }
 
     @FXML
@@ -368,11 +503,36 @@ public class TournamentDialog extends VBox implements
 
     @FXML
     private void onButtonRemovePossibleScoreClicked(ActionEvent event) {
+	log.fine("Remove Possible Score Button was clicked");
 
+	// update indices of all following PossibleScores
+	int selectedPossibleScore = this.getSelectedPossibleScoreIndex();
+	int itemCount = this.tablePossibleScores.getItems().size();
+	ObservableList<PossibleScoring> phases = this.tablePossibleScores.getItems();
+	for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
+	    phases.get(i).setPriority(i - 1);
+	}
+
+	// actually remove the selected PossibleScore
+	this.loadedTournament.getRuleSet().getPossibleScores().remove(selectedPossibleScore);
     }
 
     @FXML
     private void onButtonEditPossibleScoreClicked(ActionEvent event) {
 
+    }
+
+    /**
+     * @return the currently selected GamePhase in the tournament phase table
+     */
+    private PossibleScoring getSelectedPossibleScore() {
+	return this.tablePossibleScores.getSelectionModel().getSelectedItem();
+    }
+
+    /**
+     * @return the index of the currently selected row in the tournament phase table
+     */
+    private int getSelectedPossibleScoreIndex() {
+	return this.tablePossibleScores.getSelectionModel().getSelectedIndex();
     }
 }

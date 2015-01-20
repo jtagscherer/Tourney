@@ -21,6 +21,7 @@ import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -54,15 +55,16 @@ IModalDialogProvider<Object, Player> {
 	private Event loadedEvent;
 
 	public PlayerPreRegistrationDialog() {
-		try {
-			FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-					"/ui/fxml/dialogs/player-pre-registration-dialog.fxml"));
-			loader.setController(this);
-			loader.setRoot(this);
-			loader.load();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
-		}
+	    try {
+	        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+	                "/ui/fxml/dialogs/player-pre-registration-dialog.fxml"),
+	                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+	        loader.setController(this);
+	        loader.setRoot(this);
+	        loader.load();
+	    } catch (IOException e) {
+	        log.log(Level.SEVERE, e.getMessage(), e);
+	    }
 	}
 
 	@FXML
@@ -152,7 +154,7 @@ IModalDialogProvider<Object, Player> {
 
 	@Override
 	public void initModalDialog(ModalDialog<Object, Player> modalDialog) {
-		modalDialog.title("Spieler voranmelden").dialogButtons(
+		modalDialog.title("dialogs.playerpreregistration").dialogButtons(
 				DialogButtons.OK_CANCEL);
 	}
 

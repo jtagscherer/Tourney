@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.NumberTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -24,15 +25,16 @@ public class RegistrationDistributionDialog extends VBox implements
     private NumberTextField textFieldNumberOfRegistrators;
 
     public RegistrationDistributionDialog() {
-	try {
-	    FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-		    "/ui/fxml/dialogs/registration-distribution-dialog.fxml"));
-	    loader.setController(this);
-	    loader.setRoot(this);
-	    loader.load();
-	} catch (IOException e) {
-	    log.log(Level.SEVERE, e.getMessage(), e);
-	}
+        try {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+                    "/ui/fxml/dialogs/registration-distribution-dialog.fxml"),
+                    PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+            loader.setController(this);
+            loader.setRoot(this);
+            loader.load();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     @FXML
@@ -88,7 +90,7 @@ public class RegistrationDistributionDialog extends VBox implements
 
     @Override
     public void initModalDialog(ModalDialog<String, Integer> modalDialog) {
-	modalDialog.title("Anmeldung verteilen").dialogButtons(
+	modalDialog.title("dialogs.registrationdistribution").dialogButtons(
 		DialogButtons.OK_CANCEL);
     }
 }

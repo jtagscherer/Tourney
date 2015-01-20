@@ -3,12 +3,14 @@
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import usspg31.tourney.controller.layout.*?>
+<?import usspg31.tourney.controller.controls.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<fx:root type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/icons.css" />
@@ -18,8 +20,10 @@
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
-   <VBox spacing="10.0">
-      <Label text="${'Welche Nummer soll dieser Arbeitsplatz haben?\nDiese Nummer muss einzigartig, größer als 1 und höchstens so groß wie die Anzahl aller Arbeitsplätze sein.\nDies dient dazu, dass alle Arbeitsplätze unterschiedliche Startnummern verteilen.'}" />
-      <usspg31.tourney.controller.controls.NumberTextField fx:id="textFieldNumberOfRegistrator" promptText="Arbeitsplatznummer (größer als 1)" />
-   </VBox>
+	<VBox spacing="10.0">
+		<Label
+			text="%dialogs.registrationdistributionnumberselection.description" />
+		<NumberTextField fx:id="textFieldNumberOfRegistrator"
+			promptText="%dialogs.registrationdistributionnumberselection.numberprompt" />
+	</VBox>
 </fx:root>

@@ -19,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.layout.RelativityPane;
 
 public final class ModalDialog<P, R> extends StackPane {
@@ -113,7 +114,7 @@ public final class ModalDialog<P, R> extends StackPane {
     }
 
     public ModalDialog<P, R> title(String title) {
-	this.labelTitle.setText(title);
+	this.labelTitle.setText(PreferencesManager.getInstance().localizeString(title));
 	return this;
     }
 
@@ -121,17 +122,17 @@ public final class ModalDialog<P, R> extends StackPane {
 	this.dialogButtonContainer.getChildren().clear();
 
 	if (dialogButtons.containsYes()) {
-	    this.addDialogButton("Ja", DialogResult.YES);
+	    this.addDialogButton("dialogs.buttons.yes", DialogResult.YES);
 	}
 	if (dialogButtons.containsNo()) {
-	    this.addDialogButton("Nein", DialogResult.NO,
+	    this.addDialogButton("dialogs.buttons.no", DialogResult.NO,
 		    !dialogButtons.containsCancel());
 	}
 	if (dialogButtons.containsOk()) {
-	    this.addDialogButton("OK", DialogResult.OK);
+	    this.addDialogButton("dialogs.buttons.ok", DialogResult.OK);
 	}
 	if (dialogButtons.containsCancel()) {
-	    this.addDialogButton("Abbrechen", DialogResult.CANCEL, true);
+	    this.addDialogButton("dialogs.buttons.cancel", DialogResult.CANCEL, true);
 	}
 	return this;
     }
@@ -142,7 +143,7 @@ public final class ModalDialog<P, R> extends StackPane {
 
     private void addDialogButton(String text, DialogResult result,
 	    boolean isCancel) {
-	Button button = new Button(text);
+	Button button = new Button(PreferencesManager.getInstance().localizeString(text));
 	button.getStyleClass().add("dialog-button");
 	button.setOnAction(event -> {
 	    this.exitWith(result);

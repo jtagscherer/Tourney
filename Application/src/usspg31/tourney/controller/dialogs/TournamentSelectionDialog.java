@@ -78,6 +78,6 @@ public class TournamentSelectionDialog extends VBox implements
 	@Override
 	public void initModalDialog(
 			ModalDialog<ObservableList<Tournament>, Tournament> modalDialog) {
-		modalDialog.title("Turnier auswählen").dialogButtons(DialogButtons.OK);
+		modalDialog.title("dialogs.tournamentselection").dialogButtons(DialogButtons.OK);
 	}
 }

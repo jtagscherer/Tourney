@@ -23,8 +23,8 @@
 					<IconPane styleClass="icon-arrow-left, half" />
 				</graphic>
 			</Button>
-			<ScrollPane fx:id="breadcrumbScrollPane" hbarPolicy="NEVER" minHeight="20.0"
-				vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+			<ScrollPane fx:id="breadcrumbScrollPane" hbarPolicy="NEVER"
+				minHeight="20.0" vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
 				<HBox fx:id="breadcrumbContainer" />
 			</ScrollPane>
 			<Button fx:id="buttonScrollBreadcrumbsRight">
@@ -35,11 +35,11 @@
 		</HBox>
 		<ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true"
 			VBox.vgrow="ALWAYS">
-				<FlowPane fx:id="pairingContainer" hgap="10.0" vgap="10.0">
-					<padding>
-						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-					</padding>
-				</FlowPane>
-			</content>
+			<FlowPane fx:id="pairingContainer" hgap="10.0" vgap="10.0">
+				<padding>
+					<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+				</padding>
+			</FlowPane>
+		</ScrollPane>
 	</children>
 </fx:root>

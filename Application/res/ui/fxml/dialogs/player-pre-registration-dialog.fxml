@@ -17,14 +17,14 @@
 	</stylesheets>
 	<children>
 		<HBox spacing="5.0">
-			<TextField fx:id="textFieldFirstName" promptText="Vorname"
+			<TextField fx:id="textFieldFirstName" promptText="%dialogs.playerpreregistration.firstname"
 				HBox.hgrow="ALWAYS" />
-			<TextField fx:id="textFieldLastName" promptText="Nachname"
+			<TextField fx:id="textFieldLastName" promptText="%dialogs.playerpreregistration.lastname"
 				HBox.hgrow="ALWAYS" />
 		</HBox>
-		<TextField fx:id="textFieldEmail" promptText="E-Mail Adresse" />
-		<TextField fx:id="textFieldNickname" promptText="Nickname" />
-		<Label styleClass="sub-heading" text="Angemeldet zu den folgenden Turnieren:" />
+		<TextField fx:id="textFieldEmail" promptText="%dialogs.playerpreregistration.email" />
+		<TextField fx:id="textFieldNickname" promptText="%dialogs.playerpreregistration.nickname" />
+		<Label styleClass="sub-heading" text="%dialogs.playerpreregistration.registeredto" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">
@@ -33,16 +33,22 @@
 					<graphic>
 						<IconPane styleClass="icon-add, half" />
 					</graphic>
+					<tooltip>
+						<Tooltip text="%dialogs.playerpreregistration.addtournament" />
+					</tooltip>
 				</Button>
 				<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button"
 					onAction="#onButtonRemoveTournamentClicked">
 					<graphic>
 						<IconPane styleClass="icon-remove, half" />
 					</graphic>
+					<tooltip>
+						<Tooltip text="%dialogs.playerpreregistration.removetournament" />
+					</tooltip>
 				</Button>
 			</VBox>
 		</HBox>
-		<CheckBox fx:id="checkBoxPayed" text="Startgeld bezahlt" />
+		<CheckBox fx:id="checkBoxPayed" text="%dialogs.playerpreregistration.payed" />
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

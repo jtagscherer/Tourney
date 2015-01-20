@@ -24,7 +24,7 @@
 					<IconPane styleClass="icon-add, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Neues Turniermodul hinzufügen" />
+					<Tooltip text="%dialogs.tournamentmodulelist.addmodule" />
 				</tooltip>
 			</Button>
 			<Button fx:id="buttonRemoveTournamentModule" styleClass="table-edit-button"
@@ -33,7 +33,7 @@
 					<IconPane styleClass="icon-remove, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Ausgewähltes Turniermodul entfernen" />
+					<Tooltip text="%dialogs.tournamentmodulelist.removemodule" />
 				</tooltip>
 			</Button>
 			<Button fx:id="buttonEditTournamentModule" styleClass="table-edit-button"
@@ -42,7 +42,7 @@
 					<IconPane styleClass="icon-edit, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Ausgewähltes Turniermodul ändern" />
+					<Tooltip text="%dialogs.tournamentmodulelist.editmodule" />
 				</tooltip>
 			</Button>
 		</VBox>

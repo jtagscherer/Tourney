@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.NumberTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -25,17 +26,16 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
     private NumberTextField textFieldNumberOfRegistrator;
 
     public RegistrationDistributionNumberSelectionDialog() {
-	try {
-	    FXMLLoader loader = new FXMLLoader(
-		    this.getClass()
-			    .getResource(
-				    "/ui/fxml/dialogs/registration-distribution-number-selection-dialog.fxml"));
-	    loader.setController(this);
-	    loader.setRoot(this);
-	    loader.load();
-	} catch (IOException e) {
-	    log.log(Level.SEVERE, e.getMessage(), e);
-	}
+        try {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+                    "/ui/fxml/dialogs/registration-distribution-number-selection-dialog.fxml"),
+                    PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+            loader.setController(this);
+            loader.setRoot(this);
+            loader.load();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     @FXML
@@ -45,7 +45,7 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
 
     @Override
     public void setProperties(Integer properties) {
-	this.maximumRegistratorNumber = (Integer) properties;
+	this.maximumRegistratorNumber = properties;
     }
 
     @Override
@@ -66,7 +66,8 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
 
     @Override
     public void initModalDialog(ModalDialog<Integer, Integer> modalDialog) {
-	modalDialog.title("Arbeitsplatznummer wählen").dialogButtons(
-		DialogButtons.OK);
+        modalDialog.title("dialogs.registrationdistributionnumberselection")
+        .dialogButtons(
+                DialogButtons.OK);
     }
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -34,24 +35,30 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 	private ModalDialog<TournamentModule, TournamentModule> tournamentmoduleEditorDialog;
 
 	public TournamentModuleListDialog() {
-		try {
-			FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/ui/fxml/dialogs/tournament-module-list-dialog.fxml"));
-			loader.setController(this);
-			loader.setRoot(this);
-			loader.load();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
-		}
+	    try {
+	        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+	                "/ui/fxml/dialogs/tournament-module-list-dialog.fxml"),
+	                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+	        loader.setController(this);
+	        loader.setRoot(this);
+	        loader.load();
+	    } catch (IOException e) {
+	        log.log(Level.SEVERE, e.getMessage(), e);
+	    }
 	}
 
 	@FXML private void initialize() {
+	    PreferencesManager preferences = PreferencesManager.getInstance();
+
 		this.tournamentmoduleEditorDialog = new TournamentModuleEditorDialog().modalDialog();
 
-		this.tableColumnModuleName = new TableColumn<TournamentModule, String>("Name");
+		this.tableColumnModuleName = new TableColumn<TournamentModule, String>(
+		        preferences.localizeString("dialogs.tournamentmodulelist.name"));
 		this.tableColumnModuleName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		this.tableTournamentModules.getColumns().add(this.tableColumnModuleName);
 
-		this.tableColumnModuleDescription = new TableColumn<TournamentModule, String>("Beschreibung");
+		this.tableColumnModuleDescription = new TableColumn<TournamentModule, String>(
+		        preferences.localizeString("dialogs.tournamentmodulelist.description"));
 		this.tableColumnModuleDescription.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
 		this.tableTournamentModules.getColumns().add(this.tableColumnModuleDescription);
 
@@ -71,7 +78,7 @@ public class TournamentModuleListDialog extends HBox implements IModalDialogProv
 
 	@Override
 	public void initModalDialog(ModalDialog<ObservableList<TournamentModule>, Object> modalDialog) {
-		modalDialog.title("Turniermodule").dialogButtons(DialogButtons.OK);
+		modalDialog.title("dialogs.tournamentmodulelist").dialogButtons(DialogButtons.OK);
 	}
 
 	@FXML private void onButtonAddTournamentModuleClicked(ActionEvent event) {

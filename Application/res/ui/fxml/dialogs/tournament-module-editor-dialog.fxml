@@ -23,9 +23,9 @@
 			<children>
 				<Label styleClass="sub-heading" text="Allgemein" />
 				<UndoTextField fx:id="textFieldModuleTitle"
-					promptText="Titel" />
+					promptText="%dialogs.tournamentmodule.titleField" />
 				<UndoTextArea fx:id="textAreaDescription" prefHeight="200.0"
-					prefWidth="200.0" promptText="Beschreibung" />
+					prefWidth="200.0" promptText="%dialogs.tournamentmodule.description" />
 			</children>
 			<padding>
 				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -33,7 +33,7 @@
 		</VBox>
 		<VBox>
 			<children>
-				<Label styleClass="sub-heading" text="Turnierphasen" />
+				<Label styleClass="sub-heading" text="%dialogs.tournamentmodule.tournamentphases" />
 				<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 					<TableView fx:id="tableTournamentPhases" HBox.hgrow="ALWAYS" />
 					<VBox spacing="5.0" styleClass="table-edit-button-container">
@@ -45,7 +45,7 @@
 									<IconPane styleClass="icon-arrow-up, half" />
 								</graphic>
 								<tooltip>
-									<Tooltip text="Ausgewählte Turnierphase nach oben bewegen" />
+									<Tooltip text="%dialogs.tournamentmodule.movephaseup" />
 								</tooltip>
 							</Button>
 							<Button fx:id="buttonMovePhaseDown" HBox.hgrow="ALWAYS"
@@ -55,7 +55,7 @@
 									<IconPane styleClass="icon-arrow-down, half" />
 								</graphic>
 								<tooltip>
-									<Tooltip text="Ausgewählte Turnierphase nach unten bewegen" />
+									<Tooltip text="%dialogs.tournamentmodule.movephasedown" />
 								</tooltip>
 							</Button>
 						</HBox>
@@ -65,7 +65,7 @@
 								<IconPane styleClass="icon-add, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="Neue Turnierphase hinzufügen" />
+								<Tooltip text="%dialogs.tournamentmodule.addphase" />
 							</tooltip>
 						</Button>
 						<Button fx:id="buttonRemovePhase" styleClass="table-edit-button"
@@ -74,7 +74,7 @@
 								<IconPane styleClass="icon-remove, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="Ausgewählte Turnierphase entfernen" />
+								<Tooltip text="%dialogs.tournamentmodule.removephase" />
 							</tooltip>
 						</Button>
 						<Button fx:id="buttonEditPhase" styleClass="table-edit-button"
@@ -83,12 +83,12 @@
 								<IconPane styleClass="icon-edit, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="Ausgewählte Turnierphase ändern" />
+								<Tooltip text="%dialogs.tournamentmodule.editphase" />
 							</tooltip>
 						</Button>
 					</VBox>
 				</HBox>
-				<Label styleClass="sub-heading" text="Mögliche Wertungen" />
+				<Label styleClass="sub-heading" text="%dialogs.tournamentmodule.possiblescorings" />
 				<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 					<TableView fx:id="tablePossibleScores" HBox.hgrow="ALWAYS" />
 					<VBox spacing="5.0" styleClass="table-edit-button-container">
@@ -100,7 +100,7 @@
 									<IconPane styleClass="icon-arrow-up, half" />
 								</graphic>
 								<tooltip>
-									<Tooltip text="Ausgewählte Wertung nach oben bewegen" />
+									<Tooltip text="%dialogs.tournamentmodule.movescoreup" />
 								</tooltip>
 							</Button>
 							<Button fx:id="buttonMoveScoreDown" HBox.hgrow="ALWAYS"
@@ -110,7 +110,7 @@
 									<IconPane styleClass="icon-arrow-down, half" />
 								</graphic>
 								<tooltip>
-									<Tooltip text="Ausgewählte Wertung nach unten bewegen" />
+									<Tooltip text="%dialogs.tournamentmodule.movescoredown" />
 								</tooltip>
 							</Button>
 						</HBox>
@@ -120,7 +120,7 @@
 								<IconPane styleClass="icon-add, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="Neue Wertung hinzufügen" />
+								<Tooltip text="%dialogs.tournamentmodule.addscore" />
 							</tooltip>
 						</Button>
 						<Button fx:id="buttonRemoveScore" styleClass="table-edit-button"
@@ -129,7 +129,7 @@
 								<IconPane styleClass="icon-remove, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="Ausgewählte Wertung entfernen" />
+								<Tooltip text="dialogs.tournamentmodule.removecore" />
 							</tooltip>
 						</Button>
 						<Button fx:id="buttonEditScore" styleClass="table-edit-button"
@@ -138,7 +138,7 @@
 								<IconPane styleClass="icon-edit, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="Ausgewählte Wertung ändern" />
+								<Tooltip text="dialogs.tournamentmodule.editscore" />
 							</tooltip>
 						</Button>
 					</VBox>

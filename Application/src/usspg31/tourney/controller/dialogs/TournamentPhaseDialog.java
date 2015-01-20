@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.NumberTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -36,14 +37,16 @@ public class TournamentPhaseDialog extends VBox implements IModalDialogProvider<
 	private GamePhase loadedPhase;
 
 	public TournamentPhaseDialog() {
-		try {
-			FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/ui/fxml/dialogs/tournament-phase-dialog.fxml"));
-			loader.setController(this);
-			loader.setRoot(this);
-			loader.load();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
-		}
+	    try {
+	        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+	                "/ui/fxml/dialogs/tournament-phase-dialog.fxml"),
+	                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+	        loader.setController(this);
+	        loader.setRoot(this);
+	        loader.load();
+	    } catch (IOException e) {
+	        log.log(Level.SEVERE, e.getMessage(), e);
+	    }
 	}
 
 	@FXML private void initialize() {
@@ -84,7 +87,7 @@ public class TournamentPhaseDialog extends VBox implements IModalDialogProvider<
 
 	@Override
 	public void initModalDialog(ModalDialog<GamePhase, GamePhase> modalDialog) {
-		modalDialog.title("Turnierphase").dialogButtons(DialogButtons.OK_CANCEL);
+		modalDialog.title("dialogs.tournamentphase").dialogButtons(DialogButtons.OK_CANCEL);
 	}
 
 	private void loadGamePhase(GamePhase gamePhase) {

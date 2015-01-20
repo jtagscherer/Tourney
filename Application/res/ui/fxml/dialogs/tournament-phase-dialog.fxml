@@ -20,39 +20,39 @@
 	<children>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
-				<Label text="Cutoff auf" />
+				<Label text="%dialogs.tournamentphase.cutoff.before" />
 				<NumberTextField fx:id="textFieldCutoff" alignment="CENTER_RIGHT"
 					prefWidth="40.0" text="16" />
-				<Label text="Spieler" />
+				<Label text="%dialogs.tournamentphase.cutoff.after" />
 			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
-				<Label text="Paarungsmethode" />
+				<Label text="%dialogs.tournamentphase.pairingstrategy" />
 				<ComboBox fx:id="comboBoxPairingStrategy" prefWidth="150.0" />
 			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
-				<Label text="Rundenanzahl:" />
+				<Label text="%dialogs.tournamentphase.roundcount" />
 				<NumberTextField fx:id="textFieldRoundCount" alignment="CENTER_RIGHT"
 					prefWidth="40.0" text="8" />
 			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
-				<Label text="Spielzeit pro Runde:" />
+				<Label text="%dialogs.tournamentphase.playtime.before" />
 				<NumberTextField fx:id="textFieldPlayTimeMinutes"
 					alignment="CENTER_RIGHT" prefWidth="40.0" text="10" />
-				<Label text="Minute(n)" />
+				<Label text="%dialogs.tournamentphase.playtime.between" />
 				<NumberTextField fx:id="textFieldPlayTimeSeconds"
 					alignment="CENTER_RIGHT" prefWidth="40.0" text="00" />
-				<Label text="Sekunden" />
+				<Label text="%dialogs.tournamentphase.playtime.after" />
 			</children>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
-				<Label text="Anzahl Spieler je Paarung:" />
+				<Label text="%dialogs.tournamentphase.playersperpairing" />
 				<NumberTextField fx:id="textFieldPlayersPerPairing"
 					alignment="CENTER_RIGHT" prefWidth="40.0" text="2" />
 			</children>
