@@ -232,6 +232,7 @@ public class FileLoader {
 
 	module.getPossibleScores().setAll(moduleDocument.getPossibleScores());
 	module.getPhaseList().setAll(moduleDocument.getTournamentPhases());
+	module.getByeList().setAll(moduleDocument.getByeList());
 
 	return module;
     }
