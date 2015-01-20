@@ -23,7 +23,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
 	ArrayList<ArrayList<PlayerScore>> subList;
 
 	if (tournament.getRounds().size() == 0) {
-
+	    // normal random generating process
 	    Random randomGenerator = new Random();
 	    ArrayList<Player> randomList = new ArrayList<>();
 	    randomList.addAll(tournament.getRemainingPlayers());
@@ -42,8 +42,8 @@ public class ModifiedSwissSystem implements PairingStrategy {
 
 		    partResult.getScoreTable().add(
 			    PairingHelper.generateEmptyScore(
-				    randomList.get(randomList.size()),
-				    tournament.getRuleSet().getPossibleScores()
+				    randomList.get(randomNumber), tournament
+					    .getRuleSet().getPossibleScores()
 					    .get(0).getScores().size()));
 
 		    partResult.getOpponents().add(randomList.get(randomNumber));
@@ -52,6 +52,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
 		result.add(partResult);
 	    }
 	} else {
+	    // splitting the score table for each bracket of points
 	    ArrayList<PlayerScore> tmp = new ArrayList<>();
 	    ArrayList<PlayerScore> subTmp;
 	    subList = new ArrayList<ArrayList<PlayerScore>>();
@@ -75,6 +76,8 @@ public class ModifiedSwissSystem implements PairingStrategy {
 		subList.add(subTmp);
 
 	    }
+
+	    // using the swiss system pairing strategy for each bracket
 	    for (ArrayList<PlayerScore> subScoreList : subList) {
 		while (subScoreList.size() >= PairingHelper.findPhase(
 			tournament.getRounds().size(), tournament)
@@ -120,6 +123,8 @@ public class ModifiedSwissSystem implements PairingStrategy {
 		    result.add(partResult);
 
 		}
+		// put the remaining players in the next bracket or using the
+		// bye
 		if (subScoreList.size() > 0) {
 		    if (subList.indexOf(subScoreList) == subList.size() - 1) {
 			// TODO implement bye
