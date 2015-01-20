@@ -1,10 +1,8 @@
 package usspg31.tourney.controller;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -82,7 +80,6 @@ public class PreferencesManager {
     }
 
     private static final String languageFilePath = "/ui/language/";
-    private static final String languageFilePackage = "ui.language";
     private static final String languageFilePrefix = "language_";
     private static final String languageFileSuffix = ".properties";
     private static final String availableLanguagesFile = "available_languages";
