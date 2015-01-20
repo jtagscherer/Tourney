@@ -48,7 +48,7 @@ public class TournamentDocument {
      */
 
     public enum PlayerListType {
-	REGISTERED_PLAYERS, ATTENDANT_PLAYERS, REMAINING_PLAYERS
+	REGISTERED_PLAYERS, ATTENDANT_PLAYERS, REMAINING_PLAYERS, RECEIVED_BYE_PLAYERS
     }
 
     /**
@@ -213,6 +213,10 @@ public class TournamentDocument {
 	case REMAINING_PLAYERS:
 	    playersElement = this.document.createElement("remaining-players");
 	    break;
+	case RECEIVED_BYE_PLAYERS:
+	    playersElement = this.document
+		    .createElement("received-bye-players");
+	    break;
 	}
 
 	this.rootElement.appendChild(playersElement);
@@ -260,6 +264,10 @@ public class TournamentDocument {
 	case REMAINING_PLAYERS:
 	    playerNode = this.document
 		    .getElementsByTagName("remaining-players").item(0);
+	    break;
+	case RECEIVED_BYE_PLAYERS:
+	    playerNode = this.document.getElementsByTagName(
+		    "received-bye-players").item(0);
 	    break;
 	}
 
