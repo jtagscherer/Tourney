@@ -61,6 +61,15 @@
 							<Tooltip text="Ausgewählten Spieler als anwesend markieren" />
 						</tooltip>
 					</Button>
+					<Button fx:id="buttonUnregisterPlayer" styleClass="table-edit-button"
+						onAction="#onButtonUnregisterPlayerClicked">
+						<graphic>
+							<IconPane styleClass="icon-unregister, half" />
+						</graphic>
+						<tooltip>
+							<Tooltip text="Ausgewählten Spieler als abwesend markieren" />
+						</tooltip>
+					</Button>
 				</VBox>
 				<VBox alignment="BOTTOM_LEFT" spacing="5.0" styleClass="distribution-button-container" VBox.vgrow="ALWAYS">
  					<Button fx:id="buttonDistributeRegistration" styleClass="distribution-button"
