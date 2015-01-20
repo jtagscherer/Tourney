@@ -102,12 +102,20 @@ public class TournamentModule {
     }
 
     /**
-     * Get all the bye for the tournament module
+     * Get the bye list property of this tournament module
      * 
-     * @return A List of all byes in the tournament
+     * @return Current bye list property
      */
     public ObservableList<Bye> byeListProperty() {
 	return this.byeList;
     }
 
+    /**
+     * Get a list of all possible byes in this tournament module
+     * 
+     * @return List of all possible byes
+     */
+    public ObservableList<Bye> getByeList() {
+	return this.byeList;
+    }
 }
