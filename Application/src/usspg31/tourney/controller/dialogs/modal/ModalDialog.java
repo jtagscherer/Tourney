@@ -114,9 +114,16 @@ public final class ModalDialog<P, R> extends StackPane {
     }
 
     public ModalDialog<P, R> title(String title) {
-	this.labelTitle.setText(PreferencesManager.getInstance()
-		.localizeString(title));
-	return this;
+        return this.title(title, true);
+    }
+
+    public ModalDialog<P, R> title(String title, boolean localize) {
+        this.labelTitle.setText(PreferencesManager.getInstance()
+                .localizeString(title));
+        this.labelTitle.setText(localize
+                ? PreferencesManager.getInstance().localizeString(title)
+                : title);
+        return this;
     }
 
     public ModalDialog<P, R> dialogButtons(DialogButtons dialogButtons) {
