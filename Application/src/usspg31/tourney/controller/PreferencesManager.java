@@ -7,6 +7,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -106,6 +108,7 @@ public class PreferencesManager {
     private ObservableList<Language> availableLanguages;
 
     private ObjectProperty<Language> selectedLanguage;
+
     private StringProperty passwordHash;
     private ReadOnlyBooleanWrapper passwordSet;
 
@@ -160,7 +163,11 @@ public class PreferencesManager {
 	}
     }
 
+    /**
+     * Looks up available languages in the availableLanguages file.
+     */
     private List<String> findAvailableLanguages() {
+	// get the path to the avaliableLanguagesFile
 	String langFile = languageFilePath + availableLanguagesFile;
 	URL availableLangaugesFile = this.getClass().getResource(langFile);
 
@@ -174,6 +181,8 @@ public class PreferencesManager {
 
 	    List<String> availableLanguages = new ArrayList<>();
 
+	    // read the availableLanguagesFile, there should be one locale code
+	    // in every line
 	    String input = null;
 	    while ((input = reader.readLine()) != null) {
 		if (localeCodePattern.matcher(input).matches()) {
@@ -182,12 +191,14 @@ public class PreferencesManager {
 	    }
 
 	    if (availableLanguages.size() == 0) {
+		// must never happen, hence, throw an error
 		throw new Error("AvailableLanguagesFile does not contain any "
 			+ "valid languages!");
 	    }
 
 	    return availableLanguages;
 	} catch (IOException e) {
+	    // must never happen, hence, throw an error
 	    throw new Error(e);
 	}
     }
@@ -231,6 +242,14 @@ public class PreferencesManager {
 		break;
 	    }
 	}
+
+	// if the language specified in the preferences isn't currently loaded,
+	// set at least any language
+	if (this.selectedLanguage.isNull().get()) {
+	    this.selectedLanguage.set(this.getAvailableLanguages().get(0));
+	}
+
+	// whenever the selectedLanguage changes, update the preferences file
 	this.selectedLanguage.addListener((ov, o, n) -> {
 	    this.preferences.setProperty("application.language", n.getLocale()
 		    .toString());
@@ -317,7 +336,7 @@ public class PreferencesManager {
      * @return
      */
     public boolean isPasswordCorrect(String password) {
-	return false; // TODO: stub
+	return this.passwordHash.get().equals(this.getHash(password));
     }
 
     /**
@@ -332,7 +351,15 @@ public class PreferencesManager {
      *         wasn't valid
      */
     public boolean setPassword(String oldPassword, String newPassword) {
-	return false; // TODO: stub
+	if (this.isPasswordCorrect(oldPassword)) {
+	    if (newPassword.isEmpty()) {
+		this.passwordHash.set("");
+	    } else {
+		this.passwordHash.set(this.getHash(newPassword));
+	    }
+	    return true;
+	}
+	return false;
     }
 
     /**
@@ -350,4 +377,22 @@ public class PreferencesManager {
 	return this.passwordSet.getReadOnlyProperty();
     }
 
+    /**
+     * Calculates a hash value for the given input string, used to store and
+     * validate the password.
+     * @param input the string to get the hash of
+     * @return the hash of the input string
+     */
+    private String getHash(String input) {
+	try {
+	    // use SHA-256 to calculate the hash for the input
+	    MessageDigest stringDigest;
+	    stringDigest = MessageDigest.getInstance("SHA-265");
+	    stringDigest.update(input.getBytes());
+	    return new String(stringDigest.digest());
+	} catch (NoSuchAlgorithmException e) {
+	    // SHA-265 just HAS to be there, otherwise all this wouldn't work
+	    throw new Error(e);
+	}
+    }
 }
