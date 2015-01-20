@@ -101,7 +101,7 @@ public class RegistrationPhaseController implements EventUser {
 			if (result != DialogResult.OK) {
 			    return;
 			}
-			registratorNumber = returnValue;
+			this.registratorNumber = returnValue;
 		    }).show();
 	}
 
@@ -217,9 +217,9 @@ public class RegistrationPhaseController implements EventUser {
 		    super.updateItem(item, empty);
 		    if (item != null) {
 			if (item.equals("")) {
-			    setText("Nicht anwesend");
+			    this.setText("Nicht anwesend");
 			} else {
-			    setText(item);
+			    this.setText(item);
 			}
 		    }
 		}
@@ -313,6 +313,7 @@ public class RegistrationPhaseController implements EventUser {
 	}
     }
 
+    // TODO: fix the dialogs
     @FXML
     private void onButtonRegisterPlayerClicked(ActionEvent event) {
 	log.fine("Edit Player Button clicked");
@@ -432,8 +433,8 @@ public class RegistrationPhaseController implements EventUser {
 					.getAbsolutePath() + ".tef");
 			    }
 
-			    loadedEvent.setUserFlag(UserFlag.REGISTRATION);
-			    loadedEvent.setNumberOfRegistrators(returnValue);
+			    this.loadedEvent.setUserFlag(UserFlag.REGISTRATION);
+			    this.loadedEvent.setNumberOfRegistrators(returnValue);
 
 			    try {
 				FileSaver.saveEventToFile(this.loadedEvent,
@@ -449,8 +450,8 @@ public class RegistrationPhaseController implements EventUser {
 					.modalDialog().title("Fehler").show();
 			    }
 
-			    loadedEvent.setUserFlag(UserFlag.ADMINISTRATION);
-			    FileSaver.saveEventToFile(loadedEvent, this
+			    this.loadedEvent.setUserFlag(UserFlag.ADMINISTRATION);
+			    FileSaver.saveEventToFile(this.loadedEvent, this
 				    .getLoadedEventFile().getAbsolutePath());
 			}).show();
     }
