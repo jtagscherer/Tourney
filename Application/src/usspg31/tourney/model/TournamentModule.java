@@ -14,6 +14,7 @@ public class TournamentModule {
     private final StringProperty description;
     private final ObservableList<PossibleScoring> possibleScorings;
     private final ObservableList<GamePhase> phaseList;
+    private final ObservableList<Bye> byeList;
 
     /**
      * Create a new tournament module and initialize all its properties
@@ -23,7 +24,7 @@ public class TournamentModule {
 	this.description = new SimpleStringProperty("");
 	this.possibleScorings = FXCollections.observableArrayList();
 	this.phaseList = FXCollections.observableArrayList();
-
+	this.byeList = FXCollections.observableArrayList();
     }
 
     /**
@@ -98,6 +99,15 @@ public class TournamentModule {
      */
     public ObservableList<GamePhase> getPhaseList() {
 	return this.phaseList;
+    }
+
+    /**
+     * Get all the bye for the tournament module
+     * 
+     * @return A List of all byes in the tournament
+     */
+    public ObservableList<Bye> byeListProperty() {
+	return this.byeList;
     }
 
 }
