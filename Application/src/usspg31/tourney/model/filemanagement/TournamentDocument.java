@@ -14,6 +14,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import usspg31.tourney.model.Bye;
+import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
@@ -46,7 +48,7 @@ public class TournamentDocument {
      */
 
     public enum PlayerListType {
-	REGISTERED_PLAYERS, ATTENDANT_PLAYERS, REMAINING_PLAYERS
+	REGISTERED_PLAYERS, ATTENDANT_PLAYERS, REMAINING_PLAYERS, RECEIVED_BYE_PLAYERS
     }
 
     /**
@@ -211,6 +213,10 @@ public class TournamentDocument {
 	case REMAINING_PLAYERS:
 	    playersElement = this.document.createElement("remaining-players");
 	    break;
+	case RECEIVED_BYE_PLAYERS:
+	    playersElement = this.document
+		    .createElement("received-bye-players");
+	    break;
 	}
 
 	this.rootElement.appendChild(playersElement);
@@ -258,6 +264,10 @@ public class TournamentDocument {
 	case REMAINING_PLAYERS:
 	    playerNode = this.document
 		    .getElementsByTagName("remaining-players").item(0);
+	    break;
+	case RECEIVED_BYE_PLAYERS:
+	    playerNode = this.document.getElementsByTagName(
+		    "received-bye-players").item(0);
 	    break;
 	}
 
@@ -574,6 +584,29 @@ public class TournamentDocument {
 		    .getRoundDuration().toString()));
 	}
 
+	/* Append all possible byes in the rule set */
+
+	/* Create a node that will hold all byes */
+	Element byesElement = this.document.createElement("byes");
+	this.rootElement.appendChild(byesElement);
+
+	/* Add a child node for each bye */
+	for (Bye bye : ruleSet.getByeList()) {
+	    Element byeElement = this.document.createElement("bye");
+	    byesElement.appendChild(byeElement);
+
+	    /* Add the bye type */
+	    Element byeTypeElement = this.document.createElement("type");
+	    byeElement.appendChild(byeTypeElement);
+	    byeTypeElement.appendChild(this.document.createTextNode(String
+		    .valueOf(bye.getByeType())));
+
+	    /* Add the points associated with this bye */
+	    Element byePointsElements = this.document.createElement("points");
+	    byeElement.appendChild(byePointsElements);
+	    byePointsElements.appendChild(this.document.createTextNode(String
+		    .valueOf(bye.getByePoints())));
+	}
     }
 
     /**
@@ -666,6 +699,24 @@ public class TournamentDocument {
 	    gamePhases.add(phase);
 	}
 	tournamentModule.getPhaseList().setAll(gamePhases);
+
+	/* Load all possible byes in this rule set */
+
+	/* Get the node that contains all byes */
+	Node byes = this.document.getElementsByTagName("byes").item(0);
+
+	/* Extract all individual byes */
+	for (Node byeNode : FileLoader.getChildNodesByTag(byes, "bye")) {
+	    Bye bye = new Bye();
+
+	    /* Extract the bye type and the associated points */
+	    bye.setByeType(ByeType.valueOf(FileLoader.getFirstChildNodeByTag(
+		    byeNode, "type").getTextContent()));
+	    bye.setByePoints(Integer.valueOf(FileLoader.getFirstChildNodeByTag(
+		    byeNode, "points").getTextContent()));
+
+	    tournamentModule.getByeList().add(bye);
+	}
 
 	return tournamentModule;
     }

@@ -243,6 +243,8 @@ public class FileSaver {
 		TournamentDocument.PlayerListType.ATTENDANT_PLAYERS);
 	document.appendPlayerList(tournament.getRemainingPlayers(),
 		TournamentDocument.PlayerListType.REMAINING_PLAYERS);
+	document.appendPlayerList(tournament.getReceivedByePlayers(),
+		TournamentDocument.PlayerListType.RECEIVED_BYE_PLAYERS);
 
 	document.appendTournamentRounds(tournament.getRounds());
 
@@ -291,6 +293,7 @@ public class FileSaver {
 	document.appendMetaData(module);
 	document.appendPossibleScores(module.getPossibleScores());
 	document.appendTournamentPhases(module.getPhaseList());
+	document.appendByeList(module.getByeList());
 
 	FileSaver.saveDocumentToFile(document.getDocument(), path);
     }

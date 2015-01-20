@@ -161,6 +161,12 @@ public class FileLoader {
 			    .getPlayerList(
 				    TournamentDocument.PlayerListType.REMAINING_PLAYERS,
 				    playerList));
+	    newTournament
+		    .getReceivedByePlayers()
+		    .setAll(tournamentDocument
+			    .getPlayerList(
+				    TournamentDocument.PlayerListType.RECEIVED_BYE_PLAYERS,
+				    playerList));
 
 	    newTournament.getRounds().setAll(
 		    tournamentDocument.getTournamentRounds(playerList));
@@ -232,6 +238,7 @@ public class FileLoader {
 
 	module.getPossibleScores().setAll(moduleDocument.getPossibleScores());
 	module.getPhaseList().setAll(moduleDocument.getTournamentPhases());
+	module.getByeList().setAll(moduleDocument.getByeList());
 
 	return module;
     }
