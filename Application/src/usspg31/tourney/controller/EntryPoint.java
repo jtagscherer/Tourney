@@ -65,37 +65,37 @@ public class EntryPoint extends Application {
 			    new SimpleDialog<>(
 				    "Es sind ungesicherte Änderungen vorhanden.\n"
 					    + "Möchten Sie diese vor dem Beenden speichern?")
-					    .modalDialog()
-					    .title("Warnung")
-					    .dialogButtons(DialogButtons.YES_NO_CANCEL)
-					    .onResult(
-						    (result, returnValue) -> {
-							switch (result) {
-							case CANCEL:
-							    EntryPoint.this.closeRequested = false;
-							    return;
-							case YES:
-							    DialogResult saveResponse = MainWindow
+				    .modalDialog()
+				    .title("dialogs.titles.warning")
+				    .dialogButtons(DialogButtons.YES_NO_CANCEL)
+				    .onResult(
+					    (result, returnValue) -> {
+						switch (result) {
+						case CANCEL:
+						    EntryPoint.this.closeRequested = false;
+						    return;
+						case YES:
+						    DialogResult saveResponse = MainWindow
 							    .getInstance()
 							    .getEventPhaseViewController()
 							    .saveEvent();
-							    EntryPoint.this.closeRequested = false;
+						    EntryPoint.this.closeRequested = false;
 
-							    if (saveResponse != DialogResult.OK) {
-								return;
-							    }
+						    if (saveResponse != DialogResult.OK) {
+							return;
+						    }
 
-							    /*
-							     * Fall through if there was
-							     * no return yet
-							     */
-							default:
-							    EntryPoint.this.closeRequested = false;
-							    primaryStage.close();
-							    Platform.exit();
-							    break;
-							}
-						    }).show();
+						    /*
+						     * Fall through if there was
+						     * no return yet
+						     */
+						default:
+						    EntryPoint.this.closeRequested = false;
+						    primaryStage.close();
+						    Platform.exit();
+						    break;
+						}
+					    }).show();
 			} else {
 			    EntryPoint.this.closeRequested = false;
 			    primaryStage.close();
