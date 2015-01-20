@@ -170,12 +170,27 @@ public class PlayerPreRegistrationDialog extends VBox implements
 
     @Override
     public String getInputErrorString() {
+	/* Check if there is a player with the same key data */
+	boolean duplicatePlayer = false;
+	for (Player existentPlayer : this.loadedEvent.getRegisteredPlayers()) {
+	    if (existentPlayer.getId().equals(
+		    String.valueOf(new String(this.loadedPlayer.getFirstName()
+			    + this.loadedPlayer.getLastName()
+			    + this.loadedPlayer.getMailAddress()
+			    + this.loadedPlayer.getNickName()).hashCode()))) {
+		duplicatePlayer = true;
+		break;
+	    }
+	}
+
 	if (this.loadedPlayer.getFirstName().equals("")
 		&& this.loadedPlayer.getLastName().equals("")
 		&& this.loadedPlayer.getNickName().equals("")) {
 	    return PreferencesManager.getInstance().localizeString(
 		    "dialogs.playerpreregistration.errors.emptydata");
-	    // TODO: Deny adding a duplicate players
+	} else if (duplicatePlayer) {
+	    return PreferencesManager.getInstance().localizeString(
+		    "dialogs.playerpreregistration.errors.duplicate");
 	} else {
 	    return null;
 	}
