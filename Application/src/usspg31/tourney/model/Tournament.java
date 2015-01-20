@@ -15,6 +15,7 @@ public class Tournament implements Cloneable {
     private final ObservableList<Player> registeredPlayers;
     private final ObservableList<Player> attendingPlayers;
     private final ObservableList<Player> remainingPlayers;
+    private final ObservableList<Player> receivedByePlayers;
     private final ObservableList<TournamentRound> rounds;
     private final StringProperty name;
     private final ObservableList<PlayerScore> scoreTable;
@@ -23,12 +24,14 @@ public class Tournament implements Cloneable {
     private final ObjectProperty<TournamentModule> ruleSet;
 
     /**
-     * Create a new tournament and initialize all its properties
+     * new TournamentModule() Create a new tournament and initialize all its
+     * properties
      */
     public Tournament() {
 	this.registeredPlayers = FXCollections.observableArrayList();
 	this.attendingPlayers = FXCollections.observableArrayList();
 	this.remainingPlayers = FXCollections.observableArrayList();
+	this.receivedByePlayers = FXCollections.observableArrayList();
 	this.rounds = FXCollections.observableArrayList();
 	this.name = new SimpleStringProperty("");
 	this.scoreTable = FXCollections.observableArrayList();
@@ -73,6 +76,38 @@ public class Tournament implements Cloneable {
      */
     public ObservableList<TournamentRound> getRounds() {
 	return this.rounds;
+    }
+
+    /**
+     * 
+     * ─────────▄──────────────▄──────────────────────────────
+     * ────────▌▒█───────────▄▀▒▌────────────────────────────
+     * ────────▌▒▒▀▄───────▄▀▒▒▒▐ ───────────────────────────
+     * ───────▐▄▀▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐ ───────────────────────────
+     * ─────▄▄▀▒▒▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐ ───────────────────────────
+     * ───▄▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀██▀▒▌────────────────────────────
+     * ──▐▒▒▒▄▄▄▒▒▒▒▒▒▒▒▒▒▒▒▒▀▄▒▒▌───────────────────────────
+     * ──▌▒▒▐▄█▀▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐───────────────────────────
+     * ─▐▒▒▒▒▒▒▒▒▒▒▒▌██▀▒▒▒▒▒▒▒▒▀▄▌──────────────────────────
+     * ─▌▒▀▄██▄▒▒▒▒▒▒▒▒▒▒▒░░░░▒▒▒▒▌──────────────────────────
+     * ─▌▀▐▄█▄█▌▄▒▀▒▒▒▒▒▒░░░░░░▒▒▒▐──────────────────────────
+     * ▐▒▀▐▀▐▀▒▒▄▄▒▄▒▒▒▒▒░░░░░░▒▒▒▒▌─────────────────────────
+     * ▐▒▒▒▀▀▄▄▒▒▒▄▒▒▒▒▒▒░░░░░░▒▒▒▐──────────────────────────
+     * ─▌▒▒▒▒▒▒▀▀▀▒▒▒▒▒▒▒▒░░░░▒▒▒▒▌──────────────────────────
+     * ─▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐───────────────────────────
+     * ──▀▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄▒▒▒▒▌───────────────────────────
+     * ────▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀────────────────────────────
+     * ───▐▀▒▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀──────────────────────────────
+     * ──▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀─────────────────────────────────
+     * 
+     * !! <b>no formatting pls</b> !!
+     * 
+     * Get the list of all player which received a bye in the tournament
+     * 
+     * @return such received bye list wow
+     */
+    public ObservableList<Player> getReceivedByePlayers() {
+	return this.receivedByePlayers;
     }
 
     /**

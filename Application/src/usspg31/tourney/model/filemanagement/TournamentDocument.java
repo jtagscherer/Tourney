@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
@@ -309,6 +310,12 @@ public class TournamentDocument {
 		Element pairingElement = this.document.createElement("pairing");
 		pairings.appendChild(pairingElement);
 
+		/* Add the flag of the pairing */
+		Element pairingFlag = this.document.createElement("flag");
+		pairingElement.appendChild(pairingFlag);
+		pairingFlag.appendChild(this.document.createTextNode(pairing
+			.getFlag().toString()));
+
 		/* Add all participants of the pairing */
 		Element participants = this.document
 			.createElement("participants");
@@ -385,6 +392,11 @@ public class TournamentDocument {
 	    for (Node pairing : FileLoader.getChildNodesByTag(pairingNode,
 		    "pairing")) {
 		Pairing roundPairing = new Pairing();
+
+		/* Extract the flag of the pairing */
+		roundPairing.setFlag(PairingFlag.valueOf(FileLoader
+			.getFirstChildNodeByTag(pairing, "flag")
+			.getTextContent()));
 
 		Node participantsNode = FileLoader.getFirstChildNodeByTag(
 			pairing, "participants");
