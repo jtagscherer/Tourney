@@ -25,22 +25,16 @@ import usspg31.tourney.controller.layout.RelativityPane;
 public final class ModalDialog<P, R> extends StackPane {
 
     private final static Logger log = Logger.getLogger(ModalDialog.class
-	    .getName());
+            .getName());
 
-    @FXML
-    private StackPane mainWindowRootContainer;
+    @FXML private StackPane mainWindowRootContainer;
 
-    @FXML
-    private VBox dialogRoot;
-    @FXML
-    private RelativityPane dialogBackground;
+    @FXML private VBox dialogRoot;
+    @FXML private RelativityPane dialogBackground;
 
-    @FXML
-    private Label labelTitle;
-    @FXML
-    private StackPane contentContainer;
-    @FXML
-    private HBox dialogButtonContainer;
+    @FXML private Label labelTitle;
+    @FXML private StackPane contentContainer;
+    @FXML private HBox dialogButtonContainer;
 
     private DialogContent<P, R> dialogContent;
     private DialogResultListener<R> dialogResultListener;
@@ -52,65 +46,65 @@ public final class ModalDialog<P, R> extends StackPane {
     private static final double scaleInFrom = .7;
     private static final double scaleOutTo = .7;
     private static final Interpolator fadeInterpolator = Interpolator.SPLINE(
-	    .4, 0, 0, 1);
+            .4, 0, 0, 1);
     private GaussianBlur backgroundBlur;
     private static final Duration transitionDuration = Duration.millis(300);
 
     public ModalDialog(DialogContent<P, R> dialogContent) {
-	this.dialogContent = dialogContent;
-	this.dialogContent.setDialogRoot(this);
+        this.dialogContent = dialogContent;
+        this.dialogContent.setDialogRoot(this);
 
-	this.loadDialog();
+        this.loadDialog();
 
-	this.contentContainer.getChildren().add(this.dialogContent.getRoot());
+        this.contentContainer.getChildren().add(this.dialogContent.getRoot());
     }
 
     private void loadDialog() {
-	try {
-	    FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-		    "/ui/fxml/dialogs/modal-dialog.fxml"));
-	    loader.setController(this);
-	    loader.setRoot(this);
-	    loader.load();
-	} catch (IOException e) {
-	    log.log(Level.SEVERE, e.getMessage(), e);
-	}
+        try {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+                    "/ui/fxml/dialogs/modal-dialog.fxml"));
+            loader.setController(this);
+            loader.setRoot(this);
+            loader.load();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     @FXML
     private void initialize() {
-	this.backgroundBlur = new GaussianBlur();
+        this.backgroundBlur = new GaussianBlur();
 
-	this.fadeInTransition = new Timeline(new KeyFrame(Duration.ZERO,
-		new KeyValue(this.backgroundBlur.radiusProperty(), 0.0),
-		new KeyValue(this.dialogRoot.scaleXProperty(), scaleInFrom),
-		new KeyValue(this.dialogRoot.scaleYProperty(), scaleInFrom),
-		new KeyValue(this.dialogBackground.opacityProperty(), 0.0)),
-		new KeyFrame(transitionDuration, new KeyValue(
-			this.backgroundBlur.radiusProperty(),
-			backgroundBlurAmount), new KeyValue(this.dialogRoot
-			.scaleXProperty(), 1.0, fadeInterpolator),
-			new KeyValue(this.dialogRoot.scaleYProperty(), 1.0,
-				fadeInterpolator), new KeyValue(
-				this.dialogBackground.opacityProperty(), 1.0,
-				fadeInterpolator)));
+        this.fadeInTransition = new Timeline(new KeyFrame(Duration.ZERO,
+                new KeyValue(this.backgroundBlur.radiusProperty(), 0.0),
+                new KeyValue(this.dialogRoot.scaleXProperty(), scaleInFrom),
+                new KeyValue(this.dialogRoot.scaleYProperty(), scaleInFrom),
+                new KeyValue(this.dialogBackground.opacityProperty(), 0.0)),
+                new KeyFrame(transitionDuration, new KeyValue(
+                        this.backgroundBlur.radiusProperty(),
+                        backgroundBlurAmount), new KeyValue(this.dialogRoot
+                        .scaleXProperty(), 1.0, fadeInterpolator),
+                        new KeyValue(this.dialogRoot.scaleYProperty(), 1.0,
+                                fadeInterpolator), new KeyValue(
+                                this.dialogBackground.opacityProperty(), 1.0,
+                                fadeInterpolator)));
 
-	this.fadeOutTransition = new Timeline(new KeyFrame(Duration.ZERO,
-		new KeyValue(this.backgroundBlur.radiusProperty(),
-			backgroundBlurAmount), new KeyValue(
-			this.dialogRoot.scaleXProperty(), 1.0), new KeyValue(
-			this.dialogRoot.scaleYProperty(), 1.0), new KeyValue(
-			this.dialogBackground.opacityProperty(), 1.0)),
-		new KeyFrame(transitionDuration, new KeyValue(
-			this.backgroundBlur.radiusProperty(), 0.0),
-			new KeyValue(this.dialogRoot.scaleXProperty(),
-				scaleOutTo, fadeInterpolator), new KeyValue(
-				this.dialogRoot.scaleYProperty(), scaleOutTo,
-				fadeInterpolator), new KeyValue(
-				this.dialogBackground.opacityProperty(), 0.0,
-				fadeInterpolator)));
+        this.fadeOutTransition = new Timeline(new KeyFrame(Duration.ZERO,
+                new KeyValue(this.backgroundBlur.radiusProperty(),
+                        backgroundBlurAmount), new KeyValue(
+                        this.dialogRoot.scaleXProperty(), 1.0), new KeyValue(
+                        this.dialogRoot.scaleYProperty(), 1.0), new KeyValue(
+                        this.dialogBackground.opacityProperty(), 1.0)),
+                new KeyFrame(transitionDuration, new KeyValue(
+                        this.backgroundBlur.radiusProperty(), 0.0),
+                        new KeyValue(this.dialogRoot.scaleXProperty(),
+                                scaleOutTo, fadeInterpolator), new KeyValue(
+                                this.dialogRoot.scaleYProperty(), scaleOutTo,
+                                fadeInterpolator), new KeyValue(
+                                this.dialogBackground.opacityProperty(), 0.0,
+                                fadeInterpolator)));
 
-	this.mainWindowRootContainer.setEffect(this.backgroundBlur);
+        this.mainWindowRootContainer.setEffect(this.backgroundBlur);
     }
 
     public ModalDialog<P, R> title(String title) {
@@ -118,103 +112,100 @@ public final class ModalDialog<P, R> extends StackPane {
     }
 
     public ModalDialog<P, R> title(String title, boolean localize) {
-        this.labelTitle.setText(PreferencesManager.getInstance()
-                .localizeString(title));
-        this.labelTitle.setText(localize
-                ? PreferencesManager.getInstance().localizeString(title)
-                : title);
+        this.labelTitle.setText(localize ? PreferencesManager.getInstance()
+                .localizeString(title) : title);
         return this;
     }
 
     public ModalDialog<P, R> dialogButtons(DialogButtons dialogButtons) {
-	this.dialogButtonContainer.getChildren().clear();
+        this.dialogButtonContainer.getChildren().clear();
 
-	if (dialogButtons.containsYes()) {
-	    this.addDialogButton("dialogs.buttons.yes", DialogResult.YES);
-	}
-	if (dialogButtons.containsNo()) {
-	    this.addDialogButton("dialogs.buttons.no", DialogResult.NO,
-		    !dialogButtons.containsCancel());
-	}
-	if (dialogButtons.containsOk()) {
-	    this.addDialogButton("dialogs.buttons.ok", DialogResult.OK);
-	}
-	if (dialogButtons.containsCancel()) {
-	    this.addDialogButton("dialogs.buttons.cancel", DialogResult.CANCEL,
-		    true);
-	}
-	return this;
+        if (dialogButtons.containsYes()) {
+            this.addDialogButton("dialogs.buttons.yes", DialogResult.YES);
+        }
+        if (dialogButtons.containsNo()) {
+            this.addDialogButton("dialogs.buttons.no", DialogResult.NO,
+                    !dialogButtons.containsCancel());
+        }
+        if (dialogButtons.containsOk()) {
+            this.addDialogButton("dialogs.buttons.ok", DialogResult.OK);
+        }
+        if (dialogButtons.containsCancel()) {
+            this.addDialogButton("dialogs.buttons.cancel", DialogResult.CANCEL,
+                    true);
+        }
+        return this;
     }
 
     private void addDialogButton(String text, DialogResult result) {
-	this.addDialogButton(text, result, false);
+        this.addDialogButton(text, result, false);
     }
 
     private void addDialogButton(String text, DialogResult result,
-	    boolean isCancel) {
-	Button button = new Button(PreferencesManager.getInstance()
-		.localizeString(text));
-	button.getStyleClass().add("dialog-button");
-	button.setOnAction(event -> {
-	    this.exitWith(result);
-	});
-	button.setCancelButton(isCancel);
-	this.dialogButtonContainer.getChildren().add(button);
+            boolean isCancel) {
+        Button button = new Button(PreferencesManager.getInstance()
+                .localizeString(text));
+        button.getStyleClass().add("dialog-button");
+        button.setOnAction(event -> {
+            this.exitWith(result);
+        });
+        button.setCancelButton(isCancel);
+        this.dialogButtonContainer.getChildren().add(button);
     }
 
     public ModalDialog<P, R> properties(P properties) {
-	this.dialogContent.setProperties(properties);
-	return this;
+        this.dialogContent.setProperties(properties);
+        return this;
     }
 
     public ModalDialog<P, R> onResult(DialogResultListener<R> listener) {
-	this.dialogResultListener = listener;
-	return this;
+        this.dialogResultListener = listener;
+        return this;
     }
 
     public void show() {
-	long time = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
 
-	Parent mainWindowRoot = EntryPoint.getPrimaryStage().getScene()
-		.getRoot();
-	mainWindowRoot.setDisable(true);
+        Parent mainWindowRoot = EntryPoint.getPrimaryStage().getScene()
+                .getRoot();
+        mainWindowRoot.setDisable(true);
 
-	EntryPoint.getPrimaryStage().getScene().setRoot(this);
-	this.mainWindowRootContainer.getChildren().add(mainWindowRoot);
+        EntryPoint.getPrimaryStage().getScene().setRoot(this);
+        this.mainWindowRootContainer.getChildren().add(mainWindowRoot);
 
-	log.finer("Showing dialog for "
-		+ this.dialogContent.getClass().getSimpleName() + " ("
-		+ (System.currentTimeMillis() - time) + "ms)");
+        log.finer("Showing dialog for "
+                + this.dialogContent.getClass().getSimpleName() + " ("
+                + (System.currentTimeMillis() - time) + "ms)");
 
-	this.fadeInTransition.play();
+        this.fadeInTransition.play();
     }
 
     public void exitWith(DialogResult result) {
-	if (this.dialogContent.getInputErrorString() != null
-		&& result == DialogResult.OK) {
-	    new SimpleDialog<>(this.dialogContent.getInputErrorString())
-		    .modalDialog().dialogButtons(DialogButtons.OK)
-		    .title("dialogs.titles.error").show();
-	} else {
-	    this.hide();
-	    if (this.dialogResultListener != null) {
-		this.dialogResultListener.onDialogClosed(result,
-			this.dialogContent.getReturnValue());
-	    }
-	}
+        if (this.dialogContent.getInputErrorString() != null
+                && result == DialogResult.OK) {
+            new SimpleDialog<>(this.dialogContent.getInputErrorString())
+                    .modalDialog().dialogButtons(DialogButtons.OK)
+                    .title("dialogs.titles.error").show();
+        } else {
+            this.hide();
+            if (this.dialogResultListener != null) {
+                this.dialogResultListener.onDialogClosed(result,
+                        this.dialogContent.getReturnValue());
+            }
+        }
     }
 
     private void hide() {
-	((Parent) this.mainWindowRootContainer.getChildren().get(0))
-		.setDisable(false);
+        ((Parent) this.mainWindowRootContainer.getChildren().get(0))
+                .setDisable(false);
 
-	this.fadeOutTransition.setOnFinished(event -> {
-	    Parent mainWindowRoot = (Parent) this.mainWindowRootContainer
-		    .getChildren().get(0);
+        this.fadeOutTransition.setOnFinished(event -> {
+            Parent mainWindowRoot = (Parent) this.mainWindowRootContainer
+                    .getChildren().get(0);
 
-	    this.mainWindowRootContainer.getChildren().clear();
-	    EntryPoint.getPrimaryStage().getScene().setRoot(mainWindowRoot);
-	});
-	this.fadeOutTransition.play();
+            this.mainWindowRootContainer.getChildren().clear();
+            EntryPoint.getPrimaryStage().getScene().setRoot(mainWindowRoot);
+        });
+        this.fadeOutTransition.play();
     }
 }
