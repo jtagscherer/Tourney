@@ -114,7 +114,8 @@ public final class ModalDialog<P, R> extends StackPane {
     }
 
     public ModalDialog<P, R> title(String title) {
-	this.labelTitle.setText(PreferencesManager.getInstance().localizeString(title));
+	this.labelTitle.setText(PreferencesManager.getInstance()
+		.localizeString(title));
 	return this;
     }
 
@@ -132,7 +133,8 @@ public final class ModalDialog<P, R> extends StackPane {
 	    this.addDialogButton("dialogs.buttons.ok", DialogResult.OK);
 	}
 	if (dialogButtons.containsCancel()) {
-	    this.addDialogButton("dialogs.buttons.cancel", DialogResult.CANCEL, true);
+	    this.addDialogButton("dialogs.buttons.cancel", DialogResult.CANCEL,
+		    true);
 	}
 	return this;
     }
@@ -143,7 +145,8 @@ public final class ModalDialog<P, R> extends StackPane {
 
     private void addDialogButton(String text, DialogResult result,
 	    boolean isCancel) {
-	Button button = new Button(PreferencesManager.getInstance().localizeString(text));
+	Button button = new Button(PreferencesManager.getInstance()
+		.localizeString(text));
 	button.getStyleClass().add("dialog-button");
 	button.setOnAction(event -> {
 	    this.exitWith(result);
@@ -180,11 +183,11 @@ public final class ModalDialog<P, R> extends StackPane {
     }
 
     public void exitWith(DialogResult result) {
-	if (this.dialogContent.hasNoInput() && result == DialogResult.OK) {
-	    new SimpleDialog<>(
-		    "Bitte tragen Sie Daten ein, bevor Sie diese Aktion ausführen können.")
+	if (this.dialogContent.getInputErrorString() != null
+		&& result == DialogResult.OK) {
+	    new SimpleDialog<>(this.dialogContent.getInputErrorString())
 		    .modalDialog().dialogButtons(DialogButtons.OK)
-		    .title("Fehler").show();
+		    .title("dialogs.titles.error").show();
 	} else {
 	    this.hide();
 	    if (this.dialogResultListener != null) {

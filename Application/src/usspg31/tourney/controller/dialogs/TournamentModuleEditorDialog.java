@@ -82,16 +82,17 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private TournamentModule loadedModule;
 
     public TournamentModuleEditorDialog() {
-        try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-                    "/ui/fxml/dialogs/tournament-module-editor-dialog.fxml"),
-                    PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
-            loader.setController(this);
-            loader.setRoot(this);
-            loader.load();
-        } catch (IOException e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
-        }
+	try {
+	    FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
+		    "/ui/fxml/dialogs/tournament-module-editor-dialog.fxml"),
+		    PreferencesManager.getInstance().getSelectedLanguage()
+			    .getLanguageBundle());
+	    loader.setController(this);
+	    loader.setRoot(this);
+	    loader.load();
+	} catch (IOException e) {
+	    log.log(Level.SEVERE, e.getMessage(), e);
+	}
     }
 
     @FXML
@@ -103,85 +104,90 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     }
 
     private void initTournamentPhaseTable() {
-        PreferencesManager preferences = PreferencesManager.getInstance();
+	PreferencesManager preferences = PreferencesManager.getInstance();
 
-        // setup all table columns
-        this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
-        this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().phaseNumberProperty()
-                .asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesPhaseNumber);
+	// setup all table columns
+	this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
+	this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().phaseNumberProperty()
+			.asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesPhaseNumber);
 
-        this.tableColumnPhasesPairingMethod = new TableColumn<>(
-                "Paarungsmethode");
-        this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
-                cellData -> new SimpleStringProperty(cellData.getValue()
-                        .getPairingMethod().getName()));
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesPairingMethod);
+	this.tableColumnPhasesPairingMethod = new TableColumn<>(
+		"Paarungsmethode");
+	this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
+		cellData -> new SimpleStringProperty(cellData.getValue()
+			.getPairingMethod().getName()));
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesPairingMethod);
 
-        this.tableColumnPhasesRoundCount = new TableColumn<>(preferences
-                .localizeString("dialogs.tournamentmodule.roundcount"));
-        this.tableColumnPhasesRoundCount.cellValueFactoryProperty()
-        .set(cellData -> cellData.getValue().roundCountProperty()
-                .asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesRoundCount);
+	this.tableColumnPhasesRoundCount = new TableColumn<>(
+		preferences
+			.localizeString("dialogs.tournamentmodule.roundcount"));
+	this.tableColumnPhasesRoundCount.cellValueFactoryProperty()
+		.set(cellData -> cellData.getValue().roundCountProperty()
+			.asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesRoundCount);
 
-        this.tableColumnPhasesCutoff = new TableColumn<>(preferences
-                .localizeString("dialogs.tournamentmodule.cutoff"));
-        this.tableColumnPhasesCutoff.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().cutoffProperty().asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesCutoff);
+	this.tableColumnPhasesCutoff = new TableColumn<>(
+		preferences.localizeString("dialogs.tournamentmodule.cutoff"));
+	this.tableColumnPhasesCutoff.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().cutoffProperty().asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesCutoff);
 
-        this.tableColumnPhasesRoundDuration = new TableColumn<>(preferences
-                .localizeString("dialogs.tournamentmodule.roundduration"));
-        this.tableColumnPhasesRoundDuration
-        .setCellValueFactory(cellData -> cellData.getValue()
-                .roundDurationProperty());
-        this.tableColumnPhasesRoundDuration.setCellFactory(column -> {
-            return new TableCell<GamePhase, Duration>() {
-                @Override
-                protected void updateItem(Duration item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null) {
-                        this.setText(String.format("%02d:%02d " + preferences
-                                .localizeString("dialogs.tournamentmodule.minutes"),
-                                item.getSeconds() / 60, item.getSeconds() % 60));
-                    }
-                }
-            };
-        });
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesRoundDuration);
+	this.tableColumnPhasesRoundDuration = new TableColumn<>(
+		preferences
+			.localizeString("dialogs.tournamentmodule.roundduration"));
+	this.tableColumnPhasesRoundDuration
+		.setCellValueFactory(cellData -> cellData.getValue()
+			.roundDurationProperty());
+	this.tableColumnPhasesRoundDuration.setCellFactory(column -> {
+	    return new TableCell<GamePhase, Duration>() {
+		@Override
+		protected void updateItem(Duration item, boolean empty) {
+		    super.updateItem(item, empty);
+		    if (item != null) {
+			this.setText(String.format(
+				"%02d:%02d "
+					+ preferences
+						.localizeString("dialogs.tournamentmodule.minutes"),
+				item.getSeconds() / 60, item.getSeconds() % 60));
+		    }
+		}
+	    };
+	});
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesRoundDuration);
 
-        this.tableColumnPhasesNumberOfOpponents = new TableColumn<>(preferences
-                .localizeString("dialogs.tournamentmodule.playersperpairing"));
-        this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().numberOfOpponentsProperty()
-                .asString());
-        this.tableTournamentPhases.getColumns().add(
-                this.tableColumnPhasesNumberOfOpponents);
+	this.tableColumnPhasesNumberOfOpponents = new TableColumn<>(
+		preferences
+			.localizeString("dialogs.tournamentmodule.playersperpairing"));
+	this.tableColumnPhasesNumberOfOpponents.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().numberOfOpponentsProperty()
+			.asString());
+	this.tableTournamentPhases.getColumns().add(
+		this.tableColumnPhasesNumberOfOpponents);
     }
 
     private void initPossibleScoresTable() {
-        PreferencesManager preferences = PreferencesManager.getInstance();
+	PreferencesManager preferences = PreferencesManager.getInstance();
 
-        this.tableColumnPossibleScoresPriority = new TableColumn<>(preferences
-                .localizeString("dialogs.tournamentmodule.priority"));
-        this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().priorityProperty().asString());
-        this.tablePossibleScores.getColumns().add(
-                this.tableColumnPossibleScoresPriority);
+	this.tableColumnPossibleScoresPriority = new TableColumn<>(
+		preferences.localizeString("dialogs.tournamentmodule.priority"));
+	this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
+		cellData -> cellData.getValue().priorityProperty().asString());
+	this.tablePossibleScores.getColumns().add(
+		this.tableColumnPossibleScoresPriority);
 
-        this.tableColumnPossibleScoresScores = new TableColumn<>(preferences
-                .localizeString("dialogs.tournamentmodule.scores"));
-        this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
-                cellData -> new SimpleStringProperty(""));
-        this.tablePossibleScores.getColumns().add(
-                this.tableColumnPossibleScoresScores);
+	this.tableColumnPossibleScoresScores = new TableColumn<>(
+		preferences.localizeString("dialogs.tournamentmodule.scores"));
+	this.tableColumnPossibleScoresScores.cellValueFactoryProperty().set(
+		cellData -> new SimpleStringProperty(""));
+	this.tablePossibleScores.getColumns().add(
+		this.tableColumnPossibleScoresScores);
     }
 
     @Override
@@ -198,15 +204,20 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     }
 
     @Override
-    public boolean hasNoInput() {
-	return this.loadedModule.getName().equals("");
-    }
+    public String getInputErrorString() {
+	if (this.loadedModule.getName().equals("")) {
+	    return PreferencesManager.getInstance().localizeString(
+		    "dialogs.tournamentmodule.errors.emptydata");
+	} else {
+	    return null;
+	}
+    };
 
     @Override
     public void initModalDialog(
 	    ModalDialog<TournamentModule, TournamentModule> modalDialog) {
-	modalDialog.title("dialogs.tournamentmodule")
-		.dialogButtons(DialogButtons.OK_CANCEL);
+	modalDialog.title("dialogs.tournamentmodule").dialogButtons(
+		DialogButtons.OK_CANCEL);
     }
 
     private void loadModule(TournamentModule module) {

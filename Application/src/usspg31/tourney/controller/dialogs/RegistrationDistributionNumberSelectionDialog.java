@@ -26,16 +26,19 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
     private NumberTextField textFieldNumberOfRegistrator;
 
     public RegistrationDistributionNumberSelectionDialog() {
-        try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-                    "/ui/fxml/dialogs/registration-distribution-number-selection-dialog.fxml"),
-                    PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
-            loader.setController(this);
-            loader.setRoot(this);
-            loader.load();
-        } catch (IOException e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
-        }
+	try {
+	    FXMLLoader loader = new FXMLLoader(
+		    this.getClass()
+			    .getResource(
+				    "/ui/fxml/dialogs/registration-distribution-number-selection-dialog.fxml"),
+		    PreferencesManager.getInstance().getSelectedLanguage()
+			    .getLanguageBundle());
+	    loader.setController(this);
+	    loader.setRoot(this);
+	    loader.load();
+	} catch (IOException e) {
+	    log.log(Level.SEVERE, e.getMessage(), e);
+	}
     }
 
     @FXML
@@ -58,16 +61,26 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
     }
 
     @Override
-    public boolean hasNoInput() {
-	return this.textFieldNumberOfRegistrator.getText().length() == 0
-		|| this.getReturnValue() <= 1
-		|| this.getReturnValue() > this.maximumRegistratorNumber;
+    public String getInputErrorString() {
+	if (this.textFieldNumberOfRegistrator.getText().length() == 0) {
+	    return PreferencesManager
+		    .getInstance()
+		    .localizeString(
+			    "dialogs.registrationdistributionnumberselection.errors.emptydata");
+	} else if (this.getReturnValue() <= 1
+		|| this.getReturnValue() > this.maximumRegistratorNumber) {
+	    return PreferencesManager
+		    .getInstance()
+		    .localizeString(
+			    "dialogs.registrationdistributionnumberselection.errors.numberinvalid");
+	} else {
+	    return null;
+	}
     }
 
     @Override
     public void initModalDialog(ModalDialog<Integer, Integer> modalDialog) {
-        modalDialog.title("dialogs.registrationdistributionnumberselection")
-        .dialogButtons(
-                DialogButtons.OK);
+	modalDialog.title("dialogs.registrationdistributionnumberselection")
+		.dialogButtons(DialogButtons.OK);
     }
 }
