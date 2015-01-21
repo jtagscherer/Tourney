@@ -2,11 +2,15 @@ package usspg31.tourney.controller;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import usspg31.tourney.controller.PreferencesManager.Language;
+import usspg31.tourney.controller.controls.LanguageSelectionDialog;
 import usspg31.tourney.controller.dialogs.PasswordSelectionDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 
 public class OptionsViewController {
@@ -25,6 +29,7 @@ public class OptionsViewController {
     private Runnable exitButtonCallback;
 
     private ModalDialog<Object, Object> passwordSelectionDialog;
+    private ModalDialog<ObservableList<Language>, Language> languageSelectionDialog;
 
     @FXML
     private void initialize() {
@@ -43,11 +48,21 @@ public class OptionsViewController {
 
         this.passwordSelectionDialog = new PasswordSelectionDialog()
                 .modalDialog();
+        this.languageSelectionDialog = new LanguageSelectionDialog()
+                .modalDialog();
     }
 
     @FXML
     private void onButtonChangeLanguageClicked(ActionEvent event) {
         log.fine("Change Language Button was clicked");
+        this.languageSelectionDialog
+        .properties(PreferencesManager.getInstance().getAvailableLanguages())
+        .onResult((result, returnValue) -> {
+            if (result == DialogResult.OK) {
+                PreferencesManager.getInstance().setSelectedLanguage(returnValue);
+            }
+        })
+        .show();;
     }
 
     @FXML
