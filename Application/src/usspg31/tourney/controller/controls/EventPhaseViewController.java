@@ -425,7 +425,8 @@ public class EventPhaseViewController implements EventUser {
             new SimpleDialog<>("Das Event konnte nicht exportiert werden.\n"
                     + "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
                     + "alle Berechtigungen besitzen.").modalDialog()
-                    .title("dialogs.titles.error").show();
+                    .title("dialogs.titles.error")
+                    .dialogButtons(DialogButtons.OK).show();
             return;
         }
     }

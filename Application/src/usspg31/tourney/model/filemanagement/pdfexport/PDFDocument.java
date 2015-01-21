@@ -138,18 +138,21 @@ public class PDFDocument {
                 PDFExporter.MEDIUM_HEADER_FONT));
 
         /* Add the start and end dates */
-        eventMeta.add(new Paragraph(PreferencesManager.getInstance()
-                .localizeString("pdfoutput.event.date.before")
-                + " "
-                + this.event.getStartDate().format(
-                        DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-                + " "
-                + PreferencesManager.getInstance().localizeString(
-                        "pdfoutput.event.date.after")
-                + " "
-                + this.event.getEndDate().format(
-                        DateTimeFormatter.ofPattern("dd.MM.yyyy")),
-                PDFExporter.TEXT_FONT));
+        if (this.event.getStartDate() != null
+                && this.event.getEndDate() != null) {
+            eventMeta.add(new Paragraph(PreferencesManager.getInstance()
+                    .localizeString("pdfoutput.event.date.before")
+                    + " "
+                    + this.event.getStartDate().format(
+                            DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                    + " "
+                    + PreferencesManager.getInstance().localizeString(
+                            "pdfoutput.event.date.after")
+                    + " "
+                    + this.event.getEndDate().format(
+                            DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    PDFExporter.TEXT_FONT));
+        }
 
         this.addNewLines(eventMeta, 1);
 
@@ -165,6 +168,13 @@ public class PDFDocument {
         this.addNewLines(location, 3);
 
         this.document.add(location);
+
+        if (this.event.getAdministrators().size() == 0) {
+            for (int i = 0; i < 3; i++) {
+                this.document.add(Chunk.NEWLINE);
+            }
+            return;
+        }
 
         /* Add the event administrators */
         Paragraph administrators = new Paragraph();
