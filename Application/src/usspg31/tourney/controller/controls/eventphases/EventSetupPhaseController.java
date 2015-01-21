@@ -1,10 +1,12 @@
 package usspg31.tourney.controller.controls.eventphases;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -57,6 +59,48 @@ public class EventSetupPhaseController implements EventUser {
         this.buttonRemoveTournament.disableProperty().bind(
                 this.tableTournaments.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+        // restrict the maximum startDate to be at most the end date
+        this.datePickerStartDate.setDayCellFactory(value -> {
+            return new DateCell() {
+                @Override
+                public void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    LocalDate maxDate = EventSetupPhaseController.this
+                            .datePickerEndDate.getValue();
+
+                    if (maxDate != null && item.isAfter(maxDate)) {
+                        this.setDisable(true);
+                    }
+                }
+            };
+        });
+
+        // restrict the minimum endDate to be at least the start date
+        this.datePickerEndDate.setDayCellFactory(value -> {
+            return new DateCell() {
+                @Override
+                public void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    LocalDate minDate = EventSetupPhaseController.this
+                            .datePickerStartDate.getValue();
+
+                    if (minDate == null || item.isBefore(minDate)) {
+                        this.setDisable(true);
+                    }
+                }
+            };
+        });
+
+        // if the start date is set for the first time, set the same date in
+        // the end DatePicker
+        this.datePickerStartDate.valueProperty().addListener((ov, o, n) -> {
+            if (n != null) {
+                this.datePickerEndDate.setValue(n);
+            }
+        });
     }
 
     private void initTournamentTable() {
