@@ -17,6 +17,7 @@ import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.TournamentAdministrator;
 import usspg31.tourney.model.TournamentRound;
 
 import com.lowagie.text.Anchor;
@@ -269,6 +270,47 @@ public class PDFDocument {
             Chapter tournamentChapter = new Chapter(new Paragraph(
                     tournamentAnchor), tournamentNumber + 1);
             tournamentChapter.add(Chunk.NEWLINE);
+
+            /* Add the tournament administrators */
+            Paragraph administrators = new Paragraph();
+
+            administrators.add(new Paragraph(PreferencesManager.getInstance()
+                    .localizeString("pdfoutput.tournament.administration"),
+                    PDFExporter.MEDIUM_HEADER_FONT));
+            this.addNewLines(administrators, 1);
+
+            this.document.add(administrators);
+
+            for (TournamentAdministrator eventAdministrator : tournament
+                    .getAdministrators()) {
+                Paragraph administratorParagraph = new Paragraph();
+                administratorParagraph.setIndentationLeft(10);
+
+                administratorParagraph.add(new Paragraph(eventAdministrator
+                        .getFirstName()
+                        + " "
+                        + eventAdministrator.getLastName(),
+                        PDFExporter.SMALL_HEADER_FONT));
+                if (!eventAdministrator.getMailAddress().equals("")) {
+                    administratorParagraph.add(new Paragraph(eventAdministrator
+                            .getMailAddress(), PDFExporter.TEXT_FONT));
+                }
+                if (!eventAdministrator.getPhoneNumber().equals("")) {
+                    administratorParagraph
+                            .add(new Paragraph(
+                                    PreferencesManager
+                                            .getInstance()
+                                            .localizeString(
+                                                    "pdfoutput.event.administration.phonenumber")
+                                            + ": "
+                                            + eventAdministrator
+                                                    .getPhoneNumber(),
+                                    PDFExporter.TEXT_FONT));
+                }
+
+                this.addNewLines(administratorParagraph, 1);
+                this.document.add(administratorParagraph);
+            }
 
             /* Add a subsection for the result table */
             Paragraph resultParagraph = new Paragraph(PreferencesManager
