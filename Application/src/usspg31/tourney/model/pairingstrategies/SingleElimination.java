@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
@@ -53,7 +54,7 @@ public class SingleElimination implements PairingStrategy {
                             PairingHelper.generateEmptyScore(
                                     randomList.get(randomNumber), tournament
                                             .getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
+                                            .size()));
 
                     partResult.getOpponents().add(randomList.get(randomNumber));
                     randomList.remove(randomNumber);
@@ -69,7 +70,7 @@ public class SingleElimination implements PairingStrategy {
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents() - 1) {
                 partResult = new Pairing();
-
+                partResult.setFlag(PairingFlag.IGNORE);
                 for (int i = 0; i < PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents(); i++) {
@@ -78,7 +79,7 @@ public class SingleElimination implements PairingStrategy {
                             PairingHelper.generateEmptyScore(
                                     PairingHelper.identifyWinner(tmp.get(0)),
                                     tournament.getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
+                                            .size()));
 
                     partResult.getOpponents().add(
                             PairingHelper.identifyWinner(tmp.get(0)));

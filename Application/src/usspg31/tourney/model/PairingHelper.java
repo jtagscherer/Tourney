@@ -74,7 +74,9 @@ public class PairingHelper {
      * @return the winner of the pairing
      */
     public static Player identifyWinner(Pairing pairing) {
-        FXCollections.sort(pairing.getScoreTable());
+        Pairing sortClone = new Pairing();
+        sortClone.getScoreTable().addAll(pairing.getScoreTable());
+        FXCollections.sort(sortClone.getScoreTable());
         return pairing.getScoreTable().get(pairing.getScoreTable().size() - 1)
                 .getPlayer();
     }
@@ -105,9 +107,23 @@ public class PairingHelper {
         PlayerScore result = new PlayerScore();
         result.setPlayer(opponent);
         result.getScore().addAll(new Integer[numberOfScores]);
-        for (Integer score : result.getScore()) {
-            score = 0;
-        }
+
+        return result;
+    }
+
+    /**
+     * 
+     * 
+     * @param pairing
+     * @return
+     */
+    public static ArrayList<Player> identifyLoser(Pairing pairing) {
+        ArrayList<Player> result = new ArrayList<>();
+
+        result.addAll(pairing.getOpponents());
+
+        result.remove(PairingHelper.identifyWinner(pairing));
+
         return result;
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
@@ -13,8 +14,8 @@ public class DoubleElimination implements PairingStrategy {
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
         ArrayList<Pairing> result = new ArrayList<>();
-        ArrayList<Pairing> winnerBracket;
-        ArrayList<Pairing> loserBracket;
+        ArrayList<Player> winnerBracket;
+        ArrayList<Player> loserBracket;
 
         Pairing partResult;
         // random generation for the first round in the
@@ -43,7 +44,7 @@ public class DoubleElimination implements PairingStrategy {
                             PairingHelper.generateEmptyScore(
                                     randomList.get(randomNumber), tournament
                                             .getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
+                                            .size()));
 
                     partResult.getOpponents().add(randomList.get(randomNumber));
                     randomList.remove(randomNumber);
@@ -67,22 +68,61 @@ public class DoubleElimination implements PairingStrategy {
 
             }
 
-            if (loserInterRound) {
-                loserBracket = new ArrayList<>();
-                for (Pairing winnerInTheLoserBracket : tournament.getRounds()
-                        .get(tournament.getRounds().size() - 1).getPairings()) {
-                    if (winnerInTheLoserBracket.getFlag() == Pairing.PairingFlag.LOSER_BRACKET) {}
-                }
-                for (Pairing loserPairing : tournament.getRounds()
-                        .get(tournament.getRounds().size() - 2).getPairings()) {
-                    if (loserPairing.getFlag() == Pairing.PairingFlag.WINNER_BRACKET) {
+            if (PairingHelper.findPhase(tournament.getRounds().size(),
+                    tournament).getNumberOfOpponents() == 2) {
+
+                if (loserInterRound) {
+                    ArrayList<Pairing> tmp = new ArrayList<>();
+                    loserBracket = new ArrayList<>();
+                    winnerBracket = new ArrayList<>();
+                    tmp.addAll(tournament.getRounds()
+                            .get(tournament.getRounds().size() - 1)
+                            .getPairings());
+                    for (Pairing pairing : tmp) {
+                        if (pairing.getFlag() == PairingFlag.LOSER_BRACKET) {
+                            loserBracket.add(PairingHelper
+                                    .identifyWinner(pairing));
+                        } else {
+                            winnerBracket.add(PairingHelper
+                                    .identifyWinner(pairing));
+                            loserBracket.addAll(PairingHelper
+                                    .identifyLoser(pairing));
+                        }
+                    }
+                    while (winnerBracket.size() > PairingHelper.findPhase(
+                            tournament.getRounds().size(), tournament)
+                            .getNumberOfOpponents() - 1) {
+                        partResult = new Pairing();
+                        partResult.setFlag(PairingFlag.WINNER_BRACKET);
+                        for (int i = 0; i < PairingHelper.findPhase(
+                                tournament.getRounds().size(), tournament)
+                                .getNumberOfOpponents(); i++) {
+
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper.generateEmptyScore(
+                                            PairingHelper.identifyWinner(tmp
+                                                    .get(0)), tournament
+                                                    .getRuleSet()
+                                                    .getPossibleScores().size()));
+
+                            partResult.getOpponents().add(winnerBracket.get(0));
+
+                            winnerBracket.remove(0);
+                        }
+
+                        result.add(partResult);
 
                     }
+
+                } else {
+
                 }
             } else {
 
             }
         }
+
         return result;
     }
 
