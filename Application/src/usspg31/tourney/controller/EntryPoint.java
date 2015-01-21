@@ -87,8 +87,9 @@ public class EntryPoint extends Application {
         if (MainWindow.getInstance().getEventPhaseViewController()
                 .getActiveUndoManager().undoAvailable()) {
             EntryPoint.this.closeRequested = true;
-            new SimpleDialog<>("Es sind ungesicherte Änderungen vorhanden.\n"
-                    + "Möchten Sie diese vor dem Beenden speichern?")
+            new SimpleDialog<>(
+                    PreferencesManager.getInstance().localizeString(
+                            "dialogs.messages.unsavedchanges"))
                     .modalDialog()
                     .title("dialogs.titles.warning")
                     .dialogButtons(DialogButtons.YES_NO_CANCEL)
