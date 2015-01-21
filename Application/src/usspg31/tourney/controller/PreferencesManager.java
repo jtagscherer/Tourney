@@ -263,6 +263,12 @@ public class PreferencesManager {
 	this.passwordHash = new SimpleStringProperty(passwordHash);
 	this.passwordSet = new ReadOnlyBooleanWrapper();
 	this.passwordSet.bind(this.passwordHash.isEmpty().not());
+
+	// whenever the passwordHash changes, update the preferences file
+	this.passwordHash.addListener((ov, o, n) -> {
+	    this.preferences.setProperty("application.password", n);
+	    this.savePreferences();
+	});
     }
 
     /**
