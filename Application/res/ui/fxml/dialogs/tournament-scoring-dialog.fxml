@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import usspg31.tourney.controller.layout.*?>
 <?import usspg31.tourney.controller.controls.*?>
@@ -7,8 +8,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import javafx.scene.control.Tooltip?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root spacing="5.0" type="VBox" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/icons.css" />
@@ -16,34 +19,45 @@
 		<URL value="@/ui/css/fonts.css" />
 	</stylesheets>
 	<children>
-		<UndoTextField fx:id="textFieldScoringTitle" promptText="Wertungsbezeichnung" />
-		<Label styleClass="sub-heading" text="Voreingestellte Wertungswerte" />
+		<Label styleClass="sub-heading" text="%dialogs.tournamentscoring.predefinedscores" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-			<TableView fx:id="tablePossibleScores" HBox.hgrow="ALWAYS" />
-			<VBox spacing="5.0" styleClass="table-edit-button-container">
-				<Button fx:id="buttonAddPossibleScore" styleClass="table-edit-button">
-					<graphic>
-						<IconPane styleClass="icon-add, half" />
-					</graphic>
-				</Button>
-				<Button fx:id="buttonRemovePossibleScore" styleClass="table-edit-button">
-					<graphic>
-						<IconPane styleClass="icon-remove, half" />
-					</graphic>
-				</Button>
-				<Button fx:id="buttonEditPossibleScore" styleClass="table-edit-button">
-					<graphic>
-						<IconPane styleClass="icon-edit, half" />
-					</graphic>
-				</Button>
-			</VBox>
-		</HBox>
-		<HBox alignment="BOTTOM_RIGHT" spacing="5.0">
-			<Button fx:id="buttonSave" disable="true" text="Speichern" />
-			<Button fx:id="buttonCancel" text="Abbrechen" />
+			<children>
+				<TableView fx:id="tablePossibleScores" HBox.hgrow="ALWAYS" />
+				<VBox spacing="5.0" styleClass="table-edit-button-container">
+					<children>
+						<Button fx:id="buttonAddPredefinedScore" styleClass="table-edit-button"
+							onAction="#onButtonAddPredefinedScoreClicked">
+							<graphic>
+								<IconPane styleClass="icon-add, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%dialogs.tournamentscoring.addscore" />
+							</tooltip>
+						</Button>
+						<Button fx:id="buttonRemovePredefinedScore" styleClass="table-edit-button"
+							onAction="#onButtonRemovePredefinedScoreClicked">
+							<graphic>
+								<IconPane styleClass="icon-remove, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%dialogs.tournamentscoring.removescore" />
+							</tooltip>
+						</Button>
+						<Button fx:id="buttonEditPredefinedScore" styleClass="table-edit-button"
+							onAction="#onButtonEditPredefinedScoreClicked">
+							<graphic>
+								<IconPane styleClass="icon-edit, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%dialogs.tournamentscoring.editscore" />
+							</tooltip>
+						</Button>
+					</children>
+				</VBox>
+			</children>
 		</HBox>
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
-</VBox>
+</fx:root>
