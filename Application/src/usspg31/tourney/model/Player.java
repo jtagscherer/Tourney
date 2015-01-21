@@ -20,12 +20,12 @@ public class Player extends Person implements Cloneable {
      * Create a new player and initialize all its properties
      */
     public Player() {
-	super();
-	this.nickName = new SimpleStringProperty("");
-	this.startingNumber = new SimpleStringProperty("");
-	this.payed = new SimpleBooleanProperty();
-	this.disqualified = new SimpleBooleanProperty();
-	this.id = new SimpleStringProperty("");
+        super();
+        this.nickName = new SimpleStringProperty("");
+        this.startingNumber = new SimpleStringProperty("");
+        this.payed = new SimpleBooleanProperty();
+        this.disqualified = new SimpleBooleanProperty();
+        this.id = new SimpleStringProperty("");
     }
 
     /**
@@ -34,7 +34,7 @@ public class Player extends Person implements Cloneable {
      * @return Current nick name of this player
      */
     public String getNickName() {
-	return this.nickName.get();
+        return this.nickName.get();
 
     }
 
@@ -45,7 +45,7 @@ public class Player extends Person implements Cloneable {
      *            New nick name of this player
      */
     public void setNickName(String value) {
-	this.nickName.set(value);
+        this.nickName.set(value);
     }
 
     /**
@@ -54,7 +54,7 @@ public class Player extends Person implements Cloneable {
      * @return Nick name property of this player
      */
     public StringProperty nickNameProperty() {
-	return this.nickName;
+        return this.nickName;
     }
 
     /**
@@ -63,7 +63,7 @@ public class Player extends Person implements Cloneable {
      * @return Current starting number of this player
      */
     public String getStartingNumber() {
-	return this.startingNumber.get();
+        return this.startingNumber.get();
     }
 
     /**
@@ -73,7 +73,7 @@ public class Player extends Person implements Cloneable {
      *            New starting number of this player
      */
     public void setStartingNumber(String value) {
-	this.startingNumber.set(value);
+        this.startingNumber.set(value);
     }
 
     /**
@@ -82,7 +82,7 @@ public class Player extends Person implements Cloneable {
      * @return Starting number property of this player
      */
     public StringProperty startingNumberProperty() {
-	return this.startingNumber;
+        return this.startingNumber;
     }
 
     /**
@@ -91,7 +91,7 @@ public class Player extends Person implements Cloneable {
      * @return Current payment status of this player
      */
     public boolean hasPayed() {
-	return this.payed.get();
+        return this.payed.get();
     }
 
     /**
@@ -101,7 +101,7 @@ public class Player extends Person implements Cloneable {
      *            New payment status of this player
      */
     public void setPayed(boolean value) {
-	this.payed.set(value);
+        this.payed.set(value);
     }
 
     /**
@@ -110,7 +110,7 @@ public class Player extends Person implements Cloneable {
      * @return Payment status property of this player
      */
     public BooleanProperty payedProperty() {
-	return this.payed;
+        return this.payed;
     }
 
     /**
@@ -119,7 +119,7 @@ public class Player extends Person implements Cloneable {
      * @return Current disqualification status of this player
      */
     public boolean isDisqualified() {
-	return this.disqualified.get();
+        return this.disqualified.get();
     }
 
     /**
@@ -129,7 +129,7 @@ public class Player extends Person implements Cloneable {
      *            New disqualification status of this player
      */
     public void setDisqualified(boolean value) {
-	this.disqualified.set(value);
+        this.disqualified.set(value);
     }
 
     /**
@@ -138,7 +138,7 @@ public class Player extends Person implements Cloneable {
      * @return Disqualification status property of this player
      */
     public BooleanProperty disqualifiedProperty() {
-	return this.disqualified;
+        return this.disqualified;
     }
 
     /**
@@ -147,7 +147,7 @@ public class Player extends Person implements Cloneable {
      * @return Current ID of this player
      */
     public String getId() {
-	return this.id.get();
+        return this.id.get();
     }
 
     /**
@@ -157,7 +157,7 @@ public class Player extends Person implements Cloneable {
      *            New ID of this player
      */
     public void setId(String value) {
-	this.id.set(value);
+        this.id.set(value);
     }
 
     /**
@@ -166,19 +166,19 @@ public class Player extends Person implements Cloneable {
      * @return ID property of this player
      */
     public StringProperty idProperty() {
-	return this.id;
+        return this.id;
     }
 
     @Override
     public Object clone() {
-	Player clone = new Player();
+        Player clone = new Player();
 
-	clone.setNickName(this.getNickName());
-	clone.setStartingNumber(this.getStartingNumber());
-	clone.setPayed(this.hasPayed());
-	clone.setDisqualified(this.isDisqualified());
-	clone.setId(this.getId());
+        clone.setNickName(this.getNickName());
+        clone.setStartingNumber(this.getStartingNumber());
+        clone.setPayed(this.hasPayed());
+        clone.setDisqualified(this.isDisqualified());
+        clone.setId(this.getId());
 
-	return clone;
+        return clone;
     }
 }

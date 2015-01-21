@@ -23,18 +23,13 @@ import usspg31.tourney.model.Player;
 public class PreRegistrationPhaseController implements EventUser {
 
     private static final Logger log = Logger
-	    .getLogger(PreRegistrationPhaseController.class.getName());
+            .getLogger(PreRegistrationPhaseController.class.getName());
 
-    @FXML
-    private TextField textFieldPlayerSearch;
-    @FXML
-    private TableView<Player> tablePreRegisteredPlayers;
-    @FXML
-    private Button buttonAddPlayer;
-    @FXML
-    private Button buttonRemovePlayer;
-    @FXML
-    private Button buttonEditPlayer;
+    @FXML private TextField textFieldPlayerSearch;
+    @FXML private TableView<Player> tablePreRegisteredPlayers;
+    @FXML private Button buttonAddPlayer;
+    @FXML private Button buttonRemovePlayer;
+    @FXML private Button buttonEditPlayer;
 
     private TableColumn<Player, String> tableColumnPlayerFirstName;
     private TableColumn<Player, String> tableColumnPlayerLastName;
@@ -47,190 +42,190 @@ public class PreRegistrationPhaseController implements EventUser {
 
     @FXML
     private void initialize() {
-	this.preRegistrationDialog = new PlayerPreRegistrationDialog()
-		.modalDialog();
+        this.preRegistrationDialog = new PlayerPreRegistrationDialog()
+                .modalDialog();
 
-	this.initPlayerTable();
+        this.initPlayerTable();
 
-	// Bind the button's availability to the list selection
-	this.buttonRemovePlayer.disableProperty().bind(
-		this.tablePreRegisteredPlayers.getSelectionModel()
-			.selectedItemProperty().isNull());
-	this.buttonEditPlayer.disableProperty().bind(
-		this.tablePreRegisteredPlayers.getSelectionModel()
-			.selectedItemProperty().isNull());
+        // Bind the button's availability to the list selection
+        this.buttonRemovePlayer.disableProperty().bind(
+                this.tablePreRegisteredPlayers.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonEditPlayer.disableProperty().bind(
+                this.tablePreRegisteredPlayers.getSelectionModel()
+                        .selectedItemProperty().isNull());
     }
 
     private void initPlayerTable() {
-	this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
-	this.tableColumnPlayerFirstName
-		.setCellValueFactory(cellData -> cellData.getValue()
-			.firstNameProperty());
-	this.tablePreRegisteredPlayers.getColumns().add(
-		this.tableColumnPlayerFirstName);
+        this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
+        this.tableColumnPlayerFirstName
+                .setCellValueFactory(cellData -> cellData.getValue()
+                        .firstNameProperty());
+        this.tablePreRegisteredPlayers.getColumns().add(
+                this.tableColumnPlayerFirstName);
 
-	this.tableColumnPlayerLastName = new TableColumn<>("Nachname");
-	this.tableColumnPlayerLastName.setCellValueFactory(cellData -> cellData
-		.getValue().lastNameProperty());
-	this.tablePreRegisteredPlayers.getColumns().add(
-		this.tableColumnPlayerLastName);
+        this.tableColumnPlayerLastName = new TableColumn<>("Nachname");
+        this.tableColumnPlayerLastName.setCellValueFactory(cellData -> cellData
+                .getValue().lastNameProperty());
+        this.tablePreRegisteredPlayers.getColumns().add(
+                this.tableColumnPlayerLastName);
 
-	this.tableColumnPlayerNickName = new TableColumn<>("Nickname");
-	this.tableColumnPlayerNickName.setCellValueFactory(cellData -> cellData
-		.getValue().nickNameProperty());
-	this.tablePreRegisteredPlayers.getColumns().add(
-		this.tableColumnPlayerNickName);
+        this.tableColumnPlayerNickName = new TableColumn<>("Nickname");
+        this.tableColumnPlayerNickName.setCellValueFactory(cellData -> cellData
+                .getValue().nickNameProperty());
+        this.tablePreRegisteredPlayers.getColumns().add(
+                this.tableColumnPlayerNickName);
 
-	this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
-	this.tableColumnPlayerMailAddress
-		.setCellValueFactory(cellData -> cellData.getValue()
-			.mailAdressProperty());
-	this.tablePreRegisteredPlayers.getColumns().add(
-		this.tableColumnPlayerMailAddress);
+        this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
+        this.tableColumnPlayerMailAddress
+                .setCellValueFactory(cellData -> cellData.getValue()
+                        .mailAdressProperty());
+        this.tablePreRegisteredPlayers.getColumns().add(
+                this.tableColumnPlayerMailAddress);
     }
 
     @Override
     public void loadEvent(Event event) {
-	log.info("Loading Event");
-	if (this.loadedEvent != null) {
-	    this.unloadEvent();
-	}
+        log.info("Loading Event");
+        if (this.loadedEvent != null) {
+            this.unloadEvent();
+        }
 
-	this.tablePreRegisteredPlayers.getSelectionModel().clearSelection();
+        this.tablePreRegisteredPlayers.getSelectionModel().clearSelection();
 
-	this.loadedEvent = event;
+        this.loadedEvent = event;
 
-	// Add all registered players to the table view and enable searching
-	FilteredList<Player> filteredPlayerList = new FilteredList<>(
-		this.loadedEvent.getRegisteredPlayers(), p -> true);
+        // Add all registered players to the table view and enable searching
+        FilteredList<Player> filteredPlayerList = new FilteredList<>(
+                this.loadedEvent.getRegisteredPlayers(), p -> true);
 
-	this.textFieldPlayerSearch.textProperty().addListener(
-		(observable, oldValue, newValue) -> {
-		    filteredPlayerList.setPredicate(player -> {
-			if (newValue == null || newValue.isEmpty()) {
-			    return true;
-			}
+        this.textFieldPlayerSearch.textProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    filteredPlayerList.setPredicate(player -> {
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
 
-			return SearchUtilities.fuzzyMatches(
-				player.getFirstName(), newValue)
-				|| SearchUtilities.fuzzyMatches(
-					player.getLastName(), newValue)
-				|| SearchUtilities.fuzzyMatches(
-					player.getNickName(), newValue)
-				|| SearchUtilities.fuzzyMatches(
-					player.getMailAddress(), newValue);
-		    });
-		});
+                        return SearchUtilities.fuzzyMatches(
+                                player.getFirstName(), newValue)
+                                || SearchUtilities.fuzzyMatches(
+                                        player.getLastName(), newValue)
+                                || SearchUtilities.fuzzyMatches(
+                                        player.getNickName(), newValue)
+                                || SearchUtilities.fuzzyMatches(
+                                        player.getMailAddress(), newValue);
+                    });
+                });
 
-	SortedList<Player> sortedPlayerList = new SortedList<>(
-		filteredPlayerList);
-	sortedPlayerList.comparatorProperty().bind(
-		this.tablePreRegisteredPlayers.comparatorProperty());
+        SortedList<Player> sortedPlayerList = new SortedList<>(
+                filteredPlayerList);
+        sortedPlayerList.comparatorProperty().bind(
+                this.tablePreRegisteredPlayers.comparatorProperty());
 
-	this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
+        this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
     }
 
     @Override
     public void unloadEvent() {
-	log.info("Unloading Event");
-	if (this.loadedEvent == null) {
-	    log.warning("Trying to unload an event, even though no event was loaded");
-	    return;
-	}
+        log.info("Unloading Event");
+        if (this.loadedEvent == null) {
+            log.warning("Trying to unload an event, even though no event was loaded");
+            return;
+        }
 
-	// TODO: unregister all listeners we registered to anything in the event
+        // TODO: unregister all listeners we registered to anything in the event
 
-	this.loadedEvent = null;
+        this.loadedEvent = null;
     }
 
     @FXML
     private void onButtonAddPlayerClicked(ActionEvent event) {
-	log.fine("Add Player Button clicked");
-	this.checkEventLoaded();
-	this.preRegistrationDialog
-		.properties(new Player())
-		.properties(this.loadedEvent)
-		.onResult(
-			(result, returnValue) -> {
-			    if (result == DialogResult.OK
-				    && returnValue != null) {
-				returnValue.setId(String.valueOf(new String(
-					returnValue.getFirstName()
-						+ returnValue.getLastName()
-						+ returnValue.getMailAddress()
-						+ returnValue.getNickName())
-					.hashCode()));
-				this.loadedEvent.getRegisteredPlayers().add(
-					returnValue);
-			    }
-			}).show();
+        log.fine("Add Player Button clicked");
+        this.checkEventLoaded();
+        this.preRegistrationDialog
+                .properties(new Player())
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                returnValue.setId(String.valueOf(new String(
+                                        returnValue.getFirstName()
+                                                + returnValue.getLastName()
+                                                + returnValue.getMailAddress()
+                                                + returnValue.getNickName())
+                                        .hashCode()));
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                            }
+                        }).show();
     }
 
     @FXML
     private void onButtonRemovePlayerClicked(ActionEvent event) {
-	// TODO: no-one should be able to remove a player that has already
-	// played in a tournament
+        // TODO: no-one should be able to remove a player that has already
+        // played in a tournament
 
-	log.fine("Remove Player Button clicked");
-	this.checkEventLoaded();
+        log.fine("Remove Player Button clicked");
+        this.checkEventLoaded();
 
-	Player selectedPlayer = this.tablePreRegisteredPlayers
-		.getSelectionModel().getSelectedItem();
-	if (selectedPlayer == null) {
-	    new SimpleDialog<>(
-		    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-		    .modalDialog().dialogButtons(DialogButtons.OK)
-		    .title("Fehler").show();
-	} else {
-	    new SimpleDialog<>("Wollen Sie den Spieler \""
-		    + selectedPlayer.getFirstName() + " "
-		    + selectedPlayer.getLastName() + "\" wirklich löschen?")
-		    .modalDialog()
-		    .dialogButtons(DialogButtons.YES_NO)
-		    .title("Löschen bestätigen")
-		    .onResult(
-			    (result, returnValue) -> {
-				if (result == DialogResult.YES) {
-				    this.loadedEvent.getRegisteredPlayers()
-					    .remove(selectedPlayer);
-				}
-			    }).show();
-	}
+        Player selectedPlayer = this.tablePreRegisteredPlayers
+                .getSelectionModel().getSelectedItem();
+        if (selectedPlayer == null) {
+            new SimpleDialog<>(
+                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
+                    .modalDialog().dialogButtons(DialogButtons.OK)
+                    .title("Fehler").show();
+        } else {
+            new SimpleDialog<>("Wollen Sie den Spieler \""
+                    + selectedPlayer.getFirstName() + " "
+                    + selectedPlayer.getLastName() + "\" wirklich löschen?")
+                    .modalDialog()
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .title("Löschen bestätigen")
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.YES) {
+                                    this.loadedEvent.getRegisteredPlayers()
+                                            .remove(selectedPlayer);
+                                }
+                            }).show();
+        }
     }
 
     @FXML
     private void onButtonEditPlayerClicked(ActionEvent event) {
-	log.fine("Edit Player Button clicked");
-	this.checkEventLoaded();
+        log.fine("Edit Player Button clicked");
+        this.checkEventLoaded();
 
-	final Player selectedPlayer = this.tablePreRegisteredPlayers
-		.getSelectionModel().getSelectedItem();
-	if (selectedPlayer == null) {
-	    new SimpleDialog<>(
-		    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-		    .modalDialog().dialogButtons(DialogButtons.OK)
-		    .title("Fehler").show();
-	} else {
-	    this.preRegistrationDialog
-		    .properties(selectedPlayer)
-		    .properties(this.loadedEvent)
-		    .onResult(
-			    (result, returnValue) -> {
-				if (result == DialogResult.OK
-					&& returnValue != null) {
-				    this.loadedEvent.getRegisteredPlayers()
-					    .remove(selectedPlayer);
-				    this.loadedEvent.getRegisteredPlayers()
-					    .add(returnValue);
-				}
-			    }).show();
-	}
+        final Player selectedPlayer = this.tablePreRegisteredPlayers
+                .getSelectionModel().getSelectedItem();
+        if (selectedPlayer == null) {
+            new SimpleDialog<>(
+                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
+                    .modalDialog().dialogButtons(DialogButtons.OK)
+                    .title("Fehler").show();
+        } else {
+            this.preRegistrationDialog
+                    .properties(selectedPlayer)
+                    .properties(this.loadedEvent)
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.OK
+                                        && returnValue != null) {
+                                    this.loadedEvent.getRegisteredPlayers()
+                                            .remove(selectedPlayer);
+                                    this.loadedEvent.getRegisteredPlayers()
+                                            .add(returnValue);
+                                }
+                            }).show();
+        }
     }
 
     private void checkEventLoaded() {
-	if (this.loadedEvent == null) {
-	    throw new IllegalStateException("An Event must be loaded in order "
-		    + "to perform actions on this controller");
-	}
+        if (this.loadedEvent == null) {
+            throw new IllegalStateException("An Event must be loaded in order "
+                    + "to perform actions on this controller");
+        }
     }
 }

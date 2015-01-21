@@ -13,7 +13,9 @@ import javafx.collections.ObservableList;
 public class Pairing {
 
     public enum PairingFlag {
-	WINNER_BRACKET, LOSER_BRACKET, IGNORE;
+        WINNER_BRACKET,
+        LOSER_BRACKET,
+        IGNORE;
     }
 
     private final ObservableList<Player> opponents;
@@ -24,9 +26,9 @@ public class Pairing {
      * Create a new pairing and initialize all its properties
      */
     public Pairing() {
-	this.opponents = FXCollections.observableArrayList();
-	this.scoreTable = FXCollections.observableArrayList();
-	this.flag = new SimpleObjectProperty<Pairing.PairingFlag>();
+        this.opponents = FXCollections.observableArrayList();
+        this.scoreTable = FXCollections.observableArrayList();
+        this.flag = new SimpleObjectProperty<Pairing.PairingFlag>();
     }
 
     /**
@@ -36,10 +38,10 @@ public class Pairing {
      *            A list of opponents in this pairing
      */
     public Pairing(ArrayList<Player> opponents) {
-	this.opponents = FXCollections.observableArrayList();
-	this.opponents.setAll(opponents);
-	this.scoreTable = FXCollections.observableArrayList();
-	this.flag = new SimpleObjectProperty<Pairing.PairingFlag>();
+        this.opponents = FXCollections.observableArrayList();
+        this.opponents.setAll(opponents);
+        this.scoreTable = FXCollections.observableArrayList();
+        this.flag = new SimpleObjectProperty<Pairing.PairingFlag>();
     }
 
     /**
@@ -48,7 +50,7 @@ public class Pairing {
      * @return List of all opponents in this pairing
      */
     public ObservableList<Player> getOpponents() {
-	return this.opponents;
+        return this.opponents;
     }
 
     /**
@@ -57,18 +59,18 @@ public class Pairing {
      * @return List of all scores in this pairing
      */
     public ObservableList<PlayerScore> getScoreTable() {
-	return this.scoreTable;
+        return this.scoreTable;
     }
 
     public PairingFlag getFlag() {
-	return this.flag.get();
+        return this.flag.get();
     }
 
     public void setFlag(PairingFlag value) {
-	this.flag.set(value);
+        this.flag.set(value);
     }
 
     public ObjectProperty<PairingFlag> flagProperty() {
-	return this.flag;
+        return this.flag;
     }
 }

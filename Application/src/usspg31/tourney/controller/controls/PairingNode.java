@@ -28,9 +28,12 @@ public class PairingNode extends VBox {
     /**
      * Initializes a new PairingNode.
      *
-     * @param tournament the tournament to retrieve additional data from
-     * @param pairing the actual pairing to display
-     * @param index the id of the pairing
+     * @param tournament
+     *            the tournament to retrieve additional data from
+     * @param pairing
+     *            the actual pairing to display
+     * @param index
+     *            the id of the pairing
      */
     public PairingNode(Tournament tournament, Pairing pairing, int index) {
         super(5);
@@ -93,7 +96,8 @@ public class PairingNode extends VBox {
     }
 
     /**
-     * @param value sets the new value for the selected property
+     * @param value
+     *            sets the new value for the selected property
      */
     public void setSelected(boolean value) {
         this.selectedProperty().set(value);

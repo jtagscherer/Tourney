@@ -18,7 +18,10 @@ public class Event {
      * The phases an event can be in
      */
     public static enum EventPhase {
-	EVENT_SETUP, PRE_REGISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
+        EVENT_SETUP,
+        PRE_REGISTRATION,
+        REGISTRATION,
+        TOURNAMENT_EXECUTION
     }
 
     /**
@@ -26,7 +29,9 @@ public class Event {
      * opened again
      */
     public static enum UserFlag {
-	ADMINISTRATION, REGISTRATION, TOURNAMENT_EXECUTION
+        ADMINISTRATION,
+        REGISTRATION,
+        TOURNAMENT_EXECUTION
     }
 
     private final ObservableList<Tournament> tournaments;
@@ -46,19 +51,19 @@ public class Event {
      * Create a new event and initialize all properties
      */
     public Event() {
-	this.tournaments = FXCollections.observableArrayList();
-	this.registeredPlayers = FXCollections.observableArrayList();
-	this.name = new SimpleStringProperty("");
-	this.startDate = new SimpleObjectProperty<LocalDate>();
-	this.endDate = new SimpleObjectProperty<LocalDate>();
-	this.location = new SimpleStringProperty("");
-	this.administrators = FXCollections.observableArrayList();
-	this.eventPhase = new SimpleObjectProperty<Event.EventPhase>();
-	this.setEventPhase(Event.EventPhase.EVENT_SETUP);
-	this.executedTournament = new SimpleObjectProperty<Tournament>();
-	this.userFlag = new SimpleObjectProperty<Event.UserFlag>();
-	this.setUserFlag(UserFlag.ADMINISTRATION);
-	numberOfRegistrators = 0;
+        this.tournaments = FXCollections.observableArrayList();
+        this.registeredPlayers = FXCollections.observableArrayList();
+        this.name = new SimpleStringProperty("");
+        this.startDate = new SimpleObjectProperty<LocalDate>();
+        this.endDate = new SimpleObjectProperty<LocalDate>();
+        this.location = new SimpleStringProperty("");
+        this.administrators = FXCollections.observableArrayList();
+        this.eventPhase = new SimpleObjectProperty<Event.EventPhase>();
+        this.setEventPhase(Event.EventPhase.EVENT_SETUP);
+        this.executedTournament = new SimpleObjectProperty<Tournament>();
+        this.userFlag = new SimpleObjectProperty<Event.UserFlag>();
+        this.setUserFlag(UserFlag.ADMINISTRATION);
+        numberOfRegistrators = 0;
     }
 
     /**
@@ -67,7 +72,7 @@ public class Event {
      * @return List of all tournaments
      */
     public ObservableList<Tournament> getTournaments() {
-	return this.tournaments;
+        return this.tournaments;
     }
 
     /**
@@ -76,7 +81,7 @@ public class Event {
      * @return List of all registered players
      */
     public ObservableList<Player> getRegisteredPlayers() {
-	return this.registeredPlayers;
+        return this.registeredPlayers;
     }
 
     /**
@@ -85,7 +90,7 @@ public class Event {
      * @return Current name of this event
      */
     public String getName() {
-	return this.name.get();
+        return this.name.get();
     }
 
     /**
@@ -95,7 +100,7 @@ public class Event {
      *            New name of this event
      */
     public void setName(String value) {
-	this.name.set(value);
+        this.name.set(value);
     }
 
     /**
@@ -104,7 +109,7 @@ public class Event {
      * @return Name property of this event
      */
     public StringProperty nameProperty() {
-	return this.name;
+        return this.name;
     }
 
     /**
@@ -113,7 +118,7 @@ public class Event {
      * @return Current start date of this event
      */
     public LocalDate getStartDate() {
-	return this.startDate.get();
+        return this.startDate.get();
     }
 
     /**
@@ -123,7 +128,7 @@ public class Event {
      *            New start date of this event
      */
     public void setStartDate(LocalDate value) {
-	this.startDate.set(value);
+        this.startDate.set(value);
     }
 
     /**
@@ -132,7 +137,7 @@ public class Event {
      * @return Start date property of this event
      */
     public ObjectProperty<LocalDate> startDateProperty() {
-	return this.startDate;
+        return this.startDate;
     }
 
     /**
@@ -141,7 +146,7 @@ public class Event {
      * @return Current end date of this event
      */
     public LocalDate getEndDate() {
-	return this.endDate.get();
+        return this.endDate.get();
     }
 
     /**
@@ -151,7 +156,7 @@ public class Event {
      *            New end date of this event
      */
     public void setEndDate(LocalDate value) {
-	this.endDate.set(value);
+        this.endDate.set(value);
     }
 
     /**
@@ -160,7 +165,7 @@ public class Event {
      * @return End date property of this event
      */
     public ObjectProperty<LocalDate> endDateProperty() {
-	return this.endDate;
+        return this.endDate;
     }
 
     /**
@@ -169,7 +174,7 @@ public class Event {
      * @return Current location of this event
      */
     public String getLocation() {
-	return this.location.get();
+        return this.location.get();
     }
 
     /**
@@ -179,7 +184,7 @@ public class Event {
      *            New location of this event
      */
     public void setLocation(String value) {
-	this.location.set(value);
+        this.location.set(value);
     }
 
     /**
@@ -188,7 +193,7 @@ public class Event {
      * @return Location property of this event
      */
     public StringProperty locationProperty() {
-	return this.location;
+        return this.location;
     }
 
     /**
@@ -197,7 +202,7 @@ public class Event {
      * @return List of current event administrators in this event
      */
     public ObservableList<EventAdministrator> getAdministrators() {
-	return this.administrators;
+        return this.administrators;
     }
 
     /**
@@ -206,7 +211,7 @@ public class Event {
      * @return Current phase of this event
      */
     public EventPhase getEventPhase() {
-	return this.eventPhase.get();
+        return this.eventPhase.get();
     }
 
     /**
@@ -216,7 +221,7 @@ public class Event {
      *            New event phase of this event
      */
     public void setEventPhase(EventPhase value) {
-	this.eventPhase.set(value);
+        this.eventPhase.set(value);
     }
 
     /**
@@ -225,7 +230,7 @@ public class Event {
      * @return Event phase property of this event
      */
     public ObjectProperty<EventPhase> eventPhaseProperty() {
-	return this.eventPhase;
+        return this.eventPhase;
     }
 
     /**
@@ -235,7 +240,7 @@ public class Event {
      *            New user flag of this event
      */
     public void setUserFlag(UserFlag value) {
-	this.userFlag.set(value);
+        this.userFlag.set(value);
     }
 
     /**
@@ -244,7 +249,7 @@ public class Event {
      * @return Current user flag of this event
      */
     public UserFlag getUserFlag() {
-	return this.userFlag.get();
+        return this.userFlag.get();
     }
 
     /**
@@ -253,7 +258,7 @@ public class Event {
      * @return User flag property of this event
      */
     public ObjectProperty<UserFlag> userFlagProperty() {
-	return this.userFlag;
+        return this.userFlag;
     }
 
     /**
@@ -263,7 +268,7 @@ public class Event {
      *            Tournament that is currently being executed
      */
     public void setExecutedTournament(Tournament value) {
-	this.executedTournament.set(value);
+        this.executedTournament.set(value);
     }
 
     /**
@@ -272,7 +277,7 @@ public class Event {
      * @return Tournament that is currently being executed
      */
     public Tournament getExecutedTournament() {
-	return this.executedTournament.get();
+        return this.executedTournament.get();
     }
 
     /**
@@ -281,7 +286,7 @@ public class Event {
      * @return Executed tournament property of this event
      */
     public ObjectProperty<Tournament> executedTournamentProperty() {
-	return this.executedTournament;
+        return this.executedTournament;
     }
 
     /**
@@ -290,7 +295,7 @@ public class Event {
      * @return Number of registration desktops
      */
     public int getNumberOfRegistrators() {
-	return this.numberOfRegistrators;
+        return this.numberOfRegistrators;
     }
 
     /**
@@ -300,6 +305,6 @@ public class Event {
      *            New number of registration desktops
      */
     public void setNumberOfRegistrators(int numberOfRegistrators) {
-	this.numberOfRegistrators = numberOfRegistrators;
+        this.numberOfRegistrators = numberOfRegistrators;
     }
 }

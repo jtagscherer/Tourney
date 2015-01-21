@@ -25,13 +25,13 @@ public class GamePhase {
      * Create a new game phase and initialize all its properties
      */
     public GamePhase() {
-	this.cutoff = new SimpleIntegerProperty();
-	this.roundCount = new SimpleIntegerProperty();
-	this.phaseNumber = new SimpleIntegerProperty();
-	this.pairingMethod = new SimpleObjectProperty<PairingStrategy>(
-		new SingleElimination());
-	this.roundDuration = new SimpleObjectProperty<Duration>(Duration.ZERO);
-	this.numberOfOpponents = new SimpleIntegerProperty();
+        this.cutoff = new SimpleIntegerProperty();
+        this.roundCount = new SimpleIntegerProperty();
+        this.phaseNumber = new SimpleIntegerProperty();
+        this.pairingMethod = new SimpleObjectProperty<PairingStrategy>(
+                new SingleElimination());
+        this.roundDuration = new SimpleObjectProperty<Duration>(Duration.ZERO);
+        this.numberOfOpponents = new SimpleIntegerProperty();
     }
 
     /**
@@ -40,7 +40,7 @@ public class GamePhase {
      * @return Number of players left after ending this phase
      */
     public int getCutoff() {
-	return this.cutoff.get();
+        return this.cutoff.get();
     }
 
     /**
@@ -50,7 +50,7 @@ public class GamePhase {
      *            New number of players left after ending this phase
      */
     public void setCutoff(int value) {
-	this.cutoff.set(value);
+        this.cutoff.set(value);
     }
 
     /**
@@ -59,7 +59,7 @@ public class GamePhase {
      * @return Cut off property of this game phase
      */
     public IntegerProperty cutoffProperty() {
-	return this.cutoff;
+        return this.cutoff;
     }
 
     /**
@@ -68,7 +68,7 @@ public class GamePhase {
      * @return Pairing method that is used in this game phase
      */
     public PairingStrategy getPairingMethod() {
-	return this.pairingMethod.get();
+        return this.pairingMethod.get();
     }
 
     /**
@@ -78,7 +78,7 @@ public class GamePhase {
      *            New pairing method to be used in this game phase
      */
     public void setPairingMethod(PairingStrategy value) {
-	this.pairingMethod.set(value);
+        this.pairingMethod.set(value);
     }
 
     /**
@@ -87,7 +87,7 @@ public class GamePhase {
      * @return Current pairing method used in this game phase
      */
     public ObjectProperty<PairingStrategy> pairingMethodProperty() {
-	return this.pairingMethod;
+        return this.pairingMethod;
     }
 
     /**
@@ -96,7 +96,7 @@ public class GamePhase {
      * @return Number of rounds in this game phase
      */
     public int getRoundCount() {
-	return this.roundCount.get();
+        return this.roundCount.get();
     }
 
     /**
@@ -106,7 +106,7 @@ public class GamePhase {
      *            New number of rounds in this game phase
      */
     public void setRoundCount(int value) {
-	this.roundCount.set(value);
+        this.roundCount.set(value);
     }
 
     /**
@@ -115,7 +115,7 @@ public class GamePhase {
      * @return Round count property of this game phase
      */
     public IntegerProperty roundCountProperty() {
-	return this.roundCount;
+        return this.roundCount;
     }
 
     /**
@@ -124,7 +124,7 @@ public class GamePhase {
      * @return Current number of this phase
      */
     public int getPhaseNumber() {
-	return this.phaseNumber.get();
+        return this.phaseNumber.get();
     }
 
     /**
@@ -134,7 +134,7 @@ public class GamePhase {
      *            New number of this phase
      */
     public void setPhaseNumber(int value) {
-	this.phaseNumber.set(value);
+        this.phaseNumber.set(value);
     }
 
     /**
@@ -143,7 +143,7 @@ public class GamePhase {
      * @return Phase number property of this game phase
      */
     public IntegerProperty phaseNumberProperty() {
-	return this.phaseNumber;
+        return this.phaseNumber;
     }
 
     /**
@@ -152,7 +152,7 @@ public class GamePhase {
      * @return Current round duration in this game phase
      */
     public Duration getRoundDuration() {
-	return this.roundDuration.get();
+        return this.roundDuration.get();
     }
 
     /**
@@ -162,7 +162,7 @@ public class GamePhase {
      *            New round duration in this game phase
      */
     public void setRoundDuration(Duration value) {
-	this.roundDuration.set(value);
+        this.roundDuration.set(value);
     }
 
     /**
@@ -171,7 +171,7 @@ public class GamePhase {
      * @return Round duration property of this game phase
      */
     public ObjectProperty<Duration> roundDurationProperty() {
-	return this.roundDuration;
+        return this.roundDuration;
     }
 
     /**
@@ -180,7 +180,7 @@ public class GamePhase {
      * @return Current number of opponents in a pairing in this game phase
      */
     public int getNumberOfOpponents() {
-	return this.numberOfOpponents.get();
+        return this.numberOfOpponents.get();
     }
 
     /**
@@ -190,7 +190,7 @@ public class GamePhase {
      *            New number of opponents in a pairing in this game phase
      */
     public void setNumberOfOpponents(int value) {
-	this.numberOfOpponents.set(value);
+        this.numberOfOpponents.set(value);
     }
 
     /**
@@ -199,6 +199,6 @@ public class GamePhase {
      * @return Number of opponents property in this game phase
      */
     public IntegerProperty numberOfOpponentsProperty() {
-	return this.numberOfOpponents;
+        return this.numberOfOpponents;
     }
 }

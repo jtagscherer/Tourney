@@ -28,17 +28,17 @@ public class Tournament implements Cloneable {
      * properties
      */
     public Tournament() {
-	this.registeredPlayers = FXCollections.observableArrayList();
-	this.attendingPlayers = FXCollections.observableArrayList();
-	this.remainingPlayers = FXCollections.observableArrayList();
-	this.receivedByePlayers = FXCollections.observableArrayList();
-	this.rounds = FXCollections.observableArrayList();
-	this.name = new SimpleStringProperty("");
-	this.scoreTable = FXCollections.observableArrayList();
-	this.administrators = FXCollections.observableArrayList();
-	this.id = new SimpleStringProperty("");
-	this.ruleSet = new SimpleObjectProperty<TournamentModule>(
-		new TournamentModule());
+        this.registeredPlayers = FXCollections.observableArrayList();
+        this.attendingPlayers = FXCollections.observableArrayList();
+        this.remainingPlayers = FXCollections.observableArrayList();
+        this.receivedByePlayers = FXCollections.observableArrayList();
+        this.rounds = FXCollections.observableArrayList();
+        this.name = new SimpleStringProperty("");
+        this.scoreTable = FXCollections.observableArrayList();
+        this.administrators = FXCollections.observableArrayList();
+        this.id = new SimpleStringProperty("");
+        this.ruleSet = new SimpleObjectProperty<TournamentModule>(
+                new TournamentModule());
     }
 
     /**
@@ -47,7 +47,7 @@ public class Tournament implements Cloneable {
      * @return List of all registered players in this tournament
      */
     public ObservableList<Player> getRegisteredPlayers() {
-	return this.registeredPlayers;
+        return this.registeredPlayers;
     }
 
     /**
@@ -56,7 +56,7 @@ public class Tournament implements Cloneable {
      * @return List of all attending players in this tournament
      */
     public ObservableList<Player> getAttendingPlayers() {
-	return this.attendingPlayers;
+        return this.attendingPlayers;
     }
 
     /**
@@ -66,7 +66,7 @@ public class Tournament implements Cloneable {
      * @return List of all remaining players in this tournament
      */
     public ObservableList<Player> getRemainingPlayers() {
-	return this.remainingPlayers;
+        return this.remainingPlayers;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Tournament implements Cloneable {
      * @return List of all tournament rounds in this tournament
      */
     public ObservableList<TournamentRound> getRounds() {
-	return this.rounds;
+        return this.rounds;
     }
 
     /**
@@ -84,7 +84,7 @@ public class Tournament implements Cloneable {
      * @return List of all player who received a bye
      */
     public ObservableList<Player> getReceivedByePlayers() {
-	return this.receivedByePlayers;
+        return this.receivedByePlayers;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Tournament implements Cloneable {
      * @return Current name of this tournament
      */
     public String getName() {
-	return this.name.get();
+        return this.name.get();
     }
 
     /**
@@ -103,7 +103,7 @@ public class Tournament implements Cloneable {
      *            New name of this tournament
      */
     public void setName(String value) {
-	this.name.set(value);
+        this.name.set(value);
     }
 
     /**
@@ -112,7 +112,7 @@ public class Tournament implements Cloneable {
      * @return Name property of this tournament
      */
     public StringProperty nameProperty() {
-	return this.name;
+        return this.name;
     }
 
     /**
@@ -121,7 +121,7 @@ public class Tournament implements Cloneable {
      * @return A list of all player scores in this tournament
      */
     public ObservableList<PlayerScore> getScoreTable() {
-	return this.scoreTable;
+        return this.scoreTable;
     }
 
     /**
@@ -130,7 +130,7 @@ public class Tournament implements Cloneable {
      * @return A list of all tournament administrators in this event
      */
     public ObservableList<TournamentAdministrator> getAdministrators() {
-	return this.administrators;
+        return this.administrators;
     }
 
     /**
@@ -139,7 +139,7 @@ public class Tournament implements Cloneable {
      * @return Current ID of this event
      */
     public String getId() {
-	return this.id.get();
+        return this.id.get();
     }
 
     /**
@@ -149,7 +149,7 @@ public class Tournament implements Cloneable {
      *            New ID of this event
      */
     public void setId(String id) {
-	this.id.set(id);
+        this.id.set(id);
     }
 
     /**
@@ -158,7 +158,7 @@ public class Tournament implements Cloneable {
      * @return The current rule set of this tournament
      */
     public TournamentModule getRuleSet() {
-	return this.ruleSet.get();
+        return this.ruleSet.get();
     }
 
     /**
@@ -168,7 +168,7 @@ public class Tournament implements Cloneable {
      *            The new rule set of this tournament
      */
     public void setRuleSet(TournamentModule value) {
-	this.ruleSet.set(value);
+        this.ruleSet.set(value);
     }
 
     /**
@@ -177,22 +177,22 @@ public class Tournament implements Cloneable {
      * @return Rule set property of this event
      */
     public ObjectProperty<TournamentModule> ruleSetProperty() {
-	return this.ruleSet;
+        return this.ruleSet;
     }
 
     @Override
     public Object clone() {
-	Tournament clone = new Tournament();
-	clone.setName(this.getName());
-	clone.setId(this.getId());
-	clone.setRuleSet(this.getRuleSet());
+        Tournament clone = new Tournament();
+        clone.setName(this.getName());
+        clone.setId(this.getId());
+        clone.setRuleSet(this.getRuleSet());
 
-	clone.getRegisteredPlayers().addAll(this.getRegisteredPlayers());
-	clone.getAttendingPlayers().addAll(this.getAttendingPlayers());
-	clone.getRounds().addAll(this.getRounds());
-	clone.getScoreTable().addAll(this.getScoreTable());
-	clone.getAdministrators().addAll(this.getAdministrators());
+        clone.getRegisteredPlayers().addAll(this.getRegisteredPlayers());
+        clone.getAttendingPlayers().addAll(this.getAttendingPlayers());
+        clone.getRounds().addAll(this.getRounds());
+        clone.getScoreTable().addAll(this.getScoreTable());
+        clone.getAdministrators().addAll(this.getAdministrators());
 
-	return clone;
+        return clone;
     }
 }

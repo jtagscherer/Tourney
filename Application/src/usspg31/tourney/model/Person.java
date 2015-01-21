@@ -16,9 +16,9 @@ public class Person {
      * Create a new person and initialize all its properties
      */
     public Person() {
-	this.firstName = new SimpleStringProperty("");
-	this.lastName = new SimpleStringProperty("");
-	this.mailAddress = new SimpleStringProperty("");
+        this.firstName = new SimpleStringProperty("");
+        this.lastName = new SimpleStringProperty("");
+        this.mailAddress = new SimpleStringProperty("");
 
     }
 
@@ -28,7 +28,7 @@ public class Person {
      * @return Current first name of this person
      */
     public String getFirstName() {
-	return this.firstName.get();
+        return this.firstName.get();
     }
 
     /**
@@ -38,7 +38,7 @@ public class Person {
      *            New first name of this person
      */
     public void setFirstName(String value) {
-	this.firstName.set(value);
+        this.firstName.set(value);
     }
 
     /**
@@ -47,7 +47,7 @@ public class Person {
      * @return First name property of this person
      */
     public StringProperty firstNameProperty() {
-	return this.firstName;
+        return this.firstName;
     }
 
     /**
@@ -56,7 +56,7 @@ public class Person {
      * @return Current last name of this person
      */
     public String getLastName() {
-	return this.lastName.get();
+        return this.lastName.get();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Person {
      *            New last name of this person
      */
     public void setLastName(String value) {
-	this.lastName.set(value);
+        this.lastName.set(value);
     }
 
     /**
@@ -75,7 +75,7 @@ public class Person {
      * @return Last person property of this person
      */
     public StringProperty lastNameProperty() {
-	return this.lastName;
+        return this.lastName;
     }
 
     /**
@@ -84,7 +84,7 @@ public class Person {
      * @return Current mail address of this person
      */
     public String getMailAddress() {
-	return this.mailAddress.get();
+        return this.mailAddress.get();
     }
 
     /**
@@ -94,7 +94,7 @@ public class Person {
      *            New mail address of this person
      */
     public void setMailAdress(String value) {
-	this.mailAddress.set(value);
+        this.mailAddress.set(value);
     }
 
     /**
@@ -103,6 +103,6 @@ public class Person {
      * @return Mail address property of this person
      */
     public StringProperty mailAdressProperty() {
-	return this.mailAddress;
+        return this.mailAddress;
     }
 }

@@ -9,39 +9,40 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class Bye {
     public enum ByeType {
-	NORMAL_BYE, SUPER_BYE;
+        NORMAL_BYE,
+        SUPER_BYE;
     }
 
     private ObjectProperty<Integer> byePoints;
     private ObjectProperty<ByeType> byeType;
 
     public Bye() {
-	this.byePoints = new SimpleObjectProperty<>();
-	this.byeType = new SimpleObjectProperty<>();
+        this.byePoints = new SimpleObjectProperty<>();
+        this.byeType = new SimpleObjectProperty<>();
     }
 
     public Integer getByePoints() {
-	return this.byePoints.get();
+        return this.byePoints.get();
     }
 
     public void setByePoints(Integer value) {
-	this.byePoints.set(value);
+        this.byePoints.set(value);
     }
 
     public ObjectProperty<Integer> byePointsProperty() {
-	return this.byePoints;
+        return this.byePoints;
     }
 
     public ByeType getByeType() {
-	return this.byeType.get();
+        return this.byeType.get();
     }
 
     public void setByeType(ByeType value) {
-	this.byeType.set(value);
+        this.byeType.set(value);
     }
 
     public ObjectProperty<ByeType> byeTypeProperty() {
-	return this.byeType;
+        return this.byeType;
     }
 
 }

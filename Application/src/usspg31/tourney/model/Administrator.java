@@ -14,8 +14,8 @@ public class Administrator extends Person {
      * Create a new administrator
      */
     public Administrator() {
-	super();
-	this.phoneNumber = new SimpleStringProperty("");
+        super();
+        this.phoneNumber = new SimpleStringProperty("");
     }
 
     /**
@@ -24,7 +24,7 @@ public class Administrator extends Person {
      * @return Phone number of this administrator
      */
     public String getPhoneNumber() {
-	return this.phoneNumber.get();
+        return this.phoneNumber.get();
     }
 
     /**
@@ -34,7 +34,7 @@ public class Administrator extends Person {
      *            New phone number
      */
     public void setPhoneNumber(String value) {
-	this.phoneNumber.set(value);
+        this.phoneNumber.set(value);
     }
 
     /**
@@ -43,6 +43,6 @@ public class Administrator extends Person {
      * @return Phone number property of this administrator
      */
     public StringProperty phoneNumberProperty() {
-	return this.phoneNumber;
+        return this.phoneNumber;
     }
 }

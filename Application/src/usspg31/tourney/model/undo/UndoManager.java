@@ -45,15 +45,15 @@ public class UndoManager {
      * Initializes a new UndoManager.
      */
     public UndoManager() {
-	this.headNode = new UndoNode(null, null);
-	this.currentNode = this.headNode;
+        this.headNode = new UndoNode(null, null);
+        this.currentNode = this.headNode;
 
-	this.undoAvailableProperty = new SimpleBooleanProperty(false);
-	this.redoAvailableProperty = new SimpleBooleanProperty(false);
+        this.undoAvailableProperty = new SimpleBooleanProperty(false);
+        this.redoAvailableProperty = new SimpleBooleanProperty(false);
 
-	this.isPerformingAction = false;
+        this.isPerformingAction = false;
 
-	this.undoBatch = null;
+        this.undoBatch = null;
     }
 
     /**
@@ -61,13 +61,13 @@ public class UndoManager {
      * redo previously added actions.
      */
     public void clearHistory() {
-	this.headNode.setNext(null);
-	this.currentNode = this.headNode;
+        this.headNode.setNext(null);
+        this.currentNode = this.headNode;
 
-	this.setUndoAvailable(false);
-	this.setRedoAvailable(false);
+        this.setUndoAvailable(false);
+        this.setRedoAvailable(false);
 
-	this.isPerformingAction = false;
+        this.isPerformingAction = false;
     }
 
     /**
@@ -76,14 +76,14 @@ public class UndoManager {
      * actually added to the undo history, if it contains at least one action.
      */
     public void beginUndoBatch() {
-	this.undoBatch = new UndoBatch();
+        this.undoBatch = new UndoBatch();
     }
 
     /**
      * Ends a previously started collection of undo actions.
      */
     public void endUndoBatch() {
-	this.undoBatch = null;
+        this.undoBatch = null;
     }
 
     /**
@@ -92,15 +92,15 @@ public class UndoManager {
      * @return a read-only property
      */
     public ReadOnlyBooleanProperty undoAvailableProperty() {
-	return BooleanProperty
-		.readOnlyBooleanProperty(this.undoAvailableProperty);
+        return BooleanProperty
+                .readOnlyBooleanProperty(this.undoAvailableProperty);
     }
 
     /**
      * @return true if an undo action is available, otherwise false
      */
     public boolean undoAvailable() {
-	return this.undoAvailableProperty.get();
+        return this.undoAvailableProperty.get();
     }
 
     /**
@@ -108,7 +108,7 @@ public class UndoManager {
      *            true if an undo action is available
      */
     private void setUndoAvailable(boolean value) {
-	this.undoAvailableProperty.set(value);
+        this.undoAvailableProperty.set(value);
     }
 
     /**
@@ -117,15 +117,15 @@ public class UndoManager {
      * @return a read-only property
      */
     public ReadOnlyBooleanProperty redoAvailableProperty() {
-	return BooleanProperty
-		.readOnlyBooleanProperty(this.redoAvailableProperty);
+        return BooleanProperty
+                .readOnlyBooleanProperty(this.redoAvailableProperty);
     }
 
     /**
      * @return true if a redo action is available, otherwise false
      */
     public boolean redoAvailable() {
-	return this.redoAvailableProperty.get();
+        return this.redoAvailableProperty.get();
     }
 
     /**
@@ -133,7 +133,7 @@ public class UndoManager {
      *            true if an undo action is available
      */
     private void setRedoAvailable(boolean value) {
-	this.redoAvailableProperty.set(value);
+        this.redoAvailableProperty.set(value);
     }
 
     /**
@@ -141,19 +141,19 @@ public class UndoManager {
      * of undo actions, if it was activated before. Otherwise does nothing.
      */
     public void undo() {
-	if (this.undoAvailable()) {
-	    this.endUndoBatch();
+        if (this.undoAvailable()) {
+            this.endUndoBatch();
 
-	    this.isPerformingAction = true;
+            this.isPerformingAction = true;
 
-	    this.currentNode.getAction().undo();
-	    this.currentNode = this.currentNode.getPrev();
+            this.currentNode.getAction().undo();
+            this.currentNode = this.currentNode.getPrev();
 
-	    this.isPerformingAction = false;
+            this.isPerformingAction = false;
 
-	    this.setUndoAvailable(this.currentNode != this.headNode);
-	    this.setRedoAvailable(true);
-	}
+            this.setUndoAvailable(this.currentNode != this.headNode);
+            this.setRedoAvailable(true);
+        }
     }
 
     /**
@@ -161,17 +161,17 @@ public class UndoManager {
      * available. Otherwise does nothing.
      */
     public void redo() {
-	if (this.redoAvailable()) {
-	    this.isPerformingAction = true;
+        if (this.redoAvailable()) {
+            this.isPerformingAction = true;
 
-	    this.currentNode = this.currentNode.getNext();
-	    this.currentNode.getAction().redo();
+            this.currentNode = this.currentNode.getNext();
+            this.currentNode.getAction().redo();
 
-	    this.isPerformingAction = false;
+            this.isPerformingAction = false;
 
-	    this.setRedoAvailable(this.currentNode.hasNext());
-	    this.setUndoAvailable(true);
-	}
+            this.setRedoAvailable(this.currentNode.hasNext());
+            this.setUndoAvailable(true);
+        }
     }
 
     /**
@@ -182,7 +182,7 @@ public class UndoManager {
      * @param property
      */
     public <T> void registerUndoProperty(Property<T> property) {
-	property.addListener(this::propertyChangeListener);
+        property.addListener(this::propertyChangeListener);
     }
 
     /**
@@ -192,7 +192,7 @@ public class UndoManager {
      * @param property
      */
     public <T> void unregisterUndoProperty(Property<T> property) {
-	property.removeListener(this::propertyChangeListener);
+        property.removeListener(this::propertyChangeListener);
     }
 
     /**
@@ -202,7 +202,7 @@ public class UndoManager {
      * @param property
      */
     public <T> void registerUndoProperty(ObservableList<T> list) {
-	list.addListener(this::listChangeListener);
+        list.addListener(this::listChangeListener);
     }
 
     /**
@@ -212,7 +212,7 @@ public class UndoManager {
      * @param list
      */
     public <T> void unregisterUndoProperty(ObservableList<T> list) {
-	list.removeListener(this::listChangeListener);
+        list.removeListener(this::listChangeListener);
     }
 
     /**
@@ -221,22 +221,22 @@ public class UndoManager {
      * @param undoAction
      */
     private void addUndoAction(UndoAction undoAction) {
-	if (this.undoBatch != null) {
-	    this.undoBatch.addUndoAction(undoAction);
-	    // did we just add the first element to the undoBatch?
-	    if (this.undoBatch.getUndoActionCount() == 1) {
-		this.currentNode.setNext(new UndoNode(this.currentNode,
-			this.undoBatch));
-		this.currentNode = this.currentNode.getNext();
-	    }
-	} else {
-	    this.currentNode
-		    .setNext(new UndoNode(this.currentNode, undoAction));
-	    this.currentNode = this.currentNode.getNext();
-	}
+        if (this.undoBatch != null) {
+            this.undoBatch.addUndoAction(undoAction);
+            // did we just add the first element to the undoBatch?
+            if (this.undoBatch.getUndoActionCount() == 1) {
+                this.currentNode.setNext(new UndoNode(this.currentNode,
+                        this.undoBatch));
+                this.currentNode = this.currentNode.getNext();
+            }
+        } else {
+            this.currentNode
+                    .setNext(new UndoNode(this.currentNode, undoAction));
+            this.currentNode = this.currentNode.getNext();
+        }
 
-	this.setUndoAvailable(true);
-	this.setRedoAvailable(false);
+        this.setUndoAvailable(true);
+        this.setRedoAvailable(false);
     }
 
     /**
@@ -251,11 +251,11 @@ public class UndoManager {
      */
     @SuppressWarnings("unchecked")
     private <T> void propertyChangeListener(
-	    ObservableValue<? extends T> observable, T oldValue, T newValue) {
-	if (!this.isPerformingAction) {
-	    this.addUndoAction(new PropertyUndoAction<T>(
-		    (Property<T>) observable, oldValue, newValue));
-	}
+            ObservableValue<? extends T> observable, T oldValue, T newValue) {
+        if (!this.isPerformingAction) {
+            this.addUndoAction(new PropertyUndoAction<T>(
+                    (Property<T>) observable, oldValue, newValue));
+        }
     }
 
     /**
@@ -266,41 +266,41 @@ public class UndoManager {
      */
     @SuppressWarnings("unchecked")
     private <T> void listChangeListener(Change<? extends T> change) {
-	if (!this.isPerformingAction) {
-	    this.addUndoAction(new ListUndoAction<>((Change<T>) change));
-	}
+        if (!this.isPerformingAction) {
+            this.addUndoAction(new ListUndoAction<>((Change<T>) change));
+        }
     }
 
     public String getNodeInformation() {
-	StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-	sb.append("Current undo node: \n");
-	sb.append(this.currentNode.toString() + "\n");
-	sb.append("Has next: " + this.currentNode.hasNext() + "\n");
-	sb.append("Associated action:\n");
-	sb.append(this.currentNode.getAction().toString());
+        sb.append("Current undo node: \n");
+        sb.append(this.currentNode.toString() + "\n");
+        sb.append("Has next: " + this.currentNode.hasNext() + "\n");
+        sb.append("Associated action:\n");
+        sb.append(this.currentNode.getAction().toString());
 
-	return sb.toString();
+        return sb.toString();
     }
 
     @Override
     public String toString() {
-	StringBuilder sb = new StringBuilder();
-	sb.append("Current state: ");
-	sb.append(this.currentNode);
-	sb.append("\n\tUndoes available: [");
-	UndoNode a = this.currentNode;
-	while ((a = a.getPrev()) != this.headNode) {
-	    sb.append(a);
-	    sb.append(" ");
-	}
-	sb.append("]\n\tRedoes available: [");
-	a = this.currentNode;
-	while ((a = a.getNext()) != null) {
-	    sb.append(a);
-	    sb.append(" ");
-	}
-	return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Current state: ");
+        sb.append(this.currentNode);
+        sb.append("\n\tUndoes available: [");
+        UndoNode a = this.currentNode;
+        while ((a = a.getPrev()) != this.headNode) {
+            sb.append(a);
+            sb.append(" ");
+        }
+        sb.append("]\n\tRedoes available: [");
+        a = this.currentNode;
+        while ((a = a.getNext()) != null) {
+            sb.append(a);
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 
 }

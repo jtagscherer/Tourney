@@ -18,8 +18,8 @@ public class TournamentRound {
      *            Number of this tournament round
      */
     public TournamentRound(int roundNumber) {
-	this.pairings = FXCollections.observableArrayList();
-	this.roundNumber = roundNumber;
+        this.pairings = FXCollections.observableArrayList();
+        this.roundNumber = roundNumber;
     }
 
     /**
@@ -28,7 +28,7 @@ public class TournamentRound {
      * @return A list of all pairings in this tournament round
      */
     public ObservableList<Pairing> getPairings() {
-	return this.pairings;
+        return this.pairings;
     }
 
     /**
@@ -37,7 +37,7 @@ public class TournamentRound {
      * @return Current number of this tournament round
      */
     public int getRoundNumber() {
-	return this.roundNumber;
+        return this.roundNumber;
     }
 
     /**
@@ -47,6 +47,6 @@ public class TournamentRound {
      *            New number of this tournament round
      */
     public void setRoundNumber(int value) {
-	this.roundNumber = value;
+        this.roundNumber = value;
     }
 }

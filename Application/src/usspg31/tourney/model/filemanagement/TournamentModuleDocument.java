@@ -29,7 +29,7 @@ import usspg31.tourney.model.pairingstrategies.PairingStrategy;
  */
 public class TournamentModuleDocument {
     private static final Logger log = Logger.getLogger(FileSaver.class
-	    .getName());
+            .getName());
 
     private Document document;
     private Element rootElement;
@@ -41,13 +41,13 @@ public class TournamentModuleDocument {
      *            XML document source to be used
      */
     public TournamentModuleDocument(Document document) {
-	this.document = document;
+        this.document = document;
 
-	/* Create the root element of the XML document */
-	if (this.document.getFirstChild() == null) {
-	    this.rootElement = this.document.createElement("rule-template");
-	    this.document.appendChild(this.rootElement);
-	}
+        /* Create the root element of the XML document */
+        if (this.document.getFirstChild() == null) {
+            this.rootElement = this.document.createElement("rule-template");
+            this.document.appendChild(this.rootElement);
+        }
     }
 
     /**
@@ -57,20 +57,20 @@ public class TournamentModuleDocument {
      *            Tournament module to be used for reading its meta data
      */
     public void appendMetaData(TournamentModule tournamentModule) {
-	Element meta = this.document.createElement("meta");
-	this.rootElement.appendChild(meta);
+        Element meta = this.document.createElement("meta");
+        this.rootElement.appendChild(meta);
 
-	/* Add the name of this module template */
-	Element name = this.document.createElement("name");
-	meta.appendChild(name);
-	name.appendChild(this.document.createTextNode(tournamentModule
-		.getName()));
+        /* Add the name of this module template */
+        Element name = this.document.createElement("name");
+        meta.appendChild(name);
+        name.appendChild(this.document.createTextNode(tournamentModule
+                .getName()));
 
-	/* Add the description of this module template */
-	Element description = this.document.createElement("description");
-	meta.appendChild(description);
-	description.appendChild(this.document.createTextNode(tournamentModule
-		.getDescription()));
+        /* Add the description of this module template */
+        Element description = this.document.createElement("description");
+        meta.appendChild(description);
+        description.appendChild(this.document.createTextNode(tournamentModule
+                .getDescription()));
     }
 
     /**
@@ -79,8 +79,8 @@ public class TournamentModuleDocument {
      * @return The name of the tournament module
      */
     public String getName() {
-	Node meta = this.document.getElementsByTagName("meta").item(0);
-	return FileLoader.getFirstChildNodeByTag(meta, "name").getTextContent();
+        Node meta = this.document.getElementsByTagName("meta").item(0);
+        return FileLoader.getFirstChildNodeByTag(meta, "name").getTextContent();
     }
 
     /**
@@ -89,9 +89,9 @@ public class TournamentModuleDocument {
      * @return The description of the tournament module
      */
     public String getDescription() {
-	Node meta = this.document.getElementsByTagName("meta").item(0);
-	return FileLoader.getFirstChildNodeByTag(meta, "description")
-		.getTextContent();
+        Node meta = this.document.getElementsByTagName("meta").item(0);
+        return FileLoader.getFirstChildNodeByTag(meta, "description")
+                .getTextContent();
     }
 
     /**
@@ -102,46 +102,46 @@ public class TournamentModuleDocument {
      *            List of map of possible scores
      */
     public void appendPossibleScores(
-	    ObservableList<PossibleScoring> possibleScores) {
-	/* Create a tag that will hold all possible scorings */
-	Element possibleScoresElement = this.document
-		.createElement("possible-scores");
-	this.rootElement.appendChild(possibleScoresElement);
+            ObservableList<PossibleScoring> possibleScores) {
+        /* Create a tag that will hold all possible scorings */
+        Element possibleScoresElement = this.document
+                .createElement("possible-scores");
+        this.rootElement.appendChild(possibleScoresElement);
 
-	/* Add all possible scorings */
-	for (PossibleScoring scoringPriority : possibleScores) {
-	    /* Add a new tag for each scoring with its priority as an attribute */
-	    Element scoringElement = this.document.createElement("scoring");
-	    Attr scoringPriorityAttribute = this.document
-		    .createAttribute("priority");
-	    scoringPriorityAttribute.setValue(String.valueOf(scoringPriority
-		    .getPriority()));
-	    scoringElement.setAttributeNode(scoringPriorityAttribute);
-	    possibleScoresElement.appendChild(scoringElement);
+        /* Add all possible scorings */
+        for (PossibleScoring scoringPriority : possibleScores) {
+            /* Add a new tag for each scoring with its priority as an attribute */
+            Element scoringElement = this.document.createElement("scoring");
+            Attr scoringPriorityAttribute = this.document
+                    .createAttribute("priority");
+            scoringPriorityAttribute.setValue(String.valueOf(scoringPriority
+                    .getPriority()));
+            scoringElement.setAttributeNode(scoringPriorityAttribute);
+            possibleScoresElement.appendChild(scoringElement);
 
-	    /* Iterate over the hash map of scores */
-	    Iterator<Entry<String, Integer>> iterator = scoringPriority
-		    .getScores().entrySet().iterator();
-	    while (iterator.hasNext()) {
-		Entry<String, Integer> entry = iterator.next();
+            /* Iterate over the hash map of scores */
+            Iterator<Entry<String, Integer>> iterator = scoringPriority
+                    .getScores().entrySet().iterator();
+            while (iterator.hasNext()) {
+                Entry<String, Integer> entry = iterator.next();
 
-		/* Add the current score */
-		Element scoreElement = this.document.createElement("score");
-		scoringElement.appendChild(scoreElement);
+                /* Add the current score */
+                Element scoreElement = this.document.createElement("score");
+                scoringElement.appendChild(scoreElement);
 
-		/* Add the name of the score */
-		Element nameElement = this.document.createElement("name");
-		scoreElement.appendChild(nameElement);
-		nameElement.appendChild(this.document.createTextNode(entry
-			.getKey()));
+                /* Add the name of the score */
+                Element nameElement = this.document.createElement("name");
+                scoreElement.appendChild(nameElement);
+                nameElement.appendChild(this.document.createTextNode(entry
+                        .getKey()));
 
-		/* Add the associated points */
-		Element pointsElement = this.document.createElement("points");
-		scoreElement.appendChild(pointsElement);
-		pointsElement.appendChild(this.document.createTextNode(String
-			.valueOf(entry.getValue())));
-	    }
-	}
+                /* Add the associated points */
+                Element pointsElement = this.document.createElement("points");
+                scoreElement.appendChild(pointsElement);
+                pointsElement.appendChild(this.document.createTextNode(String
+                        .valueOf(entry.getValue())));
+            }
+        }
     }
 
     /**
@@ -150,33 +150,33 @@ public class TournamentModuleDocument {
      * @return List of possible scores
      */
     public ArrayList<PossibleScoring> getPossibleScores() {
-	ArrayList<PossibleScoring> possibleScores = new ArrayList<PossibleScoring>();
+        ArrayList<PossibleScoring> possibleScores = new ArrayList<PossibleScoring>();
 
-	/* Get the node containing all scorings */
-	Node scores = this.document.getElementsByTagName("possible-scores")
-		.item(0);
+        /* Get the node containing all scorings */
+        Node scores = this.document.getElementsByTagName("possible-scores")
+                .item(0);
 
-	/* Iterate over all scorings in the node */
-	for (Node scoring : FileLoader.getChildNodesByTag(scores, "scoring")) {
-	    PossibleScoring newScoring = new PossibleScoring();
+        /* Iterate over all scorings in the node */
+        for (Node scoring : FileLoader.getChildNodesByTag(scores, "scoring")) {
+            PossibleScoring newScoring = new PossibleScoring();
 
-	    /* Extract the priority from the attribute */
-	    newScoring.setPriority(Integer.valueOf(scoring.getAttributes()
-		    .getNamedItem("priority").getTextContent()));
+            /* Extract the priority from the attribute */
+            newScoring.setPriority(Integer.valueOf(scoring.getAttributes()
+                    .getNamedItem("priority").getTextContent()));
 
-	    /* Extract the name and the associated points */
-	    for (Node score : FileLoader.getChildNodesByTag(scoring, "score")) {
-		newScoring.getScores().put(
-			FileLoader.getFirstChildNodeByTag(score, "name")
-				.getTextContent(),
-			Integer.valueOf(FileLoader.getFirstChildNodeByTag(
-				score, "points").getTextContent()));
-	    }
+            /* Extract the name and the associated points */
+            for (Node score : FileLoader.getChildNodesByTag(scoring, "score")) {
+                newScoring.getScores().put(
+                        FileLoader.getFirstChildNodeByTag(score, "name")
+                                .getTextContent(),
+                        Integer.valueOf(FileLoader.getFirstChildNodeByTag(
+                                score, "points").getTextContent()));
+            }
 
-	    possibleScores.add(newScoring);
-	}
+            possibleScores.add(newScoring);
+        }
 
-	return possibleScores;
+        return possibleScores;
     }
 
     /**
@@ -186,62 +186,62 @@ public class TournamentModuleDocument {
      *            List of game phases to be appended
      */
     public void appendTournamentPhases(ObservableList<GamePhase> gamePhases) {
-	/* Create a node that will hold all game phases */
-	Element gamePhasesElement = this.document.createElement("game-phases");
-	this.rootElement.appendChild(gamePhasesElement);
+        /* Create a node that will hold all game phases */
+        Element gamePhasesElement = this.document.createElement("game-phases");
+        this.rootElement.appendChild(gamePhasesElement);
 
-	/* Add a child node for each game phase */
-	for (GamePhase phase : gamePhases) {
-	    Element phaseElement = this.document.createElement("game-phase");
-	    gamePhasesElement.appendChild(phaseElement);
+        /* Add a child node for each game phase */
+        for (GamePhase phase : gamePhases) {
+            Element phaseElement = this.document.createElement("game-phase");
+            gamePhasesElement.appendChild(phaseElement);
 
-	    /* Add the phase number */
-	    Element phaseNumberElement = this.document
-		    .createElement("phase-number");
-	    phaseElement.appendChild(phaseNumberElement);
-	    phaseNumberElement.appendChild(this.document.createTextNode(String
-		    .valueOf(phase.getPhaseNumber())));
+            /* Add the phase number */
+            Element phaseNumberElement = this.document
+                    .createElement("phase-number");
+            phaseElement.appendChild(phaseNumberElement);
+            phaseNumberElement.appendChild(this.document.createTextNode(String
+                    .valueOf(phase.getPhaseNumber())));
 
-	    /* Add the number of rounds */
-	    Element numberOfRoundsElement = this.document
-		    .createElement("number-of-rounds");
-	    phaseElement.appendChild(numberOfRoundsElement);
-	    numberOfRoundsElement.appendChild(this.document
-		    .createTextNode(String.valueOf(phase.getRoundCount())));
+            /* Add the number of rounds */
+            Element numberOfRoundsElement = this.document
+                    .createElement("number-of-rounds");
+            phaseElement.appendChild(numberOfRoundsElement);
+            numberOfRoundsElement.appendChild(this.document
+                    .createTextNode(String.valueOf(phase.getRoundCount())));
 
-	    /* Add the used pairing strategy */
-	    Element pairingStrategyElement = this.document
-		    .createElement("pairing-strategy");
-	    phaseElement.appendChild(pairingStrategyElement);
-	    pairingStrategyElement.appendChild(this.document
-		    .createTextNode(phase.getPairingMethod().getClass()
-			    .getName()));
+            /* Add the used pairing strategy */
+            Element pairingStrategyElement = this.document
+                    .createElement("pairing-strategy");
+            phaseElement.appendChild(pairingStrategyElement);
+            pairingStrategyElement.appendChild(this.document
+                    .createTextNode(phase.getPairingMethod().getClass()
+                            .getName()));
 
-	    /* Add the number of players in a pairing */
-	    Element participantNumberElement = this.document
-		    .createElement("opponents-in-pairing");
-	    phaseElement.appendChild(participantNumberElement);
-	    participantNumberElement
-		    .appendChild(this.document.createTextNode(String
-			    .valueOf(phase.getNumberOfOpponents())));
+            /* Add the number of players in a pairing */
+            Element participantNumberElement = this.document
+                    .createElement("opponents-in-pairing");
+            phaseElement.appendChild(participantNumberElement);
+            participantNumberElement
+                    .appendChild(this.document.createTextNode(String
+                            .valueOf(phase.getNumberOfOpponents())));
 
-	    /*
-	     * Add the number of players that should be kept after cutting off
-	     * this round
-	     */
-	    Element cutOffElement = this.document
-		    .createElement("cutoff-number");
-	    phaseElement.appendChild(cutOffElement);
-	    cutOffElement.appendChild(this.document.createTextNode(String
-		    .valueOf(phase.getCutoff())));
+            /*
+             * Add the number of players that should be kept after cutting off
+             * this round
+             */
+            Element cutOffElement = this.document
+                    .createElement("cutoff-number");
+            phaseElement.appendChild(cutOffElement);
+            cutOffElement.appendChild(this.document.createTextNode(String
+                    .valueOf(phase.getCutoff())));
 
-	    /* Add the duration of a round in this game phase */
-	    Element durationElement = this.document
-		    .createElement("round-duration");
-	    phaseElement.appendChild(durationElement);
-	    durationElement.appendChild(this.document.createTextNode(phase
-		    .getRoundDuration().toString()));
-	}
+            /* Add the duration of a round in this game phase */
+            Element durationElement = this.document
+                    .createElement("round-duration");
+            phaseElement.appendChild(durationElement);
+            durationElement.appendChild(this.document.createTextNode(phase
+                    .getRoundDuration().toString()));
+        }
     }
 
     /**
@@ -250,57 +250,57 @@ public class TournamentModuleDocument {
      * @return A list of all tournament phases
      */
     public ArrayList<GamePhase> getTournamentPhases() {
-	ArrayList<GamePhase> tournamentPhases = new ArrayList<GamePhase>();
+        ArrayList<GamePhase> tournamentPhases = new ArrayList<GamePhase>();
 
-	/* Get the node that contains all tournament phases */
-	Node gamePhases = this.document.getElementsByTagName("game-phases")
-		.item(0);
+        /* Get the node that contains all tournament phases */
+        Node gamePhases = this.document.getElementsByTagName("game-phases")
+                .item(0);
 
-	/* Extract all individual game phases */
-	for (Node phaseNode : FileLoader.getChildNodesByTag(gamePhases,
-		"game-phase")) {
-	    GamePhase phase = new GamePhase();
+        /* Extract all individual game phases */
+        for (Node phaseNode : FileLoader.getChildNodesByTag(gamePhases,
+                "game-phase")) {
+            GamePhase phase = new GamePhase();
 
-	    /* Extract the phase number and the number of rounds */
-	    phase.setPhaseNumber(Integer.valueOf(FileLoader
-		    .getFirstChildNodeByTag(phaseNode, "phase-number")
-		    .getTextContent()));
-	    phase.setRoundCount(Integer.valueOf(FileLoader
-		    .getFirstChildNodeByTag(phaseNode, "number-of-rounds")
-		    .getTextContent()));
+            /* Extract the phase number and the number of rounds */
+            phase.setPhaseNumber(Integer.valueOf(FileLoader
+                    .getFirstChildNodeByTag(phaseNode, "phase-number")
+                    .getTextContent()));
+            phase.setRoundCount(Integer.valueOf(FileLoader
+                    .getFirstChildNodeByTag(phaseNode, "number-of-rounds")
+                    .getTextContent()));
 
-	    /* Extract the pairing strategy using reflection */
-	    String pairingMethod = FileLoader.getFirstChildNodeByTag(phaseNode,
-		    "pairing-strategy").getTextContent();
-	    Class<?> pairingStrategyClass;
-	    try {
-		pairingStrategyClass = Class.forName(pairingMethod);
-		phase.setPairingMethod((PairingStrategy) (pairingStrategyClass
-			.newInstance()));
-	    } catch (Exception e) {
-		log.log(Level.SEVERE,
-			"Could not instantiate the pairing strategy while loading the tournament rules.");
-		log.log(Level.SEVERE, e.getMessage(), e);
-	    }
+            /* Extract the pairing strategy using reflection */
+            String pairingMethod = FileLoader.getFirstChildNodeByTag(phaseNode,
+                    "pairing-strategy").getTextContent();
+            Class<?> pairingStrategyClass;
+            try {
+                pairingStrategyClass = Class.forName(pairingMethod);
+                phase.setPairingMethod((PairingStrategy) (pairingStrategyClass
+                        .newInstance()));
+            } catch (Exception e) {
+                log.log(Level.SEVERE,
+                        "Could not instantiate the pairing strategy while loading the tournament rules.");
+                log.log(Level.SEVERE, e.getMessage(), e);
+            }
 
-	    /* Extract number of the opponents in one pairing */
-	    phase.setNumberOfOpponents(Integer.valueOf(FileLoader
-		    .getFirstChildNodeByTag(phaseNode, "opponents-in-pairing")
-		    .getTextContent()));
+            /* Extract number of the opponents in one pairing */
+            phase.setNumberOfOpponents(Integer.valueOf(FileLoader
+                    .getFirstChildNodeByTag(phaseNode, "opponents-in-pairing")
+                    .getTextContent()));
 
-	    /* Extract the number of players that will be kept after this phase */
-	    phase.setCutoff(Integer.valueOf(FileLoader.getFirstChildNodeByTag(
-		    phaseNode, "cutoff-number").getTextContent()));
+            /* Extract the number of players that will be kept after this phase */
+            phase.setCutoff(Integer.valueOf(FileLoader.getFirstChildNodeByTag(
+                    phaseNode, "cutoff-number").getTextContent()));
 
-	    /* Extract the duration of one round in this game phase */
-	    phase.setRoundDuration(Duration.parse(FileLoader
-		    .getFirstChildNodeByTag(phaseNode, "round-duration")
-		    .getTextContent()));
+            /* Extract the duration of one round in this game phase */
+            phase.setRoundDuration(Duration.parse(FileLoader
+                    .getFirstChildNodeByTag(phaseNode, "round-duration")
+                    .getTextContent()));
 
-	    tournamentPhases.add(phase);
-	}
+            tournamentPhases.add(phase);
+        }
 
-	return tournamentPhases;
+        return tournamentPhases;
     }
 
     /**
@@ -310,27 +310,27 @@ public class TournamentModuleDocument {
      *            List of byes to be appended
      */
     public void appendByeList(ObservableList<Bye> byeList) {
-	/* Create a node that will hold all byes */
-	Element byesElement = this.document.createElement("byes");
-	this.rootElement.appendChild(byesElement);
+        /* Create a node that will hold all byes */
+        Element byesElement = this.document.createElement("byes");
+        this.rootElement.appendChild(byesElement);
 
-	/* Add a child node for each bye */
-	for (Bye bye : byeList) {
-	    Element byeElement = this.document.createElement("bye");
-	    byesElement.appendChild(byeElement);
+        /* Add a child node for each bye */
+        for (Bye bye : byeList) {
+            Element byeElement = this.document.createElement("bye");
+            byesElement.appendChild(byeElement);
 
-	    /* Add the bye type */
-	    Element byeTypeElement = this.document.createElement("type");
-	    byeElement.appendChild(byeTypeElement);
-	    byeTypeElement.appendChild(this.document.createTextNode(String
-		    .valueOf(bye.getByeType())));
+            /* Add the bye type */
+            Element byeTypeElement = this.document.createElement("type");
+            byeElement.appendChild(byeTypeElement);
+            byeTypeElement.appendChild(this.document.createTextNode(String
+                    .valueOf(bye.getByeType())));
 
-	    /* Add the points associated with this bye */
-	    Element byePointsElements = this.document.createElement("points");
-	    byeElement.appendChild(byePointsElements);
-	    byePointsElements.appendChild(this.document.createTextNode(String
-		    .valueOf(bye.getByePoints())));
-	}
+            /* Add the points associated with this bye */
+            Element byePointsElements = this.document.createElement("points");
+            byeElement.appendChild(byePointsElements);
+            byePointsElements.appendChild(this.document.createTextNode(String
+                    .valueOf(bye.getByePoints())));
+        }
     }
 
     /**
@@ -339,25 +339,25 @@ public class TournamentModuleDocument {
      * @return The list of byes that can be used in this tournament rule set
      */
     public ArrayList<Bye> getByeList() {
-	ArrayList<Bye> byeList = new ArrayList<Bye>();
+        ArrayList<Bye> byeList = new ArrayList<Bye>();
 
-	/* Get the node that contains all byes */
-	Node byes = this.document.getElementsByTagName("byes").item(0);
+        /* Get the node that contains all byes */
+        Node byes = this.document.getElementsByTagName("byes").item(0);
 
-	/* Extract all individual byes */
-	for (Node byeNode : FileLoader.getChildNodesByTag(byes, "bye")) {
-	    Bye bye = new Bye();
+        /* Extract all individual byes */
+        for (Node byeNode : FileLoader.getChildNodesByTag(byes, "bye")) {
+            Bye bye = new Bye();
 
-	    /* Extract the bye type and the associated points */
-	    bye.setByeType(ByeType.valueOf(FileLoader.getFirstChildNodeByTag(
-		    byeNode, "type").getTextContent()));
-	    bye.setByePoints(Integer.valueOf(FileLoader.getFirstChildNodeByTag(
-		    byeNode, "points").getTextContent()));
+            /* Extract the bye type and the associated points */
+            bye.setByeType(ByeType.valueOf(FileLoader.getFirstChildNodeByTag(
+                    byeNode, "type").getTextContent()));
+            bye.setByePoints(Integer.valueOf(FileLoader.getFirstChildNodeByTag(
+                    byeNode, "points").getTextContent()));
 
-	    byeList.add(bye);
-	}
+            byeList.add(bye);
+        }
 
-	return byeList;
+        return byeList;
     }
 
     /**
@@ -366,7 +366,7 @@ public class TournamentModuleDocument {
      * @return Source document of this event document
      */
     public Document getDocument() {
-	return this.document;
+        return this.document;
     }
 
     /**
@@ -376,6 +376,6 @@ public class TournamentModuleDocument {
      *            Source document of this event document
      */
     public void setDocument(Document document) {
-	this.document = document;
+        this.document = document;
     }
 }

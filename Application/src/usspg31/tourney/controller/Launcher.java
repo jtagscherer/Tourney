@@ -9,16 +9,17 @@ import java.util.logging.Logger;
  */
 public class Launcher {
 
-	private static final Logger log = Logger.getLogger(Launcher.class
-			.getName());
+    private static final Logger log = Logger
+            .getLogger(Launcher.class.getName());
 
-	public static void main(String[] args) {
-		try {
-			// Force the usage of GPU acceleration prior to launching the application
-			System.setProperty("prism.forceGPU", "true");
-			EntryPoint.main(args);
-		} catch (Throwable t) {
-			log.log(Level.SEVERE, t.getMessage(), t);
-		}
-	}
+    public static void main(String[] args) {
+        try {
+            // Force the usage of GPU acceleration prior to launching the
+            // application
+            System.setProperty("prism.forceGPU", "true");
+            EntryPoint.main(args);
+        } catch (Throwable t) {
+            log.log(Level.SEVERE, t.getMessage(), t);
+        }
+    }
 }

@@ -23,12 +23,12 @@ public class MetaDocument {
      *            XML document source to be used
      */
     public MetaDocument(Document document) {
-	this.document = document;
+        this.document = document;
 
-	if (this.document.getFirstChild() == null) {
-	    this.rootElement = this.document.createElement("meta");
-	    this.document.appendChild(this.rootElement);
-	}
+        if (this.document.getFirstChild() == null) {
+            this.rootElement = this.document.createElement("meta");
+            this.document.appendChild(this.rootElement);
+        }
     }
 
     /**
@@ -38,10 +38,10 @@ public class MetaDocument {
      *            New user flag of the represented event
      */
     public void setUserFlag(UserFlag userFlag) {
-	Element userFlagElement = this.document.createElement("user-flag");
-	this.rootElement.appendChild(userFlagElement);
-	userFlagElement.appendChild(this.document.createTextNode(userFlag
-		.toString()));
+        Element userFlagElement = this.document.createElement("user-flag");
+        this.rootElement.appendChild(userFlagElement);
+        userFlagElement.appendChild(this.document.createTextNode(userFlag
+                .toString()));
     }
 
     /**
@@ -50,17 +50,17 @@ public class MetaDocument {
      * @return Current user flag of the represented event
      */
     public UserFlag getUserFlag() {
-	Node metaNode = this.document.getElementsByTagName("user-flag").item(0);
+        Node metaNode = this.document.getElementsByTagName("user-flag").item(0);
 
-	if (metaNode == null) {
-	    return null;
-	}
+        if (metaNode == null) {
+            return null;
+        }
 
-	if (!metaNode.getTextContent().equals("")) {
-	    return UserFlag.valueOf(metaNode.getTextContent());
-	} else {
-	    return null;
-	}
+        if (!metaNode.getTextContent().equals("")) {
+            return UserFlag.valueOf(metaNode.getTextContent());
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -70,10 +70,10 @@ public class MetaDocument {
      *            New executed tournament ID
      */
     public void setExecutedTournamentId(String id) {
-	Element executedTournamentElement = this.document
-		.createElement("executed-tournament-id");
-	this.rootElement.appendChild(executedTournamentElement);
-	executedTournamentElement.appendChild(this.document.createTextNode(id));
+        Element executedTournamentElement = this.document
+                .createElement("executed-tournament-id");
+        this.rootElement.appendChild(executedTournamentElement);
+        executedTournamentElement.appendChild(this.document.createTextNode(id));
     }
 
     /**
@@ -82,13 +82,13 @@ public class MetaDocument {
      * @return New executed tournament ID
      */
     public String getExecutedTournamentId() {
-	Node metaNode = this.document.getElementsByTagName(
-		"executed-tournament-id").item(0);
-	if (metaNode != null) {
-	    return metaNode.getTextContent();
-	} else {
-	    return null;
-	}
+        Node metaNode = this.document.getElementsByTagName(
+                "executed-tournament-id").item(0);
+        if (metaNode != null) {
+            return metaNode.getTextContent();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -98,11 +98,11 @@ public class MetaDocument {
      *            New number of registrators
      */
     public void setNumberOfRegistrators(int number) {
-	Element numberOfRegistratorsElement = this.document
-		.createElement("number-of-registrators");
-	this.rootElement.appendChild(numberOfRegistratorsElement);
-	numberOfRegistratorsElement.appendChild(this.document
-		.createTextNode(String.valueOf(number)));
+        Element numberOfRegistratorsElement = this.document
+                .createElement("number-of-registrators");
+        this.rootElement.appendChild(numberOfRegistratorsElement);
+        numberOfRegistratorsElement.appendChild(this.document
+                .createTextNode(String.valueOf(number)));
     }
 
     /**
@@ -111,18 +111,18 @@ public class MetaDocument {
      * @return Current number of registrators
      */
     public int getNumberOfRegistrators() {
-	Node metaNode = this.document.getElementsByTagName(
-		"number-of-registrators").item(0);
+        Node metaNode = this.document.getElementsByTagName(
+                "number-of-registrators").item(0);
 
-	if (metaNode == null) {
-	    return 0;
-	}
+        if (metaNode == null) {
+            return 0;
+        }
 
-	if (!metaNode.getTextContent().equals("")) {
-	    return Integer.valueOf(metaNode.getTextContent());
-	} else {
-	    return 0;
-	}
+        if (!metaNode.getTextContent().equals("")) {
+            return Integer.valueOf(metaNode.getTextContent());
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -131,6 +131,6 @@ public class MetaDocument {
      * @return The actual XML document
      */
     public Document getDocument() {
-	return this.document;
+        return this.document;
     }
 }

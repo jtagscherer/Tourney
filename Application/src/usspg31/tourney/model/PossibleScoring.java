@@ -18,9 +18,9 @@ public class PossibleScoring {
      * Create a new possible scoring and initialize all its properties
      */
     public PossibleScoring() {
-	this.priority = new SimpleIntegerProperty();
-	this.scores = FXCollections
-		.observableMap(new HashMap<String, Integer>());
+        this.priority = new SimpleIntegerProperty();
+        this.scores = FXCollections
+                .observableMap(new HashMap<String, Integer>());
     }
 
     /**
@@ -29,7 +29,7 @@ public class PossibleScoring {
      * @return Map of all scores in this scoring
      */
     public ObservableMap<String, Integer> getScores() {
-	return this.scores;
+        return this.scores;
     }
 
     /**
@@ -39,7 +39,7 @@ public class PossibleScoring {
      *            New map of scores in this scoring
      */
     public void setScores(ObservableMap<String, Integer> scores) {
-	this.scores = scores;
+        this.scores = scores;
     }
 
     /**
@@ -48,7 +48,7 @@ public class PossibleScoring {
      * @return Current priority of this scoring
      */
     public int getPriority() {
-	return this.priority.get();
+        return this.priority.get();
     }
 
     /**
@@ -58,7 +58,7 @@ public class PossibleScoring {
      *            New priority of this scoring
      */
     public void setPriority(int priority) {
-	this.priority.set(priority);
+        this.priority.set(priority);
     }
 
     /**
@@ -67,6 +67,6 @@ public class PossibleScoring {
      * @return Priority property of this scoring
      */
     public IntegerProperty priorityProperty() {
-	return this.priority;
+        return this.priority;
     }
 }

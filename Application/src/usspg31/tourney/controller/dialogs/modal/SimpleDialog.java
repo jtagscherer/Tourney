@@ -3,7 +3,6 @@ package usspg31.tourney.controller.dialogs.modal;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
-
 public class SimpleDialog<P, R> implements IModalDialogProvider<P, R> {
 
     private final Node content;
@@ -21,9 +20,9 @@ public class SimpleDialog<P, R> implements IModalDialogProvider<P, R> {
         return this.content;
     }
 
-	@Override
-	public void initModalDialog(ModalDialog<P, R> modalDialog) {
+    @Override
+    public void initModalDialog(ModalDialog<P, R> modalDialog) {
 
-	}
+    }
 
 }

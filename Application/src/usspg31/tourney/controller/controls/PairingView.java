@@ -27,7 +27,8 @@ import usspg31.tourney.model.TournamentRound;
  */
 public class PairingView extends VBox implements TournamentUser {
 
-    private static final Logger log = Logger.getLogger(PairingView.class.getName());
+    private static final Logger log = Logger.getLogger(PairingView.class
+            .getName());
 
     @FXML private Button buttonScrollBreadcrumbsLeft;
     @FXML private Button buttonScrollBreadcrumbsRight;
@@ -76,11 +77,12 @@ public class PairingView extends VBox implements TournamentUser {
 
         // clear the pairing container and add pairing nodes for every pairing
         // there is in the selected round
-        TournamentRound round = this.loadedTournament.getRounds().get(newValue.intValue());
+        TournamentRound round = this.loadedTournament.getRounds().get(
+                newValue.intValue());
         this.pairingContainer.getChildren().clear();
         for (int i = 0; i < round.getPairings().size(); i++) {
-            PairingNode pairingNode = new PairingNode(
-                    this.loadedTournament, round.getPairings().get(i), i);
+            PairingNode pairingNode = new PairingNode(this.loadedTournament,
+                    round.getPairings().get(i), i);
 
             pairingNode.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 pairingNode.setSelected(true);
@@ -174,7 +176,8 @@ public class PairingView extends VBox implements TournamentUser {
     }
 
     /**
-     * @param value sets the new value for the SelectedRound property
+     * @param value
+     *            sets the new value for the SelectedRound property
      */
     public void setSelectedRound(int value) {
         this.SelectedRoundProperty().set(value);

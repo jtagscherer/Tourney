@@ -20,11 +20,11 @@ public class TournamentModule {
      * Create a new tournament module and initialize all its properties
      */
     public TournamentModule() {
-	this.name = new SimpleStringProperty("");
-	this.description = new SimpleStringProperty("");
-	this.possibleScorings = FXCollections.observableArrayList();
-	this.phaseList = FXCollections.observableArrayList();
-	this.byeList = FXCollections.observableArrayList();
+        this.name = new SimpleStringProperty("");
+        this.description = new SimpleStringProperty("");
+        this.possibleScorings = FXCollections.observableArrayList();
+        this.phaseList = FXCollections.observableArrayList();
+        this.byeList = FXCollections.observableArrayList();
     }
 
     /**
@@ -33,7 +33,7 @@ public class TournamentModule {
      * @return Current name of this tournament module
      */
     public String getName() {
-	return this.name.get();
+        return this.name.get();
     }
 
     /**
@@ -43,7 +43,7 @@ public class TournamentModule {
      *            New name of this tournament module
      */
     public void setName(String value) {
-	this.name.set(value);
+        this.name.set(value);
     }
 
     /**
@@ -52,7 +52,7 @@ public class TournamentModule {
      * @return Name property of this tournament module
      */
     public StringProperty nameProperty() {
-	return this.name;
+        return this.name;
     }
 
     /**
@@ -61,7 +61,7 @@ public class TournamentModule {
      * @return Current description of this tournament module
      */
     public String getDescription() {
-	return this.description.get();
+        return this.description.get();
     }
 
     /**
@@ -71,7 +71,7 @@ public class TournamentModule {
      *            New description of this tournament module
      */
     public void setDescription(String value) {
-	this.description.set(value);
+        this.description.set(value);
     }
 
     /**
@@ -80,7 +80,7 @@ public class TournamentModule {
      * @return Description property of this tournament module
      */
     public StringProperty descriptionProperty() {
-	return this.description;
+        return this.description;
     }
 
     /**
@@ -89,7 +89,7 @@ public class TournamentModule {
      * @return A list of possible scorings in this tournament module
      */
     public ObservableList<PossibleScoring> getPossibleScores() {
-	return this.possibleScorings;
+        return this.possibleScorings;
     }
 
     /**
@@ -98,7 +98,7 @@ public class TournamentModule {
      * @return A list of all game phases in this tournament module
      */
     public ObservableList<GamePhase> getPhaseList() {
-	return this.phaseList;
+        return this.phaseList;
     }
 
     /**
@@ -107,7 +107,7 @@ public class TournamentModule {
      * @return Current bye list property
      */
     public ObservableList<Bye> byeListProperty() {
-	return this.byeList;
+        return this.byeList;
     }
 
     /**
@@ -116,6 +116,6 @@ public class TournamentModule {
      * @return List of all possible byes
      */
     public ObservableList<Bye> getByeList() {
-	return this.byeList;
+        return this.byeList;
     }
 }

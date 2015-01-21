@@ -36,7 +36,7 @@ import javafx.collections.ObservableList;
 public class PreferencesManager {
 
     private static final Logger log = Logger.getLogger(PreferencesManager.class
-	    .getName());
+            .getName());
 
     /**
      * Represents an available language in the program. Consists of the language
@@ -44,41 +44,41 @@ public class PreferencesManager {
      * resolve localizable keys.
      */
     public static class Language {
-	private final Locale locale;
-	private final ResourceBundle languageBundle;
+        private final Locale locale;
+        private final ResourceBundle languageBundle;
 
-	private Language(Locale locale, ResourceBundle languageBundle) {
-	    this.locale = locale;
-	    this.languageBundle = languageBundle;
-	}
+        private Language(Locale locale, ResourceBundle languageBundle) {
+            this.locale = locale;
+            this.languageBundle = languageBundle;
+        }
 
-	/**
-	 * @return the language specific {@link Locale}
-	 */
-	public Locale getLocale() {
-	    return this.locale;
-	}
+        /**
+         * @return the language specific {@link Locale}
+         */
+        public Locale getLocale() {
+            return this.locale;
+        }
 
-	/**
-	 * Returns a string describing the language's locale, localized in the
-	 * language of the locale itself. E.g. for the locale de_DE this returns
-	 * "Deutsch (Deutschland)" whereas for en_UK "English (United Kingdom)"
-	 * is returned.
-	 *
-	 * @return a string describing the language's locale, localized in the
-	 *         language of the locale itself
-	 */
-	public String getLocaleLocalized() {
-	    return this.locale.getDisplayLanguage(this.locale) + " ("
-		    + this.locale.getDisplayCountry(this.locale) + ")";
-	}
+        /**
+         * Returns a string describing the language's locale, localized in the
+         * language of the locale itself. E.g. for the locale de_DE this returns
+         * "Deutsch (Deutschland)" whereas for en_UK "English (United Kingdom)"
+         * is returned.
+         *
+         * @return a string describing the language's locale, localized in the
+         *         language of the locale itself
+         */
+        public String getLocaleLocalized() {
+            return this.locale.getDisplayLanguage(this.locale) + " ("
+                    + this.locale.getDisplayCountry(this.locale) + ")";
+        }
 
-	/**
-	 * @return the {@link ResourceBundle} associated with this language
-	 */
-	public ResourceBundle getLanguageBundle() {
-	    return this.languageBundle;
-	}
+        /**
+         * @return the {@link ResourceBundle} associated with this language
+         */
+        public ResourceBundle getLanguageBundle() {
+            return this.languageBundle;
+        }
     }
 
     private static final String languageFilePath = "/ui/language/";
@@ -86,8 +86,8 @@ public class PreferencesManager {
     private static final String languageFileSuffix = ".properties";
     private static final String availableLanguagesFile = "available_languages";
 
-    private static final Pattern localeCodePattern = Pattern.compile(
-	    "^(?<language>[a-z]+)_(?<country>[A-Z]+)$");
+    private static final Pattern localeCodePattern = Pattern
+            .compile("^(?<language>[a-z]+)_(?<country>[A-Z]+)$");
 
     private static final String defaultPreferencesFile = "defaultPreferences.properties";
     private static final String preferencesFolder = "preferences";
@@ -99,10 +99,10 @@ public class PreferencesManager {
      * @return the instance of the PreferencesManager
      */
     public static PreferencesManager getInstance() {
-	if (instance == null) {
-	    instance = new PreferencesManager();
-	}
-	return instance;
+        if (instance == null) {
+            instance = new PreferencesManager();
+        }
+        return instance;
     }
 
     private ObservableList<Language> availableLanguages;
@@ -118,10 +118,10 @@ public class PreferencesManager {
      * Initializes a new PreferencesManager
      */
     private PreferencesManager() {
-	log.info("Initializing PreferencesManager");
+        log.info("Initializing PreferencesManager");
 
-	this.loadLanguages();
-	this.loadPreferences();
+        this.loadLanguages();
+        this.loadPreferences();
     }
 
     /**
@@ -129,78 +129,82 @@ public class PreferencesManager {
      * the availableLanguages list.
      */
     private void loadLanguages() {
-	log.info("Loading available languages...");
-	this.availableLanguages = FXCollections.observableArrayList();
+        log.info("Loading available languages...");
+        this.availableLanguages = FXCollections.observableArrayList();
 
-	List<String> availableLanguages = this.findAvailableLanguages();
+        List<String> availableLanguages = this.findAvailableLanguages();
 
-	for (String language : availableLanguages) {
-	    try {
-                URL languageFile = this.getClass().getResource(languageFilePath
-                       + languageFilePrefix + language + languageFileSuffix);
+        for (String language : availableLanguages) {
+            try {
+                URL languageFile = this.getClass().getResource(
+                        languageFilePath + languageFilePrefix + language
+                                + languageFileSuffix);
 
                 if (languageFile == null) {
-                    log.warning("LanguageFile " + languageFile + " wasn't found");
+                    log.warning("LanguageFile " + languageFile
+                            + " wasn't found");
                 }
 
-        	Matcher languageMatcher = localeCodePattern.matcher(language);
-        	languageMatcher.find();
+                Matcher languageMatcher = localeCodePattern.matcher(language);
+                languageMatcher.find();
 
-        	Locale locale = new Locale(languageMatcher.group("language"),
-        	        languageMatcher.group("country"));
-        	ResourceBundle languageBundle = new PropertyResourceBundle(
-        		languageFile.openStream());
+                Locale locale = new Locale(languageMatcher.group("language"),
+                        languageMatcher.group("country"));
+                ResourceBundle languageBundle = new PropertyResourceBundle(
+                        languageFile.openStream());
 
-        	this.availableLanguages.add(new Language(locale, languageBundle));
-	    } catch (Exception e) {
-		log.log(Level.WARNING, "Error loading language: "
-			+ e.getMessage(), e);
-	    }
-	}
+                this.availableLanguages
+                        .add(new Language(locale, languageBundle));
+            } catch (Exception e) {
+                log.log(Level.WARNING,
+                        "Error loading language: " + e.getMessage(), e);
+            }
+        }
 
-	if (this.availableLanguages.size() == 0) {
-	    throw new Error("No languages could be loaded successfully!");
-	}
+        if (this.availableLanguages.size() == 0) {
+            throw new Error("No languages could be loaded successfully!");
+        }
     }
 
     /**
      * Looks up available languages in the availableLanguages file.
      */
     private List<String> findAvailableLanguages() {
-	// get the path to the avaliableLanguagesFile
-	String langFile = languageFilePath + availableLanguagesFile;
-	URL availableLangaugesFile = this.getClass().getResource(langFile);
+        // get the path to the avaliableLanguagesFile
+        String langFile = languageFilePath + availableLanguagesFile;
+        URL availableLangaugesFile = this.getClass().getResource(langFile);
 
-	if (availableLangaugesFile == null) {
-	    throw new Error("AvailableLanguagesFile not found! (" + langFile + ")");
-	}
+        if (availableLangaugesFile == null) {
+            throw new Error("AvailableLanguagesFile not found! (" + langFile
+                    + ")");
+        }
 
-	try {
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(
-		    availableLangaugesFile.openStream()));
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    availableLangaugesFile.openStream()));
 
-	    List<String> availableLanguages = new ArrayList<>();
+            List<String> availableLanguages = new ArrayList<>();
 
-	    // read the availableLanguagesFile, there should be one locale code
-	    // in every line
-	    String input = null;
-	    while ((input = reader.readLine()) != null) {
-		if (localeCodePattern.matcher(input).matches()) {
-		    availableLanguages.add(input);
-		}
-	    }
+            // read the availableLanguagesFile, there should be one locale code
+            // in every line
+            String input = null;
+            while ((input = reader.readLine()) != null) {
+                if (localeCodePattern.matcher(input).matches()) {
+                    availableLanguages.add(input);
+                }
+            }
 
-	    if (availableLanguages.size() == 0) {
-		// must never happen, hence, throw an error
-		throw new Error("AvailableLanguagesFile does not contain any "
-			+ "valid languages!");
-	    }
+            if (availableLanguages.size() == 0) {
+                // must never happen, hence, throw an error
+                throw new Error("AvailableLanguagesFile does not contain any "
+                        + "valid languages!");
+            }
 
-	    return availableLanguages;
-	} catch (IOException e) {
-	    // must never happen, hence, throw an error
-	    throw new Error(e);
-	}
+            return availableLanguages;
+        } catch (IOException e) {
+            // must never happen, hence, throw an error
+            throw new Error(e);
+        }
     }
 
     /**
@@ -208,98 +212,98 @@ public class PreferencesManager {
      * file's content.
      */
     private void loadPreferences() {
-	log.info("Loading user preferences...");
+        log.info("Loading user preferences...");
 
-	// load the default preferences file
-	Properties defaultPreferences = new Properties();
-	try {
-	    defaultPreferences.load(this.getClass().getClassLoader()
-		    .getResourceAsStream(defaultPreferencesFile));
-	} catch (IOException e) {
-	    // must never happen if the project setup is correct
-	    log.log(Level.SEVERE, e.getMessage(), e);
-	    throw new Error(e);
-	}
+        // load the default preferences file
+        Properties defaultPreferences = new Properties();
+        try {
+            defaultPreferences.load(this.getClass().getClassLoader()
+                    .getResourceAsStream(defaultPreferencesFile));
+        } catch (IOException e) {
+            // must never happen if the project setup is correct
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new Error(e);
+        }
 
-	// load the preferences file
-	Path preferencesPath = Paths.get(preferencesFolder, preferencesFile);
-	this.preferences = new Properties(defaultPreferences);
-	try {
-	    this.preferences.load(Files.newInputStream(preferencesPath));
-	} catch (IOException e) {
-	    log.info("No preferences file found. Using default settings.");
-	}
+        // load the preferences file
+        Path preferencesPath = Paths.get(preferencesFolder, preferencesFile);
+        this.preferences = new Properties(defaultPreferences);
+        try {
+            this.preferences.load(Files.newInputStream(preferencesPath));
+        } catch (IOException e) {
+            log.info("No preferences file found. Using default settings.");
+        }
 
-	// load the set language
-	String[] localeStrings = this.preferences.getProperty(
-		"application.language").split("_");
-	Locale locale = new Locale(localeStrings[0], localeStrings[1]);
+        // load the set language
+        String[] localeStrings = this.preferences.getProperty(
+                "application.language").split("_");
+        Locale locale = new Locale(localeStrings[0], localeStrings[1]);
 
-	this.selectedLanguage = new SimpleObjectProperty<>();
-	for (Language language : this.availableLanguages) {
-	    if (language.getLocale().equals(locale)) {
-		this.selectedLanguage.set(language);
-		break;
-	    }
-	}
+        this.selectedLanguage = new SimpleObjectProperty<>();
+        for (Language language : this.availableLanguages) {
+            if (language.getLocale().equals(locale)) {
+                this.selectedLanguage.set(language);
+                break;
+            }
+        }
 
-	// if the language specified in the preferences isn't currently loaded,
-	// set at least any language
-	if (this.selectedLanguage.isNull().get()) {
-	    this.selectedLanguage.set(this.getAvailableLanguages().get(0));
-	}
+        // if the language specified in the preferences isn't currently loaded,
+        // set at least any language
+        if (this.selectedLanguage.isNull().get()) {
+            this.selectedLanguage.set(this.getAvailableLanguages().get(0));
+        }
 
-	// whenever the selectedLanguage changes, update the preferences file
-	this.selectedLanguage.addListener((ov, o, n) -> {
-	    this.preferences.setProperty("application.language", n.getLocale()
-		    .toString());
-	    this.savePreferences();
-	});
+        // whenever the selectedLanguage changes, update the preferences file
+        this.selectedLanguage.addListener((ov, o, n) -> {
+            this.preferences.setProperty("application.language", n.getLocale()
+                    .toString());
+            this.savePreferences();
+        });
 
-	// load the set password hash (we wouldn't use un-hashed passwords,
-	// would we?)
-	String passwordHash = this.preferences.getProperty(
-		"application.password", "");
-	this.passwordHash = new SimpleStringProperty(passwordHash);
-	this.passwordSet = new ReadOnlyBooleanWrapper();
-	this.passwordSet.bind(this.passwordHash.isEmpty().not());
+        // load the set password hash (we wouldn't use un-hashed passwords,
+        // would we?)
+        String passwordHash = this.preferences.getProperty(
+                "application.password", "");
+        this.passwordHash = new SimpleStringProperty(passwordHash);
+        this.passwordSet = new ReadOnlyBooleanWrapper();
+        this.passwordSet.bind(this.passwordHash.isEmpty().not());
 
-	// whenever the passwordHash changes, update the preferences file
-	this.passwordHash.addListener((ov, o, n) -> {
-	    this.preferences.setProperty("application.password", n);
-	    this.savePreferences();
-	});
+        // whenever the passwordHash changes, update the preferences file
+        this.passwordHash.addListener((ov, o, n) -> {
+            this.preferences.setProperty("application.password", n);
+            this.savePreferences();
+        });
     }
 
     /**
      * Saves all changed properties to the configuration file.
      */
     private void savePreferences() {
-	Path preferencesPath = Paths.get(preferencesFolder, preferencesFile);
-	try {
-	    if (!Files.exists(Paths.get(preferencesFolder))) {
-		Files.createDirectories(Paths.get(preferencesFolder));
-	    }
-	    this.preferences
-		    .store(Files.newOutputStream(preferencesPath),
-			    "Configuration File for Tourney\nDo not change any of these values manually!");
-	} catch (IOException e) {
-	    throw new RuntimeException("Failed to save preferences file", e);
-	}
+        Path preferencesPath = Paths.get(preferencesFolder, preferencesFile);
+        try {
+            if (!Files.exists(Paths.get(preferencesFolder))) {
+                Files.createDirectories(Paths.get(preferencesFolder));
+            }
+            this.preferences
+                    .store(Files.newOutputStream(preferencesPath),
+                            "Configuration File for Tourney\nDo not change any of these values manually!");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save preferences file", e);
+        }
     }
 
     /**
      * @return an ObservableList containing all supported languages
      */
     public ObservableList<Language> getAvailableLanguages() {
-	return this.availableLanguages;
+        return this.availableLanguages;
     }
 
     /**
      * @return the currently selected language
      */
     public Language getSelectedLanguage() {
-	return this.selectedLanguage.get();
+        return this.selectedLanguage.get();
     }
 
     /**
@@ -310,17 +314,17 @@ public class PreferencesManager {
      *            the language to set as the preferred one
      */
     public void setSelectedLanguage(Language language) {
-	this.selectedLanguage.set(language);
+        this.selectedLanguage.set(language);
     }
 
     /**
      * @return the ObjectProperty storing the currently selected language
      */
     public ObjectProperty<Language> selectedLanguageProperty() {
-	if (this.selectedLanguage == null) {
-	    this.selectedLanguage = new SimpleObjectProperty<>();
-	}
-	return this.selectedLanguage;
+        if (this.selectedLanguage == null) {
+            this.selectedLanguage = new SimpleObjectProperty<>();
+        }
+        return this.selectedLanguage;
     }
 
     /**
@@ -332,7 +336,7 @@ public class PreferencesManager {
      * @return the localized string
      */
     public String localizeString(String key) {
-	return this.getSelectedLanguage().getLanguageBundle().getString(key);
+        return this.getSelectedLanguage().getLanguageBundle().getString(key);
     }
 
     /**
@@ -360,22 +364,22 @@ public class PreferencesManager {
      *         wasn't valid
      */
     public boolean setPassword(String oldPassword, String newPassword) {
-	if (this.isPasswordCorrect(oldPassword)) {
-	    if (newPassword.isEmpty()) {
-		this.passwordHash.set("");
-	    } else {
-		this.passwordHash.set(this.getHash(newPassword));
-	    }
-	    return true;
-	}
-	return false;
+        if (this.isPasswordCorrect(oldPassword)) {
+            if (newPassword.isEmpty()) {
+                this.passwordHash.set("");
+            } else {
+                this.passwordHash.set(this.getHash(newPassword));
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
      * @return true if a password was set for the application
      */
     public boolean isPasswordSet() {
-	return this.passwordSet.get();
+        return this.passwordSet.get();
     }
 
     /**
@@ -383,25 +387,27 @@ public class PreferencesManager {
      *         application
      */
     public ReadOnlyBooleanProperty passwordSet() {
-	return this.passwordSet.getReadOnlyProperty();
+        return this.passwordSet.getReadOnlyProperty();
     }
 
     /**
      * Calculates a hash value for the given input string, used to store and
      * validate the password.
-     * @param input the string to get the hash of
+     * 
+     * @param input
+     *            the string to get the hash of
      * @return the hash of the input string
      */
     private String getHash(String input) {
-	try {
-	    // use SHA-256 to calculate the hash for the input
-	    MessageDigest stringDigest;
-	    stringDigest = MessageDigest.getInstance("SHA-256");
-	    stringDigest.update(input.getBytes());
-	    return new String(stringDigest.digest());
-	} catch (NoSuchAlgorithmException e) {
-	    // SHA-265 just HAS to be there, otherwise all this wouldn't work
-	    throw new Error(e);
-	}
+        try {
+            // use SHA-256 to calculate the hash for the input
+            MessageDigest stringDigest;
+            stringDigest = MessageDigest.getInstance("SHA-256");
+            stringDigest.update(input.getBytes());
+            return new String(stringDigest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            // SHA-265 just HAS to be there, otherwise all this wouldn't work
+            throw new Error(e);
+        }
     }
 }
