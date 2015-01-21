@@ -56,6 +56,14 @@
 					</tooltip>
 				</Button>
 			</HBox>
+			<Button fx:id="buttonExport" styleClass="menu-button" onAction="#onButtonExportClicked">
+				<graphic>
+					<IconPane styleClass="icon-export, half" />
+				</graphic>
+				<tooltip>
+					<Tooltip text="Geöffnetes Event als PDF-Datei exportieren" />
+				</tooltip>
+			</Button>
 		</HBox>
 		<HBox fx:id="secondaryMenuButtonBar" alignment="TOP_RIGHT"
 			pickOnBounds="false" spacing="10.0" AnchorPane.leftAnchor="0"

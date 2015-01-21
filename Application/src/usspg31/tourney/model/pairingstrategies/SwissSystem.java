@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Random;
 
 import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
@@ -45,7 +46,7 @@ public class SwissSystem implements PairingStrategy {
                             PairingHelper.generateEmptyScore(
                                     randomList.get(randomNumber), tournament
                                             .getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
+                                            .size()));
 
                     partResult.getOpponents().add(randomList.get(randomNumber));
                     randomList.remove(randomNumber);
@@ -58,7 +59,7 @@ public class SwissSystem implements PairingStrategy {
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
                 partResult = new Pairing();
-
+                partResult.setFlag(PairingFlag.IGNORE);
                 for (int i = 0; i < PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents(); i++) {
@@ -67,8 +68,7 @@ public class SwissSystem implements PairingStrategy {
                             PairingHelper.generateEmptyScore(mergedScoreTable
                                     .get(mergedScoreTable.size() - 1)
                                     .getPlayer(), tournament.getRuleSet()
-                                    .getPossibleScores().get(0).getScores()
-                                    .size()));
+                                    .getPossibleScores().size()));
                     if (i == 0) {
                         partResult.getOpponents().add(
                                 mergedScoreTable.get(

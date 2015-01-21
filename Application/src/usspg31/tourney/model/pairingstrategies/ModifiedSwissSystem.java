@@ -15,8 +15,6 @@ public class ModifiedSwissSystem implements PairingStrategy {
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
         ArrayList<Pairing> result = new ArrayList<>();
-        ArrayList<PlayerScore> opponents = new ArrayList<>();
-
         Pairing partResult;
 
         // TODO refactor name
@@ -44,7 +42,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                             PairingHelper.generateEmptyScore(
                                     randomList.get(randomNumber), tournament
                                             .getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
+                                            .size()));
 
                     partResult.getOpponents().add(randomList.get(randomNumber));
                     randomList.remove(randomNumber);
@@ -93,8 +91,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                                 PairingHelper.generateEmptyScore(subScoreList
                                         .get(subScoreList.size() - 1)
                                         .getPlayer(), tournament.getRuleSet()
-                                        .getPossibleScores().get(0).getScores()
-                                        .size()));
+                                        .getPossibleScores().size()));
                         if (i == 0) {
                             partResult.getOpponents().add(
                                     subScoreList.get(subScoreList.size() - 1)

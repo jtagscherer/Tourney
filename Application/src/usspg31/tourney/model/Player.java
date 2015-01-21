@@ -173,6 +173,9 @@ public class Player extends Person implements Cloneable {
     public Object clone() {
         Player clone = new Player();
 
+        clone.setFirstName(this.getFirstName());
+        clone.setLastName(this.getLastName());
+        clone.setMailAdress(this.getMailAddress());
         clone.setNickName(this.getNickName());
         clone.setStartingNumber(this.getStartingNumber());
         clone.setPayed(this.hasPayed());

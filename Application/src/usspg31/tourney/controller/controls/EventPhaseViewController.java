@@ -38,6 +38,7 @@ import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.filemanagement.FileSaver;
+import usspg31.tourney.model.filemanagement.pdfexport.PDFExporter;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class EventPhaseViewController implements EventUser {
@@ -51,6 +52,7 @@ public class EventPhaseViewController implements EventUser {
     // Menu bar
     @FXML private Button buttonClose;
     @FXML private Button buttonSave;
+    @FXML private Button buttonExport;
 
     @FXML private Button buttonUndo;
     @FXML private Button buttonRedo;
@@ -395,6 +397,38 @@ public class EventPhaseViewController implements EventUser {
     private void onButtonSaveClicked(ActionEvent event) {
         log.fine("Save Button was clicked");
         this.saveEvent();
+    }
+
+    @FXML
+    private void onButtonExportClicked(ActionEvent event) {
+        log.fine("Export Button was clicked");
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Event als PDF exportieren");
+        fileChooser.getExtensionFilters().add(
+                new ExtensionFilter("PDF-Dokument (*.pdf)", "*.pdf"));
+        File selectedFile = fileChooser.showSaveDialog(EntryPoint
+                .getPrimaryStage());
+        if (selectedFile == null) {
+            return;
+        }
+        if (!selectedFile.getName().endsWith(".pdf")) {
+            selectedFile = new File(selectedFile.getAbsolutePath() + ".pdf");
+        }
+
+        try {
+            PDFExporter.exportEventAsPdf(this.loadedEvent,
+                    selectedFile.getAbsolutePath());
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Could not export the event.", e);
+
+            new SimpleDialog<>("Das Event konnte nicht exportiert werden.\n"
+                    + "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
+                    + "alle Berechtigungen besitzen.").modalDialog()
+                    .title("dialogs.titles.error")
+                    .dialogButtons(DialogButtons.OK).show();
+            return;
+        }
     }
 
     @FXML

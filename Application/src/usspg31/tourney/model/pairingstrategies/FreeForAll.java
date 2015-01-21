@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
@@ -27,12 +28,15 @@ public class FreeForAll implements PairingStrategy {
         int randomNumber;
 
         // checks if this is the first round in the tournament
-        if (tournament.getRounds().size() == 0) {
+        if (tournament.getRounds().size() == 0
+                || PairingHelper.isFirstInPhase(tournament.getRounds().size(),
+                        tournament, PairingHelper.findPhase(tournament
+                                .getRounds().size(), tournament))) {
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
                 partResult = new Pairing();
-
+                partResult.setFlag(PairingFlag.IGNORE);
                 for (int i = 0; i < PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents(); i++) {
@@ -42,7 +46,7 @@ public class FreeForAll implements PairingStrategy {
                             PairingHelper.generateEmptyScore(
                                     randomList.get(randomNumber), tournament
                                             .getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
+                                            .size()));
 
                     // adds an opponent to the pairing
                     partResult.getOpponents().add(randomList.get(randomNumber));
@@ -51,38 +55,13 @@ public class FreeForAll implements PairingStrategy {
                 result.add(partResult);
             }
             // checks if the round is the first in his game phase
-        } else if (PairingHelper.isFirstInPhase(tournament.getRounds().size(),
-                tournament, PairingHelper.findPhase(tournament.getRounds()
-                        .size(), tournament))) {
-            while (randomList.size() >= PairingHelper.findPhase(
-                    tournament.getRounds().size(), tournament)
-                    .getNumberOfOpponents()) {
-                partResult = new Pairing();
-                partResult.setFlag(Pairing.PairingFlag.IGNORE);
-
-                for (int i = 0; i < PairingHelper.findPhase(
-                        tournament.getRounds().size(), tournament)
-                        .getNumberOfOpponents(); i++) {
-                    randomNumber = randomGenerator.nextInt(randomList.size());
-
-                    partResult.getScoreTable().add(
-                            PairingHelper.generateEmptyScore(
-                                    randomList.get(randomNumber), tournament
-                                            .getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
-
-                    partResult.getOpponents().add(randomList.get(randomNumber));
-                    randomList.remove(randomNumber);
-                }
-                result.add(partResult);
-            }
         } else {
 
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
                 partResult = new Pairing();
-
+                partResult.setFlag(PairingFlag.IGNORE);
                 for (int i = 0; i < PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents(); i++) {
@@ -92,7 +71,7 @@ public class FreeForAll implements PairingStrategy {
                             PairingHelper.generateEmptyScore(
                                     randomList.get(randomNumber), tournament
                                             .getRuleSet().getPossibleScores()
-                                            .get(0).getScores().size()));
+                                            .size()));
 
                     partResult.getOpponents().add(randomList.get(randomNumber));
                     randomList.remove(randomNumber);
