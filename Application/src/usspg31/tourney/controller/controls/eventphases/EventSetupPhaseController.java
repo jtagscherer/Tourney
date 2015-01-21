@@ -67,8 +67,8 @@ public class EventSetupPhaseController implements EventUser {
                 public void updateItem(LocalDate item, boolean empty) {
                     super.updateItem(item, empty);
 
-                    LocalDate maxDate = EventSetupPhaseController.this
-                            .datePickerEndDate.getValue();
+                    LocalDate maxDate = EventSetupPhaseController.this.datePickerEndDate
+                            .getValue();
 
                     if (maxDate != null && item.isAfter(maxDate)) {
                         this.setDisable(true);
@@ -84,8 +84,8 @@ public class EventSetupPhaseController implements EventUser {
                 public void updateItem(LocalDate item, boolean empty) {
                     super.updateItem(item, empty);
 
-                    LocalDate minDate = EventSetupPhaseController.this
-                            .datePickerStartDate.getValue();
+                    LocalDate minDate = EventSetupPhaseController.this.datePickerStartDate
+                            .getValue();
 
                     if (minDate == null || item.isBefore(minDate)) {
                         this.setDisable(true);
@@ -187,6 +187,11 @@ public class EventSetupPhaseController implements EventUser {
         this.undoManager.clearHistory();
 
         this.loadedEvent = null;
+    }
+
+    @FXML
+    private void onButtonEventAdministratorsClicked(ActionEvent event) {
+        log.fine("Event Administrator Button clicked");
     }
 
     @FXML
