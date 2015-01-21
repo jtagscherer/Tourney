@@ -30,7 +30,7 @@
 				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
 			<DatePicker fx:id="datePickerEndDate" promptText="Enddatum"
 				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-				AnchorPane.topAnchor="110.0" />
+				AnchorPane.topAnchor="110.0" showWeekNumbers="true" />
 			<UndoTextArea fx:id="textAreaEventLocation" promptText="Beschreibung"
 				AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
 				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="140.0" />
