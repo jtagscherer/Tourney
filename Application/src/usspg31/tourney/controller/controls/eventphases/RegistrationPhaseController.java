@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -70,7 +69,7 @@ public class RegistrationPhaseController implements EventUser {
     @FXML
     private void initialize() {
         this.registrationDialog = new PlayerPreRegistrationDialog()
-                .modalDialog();
+                .modalDialog().title("dialogs.playerpreregistration.registration");
         this.distributionDialog = new RegistrationDistributionDialog()
                 .modalDialog();
         this.distributionNumberSelectionDialog = new RegistrationDistributionNumberSelectionDialog()
@@ -146,22 +145,18 @@ public class RegistrationPhaseController implements EventUser {
          * whether a player from the list is selected and is registered
          */
         this.tableRegisteredPlayers.getSelectionModel().selectedItemProperty()
-                .addListener(new ChangeListener<Player>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Player> arg0,
-                            Player oldVal, Player newVal) {
-                        if (newVal != null) {
-                            if (((Player) newVal).getStartingNumber()
-                                    .equals("")) {
-                                buttonRegisterPlayer.setDisable(false);
-                                buttonUnregisterPlayer.setDisable(true);
-                            } else {
-                                buttonRegisterPlayer.setDisable(true);
-                                buttonUnregisterPlayer.setDisable(false);
-                            }
-                        }
-                    }
-                });
+                .addListener((ChangeListener<Player>) (arg0, oldVal, newVal) -> {
+                  if (newVal != null) {
+                if (newVal.getStartingNumber()
+                        .equals("")) {
+                    RegistrationPhaseController.this.buttonRegisterPlayer.setDisable(false);
+                    RegistrationPhaseController.this.buttonUnregisterPlayer.setDisable(true);
+                } else {
+                    RegistrationPhaseController.this.buttonRegisterPlayer.setDisable(true);
+                    RegistrationPhaseController.this.buttonUnregisterPlayer.setDisable(false);
+                }
+                  }
+               });
 
         this.buttonRegisterPlayer.setDisable(true);
         this.buttonUnregisterPlayer.setDisable(true);
