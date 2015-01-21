@@ -133,7 +133,9 @@ public class TestPairingStrategies {
                 stuffDogePlayerScore = new PlayerScore();
                 stuffDogePlayerScore.setPlayer(stuffDogePlayer);
                 stuffDogePlayerScore.getScore().add(0,
-                        Integer.getInteger(stuffDogePlayer.getId()) * 10);
+                        Integer.valueOf((stuffDogePlayer.getId())) * 10);
+                stuffDogePlayerScore.getScore().add(1, 10);
+
                 stuffDogePairing.getScoreTable().add(stuffDogePlayerScore);
             }
         }
