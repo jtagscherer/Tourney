@@ -2,6 +2,7 @@ package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -271,57 +272,79 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
     @FXML
     private void onButtonMovePhaseUpClicked(ActionEvent event) {
-        // TODO: update the phase numbers correctly
         log.fine("Move Tournament Phase Up Button was clicked");
-        int selectedIndex = this.tableTournamentPhases.getSelectionModel()
-                .getSelectedIndex();
-        int indexToSwap = selectedIndex - 1;
-        GamePhase tmp = this.getSelectedPhase();
-        ObservableList<GamePhase> phases = this.tableTournamentPhases
-                .getItems();
-        phases.set(selectedIndex, phases.get(indexToSwap));
-        phases.set(indexToSwap, tmp);
-        this.tableTournamentPhases.getSelectionModel().select(indexToSwap);
+        int selectedIndex = this.getSelectedTournamentPhaseIndex();
+        this.swapGamePhases(selectedIndex, selectedIndex - 1);
     }
 
     @FXML
     private void onButtonMovePhaseDownClicked(ActionEvent event) {
-        // TODO: update the phase numbers correctly
         log.fine("Move Tournament Phase Down Button was clicked");
-        int selectedIndex = this.tableTournamentPhases.getSelectionModel()
-                .getSelectedIndex();
-        int indexToSwap = selectedIndex + 1;
-        GamePhase tmp = this.getSelectedPhase();
+        int selectedIndex = this.getSelectedTournamentPhaseIndex();
+        this.swapGamePhases(selectedIndex, selectedIndex + 1);
+    }
+
+    /**
+     * Swaps the game phases with the given indices and selects the row with
+     * indexB.
+     */
+    private void swapGamePhases(int indexA, int indexB) {
+        log.finer("Swapping gamephases with indices " + indexA + " and "
+                + indexB);
         ObservableList<GamePhase> phases = this.tableTournamentPhases
                 .getItems();
-        phases.set(selectedIndex, phases.get(indexToSwap));
-        phases.set(indexToSwap, tmp);
-        this.tableTournamentPhases.getSelectionModel().select(indexToSwap);
+
+        // swap phase numbers
+        int tmpId = phases.get(indexA).getPhaseNumber();
+        phases.get(indexA).setPhaseNumber(phases.get(indexB).getPhaseNumber());
+        phases.get(indexB).setPhaseNumber(tmpId);
+
+        // swap the actual items in the list
+        Collections.swap(phases, indexA, indexB);
+
+        // select the previously selected item which is now at a different index
+        this.tableTournamentPhases.getSelectionModel().select(indexB);
     }
 
     @FXML
     private void onButtonAddPhaseClicked(ActionEvent event) {
-        // TODO: update the phase numbers correctly
         log.fine("Add Tournament Phase Button was clicked");
-        this.tournamentPhaseDialog.properties(new GamePhase())
+        GamePhase newGamePhase = new GamePhase();
+        newGamePhase.setPhaseNumber(this.tableTournamentPhases.getItems()
+                .size());
+
+        this.tournamentPhaseDialog
+                .properties(newGamePhase)
                 .onResult((result, returnValue) -> {
-                    if (result == DialogResult.OK && returnValue != null) {
-                        this.loadedModule.getPhaseList().add(returnValue);
-                    }
-                }).show();
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                this.loadedModule.getPhaseList().add(returnValue);
+                            }
+                        }).show();
     }
 
     @FXML
     private void onButtonRemovePhaseClicked(ActionEvent event) {
-        // TODO: update the phase numbers correctly
         log.fine("Remove Tournament Phase Button was clicked");
-        this.loadedModule.getPhaseList().remove(this.getSelectedPhase());
+
+        // update indices of all following GamePhases
+        int selectedTournamentPhase = this.getSelectedTournamentPhaseIndex();
+        int itemCount = this.tableTournamentPhases.getItems().size();
+        ObservableList<GamePhase> phases = this.tableTournamentPhases
+                .getItems();
+        for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
+            phases.get(i).setPhaseNumber(i - 1);
+        }
+
+        // actually remove the selected GamePhase
+        this.loadedModule.getPhaseList().remove(selectedTournamentPhase);
     }
 
     @FXML
     private void onButtonEditPhaseClicked(ActionEvent event) {
         log.fine("Edit Tournament Phase Button was clicked");
-        this.tournamentPhaseDialog.properties(this.getSelectedPhase())
+        this.tournamentPhaseDialog
+                .properties(this.getSelectedTournamentPhase())
                 .onResult((result, returnValue) -> {
                     if (result == DialogResult.OK && returnValue != null) {
                         // this.loadedTournament.getRuleSet().getPhaseList().add(returnValue);
@@ -329,18 +352,55 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                 }).show();
     }
 
-    private GamePhase getSelectedPhase() {
+    /**
+     * @return the currently selected GamePhase in the tournament phase table
+     */
+    private GamePhase getSelectedTournamentPhase() {
         return this.tableTournamentPhases.getSelectionModel().getSelectedItem();
+    }
+
+    /**
+     * @return the index of the currently selected row in the tournament phase
+     *         table
+     */
+    private int getSelectedTournamentPhaseIndex() {
+        return this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
     }
 
     @FXML
     private void onButtonMoveScoreUpClicked(ActionEvent event) {
-
+        log.fine("Move Possible Score Up Button was clicked");
+        int selectedIndex = this.getSelectedPossibleScoreIndex();
+        this.swapPossibleScores(selectedIndex, selectedIndex - 1);
     }
 
     @FXML
     private void onButtonMoveScoreDownClicked(ActionEvent event) {
+        log.fine("Move Possible Score Down Button was clicked");
+        int selectedIndex = this.getSelectedPossibleScoreIndex();
+        this.swapPossibleScores(selectedIndex, selectedIndex + 1);
+    }
 
+    /**
+     * Swaps the game phases with the given indices and selects the row with
+     * indexB.
+     */
+    private void swapPossibleScores(int indexA, int indexB) {
+        log.finer("Swapping possible scores with indices " + indexA + " and "
+                + indexB);
+        ObservableList<PossibleScoring> scores = this.tablePossibleScores
+                .getItems();
+
+        // swap phase numbers
+        int tmpId = scores.get(indexA).getPriority();
+        scores.get(indexA).setPriority(scores.get(indexB).getPriority());
+        scores.get(indexB).setPriority(tmpId);
+
+        // swap the actual items in the list
+        Collections.swap(scores, indexA, indexB);
+
+        // select the previously selected item which is now at a different index
+        this.tablePossibleScores.getSelectionModel().select(indexB);
     }
 
     @FXML
@@ -350,11 +410,38 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
     @FXML
     private void onButtonRemoveScoreClicked(ActionEvent event) {
+        log.fine("Remove Possible Score Button was clicked");
 
+        // update indices of all following PossibleScores
+        int selectedPossibleScore = this.getSelectedPossibleScoreIndex();
+        int itemCount = this.tablePossibleScores.getItems().size();
+        ObservableList<PossibleScoring> phases = this.tablePossibleScores
+                .getItems();
+        for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
+            phases.get(i).setPriority(i - 1);
+        }
+
+        // actually remove the selected PossibleScore
+        this.loadedModule.getPossibleScores().remove(selectedPossibleScore);
     }
 
     @FXML
     private void onButtonEditScoreClicked(ActionEvent event) {
 
+    }
+
+    /**
+     * @return the currently selected GamePhase in the tournament phase table
+     */
+    private PossibleScoring getSelectedPossibleScore() {
+        return this.tablePossibleScores.getSelectionModel().getSelectedItem();
+    }
+
+    /**
+     * @return the index of the currently selected row in the tournament phase
+     *         table
+     */
+    private int getSelectedPossibleScoreIndex() {
+        return this.tablePossibleScores.getSelectionModel().getSelectedIndex();
     }
 }
