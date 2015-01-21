@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 /**
  * Accumulates the scores of a player
  */
-public class PlayerScore implements Comparable<PlayerScore> {
+public class PlayerScore implements Comparable<PlayerScore>, Cloneable {
 
     private Player player;
     private final ObservableList<Integer> score;
@@ -59,6 +59,17 @@ public class PlayerScore implements Comparable<PlayerScore> {
             }
         }
         return 0;
+    }
+
+    @Override
+    public Object clone() {
+        PlayerScore clone = new PlayerScore();
+        clone.setPlayer((Player) player.clone());
+        for (Integer score : this.score) {
+            clone.getScore().add((int) score);
+        }
+
+        return clone;
     }
 
     // public class PlayerScoreComparator implements Comparator<PlayerScore> {
