@@ -39,4 +39,7 @@ public class Bye {
         return this.byeType;
     }
 
+    public ObservableList<Integer> getByePoints() {
+        return this.byePoints;
+    }
 }

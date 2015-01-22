@@ -607,8 +607,13 @@ public class TournamentDocument {
             /* Add the points associated with this bye */
             Element byePointsElements = this.document.createElement("points");
             byeElement.appendChild(byePointsElements);
-            byePointsElements.appendChild(this.document.createTextNode(String
-                    .valueOf(bye.getByePoints())));
+
+            for (int score : bye.getByePoints()) {
+                Element byeScoreElement = this.document.createElement("score");
+                byeScoreElement.appendChild(this.document.createTextNode(String
+                        .valueOf(score)));
+                byePointsElements.appendChild(byeScoreElement);
+            }
         }
     }
 
@@ -715,8 +720,12 @@ public class TournamentDocument {
             /* Extract the bye type and the associated points */
             bye.setByeType(ByeType.valueOf(FileLoader.getFirstChildNodeByTag(
                     byeNode, "type").getTextContent()));
-            bye.setByePoints(Integer.valueOf(FileLoader.getFirstChildNodeByTag(
-                    byeNode, "points").getTextContent()));
+
+            for (Node scoreNode : FileLoader.getChildNodesByTag(byeNode,
+                    "score")) {
+                bye.getByePoints().add(
+                        Integer.parseInt(scoreNode.getTextContent()));
+            }
 
             tournamentModule.getByeList().add(bye);
         }
