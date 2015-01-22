@@ -3,6 +3,7 @@ package usspg31.tourney.model.pairingstrategies;
 import java.util.ArrayList;
 import java.util.Random;
 
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
@@ -94,7 +95,8 @@ public class FreeForAll implements PairingStrategy {
 
     @Override
     public String getName() {
-        return "Jeder gegen Jeden";
+        return PreferencesManager.getInstance().localizeString(
+                "pairingstrategy.freeforall");
     }
 
 }

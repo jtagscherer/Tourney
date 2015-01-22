@@ -3,6 +3,7 @@ package usspg31.tourney.model.pairingstrategies;
 import java.util.ArrayList;
 import java.util.Random;
 
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
@@ -203,7 +204,8 @@ public class DoubleElimination implements PairingStrategy {
 
     @Override
     public String getName() {
-        return "Doppel-K.O.-System (not implemented)";
+        return PreferencesManager.getInstance().localizeString(
+                "pairingstrategy.doubleelimination");
     }
 
 }
