@@ -86,6 +86,13 @@ public class AdministratorEditorDialog extends VBox implements
 
     @Override
     public String getInputErrorString() {
+        if (this.loadedAdministrator.getFirstName().equals("")
+                && this.loadedAdministrator.getLastName().equals("")
+                && this.loadedAdministrator.getMailAddress().equals("")
+                && this.loadedAdministrator.getPhoneNumber().equals("")) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.administratoreditor.errors.emptydata");
+        }
         return null;
     }
 }
