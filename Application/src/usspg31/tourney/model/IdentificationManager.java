@@ -17,7 +17,8 @@ public class IdentificationManager {
         return String.valueOf(new String(player.getFirstName()
                 + IdentificationManager.SEPARATOR + player.getLastName()
                 + IdentificationManager.SEPARATOR + player.getMailAddress()
-                + IdentificationManager.SEPARATOR + player.getNickName())
-                .hashCode());
+                + IdentificationManager.SEPARATOR + player.getNickName()
+                + IdentificationManager.SEPARATOR
+                + String.valueOf((int) (Math.random() * 100000))).hashCode());
     }
 }

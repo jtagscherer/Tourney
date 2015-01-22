@@ -27,6 +27,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 
@@ -163,15 +164,12 @@ public class PlayerPreRegistrationDialog extends VBox implements
     @Override
     public String getInputErrorString() {
         /* Check if there is a player with the same key data */
-        boolean duplicatePlayer = false;
+        int duplicatePlayers = 0;
         for (Player existentPlayer : this.loadedEvent.getRegisteredPlayers()) {
             if (existentPlayer.getId().equals(
-                    String.valueOf(new String(this.loadedPlayer.getFirstName()
-                            + this.loadedPlayer.getLastName()
-                            + this.loadedPlayer.getMailAddress()
-                            + this.loadedPlayer.getNickName()).hashCode()))) {
-                duplicatePlayer = true;
-                break;
+                    String.valueOf(IdentificationManager
+                            .generateId(this.loadedPlayer)))) {
+                duplicatePlayers++;
             }
         }
 
@@ -180,7 +178,8 @@ public class PlayerPreRegistrationDialog extends VBox implements
                 && this.loadedPlayer.getNickName().equals("")) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.playerpreregistration.errors.emptydata");
-        } else if (duplicatePlayer) {
+        } else if (duplicatePlayers > 1) {
+            /* More than this player itself exists with the same data */
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.playerpreregistration.errors.duplicate");
         } else {
