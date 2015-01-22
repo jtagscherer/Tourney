@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.model.Bye;
+import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
@@ -11,9 +13,15 @@ import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 
 public class DoubleElimination implements PairingStrategy {
+    private enum PreviousRoundState {
+        SECOND_ROUND,
+        INTER_ROUND,
+        COMPLETE_ROUND;
+    }
 
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
+
         ArrayList<Pairing> result = new ArrayList<>();
         ArrayList<Player> winnerBracket;
         ArrayList<Player> loserBracket;
@@ -53,29 +61,61 @@ public class DoubleElimination implements PairingStrategy {
                 result.add(partResult);
             }
 
+            for (int i = 0; i < randomList.size(); i++) {
+                partResult = new Pairing();
+                partResult.setFlag(PairingFlag.WINNER_BRACKET);
+                partResult.getOpponents().add(randomList.get(i));
+                partResult.getScoreTable().add(
+                        PairingHelper.generateEmptyScore(randomList.get(i),
+                                tournament.getRuleSet().getPossibleScores()
+                                        .size()));
+                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+                        partResult.getScoreTable().get(0).getScore()
+                                .addAll(byeTest.byePointsProperty());
+                        break;
+                    }
+                }
+
+                result.add(partResult);
+            }
+
         } else {
 
-            // TODO refactor variable name
-            boolean loserInterRound = true;
+            PreviousRoundState roundState;
 
-            // TODO refactor loop name
-            roundDetermination: for (Pairing testPairing : tournament
-                    .getRounds().get(tournament.getRounds().size() - 1)
-                    .getPairings()) {
+            boolean secondRound = true;
+            boolean interRound = true;
+            for (Pairing testPairing : tournament.getRounds()
+                    .get(tournament.getRounds().size() - 1).getPairings()) {
                 if (testPairing.getFlag() == Pairing.PairingFlag.WINNER_BRACKET) {
-                    loserInterRound = false;
-                    break roundDetermination;
+                    interRound = false;
+                } else if (testPairing.getFlag() == PairingFlag.LOSER_BRACKET) {
+                    secondRound = false;
                 }
 
             }
 
+            if (interRound && !secondRound) {
+                roundState = PreviousRoundState.INTER_ROUND;
+            } else if (secondRound && !interRound) {
+                roundState = PreviousRoundState.SECOND_ROUND;
+            } else {
+                roundState = PreviousRoundState.COMPLETE_ROUND;
+            }
+
             if (PairingHelper.findPhase(tournament.getRounds().size(),
                     tournament).getNumberOfOpponents() == 2) {
+                loserBracket = new ArrayList<>();
+                winnerBracket = new ArrayList<>();
+                ArrayList<Player> winnerLoserBracket = new ArrayList<>();
                 // deciding between the two possible round
-                if (loserInterRound) {
+                switch (roundState) {
+
+                case INTER_ROUND:
+
                     ArrayList<Pairing> tmp = new ArrayList<>();
-                    loserBracket = new ArrayList<>();
-                    winnerBracket = new ArrayList<>();
+
                     tmp.addAll(tournament.getRounds()
                             .get(tournament.getRounds().size() - 1)
                             .getPairings());
@@ -137,10 +177,12 @@ public class DoubleElimination implements PairingStrategy {
                         result.add(partResult);
 
                     }
-                } else {
-                    ArrayList<Pairing> tmp = new ArrayList<>();
+                    break;
+                case COMPLETE_ROUND:
+
+                    tmp = new ArrayList<>();
                     loserBracket = new ArrayList<>();
-                    ArrayList<Player> winnerLoserBracket = new ArrayList<>();
+
                     tmp.addAll(tournament.getRounds()
                             .get(tournament.getRounds().size() - 1)
                             .getPairings());
@@ -193,6 +235,134 @@ public class DoubleElimination implements PairingStrategy {
 
                         result.add(partResult);
                     }
+                    break;
+                case SECOND_ROUND:
+                    tmp = new ArrayList<>();
+                    loserBracket = new ArrayList<>();
+                    winnerBracket = new ArrayList<>();
+                    tmp.addAll(tournament.getRounds()
+                            .get(tournament.getRounds().size() - 1)
+                            .getPairings());
+                    for (Pairing pairing : tmp) {
+                        if (pairing.getFlag() == PairingFlag.LOSER_BRACKET) {
+
+                        } else if (pairing.getFlag() == PairingFlag.WINNER_BRACKET) {
+                            winnerBracket.add(PairingHelper
+                                    .identifyWinner(pairing));
+                            loserBracket.addAll(PairingHelper
+                                    .identifyLoser(pairing));
+                        }
+                    }
+                    while (winnerBracket.size() > PairingHelper.findPhase(
+                            tournament.getRounds().size(), tournament)
+                            .getNumberOfOpponents() - 1) {
+                        partResult = new Pairing();
+                        partResult.setFlag(PairingFlag.WINNER_BRACKET);
+                        for (int i = 0; i < PairingHelper.findPhase(
+                                tournament.getRounds().size(), tournament)
+                                .getNumberOfOpponents(); i++) {
+
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper.generateEmptyScore(
+                                            winnerBracket.get(0), tournament
+                                                    .getRuleSet()
+                                                    .getPossibleScores().size()));
+
+                            partResult.getOpponents().add(winnerBracket.get(0));
+
+                            winnerBracket.remove(0);
+                        }
+
+                        result.add(partResult);
+
+                    }
+
+                    while (loserBracket.size() > PairingHelper.findPhase(
+                            tournament.getRounds().size(), tournament)
+                            .getNumberOfOpponents() - 1) {
+                        partResult = new Pairing();
+                        partResult.setFlag(PairingFlag.WINNER_BRACKET);
+                        for (int i = 0; i < PairingHelper.findPhase(
+                                tournament.getRounds().size(), tournament)
+                                .getNumberOfOpponents(); i++) {
+
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper.generateEmptyScore(
+                                            loserBracket.get(0), tournament
+                                                    .getRuleSet()
+                                                    .getPossibleScores().size()));
+
+                            partResult.getOpponents().add(loserBracket.get(0));
+
+                            loserBracket.remove(0);
+                        }
+
+                        result.add(partResult);
+
+                    }
+
+                    break;
+                }
+
+                for (int i = 0; i < winnerBracket.size(); i++) {
+                    partResult = new Pairing();
+                    partResult.setFlag(PairingFlag.IGNORE);
+                    partResult.getOpponents().add(winnerBracket.get(i));
+                    partResult.getScoreTable().add(
+                            PairingHelper.generateEmptyScore(
+                                    winnerBracket.get(i), tournament
+                                            .getRuleSet().getPossibleScores()
+                                            .size()));
+                    for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+                        if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+                            partResult.getScoreTable().get(0).getScore()
+                                    .addAll(byeTest.byePointsProperty());
+                            break;
+                        }
+                    }
+
+                    result.add(partResult);
+                }
+                for (int i = 0; i < loserBracket.size(); i++) {
+                    partResult = new Pairing();
+                    partResult.setFlag(PairingFlag.IGNORE);
+                    partResult.getOpponents().add(loserBracket.get(i));
+                    partResult.getScoreTable().add(
+                            PairingHelper.generateEmptyScore(
+                                    loserBracket.get(i), tournament
+                                            .getRuleSet().getPossibleScores()
+                                            .size()));
+                    for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+                        if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+                            partResult.getScoreTable().get(0).getScore()
+                                    .addAll(byeTest.byePointsProperty());
+                            break;
+                        }
+                    }
+
+                    result.add(partResult);
+                }
+
+                for (int i = 0; i < winnerLoserBracket.size(); i++) {
+                    partResult = new Pairing();
+                    partResult.setFlag(PairingFlag.IGNORE);
+                    partResult.getOpponents().add(winnerLoserBracket.get(i));
+                    partResult.getScoreTable().add(
+                            PairingHelper.generateEmptyScore(
+                                    winnerLoserBracket.get(i), tournament
+                                            .getRuleSet().getPossibleScores()
+                                            .size()));
+                    for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+                        if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+                            partResult.getScoreTable().get(0).getScore()
+                                    .addAll(byeTest.byePointsProperty());
+                            break;
+                        }
+                    }
+
+                    result.add(partResult);
                 }
             } else {
 
