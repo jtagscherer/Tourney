@@ -37,9 +37,7 @@
 			<Button fx:id="buttonEventAdministrators" styleClass="table-edit-button"
 				onAction="#onButtonEventAdministratorsClicked"
 				AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
-				AnchorPane.rightAnchor="5.0">
-				Event-Organisatoren
-			</Button>
+				AnchorPane.rightAnchor="5.0" text="%eventsetupphase.eventadministrators" />
 		</AnchorPane>
 		<AnchorPane>
 			<Label styleClass="heading" text="%eventsetupphase.tournaments"
