@@ -138,6 +138,11 @@ public class TournamentSelectionController implements EventUser {
                 this.tableTournaments.comparatorProperty());
 
         this.tableTournaments.setItems(sortedTournamentList);
+
+        this.tableColumnTournamentName.prefWidthProperty().set(
+                this.tableTournaments.widthProperty().get() * 0.7);
+        this.tableColumnTournamentStatus.prefWidthProperty().set(
+                this.tableTournaments.widthProperty().get() * 0.3);
     }
 
     @Override

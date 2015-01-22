@@ -133,6 +133,15 @@ public class PreRegistrationPhaseController implements EventUser {
                 this.tablePreRegisteredPlayers.comparatorProperty());
 
         this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
+
+        this.tableColumnPlayerFirstName.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerLastName.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerMailAddress.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerNickName.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
     }
 
     @Override

@@ -115,6 +115,10 @@ public class EventSetupPhaseController implements EventUser {
         this.tableColumnTournamentTitle
                 .setCellValueFactory(cellData -> cellData.getValue()
                         .nameProperty());
+
+        this.tableColumnTournamentTitle.prefWidthProperty().bind(
+                this.tableTournaments.widthProperty());
+
         this.tableTournaments.getColumns().add(this.tableColumnTournamentTitle);
     }
 

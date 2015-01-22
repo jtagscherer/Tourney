@@ -93,6 +93,15 @@ public class AttendanceDialog extends VBox implements
                 .dialogButtons(DialogButtons.OK_CANCEL);
     }
 
+    @Override
+    public String getInputErrorString() {
+        if (this.tableAttendingPlayers.getItems().size() == 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.attendancedialog.errors.noattendingplayers");
+        }
+        return null;
+    }
+
     @FXML
     private void onButtonAddAttendeeClicked(ActionEvent event) {
         ObservableList<Player> selectedPlayers = this.tableRegisteredPlayers
