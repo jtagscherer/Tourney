@@ -58,9 +58,12 @@ public class MainMenuController {
         // open the file chooser dialog and load the chosen event
         log.fine("Open Event Button was clicked");
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Eventdatei öffnen");
+        fileChooser.setTitle(PreferencesManager.getInstance().localizeString(
+                "dialogs.messages.openevent"));
         fileChooser.getExtensionFilters().add(
-                new ExtensionFilter("Tourney Eventdateien (*.tef)", "*.tef"));
+                new ExtensionFilter(PreferencesManager.getInstance()
+                        .localizeString("dialogs.extensions.eventfile"),
+                        "*.tef"));
         File selectedFile = fileChooser.showOpenDialog(EntryPoint
                 .getPrimaryStage());
         if (selectedFile != null) {

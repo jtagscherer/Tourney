@@ -72,27 +72,10 @@ public class RegistrationDistributionDialog extends VBox implements
 
     @FXML
     private void onButtonDistributionHelpClicked(ActionEvent event) {
-        new SimpleDialog<>(
-                "Diese Funktion ermöglicht es Ihnen, die Anwesenheitskontrolle von Spielern "
-                        + "an mehreren Arbeitsplätzen vorzunehmen.\n"
-                        + "Gehen Sie dazu folgendermaßen vor:\n\n"
-                        + " \u2022 Tragen Sie die Anzahl der Arbeitsplätze inklusive des "
-                        + "Administrationsrechners ein,\n    an denen Anmeldungen vorgenommen werden "
-                        + "sollen. Dies müssen also mindestens zwei sein.\n\n"
-                        + " \u2022 Bestätigen Sie Ihre Eingabe und speichern Sie das Event ab. Hierzu ist "
-                        + "ein portables Speichermedium\n    wie ein USB-Stick zu empfehlen, um "
-                        + "die Daten transportieren zu können.\n\n"
-                        + " \u2022 Öffnen Sie das gespeicherte Event an den anderen Anmeldungsarbeitsplätzen. "
-                        + "Wählen Sie eine einzigartige\n    Nummer für jeden Arbeitsplatz aus. "
-                        + "Die Software wechselt automatisch in die Ansicht der angemeldeten Spieler.\n    "
-                        + "Hier können Anmeldungen wie gehabt vorgenommen werden.\n\n"
-                        + " \u2022 Die Anmeldungsarbeitsplätze speichern die Anmeldungen über das "
-                        + "Speichern-Symbol wieder auf\n    dem Speichermedium ab. Der Administrator "
-                        + "betätigt die Import-Schaltfläche in der Spieleranmeldung\n    und wählt "
-                        + "die Eventdatei  vom Anmeldungsarbeitsplatz aus.\n    Alle Daten werden "
-                        + "importiert und zusammengefügt.").modalDialog()
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.registrationdistribution.info.message")).modalDialog()
                 .dialogButtons(DialogButtons.OK)
-                .title("Informationen zur Anmeldungsverteilung").show();
+                .title("dialogs.registrationdistribution.info.title").show();
     }
 
     @Override

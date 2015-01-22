@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -45,7 +46,9 @@ public class AttendanceDialog extends VBox implements
 
     @FXML
     public void initialize() {
-        TableColumn<Player, String> playerName = new TableColumn<>("Name");
+        TableColumn<Player, String> playerName = new TableColumn<>(
+                PreferencesManager.getInstance().localizeString(
+                        "dialogs.attendancedialog.playername"));
         playerName.setCellValueFactory(cellValue -> {
             return cellValue.getValue().firstNameProperty().concat(" ")
                     .concat(cellValue.getValue().lastNameProperty());
@@ -88,8 +91,8 @@ public class AttendanceDialog extends VBox implements
     @Override
     public void initModalDialog(
             ModalDialog<ObservableList<Player>, ObservableList<Player>> modalDialog) {
-        modalDialog.title("Teilnehmende Spieler").dialogButtons(
-                DialogButtons.NONE);
+        modalDialog.title("dialogs.attendancedialog.attendingplayers")
+                .dialogButtons(DialogButtons.NONE);
     }
 
     @FXML

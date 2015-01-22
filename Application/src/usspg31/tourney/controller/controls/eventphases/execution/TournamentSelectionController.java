@@ -21,15 +21,12 @@ import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
-import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
-import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
-import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.filemanagement.FileLoader;
@@ -54,13 +51,8 @@ public class TournamentSelectionController implements EventUser {
 
     private TournamentExecutionPhaseController phaseController;
 
-    private ModalDialog<Object, Player> preRegistrationDialog;
-
     @FXML
     private void initialize() {
-        this.preRegistrationDialog = new PlayerPreRegistrationDialog()
-                .modalDialog();
-
         this.initPlayerTable();
 
         // Bind the button's availability to the list selection

@@ -147,9 +147,20 @@ public class TournamentAdministratorListDialog extends HBox implements
             return;
         }
 
-        new SimpleDialog<>("Wollen Sie den Organisator \""
-                + selectedAdministrator.getFirstName() + " "
-                + selectedAdministrator.getLastName() + "\" wirklich löschen?")
+        new SimpleDialog<>(
+                PreferencesManager
+                        .getInstance()
+                        .localizeString(
+                                "dialogs.administratorlistdialog.dialogs.confirmdelete.before")
+                        + " \""
+                        + selectedAdministrator.getFirstName()
+                        + " "
+                        + selectedAdministrator.getLastName()
+                        + "\" "
+                        + PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "dialogs.administratorlistdialog.dialogs.confirmdelete.after"))
                 .modalDialog()
                 .title("dialogs.administratorlistdialog.titles.confirmdelete")
                 .dialogButtons(DialogButtons.YES_NO)
