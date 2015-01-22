@@ -21,15 +21,11 @@ import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
-import usspg31.tourney.controller.dialogs.AttendanceDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
-import usspg31.tourney.controller.dialogs.modal.DialogResult;
-import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
-import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.filemanagement.FileLoader;
@@ -54,8 +50,6 @@ public class TournamentSelectionController implements EventUser {
 
     private TournamentExecutionPhaseController phaseController;
 
-    private ModalDialog<ObservableList<Player>, ObservableList<Player>> attendanceDialog;
-
     @FXML
     private void initialize() {
         this.initPlayerTable();
@@ -67,8 +61,6 @@ public class TournamentSelectionController implements EventUser {
         this.buttonExportTournament.disableProperty().bind(
                 this.tableTournaments.getSelectionModel()
                         .selectedItemProperty().isNull());
-
-        this.attendanceDialog = new AttendanceDialog().modalDialog();
     }
 
     private void initPlayerTable() {
@@ -179,17 +171,8 @@ public class TournamentSelectionController implements EventUser {
                     .dialogButtons(DialogButtons.OK)
                     .title("dialogs.titles.error").show();
         } else {
-            this.attendanceDialog
-                    .properties(selectedTournament.getRegisteredPlayers())
-                    .onResult(
-                            (result, returnValue) -> {
-                                if (result == DialogResult.OK) {
-                                    selectedTournament.getAttendingPlayers()
-                                            .setAll(returnValue);
-                                    this.phaseController
-                                            .showTournamentExecutionView(selectedTournament);
-                                }
-                            }).show();
+            this.phaseController
+                    .showTournamentExecutionView(selectedTournament);
         }
     }
 
