@@ -18,8 +18,8 @@ import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
+import usspg31.tourney.model.Administrator;
 import usspg31.tourney.model.EventAdministrator;
-import usspg31.tourney.model.TournamentModule;
 
 public class EventAdministratorListDialog extends HBox implements
         IModalDialogProvider<ObservableList<EventAdministrator>, Object> {
@@ -37,7 +37,9 @@ public class EventAdministratorListDialog extends HBox implements
     @FXML private Button buttonRemoveAdministrator;
     @FXML private Button buttonEditAdministrator;
 
-    private ModalDialog<TournamentModule, TournamentModule> tournamentmoduleEditorDialog;
+    private ModalDialog<Administrator, Administrator> eventAdministratorEditorDialog;
+
+    private ObservableList<EventAdministrator> eventAdministratorList;
 
     public EventAdministratorListDialog() {
         try {
@@ -55,7 +57,7 @@ public class EventAdministratorListDialog extends HBox implements
 
     @FXML
     private void initialize() {
-        this.tournamentmoduleEditorDialog = new TournamentModuleEditorDialog()
+        this.eventAdministratorEditorDialog = new AdministratorEditorDialog()
                 .modalDialog();
 
         this.tableColumnFirstName = new TableColumn<EventAdministrator, String>(
@@ -97,7 +99,8 @@ public class EventAdministratorListDialog extends HBox implements
 
     @Override
     public void setProperties(ObservableList<EventAdministrator> properties) {
-        this.tableAdministrators.setItems(properties);
+        this.eventAdministratorList = properties;
+        this.tableAdministrators.setItems(this.eventAdministratorList);
     }
 
     @Override
@@ -111,13 +114,24 @@ public class EventAdministratorListDialog extends HBox implements
     private void onButtonAddAdministratorClicked(ActionEvent event) {
         log.fine("Add Administrator Button clicked");
 
-        EventAdministrator admin = new EventAdministrator();
-        admin.setFirstName("first");
-        admin.setLastName("last");
-        admin.setMailAdress("mail");
-        admin.setPhoneNumber("phone123");
-
-        this.tableAdministrators.getItems().add(admin);
+        this.eventAdministratorEditorDialog
+                .properties(new EventAdministrator())
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                EventAdministrator administrator = new EventAdministrator();
+                                administrator.setFirstName(returnValue
+                                        .getFirstName());
+                                administrator.setLastName(returnValue
+                                        .getLastName());
+                                administrator.setMailAdress(returnValue
+                                        .getMailAddress());
+                                administrator.setPhoneNumber(returnValue
+                                        .getPhoneNumber());
+                                this.eventAdministratorList.add(administrator);
+                            }
+                        }).show();
     }
 
     @FXML
@@ -149,5 +163,30 @@ public class EventAdministratorListDialog extends HBox implements
     @FXML
     private void onButtonEditAdministratorClicked(ActionEvent event) {
         log.fine("Edit Administrator Button clicked");
+
+        final Administrator selectedAdministrator = this.tableAdministrators
+                .getSelectionModel().getSelectedItem();
+
+        this.eventAdministratorEditorDialog
+                .properties(selectedAdministrator)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                EventAdministrator administrator = new EventAdministrator();
+                                administrator.setFirstName(returnValue
+                                        .getFirstName());
+                                administrator.setLastName(returnValue
+                                        .getLastName());
+                                administrator.setMailAdress(returnValue
+                                        .getMailAddress());
+                                administrator.setPhoneNumber(returnValue
+                                        .getPhoneNumber());
+
+                                this.eventAdministratorList
+                                        .remove(selectedAdministrator);
+                                this.eventAdministratorList.add(administrator);
+                            }
+                        }).show();
     }
 }
