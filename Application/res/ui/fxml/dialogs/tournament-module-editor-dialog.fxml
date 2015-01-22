@@ -10,7 +10,8 @@
 <?import java.net.URL?>
 
 <fx:root type="javafx.scene.control.SplitPane" dividerPositions="0.25"
-	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	prefWidth="Infinity">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/icons.css" />
