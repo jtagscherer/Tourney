@@ -127,34 +127,31 @@ public class EventPhaseViewController implements EventUser {
 
     private void loadSubViews() throws IOException {
         FXMLLoader eventSetupPhaseLoader = new FXMLLoader(this.getClass()
-                .getResource(
-                        "/ui/fxml/controls/eventphases/event-setup-phase.fxml"));
+                .getResource("/ui/fxml/controls/eventphases/event-setup-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
         this.eventSetupPhase = eventSetupPhaseLoader.load();
         this.eventSetupPhaseController = eventSetupPhaseLoader.getController();
         this.eventSetupPhase.setVisible(true);
 
         FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(
-                this.getClass()
-                        .getResource(
-                                "/ui/fxml/controls/eventphases/pre-registration-phase.fxml"));
+                this.getClass().getResource("/ui/fxml/controls/eventphases/pre-registration-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
         this.preRegistrationPhase = preRegistrationPhaseLoader.load();
         this.preRegistrationPhaseController = preRegistrationPhaseLoader
                 .getController();
         this.preRegistrationPhase.setVisible(true);
 
         FXMLLoader registrationPhaseLoader = new FXMLLoader(
-                this.getClass()
-                        .getResource(
-                                "/ui/fxml/controls/eventphases/registration-phase.fxml"));
+                this.getClass().getResource("/ui/fxml/controls/eventphases/registration-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
         this.registrationPhase = registrationPhaseLoader.load();
         this.registrationPhaseController = registrationPhaseLoader
                 .getController();
         this.registrationPhase.setVisible(true);
 
         FXMLLoader tournamentExecutionPhaseLoader = new FXMLLoader(
-                this.getClass()
-                        .getResource(
-                                "/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"));
+                this.getClass().getResource("/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
         this.tournamentExecutionPhase = tournamentExecutionPhaseLoader.load();
         this.tournamentExecutionPhaseController = tournamentExecutionPhaseLoader
                 .getController();

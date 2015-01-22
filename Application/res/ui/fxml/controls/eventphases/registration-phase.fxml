@@ -18,9 +18,9 @@
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
-		<Label styleClass="heading" text="Anmeldung" />
+		<Label styleClass="heading" text="%registrationphase.registration" />
 		<TextField fx:id="textFieldPlayerSearch" maxHeight="1.7976931348623157E308"
-			promptText="Teilnehmer suchen" HBox.hgrow="ALWAYS" />
+			promptText="%registrationphase.searchattendee" HBox.hgrow="ALWAYS" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tableRegisteredPlayers" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0">
@@ -31,7 +31,7 @@
 							<IconPane styleClass="icon-add, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Neuen Spieler hinzufügen" />
+							<Tooltip text="%registrationphase.addplayer" />
 						</tooltip>
 					</Button>
 					<Button fx:id="buttonRemovePlayer" styleClass="table-edit-button"
@@ -40,7 +40,7 @@
 							<IconPane styleClass="icon-remove, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Ausgewählten Spieler entfernen" />
+							<Tooltip text="%registrationphase.removeplayer" />
 						</tooltip>
 					</Button>
 					<Button fx:id="buttonEditPlayer" styleClass="table-edit-button"
@@ -49,7 +49,7 @@
 							<IconPane styleClass="icon-edit, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Ausgewählten Spieler ändern" />
+							<Tooltip text="%registrationphase.editplayer" />
 						</tooltip>
 					</Button>
 					<Button fx:id="buttonRegisterPlayer" styleClass="table-edit-button"
@@ -58,7 +58,7 @@
 							<IconPane styleClass="icon-register, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Ausgewählten Spieler als anwesend markieren" />
+							<Tooltip text="%registrationphase.registerplayer" />
 						</tooltip>
 					</Button>
 					<Button fx:id="buttonUnregisterPlayer" styleClass="table-edit-button"
@@ -67,7 +67,7 @@
 							<IconPane styleClass="icon-unregister, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Ausgewählten Spieler als abwesend markieren" />
+							<Tooltip text="%registrationphase.unregisterplayer" />
 						</tooltip>
 					</Button>
 				</VBox>
@@ -78,7 +78,7 @@
  							<IconPane styleClass="icon-distribute, half" />
  						</graphic>
  						<tooltip>
-							<Tooltip text="Spieleranmeldung verteilen" />
+							<Tooltip text="%registrationphase.distributeregistration" />
 						</tooltip>
  					</Button>
  					<Button fx:id="buttonImportRegistration" styleClass="distribution-button"
@@ -87,7 +87,7 @@
  							<IconPane styleClass="icon-merge, half" />
  						</graphic>
  						<tooltip>
-							<Tooltip text="Angemeldete Spieler importieren" />
+							<Tooltip text="%registrationphase.importregisteredplayers" />
 						</tooltip>
  					</Button>
       			</VBox>

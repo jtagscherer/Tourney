@@ -19,7 +19,7 @@
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
-		<Label styleClass="heading" text="Turnierdurchführung" />
+		<Label styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">

@@ -25,7 +25,7 @@
 					<IconPane styleClass="icon-close, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Geöffnetes Event schließen" />
+					<Tooltip text="%eventphaseview.closeevent" />
 				</tooltip>
 			</Button>
 			<Button fx:id="buttonSave" styleClass="menu-button" onAction="#onButtonSaveClicked">
@@ -33,7 +33,7 @@
 					<IconPane styleClass="icon-save, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Geöffnetes Event speichern" />
+					<Tooltip text="%eventphaseview.saveevent" />
 				</tooltip>
 			</Button>
 			<HBox>
@@ -43,7 +43,7 @@
 						<IconPane styleClass="icon-undo, half" />
 					</graphic>
 					<tooltip>
-						<Tooltip text="Letzte Aktion rückgängig machen" />
+						<Tooltip text="%eventphaseview.undo" />
 					</tooltip>
 				</Button>
 				<Button fx:id="buttonRedo" disable="true"
@@ -52,7 +52,7 @@
 						<IconPane styleClass="icon-redo, half" />
 					</graphic>
 					<tooltip>
-						<Tooltip text="Letzte Aktion wiederherstellen" />
+						<Tooltip text="%eventphaseview.redo" />
 					</tooltip>
 				</Button>
 			</HBox>
@@ -61,7 +61,7 @@
 					<IconPane styleClass="icon-export, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Geöffnetes Event als PDF-Datei exportieren" />
+					<Tooltip text="%eventphaseview.exportpdf" />
 				</tooltip>
 			</Button>
 		</HBox>
@@ -73,7 +73,7 @@
 					<IconPane styleClass="icon-lock, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Fenster sperren" />
+					<Tooltip text="%eventphaseview.lockwindow" />
 				</tooltip>
 			</Button>
 			<Button fx:id="buttonOptions" styleClass="menu-button"
@@ -82,21 +82,21 @@
 					<IconPane styleClass="icon-settings, half" />
 				</graphic>
 				<tooltip>
-					<Tooltip text="Programmeinstellungen öffnen" />
+					<Tooltip text="%eventphaseview.opensettings" />
 				</tooltip>
 			</Button>
 		</HBox>
 		<HBox fx:id="breadcrumbContainer" AnchorPane.topAnchor="42"
 			AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 			<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, multi-button, left"
-				text="Event-Einstellungen" HBox.hgrow="ALWAYS"
+				text="%eventphaseview.eventsetup" HBox.hgrow="ALWAYS"
 				onAction="#onBreadcrumbEventSetupClicked" />
 			<Button fx:id="breadcrumbPreRegistration" styleClass="breadcrumb-button, multi-button, middle"
-				text="Voranmeldung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbPreRegistrationClicked" />
+				text="%eventphaseview.preregistration" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbPreRegistrationClicked" />
 			<Button fx:id="breadcrumbRegistration" styleClass="breadcrumb-button, multi-button, middle"
-				text="Anmeldung" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbRegistrationClicked" />
+				text="%eventphaseview.registration" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbRegistrationClicked" />
 			<Button fx:id="breadcrumbTournamentExecution" styleClass="breadcrumb-button, multi-button, right"
-				text="Turnierdurchführung" HBox.hgrow="ALWAYS"
+				text="%eventphaseview.tournamentexecution" HBox.hgrow="ALWAYS"
 				onAction="#onBreadcrumbTournamentExecutionClicked" />
 		</HBox>
 		<StackPane fx:id="eventPhaseContainer"

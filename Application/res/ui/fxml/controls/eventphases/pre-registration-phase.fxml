@@ -18,9 +18,9 @@
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
-		<Label styleClass="heading" text="Voranmeldung" />
+		<Label styleClass="heading" text="%preregistrationphase.preregistration" />
 		<TextField fx:id="textFieldPlayerSearch" maxHeight="1.7976931348623157E308"
-			promptText="Teilnehmer suchen" HBox.hgrow="ALWAYS" />
+			promptText="%preregistrationphase.searchattendee" HBox.hgrow="ALWAYS" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tablePreRegisteredPlayers" HBox.hgrow="ALWAYS" />
 			<VBox spacing="5.0" styleClass="table-edit-button-container">
@@ -30,7 +30,7 @@
 						<IconPane styleClass="icon-add, half" />
 					</graphic>
 					<tooltip>
-						<Tooltip text="Neuen Spieler hinzufügen" />
+						<Tooltip text="%preregistrationphase.addplayer" />
 					</tooltip>
 				</Button>
 				<Button fx:id="buttonRemovePlayer" styleClass="table-edit-button"
@@ -39,7 +39,7 @@
 						<IconPane styleClass="icon-remove, half" />
 					</graphic>
 					<tooltip>
-						<Tooltip text="Ausgewählten Spieler entfernen" />
+						<Tooltip text="%preregistrationphase.removeplayer" />
 					</tooltip>
 				</Button>
 				<Button fx:id="buttonEditPlayer" styleClass="table-edit-button"
@@ -48,7 +48,7 @@
 						<IconPane styleClass="icon-edit, half" />
 					</graphic>
 					<tooltip>
-						<Tooltip text="Ausgewählten Spieler ändern" />
+						<Tooltip text="%preregistrationphase.editplayer" />
 					</tooltip>
 				</Button>
 			</VBox>
