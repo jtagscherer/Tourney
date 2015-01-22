@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
@@ -108,6 +109,7 @@ public class SwissSystem implements PairingStrategy {
 
     @Override
     public String getName() {
-        return "Schweizer System";
+        return PreferencesManager.getInstance().localizeString(
+                "pairingstrategy.swisssystem");
     }
 }
