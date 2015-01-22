@@ -3,6 +3,7 @@ package usspg31.tourney.controller.controls.eventphases;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,10 +15,12 @@ import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
+import usspg31.tourney.controller.dialogs.EventAdministratorListDialog;
 import usspg31.tourney.controller.dialogs.TournamentDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.EventAdministrator;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.undo.UndoManager;
 
@@ -41,6 +44,7 @@ public class EventSetupPhaseController implements EventUser {
     private Event loadedEvent;
 
     private ModalDialog<Tournament, Tournament> tournamentDialog;
+    private ModalDialog<ObservableList<EventAdministrator>, Object> eventAdministratorListDialog;
 
     private final UndoManager undoManager;
 
@@ -51,6 +55,8 @@ public class EventSetupPhaseController implements EventUser {
     @FXML
     private void initialize() {
         this.tournamentDialog = new TournamentDialog().modalDialog();
+        this.eventAdministratorListDialog = new EventAdministratorListDialog()
+                .modalDialog();
 
         this.initTournamentTable();
         this.buttonEditTournament.disableProperty().bind(
@@ -67,8 +73,8 @@ public class EventSetupPhaseController implements EventUser {
                 public void updateItem(LocalDate item, boolean empty) {
                     super.updateItem(item, empty);
 
-                    LocalDate maxDate = EventSetupPhaseController.this
-                            .datePickerEndDate.getValue();
+                    LocalDate maxDate = EventSetupPhaseController.this.datePickerEndDate
+                            .getValue();
 
                     if (maxDate != null && item.isAfter(maxDate)) {
                         this.setDisable(true);
@@ -84,8 +90,8 @@ public class EventSetupPhaseController implements EventUser {
                 public void updateItem(LocalDate item, boolean empty) {
                     super.updateItem(item, empty);
 
-                    LocalDate minDate = EventSetupPhaseController.this
-                            .datePickerStartDate.getValue();
+                    LocalDate minDate = EventSetupPhaseController.this.datePickerStartDate
+                            .getValue();
 
                     if (minDate == null || item.isBefore(minDate)) {
                         this.setDisable(true);
@@ -187,6 +193,14 @@ public class EventSetupPhaseController implements EventUser {
         this.undoManager.clearHistory();
 
         this.loadedEvent = null;
+    }
+
+    @FXML
+    private void onButtonEventAdministratorsClicked(ActionEvent event) {
+        log.fine("Event Administrator Button clicked");
+
+        this.eventAdministratorListDialog.properties(
+                this.loadedEvent.getAdministrators()).show();
     }
 
     @FXML
