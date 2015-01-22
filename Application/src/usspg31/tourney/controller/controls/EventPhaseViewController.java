@@ -302,7 +302,24 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbPreRegistration.setDisable(true);
             this.breadcrumbTournamentExecution.setDisable(true);
         } else if (event.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
-            // TODO: Directly jump to the tournament execution
+            this.loadedEvent = event;
+            this.tournamentExecutionPhaseController.loadEvent(event);
+            this.breadcrumbTournamentExecution.setEffect(null);
+
+            // TODO: Remove these lines after the undo manager works in this
+            // view
+            this.buttonSave.disableProperty().unbind();
+            this.buttonSave.setDisable(false);
+
+            this.phasePosition.set(3);
+
+            this.tournamentExecutionPhaseController
+                    .showTournamentExecutionView(this.loadedEvent
+                            .getExecutedTournament());
+
+            this.breadcrumbEventSetup.setDisable(true);
+            this.breadcrumbPreRegistration.setDisable(true);
+            this.breadcrumbRegistration.setDisable(true);
         }
     }
 
