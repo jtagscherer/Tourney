@@ -31,6 +31,7 @@ import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
+import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.filemanagement.FileLoader;
 import usspg31.tourney.model.filemanagement.FileSaver;
@@ -69,7 +70,8 @@ public class RegistrationPhaseController implements EventUser {
     @FXML
     private void initialize() {
         this.registrationDialog = new PlayerPreRegistrationDialog()
-                .modalDialog().title("dialogs.playerpreregistration.registration");
+                .modalDialog().title(
+                        "dialogs.playerpreregistration.registration");
         this.distributionDialog = new RegistrationDistributionDialog()
                 .modalDialog();
         this.distributionNumberSelectionDialog = new RegistrationDistributionNumberSelectionDialog()
@@ -144,19 +146,25 @@ public class RegistrationPhaseController implements EventUser {
          * Bind the availability of the register and unregister buttons to
          * whether a player from the list is selected and is registered
          */
-        this.tableRegisteredPlayers.getSelectionModel().selectedItemProperty()
-                .addListener((ChangeListener<Player>) (arg0, oldVal, newVal) -> {
-                  if (newVal != null) {
-                if (newVal.getStartingNumber()
-                        .equals("")) {
-                    RegistrationPhaseController.this.buttonRegisterPlayer.setDisable(false);
-                    RegistrationPhaseController.this.buttonUnregisterPlayer.setDisable(true);
-                } else {
-                    RegistrationPhaseController.this.buttonRegisterPlayer.setDisable(true);
-                    RegistrationPhaseController.this.buttonUnregisterPlayer.setDisable(false);
-                }
-                  }
-               });
+        this.tableRegisteredPlayers
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        (ChangeListener<Player>) (arg0, oldVal, newVal) -> {
+                            if (newVal != null) {
+                                if (newVal.getStartingNumber().equals("")) {
+                                    RegistrationPhaseController.this.buttonRegisterPlayer
+                                            .setDisable(false);
+                                    RegistrationPhaseController.this.buttonUnregisterPlayer
+                                            .setDisable(true);
+                                } else {
+                                    RegistrationPhaseController.this.buttonRegisterPlayer
+                                            .setDisable(true);
+                                    RegistrationPhaseController.this.buttonUnregisterPlayer
+                                            .setDisable(false);
+                                }
+                            }
+                        });
 
         this.buttonRegisterPlayer.setDisable(true);
         this.buttonUnregisterPlayer.setDisable(true);
@@ -255,12 +263,8 @@ public class RegistrationPhaseController implements EventUser {
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
-                                returnValue.setId(String.valueOf(new String(
-                                        returnValue.getFirstName()
-                                                + returnValue.getLastName()
-                                                + returnValue.getMailAddress()
-                                                + returnValue.getNickName())
-                                        .hashCode()));
+                                returnValue.setId(IdentificationManager
+                                        .generateId(returnValue));
                                 this.loadedEvent.getRegisteredPlayers().add(
                                         returnValue);
                             }
