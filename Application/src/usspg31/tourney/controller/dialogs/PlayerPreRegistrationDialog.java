@@ -15,23 +15,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
-import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 
-@SuppressWarnings("deprecation")
 public class PlayerPreRegistrationDialog extends VBox implements
         IModalDialogProvider<Object, Player> {
 
@@ -224,27 +218,46 @@ public class PlayerPreRegistrationDialog extends VBox implements
         Tournament selectedTournament = this.tableTournaments
                 .getSelectionModel().getSelectedItem();
 
-        Action response = Dialogs
-                .create()
-                .owner(EntryPoint.getPrimaryStage())
-                .title("Turnier löschen")
-                .message(
-                        "Wollen Sie den Spieler \""
-                                + this.loadedPlayer.getFirstName() + " "
-                                + this.loadedPlayer.getLastName()
-                                + "\" wirklich vom Turnier \""
-                                + selectedTournament.getName() + "\" abmelden?")
-                .showConfirm();
-
-        if (response == Dialog.ACTION_YES) {
-            for (Player player : selectedTournament.getRegisteredPlayers()) {
-                if (player.getId().equals(this.loadedPlayer.getId())) {
-                    selectedTournament.getRegisteredPlayers().remove(player);
-                }
-            }
-        }
+        new SimpleDialog<>(
+                PreferencesManager
+                        .getInstance()
+                        .localizeString(
+                                "registrationphase.dialogs.removetournament.message.before")
+                        + " \""
+                        + this.loadedPlayer.getFirstName()
+                        + " "
+                        + this.loadedPlayer.getLastName()
+                        + "\" "
+                        + PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "registrationphase.dialogs.removetournament.message.middle")
+                        + " \""
+                        + selectedTournament.getName()
+                        + "\" "
+                        + PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "registrationphase.dialogs.removetournament.message.after"))
+                .modalDialog()
+                .title("registrationphase.dialogs.removetournament.title")
+                .dialogButtons(DialogButtons.YES_NO)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result != DialogResult.YES) {
+                                for (Player player : selectedTournament
+                                        .getRegisteredPlayers()) {
+                                    if (player.getId().equals(
+                                            this.loadedPlayer.getId())) {
+                                        selectedTournament
+                                                .getRegisteredPlayers().remove(
+                                                        player);
+                                    }
+                                }
+                                return;
+                            }
+                        }).show();
 
         this.updateTournamentList();
     }
-
 }
