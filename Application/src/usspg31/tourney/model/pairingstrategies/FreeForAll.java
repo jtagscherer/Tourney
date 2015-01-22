@@ -96,7 +96,7 @@ public class FreeForAll implements PairingStrategy {
     @Override
     public String getName() {
         return PreferencesManager.getInstance().localizeString(
-                "pairingstrategy.freeforall");
+                "pairingstrategy.freeforall.name");
     }
 
 }

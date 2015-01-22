@@ -99,6 +99,6 @@ public class SingleElimination implements PairingStrategy {
     @Override
     public String getName() {
         return PreferencesManager.getInstance().localizeString(
-                "pairingstrategy.singleelimination");
+                "pairingstrategy.singleelimination.name");
     }
 }

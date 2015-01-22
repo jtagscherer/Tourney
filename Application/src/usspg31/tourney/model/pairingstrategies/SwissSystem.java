@@ -110,6 +110,6 @@ public class SwissSystem implements PairingStrategy {
     @Override
     public String getName() {
         return PreferencesManager.getInstance().localizeString(
-                "pairingstrategy.swisssystem");
+                "pairingstrategy.swisssystem.name");
     }
 }

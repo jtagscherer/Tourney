@@ -19,7 +19,7 @@ public class DoubleElimination implements PairingStrategy {
         ArrayList<Player> loserBracket;
 
         Pairing partResult;
-        // random generation for the first round in the
+        // random generation for the first round in the tournament
         if (tournament.getRounds().size() == 0
                 || PairingHelper.isFirstInPhase(tournament.getRounds().size(),
                         tournament, PairingHelper.findPhase(tournament
@@ -71,7 +71,7 @@ public class DoubleElimination implements PairingStrategy {
 
             if (PairingHelper.findPhase(tournament.getRounds().size(),
                     tournament).getNumberOfOpponents() == 2) {
-
+                // deciding between the two possible round
                 if (loserInterRound) {
                     ArrayList<Pairing> tmp = new ArrayList<>();
                     loserBracket = new ArrayList<>();
@@ -205,7 +205,7 @@ public class DoubleElimination implements PairingStrategy {
     @Override
     public String getName() {
         return PreferencesManager.getInstance().localizeString(
-                "pairingstrategy.doubleelimination");
+                "pairingstrategy.doubleelimination.name");
     }
 
 }
