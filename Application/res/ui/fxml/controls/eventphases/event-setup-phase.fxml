@@ -20,23 +20,27 @@
 	</stylesheets>
 	<items>
 		<AnchorPane>
-			<Label styleClass="heading" text="Event" AnchorPane.leftAnchor="5.0"
+			<Label styleClass="heading" text="%eventsetupphase.event" AnchorPane.leftAnchor="5.0"
 				AnchorPane.topAnchor="5.0" />
-			<UndoTextField fx:id="textFieldEventTitle" promptText="Titel"
+			<UndoTextField fx:id="textFieldEventTitle" promptText="%eventsetupphase.title"
 				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
 				AnchorPane.topAnchor="50.0" />
-			<DatePicker fx:id="datePickerStartDate" promptText="Startdatum"
+			<DatePicker fx:id="datePickerStartDate" promptText="%eventsetupphase.startdate"
 				showWeekNumbers="true" AnchorPane.leftAnchor="5.0"
 				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
-			<DatePicker fx:id="datePickerEndDate" promptText="Enddatum"
+			<DatePicker fx:id="datePickerEndDate" promptText="%eventsetupphase.enddate"
 				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-				AnchorPane.topAnchor="110.0" />
-			<UndoTextArea fx:id="textAreaEventLocation" promptText="Beschreibung"
-				AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
+				AnchorPane.topAnchor="110.0" showWeekNumbers="true" />
+			<UndoTextArea fx:id="textAreaEventLocation" promptText="%eventsetupphase.location"
+				AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0"
 				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="140.0" />
+			<Button fx:id="buttonEventAdministrators" styleClass="table-edit-button"
+				onAction="#onButtonEventAdministratorsClicked"
+				AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
+				AnchorPane.rightAnchor="5.0" text="%eventsetupphase.eventadministrators" />
 		</AnchorPane>
 		<AnchorPane>
-			<Label styleClass="heading" text="Turniere"
+			<Label styleClass="heading" text="%eventsetupphase.tournaments"
 				AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
 			<HBox spacing="5.0" AnchorPane.bottomAnchor="5.0"
 				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
@@ -49,7 +53,7 @@
 							<IconPane styleClass="icon-add, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Neues Turnier hinzufügen" />
+							<Tooltip text="%eventsetupphase.addtournament" />
 						</tooltip>
 					</Button>
 					<Button fx:id="buttonRemoveTournament" styleClass="table-edit-button"
@@ -58,7 +62,7 @@
 							<IconPane styleClass="icon-remove, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Ausgewähltes Turnier entfernen" />
+							<Tooltip text="%eventsetupphase.removetournament" />
 						</tooltip>
 					</Button>
 					<Button fx:id="buttonEditTournament" styleClass="table-edit-button"
@@ -67,7 +71,7 @@
 							<IconPane styleClass="icon-edit, half" />
 						</graphic>
 						<tooltip>
-							<Tooltip text="Ausgewähltes Turnier ändern" />
+							<Tooltip text="%eventsetupphase.edittournament" />
 						</tooltip>
 					</Button>
 				</VBox>

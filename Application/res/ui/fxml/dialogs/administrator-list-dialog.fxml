@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import usspg31.tourney.controller.layout.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<fx:root type="javafx.scene.layout.HBox" spacing="5"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
+		<URL value="@/ui/css/tournament-module-editor.css" />
+	</stylesheets>
+	<children>
+		<TableView fx:id="tableAdministrators" HBox.hgrow="ALWAYS" />
+		<VBox spacing="5.0">
+			<Button fx:id="buttonAddAdministrator" styleClass="table-edit-button"
+				onAction="#onButtonAddAdministratorClicked">
+				<graphic>
+					<IconPane styleClass="icon-add, half" />
+				</graphic>
+				<tooltip>
+					<Tooltip text="%dialogs.administratorlistdialog.addadministrator" />
+				</tooltip>
+			</Button>
+			<Button fx:id="buttonRemoveAdministrator" styleClass="table-edit-button"
+				onAction="#onButtonRemoveAdministratorClicked">
+				<graphic>
+					<IconPane styleClass="icon-remove, half" />
+				</graphic>
+				<tooltip>
+					<Tooltip text="%dialogs.administratorlistdialog.removeadministrator" />
+				</tooltip>
+			</Button>
+			<Button fx:id="buttonEditAdministrator" styleClass="table-edit-button"
+				onAction="#onButtonEditAdministratorClicked">
+				<graphic>
+					<IconPane styleClass="icon-edit, half" />
+				</graphic>
+				<tooltip>
+					<Tooltip text="%dialogs.administratorlistdialog.editadministrator" />
+				</tooltip>
+			</Button>
+		</VBox>
+	</children>
+</fx:root>

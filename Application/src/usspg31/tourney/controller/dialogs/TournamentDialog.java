@@ -68,8 +68,9 @@ public class TournamentDialog extends VBox implements
     @FXML private Button buttonRemovePossibleScore;
     @FXML private Button buttonEditPossibleScore;
 
-    private ModalDialog<ObservableList<TournamentModule>, Object> tournamentModuleListDialog;
-    private ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+    private final ModalDialog<ObservableList<TournamentModule>, Object> tournamentModuleListDialog;
+    private final ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+    private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
 
     private Tournament loadedTournament;
 
@@ -85,14 +86,14 @@ public class TournamentDialog extends VBox implements
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
+        this.tournamentModuleListDialog = new TournamentModuleListDialog()
+                .modalDialog();
+        this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
+        this.possibleScoringDialog = new TournamentScoringDialog().modalDialog();
     }
 
     @FXML
     private void initialize() {
-        this.tournamentModuleListDialog = new TournamentModuleListDialog()
-                .modalDialog();
-        this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
-
         this.initTournamentPhaseTable();
         this.initPossibleScoresTable();
     }
@@ -393,8 +394,7 @@ public class TournamentDialog extends VBox implements
 
         this.tournamentPhaseDialog
                 .properties(newGamePhase)
-                .onResult(
-                        (result, returnValue) -> {
+                .onResult((result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
                                 this.loadedTournament.getRuleSet()
@@ -444,7 +444,6 @@ public class TournamentDialog extends VBox implements
      * @return the index of the currently selected row in the tournament phase
      *         table
      */
-
     private int getSelectedTournamentPhaseIndex() {
         return this.tableTournamentPhases.getSelectionModel()
                 .getSelectedIndex();
@@ -488,7 +487,16 @@ public class TournamentDialog extends VBox implements
 
     @FXML
     private void onButtonAddPossibleScoreClicked(ActionEvent event) {
+        log.fine("Add Possible Score Button was clicked");
 
+        this.possibleScoringDialog
+        .properties(new PossibleScoring())
+        .onResult((result, value) -> {
+            if (result == DialogResult.OK) {
+                this.tablePossibleScores.getItems().add(value);
+            }
+        })
+        .show();
     }
 
     @FXML
@@ -511,7 +519,17 @@ public class TournamentDialog extends VBox implements
 
     @FXML
     private void onButtonEditPossibleScoreClicked(ActionEvent event) {
+        log.fine("Edit Possible Score Button was clicked");
 
+        PossibleScoring selectedScoring = this.getSelectedPossibleScore();
+
+        this.possibleScoringDialog
+        .properties(selectedScoring)
+        .onResult((result, value) -> {
+            this.tablePossibleScores.getItems().remove(selectedScoring);
+            this.tablePossibleScores.getItems().add(value);
+        })
+        .show();
     }
 
     /**

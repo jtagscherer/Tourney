@@ -21,7 +21,7 @@
 	<items>
 		<VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
 			<children>
-				<Label styleClass="sub-heading" text="Allgemein" />
+				<Label styleClass="sub-heading" text="%dialogs.tournamentmoduleeditor.general" />
 				<UndoTextField fx:id="textFieldModuleTitle"
 					promptText="%dialogs.tournamentmodule.titleField" />
 				<UndoTextArea fx:id="textAreaDescription" prefHeight="200.0"
@@ -129,7 +129,7 @@
 								<IconPane styleClass="icon-remove, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="dialogs.tournamentmodule.removecore" />
+								<Tooltip text="%dialogs.tournamentmodule.removescore" />
 							</tooltip>
 						</Button>
 						<Button fx:id="buttonEditScore" styleClass="table-edit-button"
@@ -138,7 +138,7 @@
 								<IconPane styleClass="icon-edit, half" />
 							</graphic>
 							<tooltip>
-								<Tooltip text="dialogs.tournamentmodule.editscore" />
+								<Tooltip text="%dialogs.tournamentmodule.editscore" />
 							</tooltip>
 						</Button>
 					</VBox>
