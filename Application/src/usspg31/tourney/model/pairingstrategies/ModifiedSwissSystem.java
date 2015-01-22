@@ -5,7 +5,10 @@ import java.util.Collections;
 import java.util.Random;
 
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.model.Bye;
+import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
@@ -126,7 +129,35 @@ public class ModifiedSwissSystem implements PairingStrategy {
                 // bye
                 if (subScoreList.size() > 0) {
                     if (subList.indexOf(subScoreList) == subList.size() - 1) {
-                        // TODO implement bye
+                        for (int i = 0; i < subScoreList.size(); i++) {
+                            partResult = new Pairing();
+                            partResult.setFlag(PairingFlag.IGNORE);
+                            partResult.getOpponents().add(
+                                    subScoreList.get(i).getPlayer());
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper
+                                            .generateEmptyScore(
+                                                    subScoreList.get(i)
+                                                            .getPlayer(),
+                                                    tournament
+                                                            .getRuleSet()
+                                                            .getPossibleScores()
+                                                            .size()));
+                            for (Bye byeTest : tournament.getRuleSet()
+                                    .getByeList()) {
+                                if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+                                    partResult
+                                            .getScoreTable()
+                                            .get(0)
+                                            .getScore()
+                                            .addAll(byeTest.byePointsProperty());
+                                    break;
+                                }
+                            }
+
+                            result.add(partResult);
+                        }
                     } else {
                         subList.get(subList.indexOf(subScoreList) + 1).addAll(
                                 subScoreList);
