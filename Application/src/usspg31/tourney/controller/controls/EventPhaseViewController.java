@@ -301,6 +301,8 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbEventSetup.setDisable(true);
             this.breadcrumbPreRegistration.setDisable(true);
             this.breadcrumbTournamentExecution.setDisable(true);
+
+            this.registrationPhaseController.chooseRegistratorNumber(this);
         } else if (event.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
             this.loadedEvent = event;
             this.tournamentExecutionPhaseController.loadEvent(event);
@@ -460,8 +462,7 @@ public class EventPhaseViewController implements EventUser {
     @FXML
     private void onButtonLockClicked(ActionEvent event) {
         log.fine("Lock Button was clicked");
-        // TODO: do something to prevent closing the whole application
-        // lock the screen!
+
         this.passwordDialog.show();
     }
 

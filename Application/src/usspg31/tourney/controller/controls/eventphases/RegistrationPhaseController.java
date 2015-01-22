@@ -20,6 +20,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.MainWindow;
+import usspg31.tourney.controller.controls.EventPhaseViewController;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.RegistrationDistributionDialog;
@@ -90,15 +92,6 @@ public class RegistrationPhaseController implements EventUser {
         if (this.loadedEvent.getUserFlag() == UserFlag.REGISTRATION) {
             this.buttonDistributeRegistration.setDisable(true);
             this.buttonImportRegistration.setDisable(true);
-
-            this.distributionNumberSelectionDialog
-                    .properties(this.loadedEvent.getNumberOfRegistrators())
-                    .onResult((result, returnValue) -> {
-                        if (result != DialogResult.OK) {
-                            return;
-                        }
-                        this.registratorNumber = returnValue;
-                    }).show();
         }
 
         this.tableRegisteredPlayers.getSelectionModel().clearSelection();
@@ -168,6 +161,22 @@ public class RegistrationPhaseController implements EventUser {
 
         this.buttonRegisterPlayer.setDisable(true);
         this.buttonUnregisterPlayer.setDisable(true);
+    }
+
+    public void chooseRegistratorNumber(EventPhaseViewController superController) {
+        this.distributionNumberSelectionDialog
+                .properties(this.loadedEvent.getNumberOfRegistrators())
+                .dialogButtons(DialogButtons.OK_CANCEL)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result != DialogResult.OK) {
+                                superController.unloadEvent();
+                                MainWindow.getInstance().slideDown(
+                                        MainWindow.getInstance().getMainMenu());
+                                return;
+                            }
+                            this.registratorNumber = returnValue;
+                        }).show();
     }
 
     @Override
