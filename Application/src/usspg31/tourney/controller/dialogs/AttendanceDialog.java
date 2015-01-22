@@ -15,7 +15,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
-import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Player;
@@ -30,7 +29,6 @@ public class AttendanceDialog extends VBox implements
     @FXML private TableView<Player> tableAttendingPlayers;
     @FXML private Button buttonAddAttendee;
     @FXML private Button buttonRemoveAttendee;
-    @FXML private Button buttonStartTournament;
 
     public AttendanceDialog() {
         try {
@@ -46,15 +44,24 @@ public class AttendanceDialog extends VBox implements
 
     @FXML
     public void initialize() {
-        TableColumn<Player, String> playerName = new TableColumn<>(
+        TableColumn<Player, String> attendingPlayerNameColumn = new TableColumn<>(
                 PreferencesManager.getInstance().localizeString(
                         "dialogs.attendancedialog.playername"));
-        playerName.setCellValueFactory(cellValue -> {
+        attendingPlayerNameColumn.setCellValueFactory(cellValue -> {
             return cellValue.getValue().firstNameProperty().concat(" ")
                     .concat(cellValue.getValue().lastNameProperty());
         });
-        this.tableAttendingPlayers.getColumns().add(playerName);
-        this.tableRegisteredPlayers.getColumns().add(playerName);
+        TableColumn<Player, String> registeredPlayerNameColumn = new TableColumn<>(
+                PreferencesManager.getInstance().localizeString(
+                        "dialogs.attendancedialog.playername"));
+        registeredPlayerNameColumn.setCellValueFactory(cellValue -> {
+            return cellValue.getValue().firstNameProperty().concat(" ")
+                    .concat(cellValue.getValue().lastNameProperty());
+        });
+
+        this.tableAttendingPlayers.getColumns().add(attendingPlayerNameColumn);
+        this.tableRegisteredPlayers.getColumns()
+                .add(registeredPlayerNameColumn);
 
         this.buttonAddAttendee.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
@@ -62,15 +69,6 @@ public class AttendanceDialog extends VBox implements
         this.buttonRemoveAttendee.disableProperty().bind(
                 this.tableAttendingPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
-    }
-
-    @Override
-    public void setDialogRoot(
-            ModalDialog<ObservableList<Player>, ObservableList<Player>> dialogRoot) {
-        this.buttonStartTournament.setOnAction(event -> {
-            // TODO: ask the user if he really intends to start the tournament
-                dialogRoot.exitWith(DialogResult.OK);
-            });
     }
 
     @Override
@@ -92,7 +90,7 @@ public class AttendanceDialog extends VBox implements
     public void initModalDialog(
             ModalDialog<ObservableList<Player>, ObservableList<Player>> modalDialog) {
         modalDialog.title("dialogs.attendancedialog.attendingplayers")
-                .dialogButtons(DialogButtons.NONE);
+                .dialogButtons(DialogButtons.OK_CANCEL);
     }
 
     @FXML
