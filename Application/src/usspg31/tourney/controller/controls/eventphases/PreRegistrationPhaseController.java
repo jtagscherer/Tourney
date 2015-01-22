@@ -18,6 +18,7 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 
 public class PreRegistrationPhaseController implements EventUser {
@@ -149,12 +150,8 @@ public class PreRegistrationPhaseController implements EventUser {
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
-                                returnValue.setId(String.valueOf(new String(
-                                        returnValue.getFirstName()
-                                                + returnValue.getLastName()
-                                                + returnValue.getMailAddress()
-                                                + returnValue.getNickName())
-                                        .hashCode()));
+                                returnValue.setId(IdentificationManager
+                                        .generateId(returnValue));
                                 this.loadedEvent.getRegisteredPlayers().add(
                                         returnValue);
                             }

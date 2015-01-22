@@ -126,32 +126,43 @@ public class EventPhaseViewController implements EventUser {
     }
 
     private void loadSubViews() throws IOException {
-        FXMLLoader eventSetupPhaseLoader = new FXMLLoader(this.getClass()
-                .getResource("/ui/fxml/controls/eventphases/event-setup-phase.fxml"),
-                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+        FXMLLoader eventSetupPhaseLoader = new FXMLLoader(
+                this.getClass().getResource(
+                        "/ui/fxml/controls/eventphases/event-setup-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage()
+                        .getLanguageBundle());
         this.eventSetupPhase = eventSetupPhaseLoader.load();
         this.eventSetupPhaseController = eventSetupPhaseLoader.getController();
         this.eventSetupPhase.setVisible(true);
 
         FXMLLoader preRegistrationPhaseLoader = new FXMLLoader(
-                this.getClass().getResource("/ui/fxml/controls/eventphases/pre-registration-phase.fxml"),
-                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+                this.getClass()
+                        .getResource(
+                                "/ui/fxml/controls/eventphases/pre-registration-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage()
+                        .getLanguageBundle());
         this.preRegistrationPhase = preRegistrationPhaseLoader.load();
         this.preRegistrationPhaseController = preRegistrationPhaseLoader
                 .getController();
         this.preRegistrationPhase.setVisible(true);
 
         FXMLLoader registrationPhaseLoader = new FXMLLoader(
-                this.getClass().getResource("/ui/fxml/controls/eventphases/registration-phase.fxml"),
-                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+                this.getClass()
+                        .getResource(
+                                "/ui/fxml/controls/eventphases/registration-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage()
+                        .getLanguageBundle());
         this.registrationPhase = registrationPhaseLoader.load();
         this.registrationPhaseController = registrationPhaseLoader
                 .getController();
         this.registrationPhase.setVisible(true);
 
         FXMLLoader tournamentExecutionPhaseLoader = new FXMLLoader(
-                this.getClass().getResource("/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"),
-                PreferencesManager.getInstance().getSelectedLanguage().getLanguageBundle());
+                this.getClass()
+                        .getResource(
+                                "/ui/fxml/controls/eventphases/tournament-execution-phase.fxml"),
+                PreferencesManager.getInstance().getSelectedLanguage()
+                        .getLanguageBundle());
         this.tournamentExecutionPhase = tournamentExecutionPhaseLoader.load();
         this.tournamentExecutionPhaseController = tournamentExecutionPhaseLoader
                 .getController();
@@ -251,6 +262,20 @@ public class EventPhaseViewController implements EventUser {
             this.eventSetupPhaseController.loadEvent(event);
             this.preRegistrationPhaseController.loadEvent(event);
             this.registrationPhaseController.loadEvent(event);
+            this.tournamentExecutionPhaseController.loadEvent(event);
+
+            /*
+             * Clean up if some values are still set from a previously opened
+             * event
+             */
+            this.breadcrumbEventSetup.setEffect(null);
+            this.breadcrumbEventSetup.setDisable(false);
+            this.breadcrumbPreRegistration.setEffect(null);
+            this.breadcrumbPreRegistration.setDisable(false);
+            this.breadcrumbRegistration.setEffect(null);
+            this.breadcrumbRegistration.setDisable(false);
+            this.breadcrumbTournamentExecution.setEffect(null);
+            this.breadcrumbTournamentExecution.setDisable(false);
 
             this.loadedEvent = event;
             switch (this.loadedEvent.getEventPhase()) {
@@ -289,8 +314,27 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbEventSetup.setDisable(true);
             this.breadcrumbPreRegistration.setDisable(true);
             this.breadcrumbTournamentExecution.setDisable(true);
+
+            this.registrationPhaseController.chooseRegistratorNumber(this);
         } else if (event.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
-            // TODO: Directly jump to the tournament execution
+            this.loadedEvent = event;
+            this.tournamentExecutionPhaseController.loadEvent(event);
+            this.breadcrumbTournamentExecution.setEffect(null);
+
+            // TODO: Remove these lines after the undo manager works in this
+            // view
+            this.buttonSave.disableProperty().unbind();
+            this.buttonSave.setDisable(false);
+
+            this.phasePosition.set(3);
+
+            this.tournamentExecutionPhaseController
+                    .showTournamentExecutionView(this.loadedEvent
+                            .getExecutedTournament());
+
+            this.breadcrumbEventSetup.setDisable(true);
+            this.breadcrumbPreRegistration.setDisable(true);
+            this.breadcrumbRegistration.setDisable(true);
         }
     }
 
@@ -431,8 +475,7 @@ public class EventPhaseViewController implements EventUser {
     @FXML
     private void onButtonLockClicked(ActionEvent event) {
         log.fine("Lock Button was clicked");
-        // TODO: do something to prevent closing the whole application
-        // lock the screen!
+
         this.passwordDialog.show();
     }
 

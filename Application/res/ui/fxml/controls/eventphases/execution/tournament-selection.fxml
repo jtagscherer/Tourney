@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="usspg31.tourney.controller.controls.eventphases.execution.TournamentSelectionController">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
+		<URL value="@/ui/css/event-phase.css" />
+	</stylesheets>
+	<children>
+		<Label styleClass="heading" text="%tournamentselection.title" />
+		<TextField fx:id="textFieldTournamentSearch" maxHeight="1.7976931348623157E308"
+			promptText="%tournamentselection.searchtournament" HBox.hgrow="ALWAYS" />
+		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+			<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
+			<VBox spacing="5.0" styleClass="table-edit-button-container">
+				<Button fx:id="buttonExecuteTournament" styleClass="table-edit-button"
+					onAction="#onButtonExecuteTournamentClicked">
+					<graphic>
+						<IconPane styleClass="icon-execute, half" />
+					</graphic>
+					<tooltip>
+						<Tooltip text="%tournamentselection.tooltips.execute" />
+					</tooltip>
+				</Button>
+				<Button fx:id="buttonExportTournament" styleClass="table-edit-button"
+					onAction="#onButtonExportTournamentClicked">
+					<graphic>
+						<IconPane styleClass="icon-distribute, half" />
+					</graphic>
+					<tooltip>
+						<Tooltip text="%tournamentselection.tooltips.export" />
+					</tooltip>
+				</Button>
+				<Button fx:id="buttonImportTournament" styleClass="table-edit-button"
+					onAction="#onButtonImportTournamentClicked">
+					<graphic>
+						<IconPane styleClass="icon-merge, half" />
+					</graphic>
+					<tooltip>
+						<Tooltip text="%tournamentselection.tooltips.import" />
+					</tooltip>
+				</Button>
+			</VBox>
+		</HBox>
+	</children>
+	<padding>
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
+</VBox>
