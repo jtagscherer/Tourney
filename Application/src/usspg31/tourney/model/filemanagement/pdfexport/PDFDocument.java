@@ -271,16 +271,17 @@ public class PDFDocument {
                     tournamentAnchor), tournamentNumber + 1);
             tournamentChapter.add(Chunk.NEWLINE);
 
+            /* Add a subsection for the tournament administrators */
+            Paragraph administratorSuperParagraph = new Paragraph(
+                    PreferencesManager.getInstance().localizeString(
+                            "pdfoutput.tournament.administration"),
+                    PDFExporter.MEDIUM_HEADER_FONT);
+            Section administratorChapter = tournamentChapter
+                    .addSection(administratorSuperParagraph);
+            administratorChapter.add(Chunk.NEWLINE);
+
             /* Add the tournament administrators */
             Paragraph administrators = new Paragraph();
-
-            administrators.add(new Paragraph(PreferencesManager.getInstance()
-                    .localizeString("pdfoutput.tournament.administration"),
-                    PDFExporter.MEDIUM_HEADER_FONT));
-            this.addNewLines(administrators, 1);
-
-            this.document.add(administrators);
-
             for (TournamentAdministrator eventAdministrator : tournament
                     .getAdministrators()) {
                 Paragraph administratorParagraph = new Paragraph();
@@ -308,9 +309,11 @@ public class PDFDocument {
                                     PDFExporter.TEXT_FONT));
                 }
 
-                this.addNewLines(administratorParagraph, 1);
-                this.document.add(administratorParagraph);
+                administrators.add(administratorParagraph);
             }
+            this.addNewLines(administrators, 1);
+
+            administratorChapter.add(administrators);
 
             /* Add a subsection for the result table */
             Paragraph resultParagraph = new Paragraph(PreferencesManager

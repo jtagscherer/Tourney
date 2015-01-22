@@ -16,10 +16,6 @@ public class PageStamper extends PdfPageEventHelper {
     public void onEndPage(PdfWriter writer, Document document) {
         final int currentPageNumber = writer.getCurrentPageNumber();
 
-        if (currentPageNumber == 1) {
-            return;
-        }
-
         final PdfContentByte directContent = writer.getDirectContent();
 
         directContent.setColorFill(Color.DARK_GRAY);
