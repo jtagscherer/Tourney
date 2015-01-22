@@ -1,78 +1,90 @@
 package usspg31.tourney.controller.controls.eventphases;
 
+import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import usspg31.tourney.controller.controls.PairingView;
-import usspg31.tourney.controller.controls.TournamentUser;
-import usspg31.tourney.model.Pairing;
-import usspg31.tourney.model.PlayerScore;
-import usspg31.tourney.model.RoundGeneratorFactory;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.controller.controls.EventUser;
+import usspg31.tourney.controller.controls.eventphases.execution.TournamentExecutionController;
+import usspg31.tourney.controller.controls.eventphases.execution.TournamentSelectionController;
+import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Tournament;
 
-public class TournamentExecutionPhaseController implements TournamentUser {
+public class TournamentExecutionPhaseController implements EventUser {
 
     private static final Logger log = Logger
             .getLogger(TournamentExecutionPhaseController.class.getName());
 
-    @FXML private PairingView pairingView;
-    @FXML private Button buttonStartRound;
-    @FXML private Button buttonEnterResult;
+    @FXML private VBox contentBox;
 
-    private Tournament loadedTournament;
-    private RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
+    private Node selectionPhase;
+    private TournamentSelectionController selectionController;
 
-    @Override
-    public void loadTournament(Tournament tournament) {
-        this.loadedTournament = tournament;
+    private Node executionPhase;
+    private TournamentExecutionController executionController;
 
-        this.pairingView.loadTournament(tournament);
-
-        this.buttonEnterResult.disableProperty().bind(
-                this.pairingView.selectedPairingProperty().isNull());
-
-        if (tournament.getRounds().size() == 0) {
-            this.generateRound();
-        }
-    }
-
-    @Override
-    public void unloadTournament() {
-        this.pairingView.unloadTournament();
-    }
+    private Event loadedEvent;
 
     @FXML
-    private void onButtonStartRoundClicked(ActionEvent event) {
-        this.generateRound();
+    public void initialize() {
+        try {
+            /* Load the selection view */
+            FXMLLoader selectionLoader = new FXMLLoader(
+                    this.getClass()
+                            .getResource(
+                                    "/ui/fxml/controls/eventphases/execution/tournament-selection.fxml"),
+                    PreferencesManager.getInstance().getSelectedLanguage()
+                            .getLanguageBundle());
+            this.selectionPhase = selectionLoader.load();
+            this.selectionController = selectionLoader.getController();
+            this.selectionController.setExecutionSuperController(this);
+            this.selectionPhase.setVisible(true);
+
+            /* Load the execution view */
+            FXMLLoader executionLoader = new FXMLLoader(
+                    this.getClass()
+                            .getResource(
+                                    "/ui/fxml/controls/eventphases/execution/tournament-execution.fxml"),
+                    PreferencesManager.getInstance().getSelectedLanguage()
+                            .getLanguageBundle());
+            this.executionPhase = executionLoader.load();
+            this.executionController = executionLoader.getController();
+            this.executionPhase.setVisible(true);
+
+            this.showSelectionView();
+        } catch (IOException e) {
+            log.log(Level.SEVERE,
+                    "Could not initialize the tournament execution views.", e);
+            e.printStackTrace();
+        }
     }
 
-    private void generateRound() {
-        this.loadedTournament.getRounds().add(
-                this.roundGenerator.generateRound(this.loadedTournament));
-        this.buttonStartRound.setDisable(true);
+    @Override
+    public void loadEvent(Event event) {
+        this.loadedEvent = event;
+        this.selectionController.loadEvent(this.loadedEvent);
     }
 
-    @FXML
-    private void onButtonEnterResultClicked(ActionEvent event) {
-        // TODO: open dialog to enter score for every player
+    @Override
+    public void unloadEvent() {
+        // TODO: Unload and unbind everything
+    }
 
-        boolean roundFinished = true;
-        roundFinishCheck: for (Pairing pairing : this.loadedTournament
-                .getRounds().get(this.loadedTournament.getRounds().size() - 1)
-                .getPairings()) {
-            for (PlayerScore playerScore : pairing.getScoreTable()) {
-                for (Integer score : playerScore.getScore()) {
-                    if (score == null) {
-                        roundFinished = false;
-                        break roundFinishCheck;
-                    }
-                }
-            }
-        }
-        if (roundFinished) {
-            this.buttonStartRound.setDisable(false);
-        }
+    public void showSelectionView() {
+        this.contentBox.getChildren().clear();
+        this.contentBox.getChildren().add(this.selectionPhase);
+    }
+
+    public void showTournamentExecutionView(Tournament tournament) {
+        this.contentBox.getChildren().clear();
+        // TODO: Give the tournament to the execution controller. Currently
+        // freezes the application
+        // this.executionController.loadTournament(tournament);
+        this.contentBox.getChildren().add(this.executionPhase);
     }
 }
