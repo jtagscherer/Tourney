@@ -144,7 +144,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
     @Override
     public String getName() {
         return PreferencesManager.getInstance().localizeString(
-                "pairingstrategy.modifiedswisssystem");
+                "pairingstrategy.modifiedswisssystem.name");
     }
 
 }
