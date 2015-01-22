@@ -17,14 +17,20 @@ public class NumberTextField extends TextField {
         });
         this.textProperty().addListener((ov, o, n) -> {
             try {
-                this.setNumberValue(Integer.parseInt(this.getText()));
+                if (n.isEmpty()) {
+                    this.setNumberValue(0);
+                } else {
+                    this.setNumberValue(Integer.parseInt(this.getText()));
+                }
             } catch (Exception e) {
                 this.setText(Integer.toString(this.getNumberValue()));
             }
         });
         this.numberValueProperty().addListener((ov, o, n) -> {
-            if (!n.equals(Integer.parseInt(this.getText()))) {
-                this.setText(n.toString());
+            if (!(n.intValue() == 0 && this.getText().isEmpty())) {
+                if (!n.equals(Integer.parseInt(this.getText()))) {
+                    this.setText(n.toString());
+                }
             }
         });
     }
