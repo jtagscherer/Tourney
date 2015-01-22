@@ -721,7 +721,10 @@ public class TournamentDocument {
             bye.setByeType(ByeType.valueOf(FileLoader.getFirstChildNodeByTag(
                     byeNode, "type").getTextContent()));
 
-            for (Node scoreNode : FileLoader.getChildNodesByTag(byeNode,
+            Node pointsNode = FileLoader.getFirstChildNodeByTag(byeNode,
+                    "points");
+
+            for (Node scoreNode : FileLoader.getChildNodesByTag(pointsNode,
                     "score")) {
                 bye.getByePoints().add(
                         Integer.parseInt(scoreNode.getTextContent()));
