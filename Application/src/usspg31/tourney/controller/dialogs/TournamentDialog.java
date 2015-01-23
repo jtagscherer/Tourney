@@ -259,15 +259,13 @@ public class TournamentDialog extends VBox implements
         // index < size - 1 && selected != null
         this.buttonMovePossibleScoreDown.disableProperty().bind(
                 selectedIndex.greaterThanOrEqualTo(
-                        Bindings.size(this.tableTournamentPhases.getItems())
+                        Bindings.size(this.tablePossibleScores.getItems())
                                 .subtract(1)).or(selectedItem.isNull()));
 
         // only enable remove button if an item is selected and there is more
         // than one possible score
         this.buttonRemovePossibleScore.disableProperty().bind(
-                selectedItem.isNull().or(
-                        Bindings.size(this.tableTournamentPhases.getItems())
-                                .lessThanOrEqualTo(1)));
+                selectedItem.isNull());
 
         // only enable edit button if an item is selected
         this.buttonEditPossibleScore.disableProperty().bind(
@@ -502,12 +500,16 @@ public class TournamentDialog extends VBox implements
     private void onButtonAddPossibleScoreClicked(ActionEvent event) {
         log.fine("Add Possible Score Button was clicked");
 
-        this.possibleScoringDialog.properties(new PossibleScoring())
-                .onResult((result, value) -> {
-                    if (result == DialogResult.OK) {
-                        this.tablePossibleScores.getItems().add(value);
-                    }
-                }).show();
+        this.possibleScoringDialog
+                .properties(new PossibleScoring())
+                .onResult(
+                        (result, value) -> {
+                            if (result == DialogResult.OK) {
+                                value.setPriority(this.tablePossibleScores
+                                        .getItems().size());
+                                this.tablePossibleScores.getItems().add(value);
+                            }
+                        }).show();
     }
 
     @FXML

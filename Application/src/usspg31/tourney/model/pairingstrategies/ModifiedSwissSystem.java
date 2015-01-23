@@ -78,18 +78,21 @@ public class ModifiedSwissSystem implements PairingStrategy {
                 subList.add(subTmp);
 
             }
-
+            int count;
             // using the swiss system pairing strategy for each bracket
             for (ArrayList<PlayerScore> subScoreList : subList) {
                 while (subScoreList.size() >= PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents()) {
+
+                    boolean doublePairing = false;
                     partResult = new Pairing();
                     partResult.setFlag(Pairing.PairingFlag.IGNORE);
 
                     for (int i = 0; i < PairingHelper.findPhase(
                             tournament.getRounds().size(), tournament)
                             .getNumberOfOpponents(); i++) {
+                        count = 0;
 
                         partResult.getScoreTable().add(
                                 PairingHelper.generateEmptyScore(subScoreList
@@ -108,22 +111,42 @@ public class ModifiedSwissSystem implements PairingStrategy {
                             if (i == PairingHelper.findPhase(
                                     tournament.getRounds().size(), tournament)
                                     .getNumberOfOpponents() - 1) {
-                                if (PairingHelper.checkForSimiliarPairings(
+
+                                while (PairingHelper.isThereASimilarPairings(
                                         partResult, tournament)) {
-
-                                    // TODO finish the procedure for similar
-                                    // pairings
-                                } else {
-                                    subScoreList
-                                            .remove(subScoreList.size() - 1);
-
+                                    partResult.getOpponents().remove(
+                                            subScoreList.get(
+                                                    subScoreList.size() - 1
+                                                            - count)
+                                                    .getPlayer());
+                                    if (count + 1 == subScoreList.size()) {
+                                        count = 0;
+                                        partResult.getOpponents().add(
+                                                subScoreList.get(
+                                                        subScoreList.size() - 1
+                                                                - count)
+                                                        .getPlayer());
+                                        break;
+                                    } else {
+                                        count++;
+                                    }
+                                    partResult.getOpponents().add(
+                                            subScoreList.get(
+                                                    subScoreList.size() - 1
+                                                            - count)
+                                                    .getPlayer());
                                 }
+                                subScoreList.remove(subScoreList.size() - 1
+                                        - count);
                             }
                         }
 
                     }
-                    result.add(partResult);
+                    if (doublePairing) {
 
+                    } else {
+                        result.add(partResult);
+                    }
                 }
                 // put the remaining players in the next bracket or using the
                 // bye

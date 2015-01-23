@@ -37,7 +37,7 @@ public class DoubleElimination implements PairingStrategy {
             ArrayList<Player> randomList = new ArrayList<>();
             randomList.addAll(tournament.getRemainingPlayers());
             int randomNumber;
-
+            // generate the first pairing random
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
@@ -60,7 +60,8 @@ public class DoubleElimination implements PairingStrategy {
                 }
                 result.add(partResult);
             }
-
+            // every player left gets his own pairing and receives a bye and an
+            // entry in the receiveByePlayer list
             for (int i = 0; i < randomList.size(); i++) {
                 partResult = new Pairing();
                 partResult.setFlag(PairingFlag.WINNER_BRACKET);
@@ -78,11 +79,14 @@ public class DoubleElimination implements PairingStrategy {
                 }
 
                 result.add(partResult);
+                tournament.getReceivedByePlayers().add(randomList.get(i));
             }
 
         } else {
 
-            PreviousRoundState roundState;
+            PreviousRoundState roundState; // differentiate between the
+                                           // different possible outcome for a
+                                           // double elimination round
 
             boolean secondRound = true;
             boolean interRound = true;
@@ -109,7 +113,8 @@ public class DoubleElimination implements PairingStrategy {
                 loserBracket = new ArrayList<>();
                 winnerBracket = new ArrayList<>();
                 ArrayList<Player> winnerLoserBracket = new ArrayList<>();
-                // deciding between the two possible round
+                // deciding between the possible outcome for the generated
+                // tournament rounds
                 switch (roundState) {
 
                 case INTER_ROUND:

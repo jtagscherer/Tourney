@@ -31,10 +31,12 @@ public class FreeForAll implements PairingStrategy {
         int randomNumber;
 
         // checks if this is the first round in the tournament
+
         if (tournament.getRounds().size() == 0
                 || PairingHelper.isFirstInPhase(tournament.getRounds().size(),
                         tournament, PairingHelper.findPhase(tournament
                                 .getRounds().size(), tournament))) {
+
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
@@ -77,18 +79,45 @@ public class FreeForAll implements PairingStrategy {
                                             .size()));
 
                     partResult.getOpponents().add(randomList.get(randomNumber));
-                    randomList.remove(randomNumber);
-                }
-                // checking if there is an similar pairing in the tournament
-                if (!PairingHelper.checkForSimiliarPairings(partResult,
-                        tournament)) {
-                    // TODO finish checking for similar pairings in previous
-                    // rounds in the same game phase
-                    result.add(partResult);
+                    if (i == PairingHelper.findPhase(
+                            tournament.getRounds().size(), tournament)
+                            .getNumberOfOpponents() - 1) {
+                        int count = 0;
+                        // tries a limited time to avoid the conflict of a
+                        // similar pairing, after n runs the pairing will be
+                        // submitted no matter if it´s a similar pairing
 
+                        while (PairingHelper.isThereASimilarPairings(
+                                partResult, tournament)) {
+                            partResult.getOpponents().remove(
+                                    randomList.get(randomNumber));
+                            if (count + 1 == randomList.size()) {
+                                partResult.getOpponents().add(
+                                        randomList.get(randomNumber));
+                                break;
+                            } else {
+                                count++;
+
+                            }
+                            randomNumber = randomGenerator.nextInt(randomList
+                                    .size());
+                            partResult.getOpponents().add(
+                                    randomList.get(randomNumber));
+                        }
+                        randomList.remove(randomNumber);
+
+                    } else {
+
+                        randomList.remove(randomNumber);
+                    }
                 }
+                result.add(partResult);
             }
         }
+
+        // creates a pairing with only one player who receives the predefined
+        // bye score
+        // also adds the player to the receivedByePlayer list
         for (int i = 0; i < randomList.size(); i++) {
             partResult = new Pairing();
             partResult.setFlag(PairingFlag.IGNORE);
@@ -106,6 +135,8 @@ public class FreeForAll implements PairingStrategy {
             }
 
             result.add(partResult);
+
+            tournament.getReceivedByePlayers().add(randomList.get(i));
         }
         return result;
     }

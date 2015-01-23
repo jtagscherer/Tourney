@@ -79,6 +79,6 @@ public class TournamentSelectionDialog extends VBox implements
     public void initModalDialog(
             ModalDialog<ObservableList<Tournament>, Tournament> modalDialog) {
         modalDialog.title("dialogs.tournamentselection").dialogButtons(
-                DialogButtons.OK);
+                DialogButtons.OK_CANCEL);
     }
 }
