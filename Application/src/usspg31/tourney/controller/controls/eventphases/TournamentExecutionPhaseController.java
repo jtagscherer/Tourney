@@ -95,10 +95,7 @@ public class TournamentExecutionPhaseController implements EventUser {
                     if (result == DialogResult.OK) {
                         tournament.getAttendingPlayers().setAll(returnValue);
                         this.contentBox.getChildren().clear();
-                        // TODO: Give the tournament to the execution
-                        // controller. Currently
-                        // freezes the application
-                        // this.executionController.loadTournament(tournament);
+                        this.executionController.loadTournament(tournament);
                         this.contentBox.getChildren().add(this.executionPhase);
                     }
                 }).show();

@@ -41,3 +41,13 @@
 	-fx-font-weight: bold;
 	-fx-font-size: 20;
 }
+
+.score-heading {
+	-fx-font-size: 15;
+	-fx-font-family: "Roboto Slab";
+	-fx-font-weight: bold;
+}
+
+.pairing-score-dialog .table .table-cell {
+	-fx-alignment: CENTER;
+}

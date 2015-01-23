@@ -28,7 +28,7 @@ public class NumberTextField extends TextField {
         });
         this.numberValueProperty().addListener((ov, o, n) -> {
             if (!(n.intValue() == 0 && this.getText().isEmpty())) {
-                if (!n.equals(Integer.parseInt(this.getText()))) {
+                if (this.getText().isEmpty() || !n.equals(Integer.parseInt(this.getText()))) {
                     this.setText(n.toString());
                 }
             }

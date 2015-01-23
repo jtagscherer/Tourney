@@ -9,15 +9,16 @@
 <?import java.net.URL?>
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1">
+	xmlns:fx="http://javafx.com/fxml/1" spacing="5">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/icons.css" />
 		<URL value="@/ui/css/buttons.css" />
 		<URL value="@/ui/css/fonts.css" />
+		<URL value="@/ui/css/pairing-view.css" />
 	</stylesheets>
 	<children>
-		<HBox>
+		<HBox spacing="5">
 			<Button fx:id="buttonScrollBreadcrumbsLeft">
 				<graphic>
 					<IconPane styleClass="icon-arrow-left, half" />
@@ -33,7 +34,7 @@
 				</graphic>
 			</Button>
 		</HBox>
-		<ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true"
+		<ScrollPane fx:id="pairingScrollPane" fitToWidth="true" hbarPolicy="NEVER" pannable="true"
 			VBox.vgrow="ALWAYS">
 			<FlowPane fx:id="pairingContainer" hgap="10.0" vgap="10.0">
 				<padding>

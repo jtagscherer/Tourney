@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentRound;
@@ -32,8 +33,8 @@ public class PairingView extends VBox implements TournamentUser {
 
     @FXML private Button buttonScrollBreadcrumbsLeft;
     @FXML private Button buttonScrollBreadcrumbsRight;
-    @FXML private ScrollPane breadcrumbScrollPane;
     @FXML private HBox breadcrumbContainer;
+    @FXML private ScrollPane pairingScrollPane;
     @FXML private FlowPane pairingContainer;
 
     private Tournament loadedTournament;
@@ -56,8 +57,12 @@ public class PairingView extends VBox implements TournamentUser {
 
         this.selectedPairingNode = new SimpleObjectProperty<>();
         this.selectedPairingNode.addListener((ov, o, n) -> {
+            if (o != null) {
+                o.setSelected(false);
+            }
             if (n != null) {
                 this.setSelectedPairing(n.getPairing());
+                n.setSelected(true);
             } else {
                 this.setSelectedPairing(null);
             }
@@ -74,18 +79,21 @@ public class PairingView extends VBox implements TournamentUser {
             Number newValue) {
         // clear the selected pairing node
         this.selectedPairingNode.set(null);
+        this.updatePairings();
+    }
 
+    public void updatePairings() {
         // clear the pairing container and add pairing nodes for every pairing
         // there is in the selected round
-        TournamentRound round = this.loadedTournament.getRounds().get(
-                newValue.intValue());
+        TournamentRound round = this.loadedTournament.getRounds().get(this.getSelectedRound());
         this.pairingContainer.getChildren().clear();
         for (int i = 0; i < round.getPairings().size(); i++) {
             PairingNode pairingNode = new PairingNode(this.loadedTournament,
                     round.getPairings().get(i), i);
+            pairingNode.setFocusTraversable(true);
 
             pairingNode.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                pairingNode.setSelected(true);
+                pairingNode.requestFocus();
                 this.selectedPairingNode.set(pairingNode);
             });
 
@@ -126,7 +134,7 @@ public class PairingView extends VBox implements TournamentUser {
         int roundCount = this.loadedTournament.getRounds().size();
         for (int roundNumber = 0; roundNumber < roundCount; roundNumber++) {
             // Users don't like zero-based indices
-            Button breadcrumb = new Button("Runde " + (roundNumber + 1));
+            Button breadcrumb = new Button(PreferencesManager.getInstance().localizeString("pairingview.round") + (roundNumber + 1));
             final int selectRound = roundNumber;
 
             // make the button select the correct round
@@ -137,19 +145,11 @@ public class PairingView extends VBox implements TournamentUser {
             // assign the correct style classes to our breadcrumb button
             breadcrumb.getStyleClass().add("breadcrumb-button");
 
-            // this is our only button, we don't need additional style classes
-            if (roundCount < 1) {
-                return;
-            }
-
             if (roundNumber == 0) {
                 // this is our left-most breadcrumb
                 breadcrumb.getStyleClass().add("left");
-            } else if (roundNumber == roundCount - 1) {
-                // this is our right-most breadcrumb
-                breadcrumb.getStyleClass().add("right");
             } else {
-                // seems like we're somewhere in-between left and right
+                // this is our right-most breadcrumb
                 breadcrumb.getStyleClass().add("middle");
             }
 

@@ -1,0 +1,43 @@
+
+#breadcrumbContainer {
+	-fx-background-color: transparent;
+	-fx-padding: 0 1px 0 1px;
+}
+#breadcrumbScrollPane,
+#breadcrumbScrollPane:focused {
+	-fx-background-color: #888, #eee;
+	-fx-background-insets: 0, 0 1px 0 1px;
+	-fx-background-radius: 0;
+	-fx-padding: 0;
+}
+#breadcrumbScrollPane .viewport {
+	-fx-background-color: #eee;
+}
+
+#buttonScrollBreadcrumbsLeft,
+#buttonScrollBreadcrumbsRight {
+	-fx-min-height: 35px;
+	-fx-pref-width: 40px;
+}
+
+.breadcrumb-button {
+	-fx-min-height: 35px;
+	-fx-pref-width: 100px;
+	-fx-max-width: -t-max-value;
+}
+
+.breadcrumb-button.left {
+	-fx-shape: "M 0,50 0,0 l 96.5,0 L 100,25 96.5,50 z";
+}
+
+.breadcrumb-button.middle {
+	-fx-shape: "M 0,50 3.5,25 0,0 l 96.5,0 L 100,25 96.5,50 z";
+}
+
+.breadcrumb-button.right {
+	-fx-shape: "M 0,50 3.5,25 0,0 l 100,0 L 100,50 z";
+}
+
+.button-select-score {
+	
+}
