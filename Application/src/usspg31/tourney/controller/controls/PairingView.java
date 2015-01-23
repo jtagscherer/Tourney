@@ -61,8 +61,10 @@ public class PairingView extends VBox implements TournamentUser {
                 o.setSelected(false);
             }
             if (n != null) {
-                this.setSelectedPairing(n.getPairing());
-                n.setSelected(true);
+                if (!n.isDisabled()) {
+                    this.setSelectedPairing(n.getPairing());
+                    n.setSelected(true);
+                }
             } else {
                 this.setSelectedPairing(null);
             }
