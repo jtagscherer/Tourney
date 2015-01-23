@@ -130,7 +130,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
 							subScoreList.size() - 1
 								- count)
 							.getPlayer());
-					doublePairing = true;h
+					doublePairing = true;
 					break;
 				    } else {
 					count++;
