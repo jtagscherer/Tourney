@@ -430,21 +430,6 @@ public class RelativityPane extends Pane {
         this.getChildren().addAll(children);
     }
 
-    /*
-     * @Override protected double computeMaxWidth(double height) { return
-     * this.getMaxWidth(); }
-     * @Override protected double computeMaxHeight(double width) { return
-     * this.getMaxHeight(); }
-     * @Override protected double computeMinWidth(double height) { return
-     * this.getMinWidth(); }
-     * @Override protected double computeMinHeight(double width) { return
-     * this.getMinHeight(); }
-     * @Override protected double computePrefWidth(double height) { return
-     * this.getPrefWidth(); }
-     * @Override protected double computePrefHeight(double width) { return
-     * this.getPrefHeight(); }
-     */
-
     @Override
     protected void layoutChildren() {
         Insets insets = this.getInsets();

@@ -12,17 +12,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-
-import org.controlsfx.dialog.Dialogs;
-
 import usspg31.tourney.controller.controls.EventPhaseViewController;
 import usspg31.tourney.controller.dialogs.TournamentModuleListDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.TournamentModule;
 import usspg31.tourney.model.filemanagement.FileLoader;
 
-@SuppressWarnings("deprecation")
 public class MainMenuController {
 
     private static final Logger log = Logger.getLogger(MainMenuController.class
@@ -60,9 +58,12 @@ public class MainMenuController {
         // open the file chooser dialog and load the chosen event
         log.fine("Open Event Button was clicked");
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Eventdatei öffnen");
+        fileChooser.setTitle(PreferencesManager.getInstance().localizeString(
+                "dialogs.messages.openevent"));
         fileChooser.getExtensionFilters().add(
-                new ExtensionFilter("Tourney Eventdateien (*.tef)", "*.tef"));
+                new ExtensionFilter(PreferencesManager.getInstance()
+                        .localizeString("dialogs.extensions.eventfile"),
+                        "*.tef"));
         File selectedFile = fileChooser.showOpenDialog(EntryPoint
                 .getPrimaryStage());
         if (selectedFile != null) {
@@ -73,14 +74,10 @@ public class MainMenuController {
                         .getAbsolutePath());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "Could not load the specified event.", e);
-                Dialogs.create()
-                        .owner(EntryPoint.getPrimaryStage())
-                        .title("Fehler")
-                        .message(
-                                "Die Eventdatei \""
-                                        + selectedFile.getName()
-                                        + "\" konnte nicht geladen werden.\nBitte stellen Sie sicher, dass es sich dabei um eine gültige Eventdatei handelt.")
-                        .showError();
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString("dialogs.messages.couldnotload"))
+                        .modalDialog().dialogButtons(DialogButtons.OK)
+                        .title("dialogs.titles.error").show();
             }
 
             if (loadedEvent != null) {

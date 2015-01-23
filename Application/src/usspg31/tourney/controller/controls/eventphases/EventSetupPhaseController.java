@@ -3,6 +3,7 @@ package usspg31.tourney.controller.controls.eventphases;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.UndoTextArea;
@@ -66,6 +68,16 @@ public class EventSetupPhaseController implements EventUser {
                 this.tableTournaments.getSelectionModel()
                         .selectedItemProperty().isNull());
 
+        EntryPoint
+                .getPrimaryStage()
+                .titleProperty()
+                .bind(Bindings
+                        .when(textFieldEventTitle.textProperty().isEmpty())
+                        .then(Bindings.concat("Tourney"))
+                        .otherwise(
+                                Bindings.concat("Tourney \u2014 ").concat(
+                                        textFieldEventTitle.textProperty())));
+
         // restrict the maximum startDate to be at most the end date
         this.datePickerStartDate.setDayCellFactory(value -> {
             return new DateCell() {
@@ -115,6 +127,10 @@ public class EventSetupPhaseController implements EventUser {
         this.tableColumnTournamentTitle
                 .setCellValueFactory(cellData -> cellData.getValue()
                         .nameProperty());
+
+        this.tableColumnTournamentTitle.prefWidthProperty().bind(
+                this.tableTournaments.widthProperty());
+
         this.tableTournaments.getColumns().add(this.tableColumnTournamentTitle);
     }
 
@@ -172,6 +188,7 @@ public class EventSetupPhaseController implements EventUser {
         // unbind all basic control's values
         event.nameProperty().unbindBidirectional(
                 this.textFieldEventTitle.undoTextProperty());
+        this.textFieldEventTitle.setText("");
         event.locationProperty().unbindBidirectional(
                 this.textAreaEventLocation.textProperty());
         event.startDateProperty().unbindBidirectional(

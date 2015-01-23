@@ -20,6 +20,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.MainWindow;
+import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.controller.controls.EventPhaseViewController;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.RegistrationDistributionDialog;
@@ -31,6 +34,7 @@ import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
+import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.filemanagement.FileLoader;
 import usspg31.tourney.model.filemanagement.FileSaver;
@@ -69,7 +73,8 @@ public class RegistrationPhaseController implements EventUser {
     @FXML
     private void initialize() {
         this.registrationDialog = new PlayerPreRegistrationDialog()
-                .modalDialog().title("dialogs.playerpreregistration.registration");
+                .modalDialog().title(
+                        "dialogs.playerpreregistration.registration");
         this.distributionDialog = new RegistrationDistributionDialog()
                 .modalDialog();
         this.distributionNumberSelectionDialog = new RegistrationDistributionNumberSelectionDialog()
@@ -88,15 +93,6 @@ public class RegistrationPhaseController implements EventUser {
         if (this.loadedEvent.getUserFlag() == UserFlag.REGISTRATION) {
             this.buttonDistributeRegistration.setDisable(true);
             this.buttonImportRegistration.setDisable(true);
-
-            this.distributionNumberSelectionDialog
-                    .properties(this.loadedEvent.getNumberOfRegistrators())
-                    .onResult((result, returnValue) -> {
-                        if (result != DialogResult.OK) {
-                            return;
-                        }
-                        this.registratorNumber = returnValue;
-                    }).show();
         }
 
         this.tableRegisteredPlayers.getSelectionModel().clearSelection();
@@ -132,6 +128,15 @@ public class RegistrationPhaseController implements EventUser {
 
         this.tableRegisteredPlayers.setItems(sortedPlayerList);
 
+        this.tableColumnPlayerFirstName.prefWidthProperty().set(
+                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerLastName.prefWidthProperty().set(
+                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerMailAddress.prefWidthProperty().set(
+                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerNickName.prefWidthProperty().set(
+                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+
         // Bind the button's availability to the list selection
         this.buttonRemovePlayer.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
@@ -144,22 +149,44 @@ public class RegistrationPhaseController implements EventUser {
          * Bind the availability of the register and unregister buttons to
          * whether a player from the list is selected and is registered
          */
-        this.tableRegisteredPlayers.getSelectionModel().selectedItemProperty()
-                .addListener((ChangeListener<Player>) (arg0, oldVal, newVal) -> {
-                  if (newVal != null) {
-                if (newVal.getStartingNumber()
-                        .equals("")) {
-                    RegistrationPhaseController.this.buttonRegisterPlayer.setDisable(false);
-                    RegistrationPhaseController.this.buttonUnregisterPlayer.setDisable(true);
-                } else {
-                    RegistrationPhaseController.this.buttonRegisterPlayer.setDisable(true);
-                    RegistrationPhaseController.this.buttonUnregisterPlayer.setDisable(false);
-                }
-                  }
-               });
+        this.tableRegisteredPlayers
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        (ChangeListener<Player>) (arg0, oldVal, newVal) -> {
+                            if (newVal != null) {
+                                if (newVal.getStartingNumber().equals("")) {
+                                    RegistrationPhaseController.this.buttonRegisterPlayer
+                                            .setDisable(false);
+                                    RegistrationPhaseController.this.buttonUnregisterPlayer
+                                            .setDisable(true);
+                                } else {
+                                    RegistrationPhaseController.this.buttonRegisterPlayer
+                                            .setDisable(true);
+                                    RegistrationPhaseController.this.buttonUnregisterPlayer
+                                            .setDisable(false);
+                                }
+                            }
+                        });
 
         this.buttonRegisterPlayer.setDisable(true);
         this.buttonUnregisterPlayer.setDisable(true);
+    }
+
+    public void chooseRegistratorNumber(EventPhaseViewController superController) {
+        this.distributionNumberSelectionDialog
+                .properties(this.loadedEvent.getNumberOfRegistrators())
+                .dialogButtons(DialogButtons.OK_CANCEL)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result != DialogResult.OK) {
+                                superController.unloadEvent();
+                                MainWindow.getInstance().slideDown(
+                                        MainWindow.getInstance().getMainMenu());
+                                return;
+                            }
+                            this.registratorNumber = returnValue;
+                        }).show();
     }
 
     @Override
@@ -177,7 +204,9 @@ public class RegistrationPhaseController implements EventUser {
     }
 
     private void initPlayerTable() {
-        this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
+        this.tableColumnPlayerFirstName = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "registrationphase.player.firstname"));
         this.tableColumnPlayerFirstName
                 .setCellValueFactory(cellData -> cellData.getValue()
                         .firstNameProperty());
@@ -185,21 +214,27 @@ public class RegistrationPhaseController implements EventUser {
         this.tableRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerFirstName);
 
-        this.tableColumnPlayerLastName = new TableColumn<>("Nachname");
+        this.tableColumnPlayerLastName = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "registrationphase.player.lastname"));
         this.tableColumnPlayerLastName.setCellValueFactory(cellData -> cellData
                 .getValue().lastNameProperty());
         this.tableColumnPlayerLastName.setEditable(false);
         this.tableRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerLastName);
 
-        this.tableColumnPlayerNickName = new TableColumn<>("Nickname");
+        this.tableColumnPlayerNickName = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "registrationphase.player.nickname"));
         this.tableColumnPlayerNickName.setCellValueFactory(cellData -> cellData
                 .getValue().nickNameProperty());
         this.tableColumnPlayerNickName.setEditable(false);
         this.tableRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerNickName);
 
-        this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
+        this.tableColumnPlayerMailAddress = new TableColumn<>(
+                PreferencesManager.getInstance().localizeString(
+                        "registrationphase.player.mail"));
         this.tableColumnPlayerMailAddress
                 .setCellValueFactory(cellData -> cellData.getValue()
                         .mailAdressProperty());
@@ -207,7 +242,8 @@ public class RegistrationPhaseController implements EventUser {
         this.tableRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerMailAddress);
 
-        this.tableColumnPlayerPayed = new TableColumn<>("Bezahlt");
+        this.tableColumnPlayerPayed = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString("registrationphase.player.payed"));
         this.tableColumnPlayerPayed
                 .setCellValueFactory(new PropertyValueFactory<Player, Boolean>(
                         "payed"));
@@ -229,7 +265,10 @@ public class RegistrationPhaseController implements EventUser {
                     super.updateItem(item, empty);
                     if (item != null) {
                         if (item.equals("")) {
-                            this.setText("Nicht anwesend");
+                            this.setText(PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "registrationphase.player.notattending"));
                         } else {
                             this.setText(item);
                         }
@@ -255,12 +294,8 @@ public class RegistrationPhaseController implements EventUser {
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
-                                returnValue.setId(String.valueOf(new String(
-                                        returnValue.getFirstName()
-                                                + returnValue.getLastName()
-                                                + returnValue.getMailAddress()
-                                                + returnValue.getNickName())
-                                        .hashCode()));
+                                returnValue.setId(IdentificationManager
+                                        .generateId(returnValue));
                                 this.loadedEvent.getRegisteredPlayers().add(
                                         returnValue);
                             }
@@ -275,17 +310,23 @@ public class RegistrationPhaseController implements EventUser {
         Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
                 .getSelectedItem();
         if (selectedPlayer == null) {
-            new SimpleDialog<>(
-                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-                    .modalDialog().dialogButtons(DialogButtons.OK)
-                    .title("Fehler").show();
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.noplayerchosen")).modalDialog()
+                    .dialogButtons(DialogButtons.OK)
+                    .title("dialogs.titles.error").show();
         } else {
-            new SimpleDialog<>("Wollen Sie den Spieler \""
-                    + selectedPlayer.getFirstName() + " "
-                    + selectedPlayer.getLastName() + "\" wirklich löschen?")
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "preregistrationphase.dialogs.delete.before")
+                    + " \""
+                    + selectedPlayer.getFirstName()
+                    + " "
+                    + selectedPlayer.getLastName()
+                    + "\" "
+                    + PreferencesManager.getInstance().localizeString(
+                            "preregistrationphase.dialogs.delete.after"))
                     .modalDialog()
                     .dialogButtons(DialogButtons.YES_NO)
-                    .title("Löschen bestätigen")
+                    .title("preregistrationphase.dialogs.delete.title")
                     .onResult(
                             (result, returnValue) -> {
                                 if (result == DialogResult.YES) {
@@ -304,10 +345,10 @@ public class RegistrationPhaseController implements EventUser {
         final Player selectedPlayer = this.tableRegisteredPlayers
                 .getSelectionModel().getSelectedItem();
         if (selectedPlayer == null) {
-            new SimpleDialog<>(
-                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-                    .modalDialog().dialogButtons(DialogButtons.OK)
-                    .title("Fehler").show();
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.noplayerchosen")).modalDialog()
+                    .dialogButtons(DialogButtons.OK)
+                    .title("dialogs.titles.error").show();
         } else {
             this.registrationDialog
                     .properties(selectedPlayer)
@@ -334,16 +375,17 @@ public class RegistrationPhaseController implements EventUser {
         Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
                 .getSelectedItem();
         if (selectedPlayer == null) {
-            new SimpleDialog<>(
-                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-                    .modalDialog().dialogButtons(DialogButtons.OK)
-                    .title("Fehler").show();
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.noplayerchosen")).modalDialog()
+                    .dialogButtons(DialogButtons.OK)
+                    .title("dialogs.titles.error").show();
         } else {
             if (!selectedPlayer.getStartingNumber().equals("")) {
-                new SimpleDialog<>(
-                        "Dieser Spieler wurde bereits registriert und hat eine Startnummer erhalten.")
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "registrationphase.dialogs.alreadyregistered"))
                         .modalDialog().dialogButtons(DialogButtons.OK)
-                        .title("Fehler").show();
+                        .title("dialogs.titles.error").show();
                 return;
             }
 
@@ -367,14 +409,34 @@ public class RegistrationPhaseController implements EventUser {
              */
             if (highestStartingNumber == 0) {
                 final int currentStartingNumber = this.registratorNumber;
-                new SimpleDialog<>("Wollen Sie den Spieler \""
-                        + selectedPlayer.getFirstName() + " "
-                        + selectedPlayer.getLastName()
-                        + "\" wirklich als anwesend markieren?")
+                new SimpleDialog<>(
+                        PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "registrationphase.dialogs.register.message.before")
+                                + " \""
+                                + selectedPlayer.getFirstName()
+                                + " "
+                                + selectedPlayer.getLastName()
+                                + "\" "
+                                + PreferencesManager
+                                        .getInstance()
+                                        .localizeString(
+                                                "registrationphase.dialogs.register.message.after"))
                         .modalDialog()
                         .dialogButtons(DialogButtons.YES_NO)
-                        .title("Registrieren mit der Startnummer "
-                                + currentStartingNumber + " bestätigen", false)
+                        .title(PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "registrationphase.dialogs.register.title.before")
+                                + " "
+                                + currentStartingNumber
+                                + " "
+                                + PreferencesManager
+                                        .getInstance()
+                                        .localizeString(
+                                                "registrationphase.dialogs.register.title.after"),
+                                false)
                         .onResult(
                                 (result, returnValue) -> {
                                     if (result == DialogResult.YES) {
@@ -390,14 +452,34 @@ public class RegistrationPhaseController implements EventUser {
                 final int currentStartingNumber = highestStartingNumber
                         + Math.max(this.loadedEvent.getNumberOfRegistrators(),
                                 1);
-                new SimpleDialog<>("Wollen Sie den Spieler \""
-                        + selectedPlayer.getFirstName() + " "
-                        + selectedPlayer.getLastName()
-                        + "\" wirklich als anwesend markieren?")
+                new SimpleDialog<>(
+                        PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "registrationphase.dialogs.register.message.before")
+                                + " \""
+                                + selectedPlayer.getFirstName()
+                                + " "
+                                + selectedPlayer.getLastName()
+                                + "\" "
+                                + PreferencesManager
+                                        .getInstance()
+                                        .localizeString(
+                                                "registrationphase.dialogs.register.message.after"))
                         .modalDialog()
                         .dialogButtons(DialogButtons.YES_NO)
-                        .title("Registrieren mit der Startnummer "
-                                + currentStartingNumber + " bestätigen", false)
+                        .title(PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "registrationphase.dialogs.register.title.before")
+                                + " "
+                                + currentStartingNumber
+                                + " "
+                                + PreferencesManager
+                                        .getInstance()
+                                        .localizeString(
+                                                "registrationphase.dialogs.register.title.after"),
+                                false)
                         .onResult(
                                 (result, returnValue) -> {
                                     if (result == DialogResult.YES) {
@@ -421,14 +503,15 @@ public class RegistrationPhaseController implements EventUser {
         Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
                 .getSelectedItem();
         if (selectedPlayer == null) {
-            new SimpleDialog<>(
-                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-                    .modalDialog().dialogButtons(DialogButtons.OK)
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.noplayerchosen")).modalDialog()
+                    .dialogButtons(DialogButtons.OK)
                     .title("dialogs.titles.error").show();
         } else {
             if (selectedPlayer.getStartingNumber().equals("")) {
-                new SimpleDialog<>(
-                        "Dieser Spieler ist noch nicht registriert und kann daher nicht abgemeldet werden.")
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "registrationphase.dialogs.notregistered"))
                         .modalDialog().dialogButtons(DialogButtons.OK)
                         .title("dialogs.titles.error").show();
                 return;
@@ -438,11 +521,21 @@ public class RegistrationPhaseController implements EventUser {
              * Ask the user for confirmation and unregister the player if
              * necessary
              */
-            new SimpleDialog<>("Wollen Sie den Spieler \""
-                    + selectedPlayer.getFirstName() + " "
-                    + selectedPlayer.getLastName()
-                    + "\" wirklich als abwesend markieren?").modalDialog()
-                    .dialogButtons(DialogButtons.YES_NO)
+            new SimpleDialog<>(
+                    PreferencesManager
+                            .getInstance()
+                            .localizeString(
+                                    "registrationphase.dialogs.unregister.message.before")
+                            + " \""
+                            + selectedPlayer.getFirstName()
+                            + " "
+                            + selectedPlayer.getLastName()
+                            + "\" "
+                            + PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "registrationphase.dialogs.unregister.message.after"))
+                    .modalDialog().dialogButtons(DialogButtons.YES_NO)
                     .title("registrationphase.dialogs.unregister.title")
                     .onResult((result, returnValue) -> {
                         if (result == DialogResult.YES) {
@@ -460,11 +553,11 @@ public class RegistrationPhaseController implements EventUser {
 
         for (Player player : this.loadedEvent.getRegisteredPlayers()) {
             if (!player.getStartingNumber().equals("")) {
-                new SimpleDialog<>(
-                        "Damit sichergestellt werden kann, dass alle Arbeitsplätze unterschiedliche Startnummern verteilen,\n"
-                                + "kann die Anmeldung nur verteilt werden, wenn noch keine anwesenden Spieler registriert wurden.")
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "registrationphase.dialogs.distribute.message"))
                         .modalDialog().dialogButtons(DialogButtons.OK)
-                        .title("Fehler").show();
+                        .title("dialogs.titles.error").show();
                 return;
             }
         }
@@ -478,10 +571,17 @@ public class RegistrationPhaseController implements EventUser {
 
                             FileChooser fileChooser = new FileChooser();
                             fileChooser
-                                    .setTitle("Eventdatei für andere Anmeldungsarbeitsplätze speichern");
-                            fileChooser.getExtensionFilters().add(
-                                    new ExtensionFilter(
-                                            "Tourney Eventdatei (*.tef)",
+                                    .setTitle(PreferencesManager
+                                            .getInstance()
+                                            .localizeString(
+                                                    "registrationphase.dialogs.distribute.filechooser"));
+                            fileChooser
+                                    .getExtensionFilters()
+                                    .add(new ExtensionFilter(
+                                            PreferencesManager
+                                                    .getInstance()
+                                                    .localizeString(
+                                                            "dialogs.extensions.eventfile"),
                                             "*.tef"));
                             File selectedFile = fileChooser
                                     .showSaveDialog(EntryPoint
@@ -506,10 +606,12 @@ public class RegistrationPhaseController implements EventUser {
                                         "Could not save the event.", e);
 
                                 new SimpleDialog<>(
-                                        "Das Event konnte nicht gespeichert werden.\n"
-                                                + "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
-                                                + "alle Berechtigungen besitzen.")
-                                        .modalDialog().title("Fehler").show();
+                                        PreferencesManager
+                                                .getInstance()
+                                                .localizeString(
+                                                        "dialogs.messages.couldnotsave"))
+                                        .modalDialog()
+                                        .title("dialogs.titles.error").show();
                             }
 
                             this.loadedEvent
@@ -524,9 +626,12 @@ public class RegistrationPhaseController implements EventUser {
         log.fine("Merge Registration Button clicked");
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Anmeldedaten aus Eventdatei importieren");
+        fileChooser.setTitle(PreferencesManager.getInstance().localizeString(
+                "registrationphase.dialogs.merge.filechooser"));
         fileChooser.getExtensionFilters().add(
-                new ExtensionFilter("Tourney Eventdateien (*.tef)", "*.tef"));
+                new ExtensionFilter(PreferencesManager.getInstance()
+                        .localizeString("dialogs.extensions.eventfile"),
+                        "*.tef"));
         File selectedFile = fileChooser.showOpenDialog(EntryPoint
                 .getPrimaryStage());
         if (selectedFile != null) {
@@ -537,13 +642,10 @@ public class RegistrationPhaseController implements EventUser {
                         .getAbsolutePath());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "Could not load the specified event.", e);
-                new SimpleDialog<>(
-                        "Die Eventdatei \""
-                                + selectedFile.getName()
-                                + "\" konnte nicht geladen werden.\nBitte stellen Sie sicher, "
-                                + "dass es sich dabei um eine gültige Eventdatei handelt.")
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString("dialogs.messages.couldnotload"))
                         .modalDialog().dialogButtons(DialogButtons.OK)
-                        .title("Fehler").show();
+                        .title("dialogs.titles.error").show();
             }
 
             if (importedEvent != null) {
@@ -580,9 +682,13 @@ public class RegistrationPhaseController implements EventUser {
                 }
 
                 new SimpleDialog<>(
-                        "Alle Spielerdaten wurden erfolgreich importiert.")
+                        PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "registrationphase.dialogs.merge.success.message"))
                         .modalDialog().dialogButtons(DialogButtons.OK)
-                        .title("Import der Anmeldungen").show();
+                        .title("registrationphase.dialogs.merge.success.title")
+                        .show();
             }
         }
     }

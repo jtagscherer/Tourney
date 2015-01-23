@@ -6,7 +6,7 @@ import javafx.beans.property.StringProperty;
 /**
  * Represents a general administrator
  */
-public class Administrator extends Person {
+public class Administrator extends Person implements Cloneable {
 
     private final StringProperty phoneNumber;
 
@@ -44,5 +44,17 @@ public class Administrator extends Person {
      */
     public StringProperty phoneNumberProperty() {
         return this.phoneNumber;
+    }
+
+    @Override
+    public Object clone() {
+        Administrator clone = new Administrator();
+
+        clone.setFirstName(this.getFirstName());
+        clone.setLastName(this.getLastName());
+        clone.setMailAdress(this.getMailAddress());
+        clone.setPhoneNumber(this.getPhoneNumber());
+
+        return clone;
     }
 }

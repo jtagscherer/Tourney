@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Random;
 
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.model.Bye;
+import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
@@ -55,6 +57,25 @@ public class SwissSystem implements PairingStrategy {
 
                 result.add(partResult);
             }
+
+            for (int i = 0; i < randomList.size(); i++) {
+                partResult = new Pairing();
+                partResult.setFlag(PairingFlag.IGNORE);
+                partResult.getOpponents().add(randomList.get(i));
+                partResult.getScoreTable().add(
+                        PairingHelper.generateEmptyScore(randomList.get(i),
+                                tournament.getRuleSet().getPossibleScores()
+                                        .size()));
+                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+                        partResult.getScoreTable().get(0).getScore()
+                                .addAll(byeTest.byePointsProperty());
+                        break;
+                    }
+                }
+
+                result.add(partResult);
+            }
         } else {
             while (mergedScoreTable.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
@@ -101,7 +122,25 @@ public class SwissSystem implements PairingStrategy {
                 result.add(partResult);
 
             }
+            for (int i = 0; i < mergedScoreTable.size(); i++) {
+                partResult = new Pairing();
+                partResult.setFlag(PairingFlag.IGNORE);
+                partResult.getOpponents().add(
+                        mergedScoreTable.get(i).getPlayer());
+                partResult.getScoreTable().add(
+                        PairingHelper.generateEmptyScore(mergedScoreTable
+                                .get(i).getPlayer(), tournament.getRuleSet()
+                                .getPossibleScores().size()));
+                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+                        partResult.getScoreTable().get(0).getScore()
+                                .addAll(byeTest.byePointsProperty());
+                        break;
+                    }
+                }
 
+                result.add(partResult);
+            }
         }
         return result;
 

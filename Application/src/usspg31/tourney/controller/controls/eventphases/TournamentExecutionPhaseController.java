@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,7 +13,11 @@ import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.eventphases.execution.TournamentExecutionController;
 import usspg31.tourney.controller.controls.eventphases.execution.TournamentSelectionController;
+import usspg31.tourney.controller.dialogs.AttendanceDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogResult;
+import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 
 public class TournamentExecutionPhaseController implements EventUser {
@@ -28,10 +33,14 @@ public class TournamentExecutionPhaseController implements EventUser {
     private Node executionPhase;
     private TournamentExecutionController executionController;
 
+    private ModalDialog<ObservableList<Player>, ObservableList<Player>> attendanceDialog;
+
     private Event loadedEvent;
 
     @FXML
     public void initialize() {
+        this.attendanceDialog = new AttendanceDialog().modalDialog();
+
         try {
             /* Load the selection view */
             FXMLLoader selectionLoader = new FXMLLoader(
@@ -81,10 +90,17 @@ public class TournamentExecutionPhaseController implements EventUser {
     }
 
     public void showTournamentExecutionView(Tournament tournament) {
-        this.contentBox.getChildren().clear();
-        // TODO: Give the tournament to the execution controller. Currently
-        // freezes the application
-        // this.executionController.loadTournament(tournament);
-        this.contentBox.getChildren().add(this.executionPhase);
+        this.attendanceDialog.properties(tournament.getRegisteredPlayers())
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.OK) {
+                        tournament.getAttendingPlayers().setAll(returnValue);
+                        this.contentBox.getChildren().clear();
+                        // TODO: Give the tournament to the execution
+                        // controller. Currently
+                        // freezes the application
+                        // this.executionController.loadTournament(tournament);
+                        this.contentBox.getChildren().add(this.executionPhase);
+                    }
+                }).show();
     }
 }

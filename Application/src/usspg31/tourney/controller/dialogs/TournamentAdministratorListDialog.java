@@ -20,28 +20,29 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Administrator;
 import usspg31.tourney.model.EventAdministrator;
+import usspg31.tourney.model.TournamentAdministrator;
 
-public class EventAdministratorListDialog extends HBox implements
-        IModalDialogProvider<ObservableList<EventAdministrator>, Object> {
+public class TournamentAdministratorListDialog extends HBox implements
+        IModalDialogProvider<ObservableList<TournamentAdministrator>, Object> {
 
     private static final Logger log = Logger
-            .getLogger(EventAdministratorListDialog.class.getName());
+            .getLogger(TournamentAdministratorListDialog.class.getName());
 
-    @FXML private TableView<EventAdministrator> tableAdministrators;
-    private TableColumn<EventAdministrator, String> tableColumnFirstName;
-    private TableColumn<EventAdministrator, String> tableColumnLastName;
-    private TableColumn<EventAdministrator, String> tableColumnMailAddress;
-    private TableColumn<EventAdministrator, String> tableColumnPhoneNumber;
+    @FXML private TableView<TournamentAdministrator> tableAdministrators;
+    private TableColumn<TournamentAdministrator, String> tableColumnFirstName;
+    private TableColumn<TournamentAdministrator, String> tableColumnLastName;
+    private TableColumn<TournamentAdministrator, String> tableColumnMailAddress;
+    private TableColumn<TournamentAdministrator, String> tableColumnPhoneNumber;
 
     @FXML private Button buttonAddAdministrator;
     @FXML private Button buttonRemoveAdministrator;
     @FXML private Button buttonEditAdministrator;
 
-    private ModalDialog<Administrator, Administrator> eventAdministratorEditorDialog;
+    private ModalDialog<Administrator, Administrator> tournamentAdministratorEditorDialog;
 
-    private ObservableList<EventAdministrator> eventAdministratorList;
+    private ObservableList<TournamentAdministrator> tournamentAdministratorList;
 
-    public EventAdministratorListDialog() {
+    public TournamentAdministratorListDialog() {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
                     "/ui/fxml/dialogs/administrator-list-dialog.fxml"),
@@ -57,31 +58,31 @@ public class EventAdministratorListDialog extends HBox implements
 
     @FXML
     private void initialize() {
-        this.eventAdministratorEditorDialog = new AdministratorEditorDialog()
+        this.tournamentAdministratorEditorDialog = new AdministratorEditorDialog()
                 .modalDialog();
 
-        this.tableColumnFirstName = new TableColumn<EventAdministrator, String>(
+        this.tableColumnFirstName = new TableColumn<TournamentAdministrator, String>(
                 PreferencesManager.getInstance().localizeString(
                         "dialogs.administratorlistdialog.columns.firstname"));
         this.tableColumnFirstName.setCellValueFactory(cellData -> cellData
                 .getValue().firstNameProperty());
         this.tableAdministrators.getColumns().add(this.tableColumnFirstName);
 
-        this.tableColumnLastName = new TableColumn<EventAdministrator, String>(
+        this.tableColumnLastName = new TableColumn<TournamentAdministrator, String>(
                 PreferencesManager.getInstance().localizeString(
                         "dialogs.administratorlistdialog.columns.lastname"));
         this.tableColumnLastName.setCellValueFactory(cellData -> cellData
                 .getValue().lastNameProperty());
         this.tableAdministrators.getColumns().add(this.tableColumnLastName);
 
-        this.tableColumnMailAddress = new TableColumn<EventAdministrator, String>(
+        this.tableColumnMailAddress = new TableColumn<TournamentAdministrator, String>(
                 PreferencesManager.getInstance().localizeString(
                         "dialogs.administratorlistdialog.columns.mailaddress"));
         this.tableColumnMailAddress.setCellValueFactory(cellData -> cellData
                 .getValue().mailAdressProperty());
         this.tableAdministrators.getColumns().add(this.tableColumnMailAddress);
 
-        this.tableColumnPhoneNumber = new TableColumn<EventAdministrator, String>(
+        this.tableColumnPhoneNumber = new TableColumn<TournamentAdministrator, String>(
                 PreferencesManager.getInstance().localizeString(
                         "dialogs.administratorlistdialog.columns.phonenumber"));
         this.tableColumnPhoneNumber.setCellValueFactory(cellData -> cellData
@@ -98,15 +99,15 @@ public class EventAdministratorListDialog extends HBox implements
     }
 
     @Override
-    public void setProperties(ObservableList<EventAdministrator> properties) {
-        this.eventAdministratorList = properties;
-        this.tableAdministrators.setItems(this.eventAdministratorList);
+    public void setProperties(ObservableList<TournamentAdministrator> properties) {
+        this.tournamentAdministratorList = properties;
+        this.tableAdministrators.setItems(this.tournamentAdministratorList);
     }
 
     @Override
     public void initModalDialog(
-            ModalDialog<ObservableList<EventAdministrator>, Object> modalDialog) {
-        modalDialog.title("dialogs.administratorlistdialog.event")
+            ModalDialog<ObservableList<TournamentAdministrator>, Object> modalDialog) {
+        modalDialog.title("dialogs.administratorlistdialog.tournament")
                 .dialogButtons(DialogButtons.OK);
     }
 
@@ -114,13 +115,13 @@ public class EventAdministratorListDialog extends HBox implements
     private void onButtonAddAdministratorClicked(ActionEvent event) {
         log.fine("Add Administrator Button clicked");
 
-        this.eventAdministratorEditorDialog
+        this.tournamentAdministratorEditorDialog
                 .properties(new EventAdministrator())
                 .onResult(
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
-                                EventAdministrator administrator = new EventAdministrator();
+                                TournamentAdministrator administrator = new TournamentAdministrator();
                                 administrator.setFirstName(returnValue
                                         .getFirstName());
                                 administrator.setLastName(returnValue
@@ -129,7 +130,8 @@ public class EventAdministratorListDialog extends HBox implements
                                         .getMailAddress());
                                 administrator.setPhoneNumber(returnValue
                                         .getPhoneNumber());
-                                this.eventAdministratorList.add(administrator);
+                                this.tournamentAdministratorList
+                                        .add(administrator);
                             }
                         }).show();
     }
@@ -138,7 +140,7 @@ public class EventAdministratorListDialog extends HBox implements
     private void onButtonRemoveAdministratorClicked(ActionEvent event) {
         log.fine("Remove Administrator Button clicked");
 
-        EventAdministrator selectedAdministrator = this.tableAdministrators
+        TournamentAdministrator selectedAdministrator = this.tableAdministrators
                 .getSelectionModel().getSelectedItem();
 
         if (selectedAdministrator == null) {
@@ -178,13 +180,13 @@ public class EventAdministratorListDialog extends HBox implements
         final Administrator selectedAdministrator = this.tableAdministrators
                 .getSelectionModel().getSelectedItem();
 
-        this.eventAdministratorEditorDialog
+        this.tournamentAdministratorEditorDialog
                 .properties(selectedAdministrator)
                 .onResult(
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
-                                EventAdministrator administrator = new EventAdministrator();
+                                TournamentAdministrator administrator = new TournamentAdministrator();
                                 administrator.setFirstName(returnValue
                                         .getFirstName());
                                 administrator.setLastName(returnValue
@@ -194,9 +196,10 @@ public class EventAdministratorListDialog extends HBox implements
                                 administrator.setPhoneNumber(returnValue
                                         .getPhoneNumber());
 
-                                this.eventAdministratorList
+                                this.tournamentAdministratorList
                                         .remove(selectedAdministrator);
-                                this.eventAdministratorList.add(administrator);
+                                this.tournamentAdministratorList
+                                        .add(administrator);
                             }
                         }).show();
     }

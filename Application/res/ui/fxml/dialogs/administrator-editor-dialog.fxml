@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<fx:root type="javafx.scene.layout.VBox" spacing="5.0"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	prefWidth="Infinity">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
+	</stylesheets>
+	<children>
+		<HBox spacing="5.0">
+			<TextField fx:id="textFieldFirstName" promptText="%dialogs.administratoreditor.administrator.firstname"
+				HBox.hgrow="ALWAYS" />
+			<TextField fx:id="textFieldLastName" promptText="%dialogs.administratoreditor.administrator.lastname"
+				HBox.hgrow="ALWAYS" />
+		</HBox>
+		<TextField fx:id="textFieldEmail" promptText="%dialogs.administratoreditor.administrator.mailaddress" />
+		<TextField fx:id="textFieldPhoneNumber" promptText="%dialogs.administratoreditor.administrator.phonenumber" />
+	</children>
+	<padding>
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
+</fx:root>

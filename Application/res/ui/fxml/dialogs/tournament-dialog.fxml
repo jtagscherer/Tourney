@@ -24,6 +24,8 @@
 		<HBox alignment="TOP_RIGHT" spacing="5.0">
 			<Label maxWidth="1.7976931348623157E308" styleClass="sub-heading"
 				text="%dialogs.tournament.tournamentphases" HBox.hgrow="ALWAYS" />
+			<Button fx:id="buttonEditAdministrators" text="%dialogs.tournament.editadministrators"
+				onAction="#onButtonEditAdministratorsClicked" />
 			<Button fx:id="buttonLoadTournamentModule" text="%dialogs.tournament.loadmodule"
 				onAction="#onButtonLoadTournamentModuleClicked" />
 			<Button fx:id="buttonEditTournamentModules" text="%dialogs.tournament.editmodules"

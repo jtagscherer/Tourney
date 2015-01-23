@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
@@ -18,6 +19,7 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 
 public class PreRegistrationPhaseController implements EventUser {
@@ -57,26 +59,34 @@ public class PreRegistrationPhaseController implements EventUser {
     }
 
     private void initPlayerTable() {
-        this.tableColumnPlayerFirstName = new TableColumn<>("Vorname");
+        this.tableColumnPlayerFirstName = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "preregistrationphase.player.firstname"));
         this.tableColumnPlayerFirstName
                 .setCellValueFactory(cellData -> cellData.getValue()
                         .firstNameProperty());
         this.tablePreRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerFirstName);
 
-        this.tableColumnPlayerLastName = new TableColumn<>("Nachname");
+        this.tableColumnPlayerLastName = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "preregistrationphase.player.lastname"));
         this.tableColumnPlayerLastName.setCellValueFactory(cellData -> cellData
                 .getValue().lastNameProperty());
         this.tablePreRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerLastName);
 
-        this.tableColumnPlayerNickName = new TableColumn<>("Nickname");
+        this.tableColumnPlayerNickName = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "preregistrationphase.player.nickname"));
         this.tableColumnPlayerNickName.setCellValueFactory(cellData -> cellData
                 .getValue().nickNameProperty());
         this.tablePreRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerNickName);
 
-        this.tableColumnPlayerMailAddress = new TableColumn<>("E-Mail");
+        this.tableColumnPlayerMailAddress = new TableColumn<>(
+                PreferencesManager.getInstance().localizeString(
+                        "preregistrationphase.player.mail"));
         this.tableColumnPlayerMailAddress
                 .setCellValueFactory(cellData -> cellData.getValue()
                         .mailAdressProperty());
@@ -123,6 +133,15 @@ public class PreRegistrationPhaseController implements EventUser {
                 this.tablePreRegisteredPlayers.comparatorProperty());
 
         this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
+
+        this.tableColumnPlayerFirstName.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerLastName.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerMailAddress.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
+        this.tableColumnPlayerNickName.prefWidthProperty().set(
+                this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
     }
 
     @Override
@@ -149,12 +168,8 @@ public class PreRegistrationPhaseController implements EventUser {
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
-                                returnValue.setId(String.valueOf(new String(
-                                        returnValue.getFirstName()
-                                                + returnValue.getLastName()
-                                                + returnValue.getMailAddress()
-                                                + returnValue.getNickName())
-                                        .hashCode()));
+                                returnValue.setId(IdentificationManager
+                                        .generateId(returnValue));
                                 this.loadedEvent.getRegisteredPlayers().add(
                                         returnValue);
                             }
@@ -172,17 +187,23 @@ public class PreRegistrationPhaseController implements EventUser {
         Player selectedPlayer = this.tablePreRegisteredPlayers
                 .getSelectionModel().getSelectedItem();
         if (selectedPlayer == null) {
-            new SimpleDialog<>(
-                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-                    .modalDialog().dialogButtons(DialogButtons.OK)
-                    .title("Fehler").show();
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.noplayerchosen")).modalDialog()
+                    .dialogButtons(DialogButtons.OK)
+                    .title("dialogs.titles.error").show();
         } else {
-            new SimpleDialog<>("Wollen Sie den Spieler \""
-                    + selectedPlayer.getFirstName() + " "
-                    + selectedPlayer.getLastName() + "\" wirklich löschen?")
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "preregistrationphase.dialogs.delete.before")
+                    + " \""
+                    + selectedPlayer.getFirstName()
+                    + " "
+                    + selectedPlayer.getLastName()
+                    + "\" "
+                    + PreferencesManager.getInstance().localizeString(
+                            "preregistrationphase.dialogs.delete.after"))
                     .modalDialog()
                     .dialogButtons(DialogButtons.YES_NO)
-                    .title("Löschen bestätigen")
+                    .title("preregistrationphase.dialogs.delete.title")
                     .onResult(
                             (result, returnValue) -> {
                                 if (result == DialogResult.YES) {
@@ -201,10 +222,10 @@ public class PreRegistrationPhaseController implements EventUser {
         final Player selectedPlayer = this.tablePreRegisteredPlayers
                 .getSelectionModel().getSelectedItem();
         if (selectedPlayer == null) {
-            new SimpleDialog<>(
-                    "Bitte wählen Sie einen Spieler aus der Liste aus.")
-                    .modalDialog().dialogButtons(DialogButtons.OK)
-                    .title("Fehler").show();
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.noplayerchosen")).modalDialog()
+                    .dialogButtons(DialogButtons.OK)
+                    .title("dialogs.titles.error").show();
         } else {
             this.preRegistrationDialog
                     .properties(selectedPlayer)

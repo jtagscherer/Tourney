@@ -29,6 +29,7 @@ import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.TournamentAdministrator;
 import usspg31.tourney.model.TournamentModule;
 
 public class TournamentDialog extends VBox implements
@@ -39,6 +40,7 @@ public class TournamentDialog extends VBox implements
 
     @FXML private UndoTextField textFieldTournamentTitle;
 
+    @FXML private Button buttonEditAdministrators;
     @FXML private Button buttonLoadTournamentModule;
     @FXML private Button buttonEditTournamentModules;
 
@@ -71,6 +73,7 @@ public class TournamentDialog extends VBox implements
     private final ModalDialog<ObservableList<TournamentModule>, Object> tournamentModuleListDialog;
     private final ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
     private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
+    private ModalDialog<ObservableList<TournamentAdministrator>, Object> tournamentAdministratorListDialog;
 
     private Tournament loadedTournament;
 
@@ -89,13 +92,16 @@ public class TournamentDialog extends VBox implements
         this.tournamentModuleListDialog = new TournamentModuleListDialog()
                 .modalDialog();
         this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
-        this.possibleScoringDialog = new TournamentScoringDialog().modalDialog();
+        this.possibleScoringDialog = new TournamentScoringDialog()
+                .modalDialog();
     }
 
     @FXML
     private void initialize() {
         this.initTournamentPhaseTable();
         this.initPossibleScoresTable();
+        this.tournamentAdministratorListDialog = new TournamentAdministratorListDialog()
+                .modalDialog();
     }
 
     private void initTournamentPhaseTable() {
@@ -337,6 +343,12 @@ public class TournamentDialog extends VBox implements
     }
 
     @FXML
+    private void onButtonEditAdministratorsClicked(ActionEvent event) {
+        this.tournamentAdministratorListDialog.properties(
+                this.loadedTournament.getAdministrators()).show();
+    }
+
+    @FXML
     private void onButtonLoadTournamentModuleClicked(ActionEvent event) {
         // TODO: show all available modules and let the use choose one
     }
@@ -394,7 +406,8 @@ public class TournamentDialog extends VBox implements
 
         this.tournamentPhaseDialog
                 .properties(newGamePhase)
-                .onResult((result, returnValue) -> {
+                .onResult(
+                        (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
                                 this.loadedTournament.getRuleSet()
@@ -489,14 +502,12 @@ public class TournamentDialog extends VBox implements
     private void onButtonAddPossibleScoreClicked(ActionEvent event) {
         log.fine("Add Possible Score Button was clicked");
 
-        this.possibleScoringDialog
-        .properties(new PossibleScoring())
-        .onResult((result, value) -> {
-            if (result == DialogResult.OK) {
-                this.tablePossibleScores.getItems().add(value);
-            }
-        })
-        .show();
+        this.possibleScoringDialog.properties(new PossibleScoring())
+                .onResult((result, value) -> {
+                    if (result == DialogResult.OK) {
+                        this.tablePossibleScores.getItems().add(value);
+                    }
+                }).show();
     }
 
     @FXML
@@ -524,12 +535,13 @@ public class TournamentDialog extends VBox implements
         PossibleScoring selectedScoring = this.getSelectedPossibleScore();
 
         this.possibleScoringDialog
-        .properties(selectedScoring)
-        .onResult((result, value) -> {
-            this.tablePossibleScores.getItems().remove(selectedScoring);
-            this.tablePossibleScores.getItems().add(value);
-        })
-        .show();
+                .properties(selectedScoring)
+                .onResult(
+                        (result, value) -> {
+                            this.tablePossibleScores.getItems().remove(
+                                    selectedScoring);
+                            this.tablePossibleScores.getItems().add(value);
+                        }).show();
     }
 
     /**

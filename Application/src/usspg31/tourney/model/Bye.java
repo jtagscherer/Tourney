@@ -2,6 +2,8 @@ package usspg31.tourney.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Represents a bye that players can get in certain scenarios during the
@@ -13,23 +15,15 @@ public class Bye {
         SUPER_BYE;
     }
 
-    private ObjectProperty<Integer> byePoints;
+    private ObservableList<Integer> byePoints;
     private ObjectProperty<ByeType> byeType;
 
     public Bye() {
-        this.byePoints = new SimpleObjectProperty<>();
+        this.byePoints = FXCollections.observableArrayList();
         this.byeType = new SimpleObjectProperty<>();
     }
 
-    public Integer getByePoints() {
-        return this.byePoints.get();
-    }
-
-    public void setByePoints(Integer value) {
-        this.byePoints.set(value);
-    }
-
-    public ObjectProperty<Integer> byePointsProperty() {
+    public ObservableList<Integer> byePointsProperty() {
         return this.byePoints;
     }
 
@@ -45,4 +39,7 @@ public class Bye {
         return this.byeType;
     }
 
+    public ObservableList<Integer> getByePoints() {
+        return this.byePoints;
+    }
 }
