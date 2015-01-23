@@ -6,11 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.NumberTextField;
@@ -18,10 +18,8 @@ import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.GamePhase;
-import usspg31.tourney.model.pairingstrategies.FreeForAll;
+import usspg31.tourney.model.pairingstrategies.PairingStrategies;
 import usspg31.tourney.model.pairingstrategies.PairingStrategy;
-import usspg31.tourney.model.pairingstrategies.SingleElimination;
-import usspg31.tourney.model.pairingstrategies.SwissSystem;
 
 public class TournamentPhaseDialog extends VBox implements
         IModalDialogProvider<GamePhase, GamePhase> {
@@ -61,22 +59,40 @@ public class TournamentPhaseDialog extends VBox implements
                     }
                 });
 
-        // TODO: somehow format the output in the combobox (currently fully
-        // qualified class name is shown)
+        this.comboBoxPairingStrategy.setCellFactory(listView -> {
+            return new ListCell<PairingStrategy>() {
+                @Override
+                protected void updateItem(PairingStrategy item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        this.setGraphic(null);
+                    } else {
+                        this.setText(item.getName());
+                    }
+                }
+            };
+        });
+
+        this.comboBoxPairingStrategy
+                .setButtonCell(new ListCell<PairingStrategy>() {
+                    @Override
+                    protected void updateItem(PairingStrategy item,
+                            boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            this.setGraphic(null);
+                        } else {
+                            this.setText(item.getName());
+                        }
+                    }
+                });
+
         this.comboBoxPairingStrategy.setItems(this
                 .getAvailablePairingStrategies());
     }
 
     private ObservableList<PairingStrategy> getAvailablePairingStrategies() {
-        ObservableList<PairingStrategy> pairingStrategies = FXCollections
-                .observableArrayList();
-
-        // TODO: possibly get the available strategies via reflection or
-        // something?
-        pairingStrategies.addAll(new SingleElimination(), new FreeForAll(),
-                new SwissSystem());
-
-        return pairingStrategies;
+        return PairingStrategies.getPairingStrategyInstances();
     }
 
     @Override
