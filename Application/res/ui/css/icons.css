@@ -238,3 +238,13 @@
 	-t-icon-width: 7px;
 	-t-icon-height: 12px;
 }
+
+.icon-swap-horizontal {
+	-fx-shape: "M13.98 22L6 30l7.98 8v-6H28v-4H13.98v-6zM42 18l-7.98-8v6H20v4h14.02v6L42 18z";
+	-t-icon-width: 36px;
+	-t-icon-height: 28px;
+}
+.icon-swap-horizontal.half {
+	-t-icon-width: 18px;
+	-t-icon-height: 14px;
+}
