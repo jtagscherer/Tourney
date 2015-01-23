@@ -149,8 +149,8 @@ public class TestPairingStrategies {
 
         // Player at second position have to play against him
         assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
-                .getOpponents().get(1), testTournament.getRemainingPlayers()
-                .get(testTournament.getRemainingPlayers().size() - 2));
+                .getOpponents().get(0), testTournament.getRemainingPlayers()
+                .get(testTournament.getRemainingPlayers().size() - 1));
 
     }
 
@@ -166,13 +166,13 @@ public class TestPairingStrategies {
             testPossibleScoring.getScores().put(i + " Test", 10);
 
         }
+        testTournamentModule.getPossibleScores().add(testPossibleScoring);
 
         testGamePhase.setNumberOfOpponents(2);
         testGamePhase.setPhaseNumber(0);
         testGamePhase.setRoundCount(1);
         testGamePhase.setPairingMethod(new FreeForAll());
 
-        testTournamentModule.getPossibleScores().add(testPossibleScoring);
         testTournamentModule.getPhaseList().add(testGamePhase);
 
         testGamePhase = new GamePhase();
@@ -216,60 +216,8 @@ public class TestPairingStrategies {
 
         assertTrue(testTournament.getRounds().get(0).getPairings().size() * 2 == 8);
         assertTrue(testTournament.getRounds().get(0).getPairings().size() == testTournament
-                .getRounds().get(1).getPairings().size());
+                .getRounds().get(2).getPairings().size());
 
-    }
-
-    @Test
-    public void testFreeForAll() {
-        Tournament testTournament = new Tournament();
-        TournamentModule testTournamentModule = new TournamentModule();
-        GamePhase testGamePhase = new GamePhase();
-
-        PossibleScoring testPossibleScoring = new PossibleScoring();
-
-        for (int i = 0; i < 2; i++) {
-            testPossibleScoring.getScores().put(i + " Test", 10);
-
-        }
-
-        testGamePhase.setNumberOfOpponents(2);
-        testGamePhase.setPhaseNumber(0);
-        testGamePhase.setRoundCount(0);
-        testGamePhase.setPairingMethod(new SwissSystem());
-
-        testTournamentModule.getPossibleScores().add(testPossibleScoring);
-        testTournamentModule.getPhaseList().add(testGamePhase);
-
-        testGamePhase = new GamePhase();
-
-        testGamePhase.setNumberOfOpponents(2);
-        testGamePhase.setPhaseNumber(1);
-        testGamePhase.setRoundCount(2);
-        testGamePhase.setPairingMethod(new FreeForAll());
-
-        testTournamentModule.getPhaseList().add(testGamePhase);
-
-        testTournament.setRuleSet(testTournamentModule);
-
-        ArrayList<Player> testRemainingPlayer = new ArrayList<>();
-        Player testPlayer;
-        for (int i = 0; i < 8; i++) {
-            testPlayer = new Player();
-            testPlayer.setId(Integer.toString(i));
-
-            testRemainingPlayer.add(testPlayer);
-        }
-        testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
-
-        RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
-
-        testTournament.getRounds().add(
-                roundGenerator.generateRound(testTournament));
-        testTournament.getRounds().add(
-                roundGenerator.generateRound(testTournament));
-        assertEquals(testTournament.getRounds().get(0).getPairings().size(),
-                testTournament.getRounds().get(1).getPairings().size());
     }
 
     @Test

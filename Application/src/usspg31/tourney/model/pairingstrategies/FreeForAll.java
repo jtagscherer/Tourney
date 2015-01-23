@@ -35,6 +35,7 @@ public class FreeForAll implements PairingStrategy {
                 || PairingHelper.isFirstInPhase(tournament.getRounds().size(),
                         tournament, PairingHelper.findPhase(tournament
                                 .getRounds().size(), tournament))) {
+            System.out.println("First" + tournament.getRounds().size());
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
@@ -59,7 +60,6 @@ public class FreeForAll implements PairingStrategy {
             }
             // checks if the round is the first in his game phase
         } else {
-
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
@@ -77,16 +77,35 @@ public class FreeForAll implements PairingStrategy {
                                             .size()));
 
                     partResult.getOpponents().add(randomList.get(randomNumber));
-                    randomList.remove(randomNumber);
+                    if (i == PairingHelper.findPhase(
+                            tournament.getRounds().size(), tournament)
+                            .getNumberOfOpponents() - 1) {
+                        int count = 0;
+                        while (PairingHelper.isThereASimilarPairings(
+                                partResult, tournament)) {
+                            partResult.getOpponents().remove(
+                                    randomList.get(randomNumber));
+                            if (count + 1 == randomList.size()) {
+                                partResult.getOpponents().add(
+                                        randomList.get(randomNumber));
+                                break;
+                            } else {
+                                count++;
+                                randomNumber = randomGenerator
+                                        .nextInt(randomList.size());
+                            }
+                            partResult.getOpponents().add(
+                                    randomList.get(randomNumber));
+                        }
+                        randomList.remove(randomNumber);
+
+                    } else {
+
+                        randomList.remove(randomNumber);
+                    }
                 }
                 // checking if there is an similar pairing in the tournament
-                if (!PairingHelper.checkForSimiliarPairings(partResult,
-                        tournament)) {
-                    // TODO finish checking for similar pairings in previous
-                    // rounds in the same game phase
-                    result.add(partResult);
 
-                }
             }
         }
         for (int i = 0; i < randomList.size(); i++) {

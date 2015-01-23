@@ -77,6 +77,7 @@ public class SwissSystem implements PairingStrategy {
                 result.add(partResult);
             }
         } else {
+            int count;
             while (mergedScoreTable.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
@@ -85,6 +86,7 @@ public class SwissSystem implements PairingStrategy {
                 for (int i = 0; i < PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents(); i++) {
+                    count = 0;
 
                     partResult.getScoreTable().add(
                             PairingHelper.generateEmptyScore(mergedScoreTable
@@ -100,21 +102,37 @@ public class SwissSystem implements PairingStrategy {
                     } else {
                         partResult.getOpponents().add(
                                 mergedScoreTable.get(
-                                        mergedScoreTable.size() - i)
+                                        mergedScoreTable.size() - 1 - count)
                                         .getPlayer());
                         if (i == PairingHelper.findPhase(
                                 tournament.getRounds().size(), tournament)
                                 .getNumberOfOpponents() - 1) {
-                            if (PairingHelper.checkForSimiliarPairings(
+
+                            while (PairingHelper.isThereASimilarPairings(
                                     partResult, tournament)) {
-
-                                // TODO finish the procedure for similar
-                                // pairings
-                            } else {
-                                mergedScoreTable
-                                        .remove(mergedScoreTable.size() - 1);
-
+                                partResult.getOpponents().remove(
+                                        mergedScoreTable.get(
+                                                mergedScoreTable.size() - 1
+                                                        - count).getPlayer());
+                                if (count + 1 == mergedScoreTable.size()) {
+                                    count = 0;
+                                    partResult.getOpponents().add(
+                                            mergedScoreTable.get(
+                                                    mergedScoreTable.size() - 1
+                                                            - count)
+                                                    .getPlayer());
+                                    break;
+                                } else {
+                                    count++;
+                                }
+                                partResult.getOpponents().add(
+                                        mergedScoreTable.get(
+                                                mergedScoreTable.size() - 1
+                                                        - count).getPlayer());
                             }
+                            mergedScoreTable.remove(mergedScoreTable.size() - 1
+                                    - count);
+
                         }
                     }
 
