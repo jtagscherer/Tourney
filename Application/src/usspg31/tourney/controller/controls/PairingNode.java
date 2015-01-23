@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
@@ -50,13 +51,21 @@ public class PairingNode extends VBox {
         this.index = index;
 
         this.initContents();
+
+        if (pairing.getOpponents().size() < 2) {
+            this.setDisable(true);
+        }
     }
 
     /**
      * Initializes the control's contents.
      */
     private void initContents() {
-        this.getChildren().add(new Label("#" + this.index));
+        if (this.pairing.getOpponents().size() > 1) {
+            this.getChildren().add(new Label("#" + this.index));
+        } else {
+            this.getChildren().add(new Label(PreferencesManager.getInstance().localizeString("pairingnode.bye")));
+        }
 
         this.opponentTable = new TableView<>();
         this.opponentTable.setMouseTransparent(true);

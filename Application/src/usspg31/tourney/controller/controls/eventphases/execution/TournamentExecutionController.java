@@ -41,6 +41,7 @@ public class TournamentExecutionController implements TournamentUser {
 
     @Override
     public void loadTournament(Tournament tournament) {
+        log.info("Loading Tournament");
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(this.loadedTournament.getAttendingPlayers());
 
@@ -56,15 +57,18 @@ public class TournamentExecutionController implements TournamentUser {
 
     @Override
     public void unloadTournament() {
+        log.info("Unloading Tournament");
         this.pairingView.unloadTournament();
     }
 
     @FXML
     private void onButtonStartRoundClicked(ActionEvent event) {
+        log.finer("Start Round Button was clicked");
         this.generateRound();
     }
 
     private void generateRound() {
+    log.info("Generating next round");
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
@@ -72,6 +76,7 @@ public class TournamentExecutionController implements TournamentUser {
 
     @FXML
     private void onButtonEnterResultClicked(ActionEvent event) {
+        log.info("Enter Result Button was clicked");
         // FIXME: if the user selects 0 as a score for a player, the value doesn't get set
         this.pairingScoreDialog
         .properties(new PairingEntry(this.loadedTournament, this.pairingView.getSelectedPairing()))
@@ -91,10 +96,11 @@ public class TournamentExecutionController implements TournamentUser {
         })
         .show();
 
+        // check, if all pairings have a score
         boolean roundFinished = true;
-        roundFinishCheck: for (Pairing pairing : this.loadedTournament
-                .getRounds().get(this.loadedTournament.getRounds().size() - 1)
-                .getPairings()) {
+        roundFinishCheck:
+        for (Pairing pairing : this.loadedTournament.getRounds().get(
+                this.pairingView.getSelectedRound()).getPairings()) {
             for (PlayerScore playerScore : pairing.getScoreTable()) {
                 for (Integer score : playerScore.getScore()) {
                     if (score == null) {
@@ -104,8 +110,6 @@ public class TournamentExecutionController implements TournamentUser {
                 }
             }
         }
-        if (roundFinished) {
-            this.buttonStartRound.setDisable(false);
-        }
+        this.buttonStartRound.setDisable(!roundFinished);
     }
 }
