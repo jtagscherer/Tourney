@@ -246,17 +246,20 @@ public class PlayerPreRegistrationDialog extends VBox implements
                 .dialogButtons(DialogButtons.YES_NO)
                 .onResult(
                         (result, returnValue) -> {
-                            if (result != DialogResult.YES) {
+                            if (result == DialogResult.YES) {
+                                Player playerToRemove = null;
                                 for (Player player : selectedTournament
                                         .getRegisteredPlayers()) {
                                     if (player.getId().equals(
                                             this.loadedPlayer.getId())) {
-                                        selectedTournament
-                                                .getRegisteredPlayers().remove(
-                                                        player);
+                                        playerToRemove = player;
+                                        break;
                                     }
                                 }
-                                return;
+
+                                selectedTournament.getRegisteredPlayers()
+                                        .remove(playerToRemove);
+                                this.updateTournamentList();
                             }
                         }).show();
 
