@@ -17,7 +17,7 @@ public class PairingHelper {
      */
     public static GamePhase findPhase(int roundcount, Tournament value) {
         for (GamePhase actPhase : value.getRuleSet().getPhaseList()) {
-            if (roundcount - actPhase.getRoundCount() <= 0) {
+            if (roundcount - actPhase.getRoundCount() < 0) {
                 return actPhase;
             }
             roundcount -= actPhase.getRoundCount();
@@ -88,9 +88,16 @@ public class PairingHelper {
      * @param tournament
      * @return if there this pairing already take place in the tournament
      */
-    public static boolean checkForSimiliarPairings(Pairing value,
+    public static boolean isThereASimiliarPairings(Pairing value,
             Tournament tournament) {
-        // TODO implement checking for similar pairings in the same GamePhase
+        for (TournamentRound tRound : tournament.getRounds()) {
+            for (Pairing tPairing : tRound.getPairings()) {
+                if (tPairing.getOpponents().containsAll(value.getOpponents())) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
