@@ -31,11 +31,12 @@ public class FreeForAll implements PairingStrategy {
         int randomNumber;
 
         // checks if this is the first round in the tournament
+
         if (tournament.getRounds().size() == 0
                 || PairingHelper.isFirstInPhase(tournament.getRounds().size(),
                         tournament, PairingHelper.findPhase(tournament
                                 .getRounds().size(), tournament))) {
-            System.out.println("First" + tournament.getRounds().size());
+
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
@@ -60,6 +61,7 @@ public class FreeForAll implements PairingStrategy {
             }
             // checks if the round is the first in his game phase
         } else {
+
             while (randomList.size() >= PairingHelper.findPhase(
                     tournament.getRounds().size(), tournament)
                     .getNumberOfOpponents()) {
@@ -91,9 +93,10 @@ public class FreeForAll implements PairingStrategy {
                                 break;
                             } else {
                                 count++;
-                                randomNumber = randomGenerator
-                                        .nextInt(randomList.size());
+
                             }
+                            randomNumber = randomGenerator.nextInt(randomList
+                                    .size());
                             partResult.getOpponents().add(
                                     randomList.get(randomNumber));
                         }
@@ -104,8 +107,7 @@ public class FreeForAll implements PairingStrategy {
                         randomList.remove(randomNumber);
                     }
                 }
-                // checking if there is an similar pairing in the tournament
-
+                result.add(partResult);
             }
         }
         for (int i = 0; i < randomList.size(); i++) {
