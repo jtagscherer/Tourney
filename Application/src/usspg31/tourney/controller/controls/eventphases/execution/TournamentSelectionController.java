@@ -21,15 +21,11 @@ import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
-import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
-import usspg31.tourney.controller.dialogs.modal.DialogResult;
-import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
-import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.filemanagement.FileLoader;
@@ -54,13 +50,8 @@ public class TournamentSelectionController implements EventUser {
 
     private TournamentExecutionPhaseController phaseController;
 
-    private ModalDialog<Object, Player> preRegistrationDialog;
-
     @FXML
     private void initialize() {
-        this.preRegistrationDialog = new PlayerPreRegistrationDialog()
-                .modalDialog();
-
         this.initPlayerTable();
 
         // Bind the button's availability to the list selection
@@ -147,6 +138,11 @@ public class TournamentSelectionController implements EventUser {
                 this.tableTournaments.comparatorProperty());
 
         this.tableTournaments.setItems(sortedTournamentList);
+
+        this.tableColumnTournamentName.prefWidthProperty().set(
+                this.tableTournaments.widthProperty().get() * 0.7);
+        this.tableColumnTournamentStatus.prefWidthProperty().set(
+                this.tableTournaments.widthProperty().get() * 0.3);
     }
 
     @Override
@@ -180,23 +176,8 @@ public class TournamentSelectionController implements EventUser {
                     .dialogButtons(DialogButtons.OK)
                     .title("dialogs.titles.error").show();
         } else {
-            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
-                    "tournamentselection.dialogs.execute.before")
-                    + " \""
-                    + selectedTournament.getName()
-                    + "\" "
-                    + PreferencesManager.getInstance().localizeString(
-                            "tournamentselection.dialogs.execute.after"))
-                    .modalDialog()
-                    .dialogButtons(DialogButtons.YES_NO)
-                    .title("tournamentselection.dialogs.execute.title")
-                    .onResult(
-                            (result, returnValue) -> {
-                                if (result == DialogResult.YES) {
-                                    this.phaseController
-                                            .showTournamentExecutionView(selectedTournament);
-                                }
-                            }).show();
+            this.phaseController
+                    .showTournamentExecutionView(selectedTournament);
         }
     }
 

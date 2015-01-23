@@ -14,7 +14,7 @@
 		<URL value="@/ui/css/buttons.css" />
 		<URL value="@/ui/css/fonts.css" />
 	</stylesheets>
-	<children>
+	<VBox spacing="10.0">
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<VBox HBox.hgrow="ALWAYS">
 				<Label styleClass="sub-heading" text="Angemeldete Spieler" />
@@ -43,10 +43,7 @@
 					maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 			</VBox>
 		</HBox>
-		<HBox alignment="BOTTOM_RIGHT">
-			<Button fx:id="buttonStartTournament" text="Turnier beginnen" />
-		</HBox>
-	</children>
+	</VBox>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>

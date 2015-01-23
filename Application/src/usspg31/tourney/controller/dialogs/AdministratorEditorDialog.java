@@ -59,7 +59,7 @@ public class AdministratorEditorDialog extends VBox implements
                 this.loadedAdministrator.phoneNumberProperty());
     }
 
-    private void unloadAdministrator() {
+    public void unloadAdministrator() {
         this.textFieldFirstName.textProperty().unbindBidirectional(
                 this.loadedAdministrator.firstNameProperty());
         this.textFieldLastName.textProperty().unbindBidirectional(

@@ -351,9 +351,12 @@ public class EventPhaseViewController implements EventUser {
     public DialogResult saveEvent() {
         if (this.getLoadedEventFile() == null) {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Eventdatei speichern");
+            fileChooser.setTitle(PreferencesManager.getInstance()
+                    .localizeString("eventphaseview.saveevent.title"));
             fileChooser.getExtensionFilters().add(
-                    new ExtensionFilter("Tourney Eventdatei (*.tef)", "*.tef"));
+                    new ExtensionFilter(PreferencesManager.getInstance()
+                            .localizeString("dialogs.extensions.eventfile"),
+                            "*.tef"));
             File selectedFile = fileChooser.showSaveDialog(EntryPoint
                     .getPrimaryStage());
             if (selectedFile == null) {
@@ -371,10 +374,9 @@ public class EventPhaseViewController implements EventUser {
         } catch (Exception e) {
             log.log(Level.SEVERE, "Could not save the event.", e);
 
-            new SimpleDialog<>("Das Event konnte nicht gespeichert werden.\n"
-                    + "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
-                    + "alle Berechtigungen besitzen.").modalDialog()
-                    .title("Fehler").show();
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.couldnotsave")).modalDialog()
+                    .title("dialogs.titles.error").show();
 
             return DialogResult.CANCEL;
         }
@@ -394,8 +396,8 @@ public class EventPhaseViewController implements EventUser {
         }
 
         if (this.activeUndoManager.undoAvailable()) {
-            new SimpleDialog<>("Es sind ungesicherte Änderungen vorhanden.\n"
-                    + "Möchten Sie diese vor dem Beenden speichern?")
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.unsavedchanges"))
                     .modalDialog()
                     .title("dialogs.titles.warning")
                     .dialogButtons(DialogButtons.YES_NO_CANCEL)
@@ -445,9 +447,12 @@ public class EventPhaseViewController implements EventUser {
         log.fine("Export Button was clicked");
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Event als PDF exportieren");
-        fileChooser.getExtensionFilters().add(
-                new ExtensionFilter("PDF-Dokument (*.pdf)", "*.pdf"));
+        fileChooser.setTitle(PreferencesManager.getInstance().localizeString(
+                "eventphaseview.savepdf.title"));
+        fileChooser
+                .getExtensionFilters()
+                .add(new ExtensionFilter(PreferencesManager.getInstance()
+                        .localizeString("dialogs.extensions.pdffile"), "*.pdf"));
         File selectedFile = fileChooser.showSaveDialog(EntryPoint
                 .getPrimaryStage());
         if (selectedFile == null) {
@@ -463,9 +468,8 @@ public class EventPhaseViewController implements EventUser {
         } catch (Exception e) {
             log.log(Level.SEVERE, "Could not export the event.", e);
 
-            new SimpleDialog<>("Das Event konnte nicht exportiert werden.\n"
-                    + "Bitte stellen Sie sicher, dass Sie für die Zieldatei "
-                    + "alle Berechtigungen besitzen.").modalDialog()
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.couldnotsave")).modalDialog()
                     .title("dialogs.titles.error")
                     .dialogButtons(DialogButtons.OK).show();
             return;

@@ -45,7 +45,6 @@ public class EntryPoint extends Application {
             Pane root = MainWindow.getInstance();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Tourney");
 
             /* Set the icon set */
             int[] iconSizes = { 1024, 512, 256, 128, 96, 64, 48, 32, 24, 16 };
@@ -87,9 +86,8 @@ public class EntryPoint extends Application {
         if (MainWindow.getInstance().getEventPhaseViewController()
                 .getActiveUndoManager().undoAvailable()) {
             EntryPoint.this.closeRequested = true;
-            new SimpleDialog<>(
-                    PreferencesManager.getInstance().localizeString(
-                            "dialogs.messages.unsavedchanges"))
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "dialogs.messages.unsavedchanges"))
                     .modalDialog()
                     .title("dialogs.titles.warning")
                     .dialogButtons(DialogButtons.YES_NO_CANCEL)

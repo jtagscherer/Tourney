@@ -78,7 +78,9 @@ public class PlayerPreRegistrationDialog extends VBox implements
     }
 
     private void initTournamentTable() {
-        this.tableColumnTournamentName = new TableColumn<>("Turniername");
+        this.tableColumnTournamentName = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "dialogs.playerpreregistration.tournamentname"));
         this.tableColumnTournamentName.setCellValueFactory(cellData -> cellData
                 .getValue().nameProperty());
         this.tableTournaments.getColumns().add(this.tableColumnTournamentName);
