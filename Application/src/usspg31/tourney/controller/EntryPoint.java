@@ -24,7 +24,8 @@ public class EntryPoint extends Application {
     public static void main(String[] args) {
         log.info("Starting Application");
         log.info("Running JavaFX Version "
-                + System.getProperty("javafx.runtime.version"));
+                + System.getProperty("javafx.runtime.version") + " on "
+                + System.getProperty("os.name"));
 
         try {
             launch(args);
@@ -46,8 +47,10 @@ public class EntryPoint extends Application {
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
 
+            /* Available icon sizes: 1024, 512, 256, 128, 96, 64, 48, 32, 24, 16 */
+            int[] iconSizes = { 1024 };
+
             /* Set the icon set */
-            int[] iconSizes = { 1024, 512, 256, 128, 96, 64, 48, 32, 24, 16 };
             for (int iconSize : iconSizes) {
                 primaryStage.getIcons().add(
                         new Image(this.getClass().getResourceAsStream(
