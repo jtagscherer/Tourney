@@ -134,7 +134,7 @@
 							</tooltip>
 						</Button>
 						<Button fx:id="buttonEditScore" styleClass="table-edit-button"
-							onAction="#onButtonRemoveScoreClicked">
+							onAction="#onButtonEditScoreClicked">
 							<graphic>
 								<IconPane styleClass="icon-edit, half" />
 							</graphic>

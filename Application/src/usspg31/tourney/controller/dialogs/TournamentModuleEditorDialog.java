@@ -65,6 +65,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     @FXML private Button buttonEditScore;
 
     private ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+    private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
 
     private TournamentModule loadedModule;
 
@@ -80,6 +81,9 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
+
+        this.possibleScoringDialog = new TournamentScoringDialog()
+                .modalDialog();
     }
 
     @FXML
@@ -256,7 +260,36 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                 .setCellValueFactory(cellValue -> new MapToStringBinding<>(
                         cellValue.getValue().getScores()).getStringProperty());
 
+        this.bindPossibleScoringButtons();
+
         log.fine("Tournament Module loaded");
+    }
+
+    private void bindPossibleScoringButtons() {
+        ReadOnlyIntegerProperty selectedIndex = this.tablePossibleScores
+                .getSelectionModel().selectedIndexProperty();
+        ReadOnlyObjectProperty<PossibleScoring> selectedItem = this.tablePossibleScores
+                .getSelectionModel().selectedItemProperty();
+
+        // only enable move-up button if an item other than the topmost is
+        // selected
+        this.buttonMoveScoreUp.disableProperty().bind(
+                selectedIndex.isEqualTo(0).or(selectedItem.isNull()));
+
+        // only enable move-down button if an item other than the last one is
+        // selected
+        // index < size - 1 && selected != null
+        this.buttonMoveScoreDown.disableProperty().bind(
+                selectedIndex.greaterThanOrEqualTo(
+                        Bindings.size(this.tablePossibleScores.getItems())
+                                .subtract(1)).or(selectedItem.isNull()));
+
+        // only enable remove button if an item is selected and there is more
+        // than one possible score
+        this.buttonRemoveScore.disableProperty().bind(selectedItem.isNull());
+
+        // only enable edit button if an item is selected
+        this.buttonEditScore.disableProperty().bind(selectedItem.isNull());
     }
 
     private void unloadModule() {
@@ -313,14 +346,12 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         newGamePhase.setPhaseNumber(this.tableTournamentPhases.getItems()
                 .size());
 
-        this.tournamentPhaseDialog
-                .properties(newGamePhase)
+        this.tournamentPhaseDialog.properties(newGamePhase)
                 .onResult((result, returnValue) -> {
-                            if (result == DialogResult.OK
-                                    && returnValue != null) {
-                                this.loadedModule.getPhaseList().add(returnValue);
-                            }
-                        }).show();
+                    if (result == DialogResult.OK && returnValue != null) {
+                        this.loadedModule.getPhaseList().add(returnValue);
+                    }
+                }).show();
     }
 
     @FXML
@@ -364,7 +395,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements
      *         table
      */
     private int getSelectedTournamentPhaseIndex() {
-        return this.tableTournamentPhases.getSelectionModel().getSelectedIndex();
+        return this.tableTournamentPhases.getSelectionModel()
+                .getSelectedIndex();
     }
 
     @FXML
@@ -405,7 +437,18 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
     @FXML
     private void onButtonAddScoreClicked(ActionEvent event) {
+        log.fine("Add Score Button was clicked");
 
+        this.possibleScoringDialog
+                .properties(new PossibleScoring())
+                .onResult(
+                        (result, value) -> {
+                            if (result == DialogResult.OK) {
+                                value.setPriority(this.tablePossibleScores
+                                        .getItems().size());
+                                this.tablePossibleScores.getItems().add(value);
+                            }
+                        }).show();
     }
 
     @FXML
@@ -427,7 +470,21 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
     @FXML
     private void onButtonEditScoreClicked(ActionEvent event) {
+        log.fine("Edit Score Button was clicked");
 
+        PossibleScoring selectedScoring = this.getSelectedPossibleScore();
+
+        this.possibleScoringDialog
+                .properties(selectedScoring)
+                .onResult(
+                        (result, value) -> {
+                            System.out.println(result.toString());
+                            if (result == DialogResult.OK) {
+                                this.tablePossibleScores.getItems().remove(
+                                        selectedScoring);
+                                this.tablePossibleScores.getItems().add(value);
+                            }
+                        }).show();
     }
 
     /**
