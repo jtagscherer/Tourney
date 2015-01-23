@@ -15,6 +15,7 @@ public class Tournament implements Cloneable {
     private final ObservableList<Player> registeredPlayers;
     private final ObservableList<Player> attendingPlayers;
     private final ObservableList<Player> remainingPlayers;
+    // currently not considered when choosing the player who received a bye
     private final ObservableList<Player> receivedByePlayers;
     private final ObservableList<TournamentRound> rounds;
     private final StringProperty name;

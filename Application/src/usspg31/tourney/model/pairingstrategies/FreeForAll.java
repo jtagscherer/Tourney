@@ -83,6 +83,10 @@ public class FreeForAll implements PairingStrategy {
                             tournament.getRounds().size(), tournament)
                             .getNumberOfOpponents() - 1) {
                         int count = 0;
+                        // tries a limited time to avoid the conflict of a
+                        // similar pairing, after n runs the pairing will be
+                        // submitted no matter if it´s a similar pairing
+
                         while (PairingHelper.isThereASimilarPairings(
                                 partResult, tournament)) {
                             partResult.getOpponents().remove(
@@ -110,6 +114,10 @@ public class FreeForAll implements PairingStrategy {
                 result.add(partResult);
             }
         }
+
+        // creates a pairing with only one player who receives the predefined
+        // bye score
+        // also adds the player to the receivedByePlayer list
         for (int i = 0; i < randomList.size(); i++) {
             partResult = new Pairing();
             partResult.setFlag(PairingFlag.IGNORE);
@@ -127,6 +135,8 @@ public class FreeForAll implements PairingStrategy {
             }
 
             result.add(partResult);
+
+            tournament.getReceivedByePlayers().add(randomList.get(i));
         }
         return result;
     }

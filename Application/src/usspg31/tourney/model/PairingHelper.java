@@ -9,6 +9,9 @@ public class PairingHelper {
     /**
      * identify the phase in which the round takes place
      * 
+     * if this method return a null object then their are no more rounds left in
+     * the tournament
+     * 
      * @param roundcount
      *            identify the round
      * @param value
