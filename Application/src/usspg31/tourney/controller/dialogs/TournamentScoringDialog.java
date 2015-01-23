@@ -26,7 +26,7 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.PossibleScoring;
 
 public class TournamentScoringDialog extends VBox implements
-IModalDialogProvider<PossibleScoring, PossibleScoring> {
+        IModalDialogProvider<PossibleScoring, PossibleScoring> {
 
     public static class ScoringEntry {
         private final StringProperty name;
@@ -62,7 +62,8 @@ IModalDialogProvider<PossibleScoring, PossibleScoring> {
         }
     }
 
-    private static final Logger log = Logger.getLogger(TournamentScoringDialog.class.getName());
+    private static final Logger log = Logger
+            .getLogger(TournamentScoringDialog.class.getName());
 
     @FXML private TableView<ScoringEntry> tablePossibleScores;
     @FXML private Button buttonAddPredefinedScore;
@@ -80,7 +81,7 @@ IModalDialogProvider<PossibleScoring, PossibleScoring> {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
                     "/ui/fxml/dialogs/tournament-scoring-dialog.fxml"),
                     PreferencesManager.getInstance().getSelectedLanguage()
-                    .getLanguageBundle());
+                            .getLanguageBundle());
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
@@ -112,29 +113,37 @@ IModalDialogProvider<PossibleScoring, PossibleScoring> {
         // only enable the edit and remove buttons if a score is selected
         this.buttonEditPredefinedScore.disableProperty().bind(
                 this.tablePossibleScores.getSelectionModel()
-                .selectedItemProperty().isNull());
+                        .selectedItemProperty().isNull());
 
         this.buttonRemovePredefinedScore.disableProperty().bind(
                 this.tablePossibleScores.getSelectionModel()
-                .selectedItemProperty().isNull());
+                        .selectedItemProperty().isNull());
 
         this.predefinedScores = FXCollections.observableArrayList();
         this.tablePossibleScores.setItems(this.predefinedScores);
     }
 
     @Override
-    public void initModalDialog(ModalDialog<PossibleScoring, PossibleScoring> modalDialog) {
-        modalDialog.title("dialogs.tournamentscoring").dialogButtons(DialogButtons.OK_CANCEL);
+    public void initModalDialog(
+            ModalDialog<PossibleScoring, PossibleScoring> modalDialog) {
+        modalDialog.title("dialogs.tournamentscoring").dialogButtons(
+                DialogButtons.OK_CANCEL);
     }
 
     @Override
     public void setProperties(PossibleScoring properties) {
         this.loadedScoring = properties;
 
+        this.refreshTable();
+    }
+
+    public void refreshTable() {
         this.predefinedScores.clear();
 
-        for (Entry<String, Integer> entry : properties.getScores().entrySet()) {
-            this.predefinedScores.add(new ScoringEntry(entry.getKey(), entry.getValue()));
+        for (Entry<String, Integer> entry : this.loadedScoring.getScores()
+                .entrySet()) {
+            this.predefinedScores.add(new ScoringEntry(entry.getKey(), entry
+                    .getValue()));
         }
     }
 
@@ -143,20 +152,29 @@ IModalDialogProvider<PossibleScoring, PossibleScoring> {
         return this.loadedScoring;
     }
 
+    @Override
+    public String getInputErrorString() {
+        if (this.loadedScoring.getScores().size() == 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentscoring.error.emptydata");
+        }
+        return null;
+    }
+
     @FXML
     private void onButtonAddPredefinedScoreClicked(ActionEvent event) {
         log.fine("Button Add Predefined Score was clicked");
         this.predefinedScoreDialog
-        .properties(this.predefinedScores)
-        .properties(new ScoringEntry(
-                PreferencesManager.getInstance().localizeString(
-                        "dialogs.tournamentscoring.untitled"), 0))
-        .onResult((result, value) -> {
-            if (result == DialogResult.OK) {
-                this.addScore(value);
-            }
-        })
-        .show();
+                .properties(this.predefinedScores)
+                .properties(
+                        new ScoringEntry(PreferencesManager.getInstance()
+                                .localizeString(
+                                        "dialogs.tournamentscoring.untitled"),
+                                0)).onResult((result, value) -> {
+                    if (result == DialogResult.OK) {
+                        this.addScore(value);
+                    }
+                }).show();
     }
 
     @FXML
@@ -170,19 +188,25 @@ IModalDialogProvider<PossibleScoring, PossibleScoring> {
         final String originalName = this.getSelectedScore().getName();
         final int originalScore = this.getSelectedScore().getScore();
 
+        final String selectedScoreKey = this.getSelectedScore().getName();
+
         log.fine("Button Edit Predefined Score was clicked");
         this.predefinedScoreDialog
-        .properties(this.predefinedScores)
-        .properties(this.getSelectedScore())
-        .onResult((result, value) -> {
-            this.removeScore(value);
-            if (result == DialogResult.OK) {
-                this.addScore(value);
-            } else {
-                this.addScore(new ScoringEntry(originalName, originalScore));
-            }
-        })
-        .show();
+                .properties(this.predefinedScores)
+                .properties(this.getSelectedScore())
+                .onResult(
+                        (result, value) -> {
+                            if (result == DialogResult.OK) {
+                                this.removeScore(selectedScoreKey);
+                                this.addScore(value);
+                            } else {
+                                this.removeScore(selectedScoreKey);
+                                this.addScore(new ScoringEntry(originalName,
+                                        originalScore));
+                            }
+
+                            this.refreshTable();
+                        }).show();
     }
 
     private ScoringEntry getSelectedScore() {
@@ -192,6 +216,10 @@ IModalDialogProvider<PossibleScoring, PossibleScoring> {
     private void addScore(ScoringEntry entry) {
         this.predefinedScores.add(entry);
         this.loadedScoring.getScores().put(entry.getName(), entry.getScore());
+    }
+
+    private void removeScore(String scoreKey) {
+        this.loadedScoring.getScores().remove(scoreKey);
     }
 
     private void removeScore(ScoringEntry entry) {

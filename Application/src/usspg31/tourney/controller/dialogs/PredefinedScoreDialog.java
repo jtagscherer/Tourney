@@ -11,7 +11,8 @@ import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 
-public class PredefinedScoreDialog extends VBox implements IModalDialogProvider<Object, ScoringEntry> {
+public class PredefinedScoreDialog extends VBox implements
+        IModalDialogProvider<Object, ScoringEntry> {
 
     private final TextField textFieldScoreTitle;
     private final NumberTextField numberTextFieldScore;
@@ -24,27 +25,27 @@ public class PredefinedScoreDialog extends VBox implements IModalDialogProvider<
 
         PreferencesManager preferences = PreferencesManager.getInstance();
 
-        Label labelScoreTitle = new Label(preferences.localizeString(
-                "dialogs.predefinedscore.scoretitle"));
+        Label labelScoreTitle = new Label(
+                preferences
+                        .localizeString("dialogs.predefinedscore.scoretitle"));
         this.textFieldScoreTitle = new TextField();
         this.textFieldScoreTitle.textProperty().addListener((ov, o, n) -> {
             if (this.entry != null) {
                 this.entry.setName(n);
             }
         });
-        Label labelScore = new Label(preferences.localizeString(
-                "dialogs.predefinedscore.score"));
+        Label labelScore = new Label(
+                preferences.localizeString("dialogs.predefinedscore.score"));
         this.numberTextFieldScore = new NumberTextField();
-        this.numberTextFieldScore.numberValueProperty().addListener((ov, o, n) -> {
-            if (this.entry != null) {
-                this.entry.setScore(n.intValue());
-            }
-        });
+        this.numberTextFieldScore.numberValueProperty().addListener(
+                (ov, o, n) -> {
+                    if (this.entry != null) {
+                        this.entry.setScore(n.intValue());
+                    }
+                });
 
-        this.getChildren().addAll(labelScoreTitle,
-                this.textFieldScoreTitle,
-                labelScore,
-                this.numberTextFieldScore);
+        this.getChildren().addAll(labelScoreTitle, this.textFieldScoreTitle,
+                labelScore, this.numberTextFieldScore);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,9 +68,21 @@ public class PredefinedScoreDialog extends VBox implements IModalDialogProvider<
     @Override
     public String getInputErrorString() {
         for (ScoringEntry entry : this.entryList) {
-            if (entry != this.entry && entry.getName().equals(this.entry.getName())) {
-                return "dialogs.predefinedscore.errorduplicatekey";
+            if (entry != this.entry
+                    && entry.getName().equals(this.entry.getName())) {
+                return PreferencesManager.getInstance().localizeString(
+                        "dialogs.predefinedscore.errorduplicatekey");
             }
+        }
+
+        if (this.entry.getName().equals("")) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.predefinedscoredialog.error.emptyname");
+        }
+
+        if (this.numberTextFieldScore.getText().equals("")) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.predefinedscoredialog.error.emptypoints");
         }
 
         return null;
@@ -77,8 +90,8 @@ public class PredefinedScoreDialog extends VBox implements IModalDialogProvider<
 
     @Override
     public void initModalDialog(ModalDialog<Object, ScoringEntry> modalDialog) {
-        modalDialog.title("dialogs.predefinedscore")
-        .dialogButtons(DialogButtons.OK_CANCEL);
+        modalDialog.title("dialogs.predefinedscore").dialogButtons(
+                DialogButtons.OK_CANCEL);
     }
 
 }
