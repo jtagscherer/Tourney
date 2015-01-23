@@ -5,12 +5,15 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import usspg31.tourney.controller.RoundTimer;
 import usspg31.tourney.controller.controls.PairingView;
 import usspg31.tourney.controller.controls.TournamentUser;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog.PairingEntry;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
@@ -25,6 +28,15 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML private Button buttonStartRound;
     @FXML private Button buttonEnterResult;
 
+    @FXML private Label labelTime;
+    @FXML private Button buttonAddTime;
+    @FXML private Button buttonPauseTime;
+    @FXML private Button buttonResumeTime;
+    @FXML private Button buttonResetTime;
+    @FXML private Button buttonSubtractTime;
+
+    private RoundTimer roundTimer;
+
     private Tournament loadedTournament;
     private RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
 
@@ -36,7 +48,6 @@ public class TournamentExecutionController implements TournamentUser {
 
     @FXML
     public void initialize() {
-
     }
 
     @Override
@@ -44,6 +55,12 @@ public class TournamentExecutionController implements TournamentUser {
         log.info("Loading Tournament");
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(this.loadedTournament.getAttendingPlayers());
+
+        this.pairingView.SelectedRoundProperty().addListener((ov, o, n) -> {
+            if (n.intValue() > o.intValue()) {
+                this.updateRoundTimer();
+            }
+        });
 
         this.pairingView.loadTournament(tournament);
 
@@ -53,6 +70,41 @@ public class TournamentExecutionController implements TournamentUser {
         if (tournament.getRounds().size() == 0) {
             this.generateRound();
         }
+
+        this.updateRoundTimer();
+    }
+
+    private void updateRoundTimer() {
+        int roundDuration = -1;
+        int round = 0;
+        for (GamePhase phase : this.loadedTournament.getRuleSet().getPhaseList()) {
+            if ((round += phase.getRoundCount()) > this.loadedTournament.getRounds().size()) {
+                roundDuration = (int) phase.getRoundDuration().getSeconds();
+            }
+        }
+        if (roundDuration == -1) {
+            roundDuration = 5 * 60; // 5 seconds standard time
+        }
+        this.roundTimer = new RoundTimer(roundDuration);
+
+        this.labelTime.textProperty().unbind();
+        this.labelTime.textProperty().bind(
+                this.roundTimer.getTimerDuration().asString().concat("s"));
+        this.buttonAddTime.setOnAction(event -> {
+            this.roundTimer.addTime();
+        });
+        this.buttonSubtractTime.setOnAction(event -> {
+            this.roundTimer.subtractTime();
+        });
+        this.buttonPauseTime.setOnAction(event -> {
+            this.roundTimer.pause();
+        });
+        this.buttonResumeTime.setOnAction(event -> {
+            this.roundTimer.resume();
+        });
+        this.buttonResetTime.setOnAction(event -> {
+            this.roundTimer.reset();
+        });
     }
 
     @Override
@@ -111,5 +163,11 @@ public class TournamentExecutionController implements TournamentUser {
             }
         }
         this.buttonStartRound.setDisable(!roundFinished);
+    }
+
+    @FXML
+    private void onButtonSwapPlayersClicked(ActionEvent e) {
+        log.info("Swap Players Button clicked");
+
     }
 }

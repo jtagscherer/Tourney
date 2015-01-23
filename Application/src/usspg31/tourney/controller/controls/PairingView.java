@@ -88,10 +88,14 @@ public class PairingView extends VBox implements TournamentUser {
         // clear the pairing container and add pairing nodes for every pairing
         // there is in the selected round
         TournamentRound round = this.loadedTournament.getRounds().get(this.getSelectedRound());
+        boolean isCurrentRound = this.getSelectedRound() == this.loadedTournament.getRounds().size() - 1;
         this.pairingContainer.getChildren().clear();
         for (int i = 0; i < round.getPairings().size(); i++) {
             PairingNode pairingNode = new PairingNode(this.loadedTournament,
                     round.getPairings().get(i), i);
+            if (!isCurrentRound) {
+                pairingNode.setDisable(true);
+            }
             pairingNode.setFocusTraversable(true);
 
             pairingNode.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {

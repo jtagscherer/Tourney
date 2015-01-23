@@ -9,9 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="usspg31.tourney.controller.controls.eventphases.execution.TournamentExecutionController"
-	VBox.vgrow="ALWAYS">
+<VBox spacing="5.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.controls.eventphases.execution.TournamentExecutionController">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/icons.css" />
@@ -22,25 +20,94 @@
 	<children>
 		<Label styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-			<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
-			<VBox spacing="5.0" styleClass="table-edit-button-container">
-				<Button disable="true" fx:id="buttonStartRound" styleClass="table-edit-button" 
-				onAction="#onButtonStartRoundClicked">
-					<graphic>
-						<IconPane styleClass="icon-add, half" />
-					</graphic>
-				</Button>
-				<Button disable="true" fx:id="buttonEnterResult" styleClass="table-edit-button"
-					onAction="#onButtonEnterResultClicked">
-					<graphic>
-						<IconPane styleClass="icon-edit, half" />
-					</graphic>
-				</Button>
-			</VBox>
+			<children>
+				<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
+				<VBox spacing="5.0" styleClass="table-edit-button-container">
+					<children>
+						<Button fx:id="buttonStartRound" disable="true" onAction="#onButtonStartRoundClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-add, half" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonEnterResult" disable="true" onAction="#onButtonEnterResultClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-edit, half" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonSwapPlayers" disable="true" onAction="#onButtonSwapPlayersClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-swap-horizontal, half" />
+							</graphic>
+						</Button>
+					</children>
+				</VBox>
+            <VBox styleClass="round-timer">
+               <children>
+                  <HBox>
+                     <children>
+                        <Label fx:id="labelTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="time" text="Label" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Button fx:id="buttonAddTime" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-add" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonPauseTime" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-pause" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonResumeTime" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-play" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonResetTime" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-reset" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonSubtractTime" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-remove" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+			</children>
 		</HBox>
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
 </VBox>
-
