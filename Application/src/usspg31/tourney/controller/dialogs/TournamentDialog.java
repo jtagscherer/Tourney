@@ -540,9 +540,11 @@ public class TournamentDialog extends VBox implements
                 .properties(selectedScoring)
                 .onResult(
                         (result, value) -> {
-                            this.tablePossibleScores.getItems().remove(
-                                    selectedScoring);
-                            this.tablePossibleScores.getItems().add(value);
+                            if (result == DialogResult.OK) {
+                                this.tablePossibleScores.getItems().remove(
+                                        selectedScoring);
+                                this.tablePossibleScores.getItems().add(value);
+                            }
                         }).show();
     }
 
