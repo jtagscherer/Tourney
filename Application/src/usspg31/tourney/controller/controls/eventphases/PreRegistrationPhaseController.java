@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import usspg31.tourney.controller.PreferencesManager;
@@ -92,6 +93,17 @@ public class PreRegistrationPhaseController implements EventUser {
                         .mailAdressProperty());
         this.tablePreRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerMailAddress);
+
+        /* Edit the player on double click */
+        this.tablePreRegisteredPlayers.setRowFactory(tableView -> {
+            TableRow<Player> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editPlayer(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -227,20 +239,30 @@ public class PreRegistrationPhaseController implements EventUser {
                     .dialogButtons(DialogButtons.OK)
                     .title("dialogs.titles.error").show();
         } else {
-            this.preRegistrationDialog
-                    .properties(selectedPlayer)
-                    .properties(this.loadedEvent)
-                    .onResult(
-                            (result, returnValue) -> {
-                                if (result == DialogResult.OK
-                                        && returnValue != null) {
-                                    this.loadedEvent.getRegisteredPlayers()
-                                            .remove(selectedPlayer);
-                                    this.loadedEvent.getRegisteredPlayers()
-                                            .add(returnValue);
-                                }
-                            }).show();
+            this.editPlayer(selectedPlayer);
         }
+    }
+
+    /**
+     * Open a dialog to edit the chosen player
+     * 
+     * @param player
+     *            Player to be edited
+     */
+    public void editPlayer(Player player) {
+        this.preRegistrationDialog
+                .properties(player)
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                this.loadedEvent.getRegisteredPlayers().remove(
+                                        player);
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                            }
+                        }).show();
     }
 
     private void checkEventLoaded() {

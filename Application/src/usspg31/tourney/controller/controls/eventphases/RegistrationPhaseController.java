@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -176,6 +177,17 @@ public class RegistrationPhaseController implements EventUser {
 
         this.buttonRegisterPlayer.setDisable(true);
         this.buttonUnregisterPlayer.setDisable(true);
+
+        /* Edit the player on double click */
+        this.tableRegisteredPlayers.setRowFactory(tableView -> {
+            TableRow<Player> row = new TableRow<>();
+            row.setOnMouseClicked(mouseEvent -> {
+                if (mouseEvent.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editPlayer(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     public void chooseRegistratorNumber(EventPhaseViewController superController) {
@@ -355,20 +367,30 @@ public class RegistrationPhaseController implements EventUser {
                     .dialogButtons(DialogButtons.OK)
                     .title("dialogs.titles.error").show();
         } else {
-            this.registrationDialog
-                    .properties(selectedPlayer)
-                    .properties(this.loadedEvent)
-                    .onResult(
-                            (result, returnValue) -> {
-                                if (result == DialogResult.OK
-                                        && returnValue != null) {
-                                    this.loadedEvent.getRegisteredPlayers()
-                                            .remove(selectedPlayer);
-                                    this.loadedEvent.getRegisteredPlayers()
-                                            .add(returnValue);
-                                }
-                            }).show();
+            this.editPlayer(selectedPlayer);
         }
+    }
+
+    /**
+     * Open a dialog to edit the chosen player
+     * 
+     * @param player
+     *            Player to be edited
+     */
+    public void editPlayer(Player player) {
+        this.registrationDialog
+                .properties(player)
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                this.loadedEvent.getRegisteredPlayers().remove(
+                                        player);
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                            }
+                        }).show();
     }
 
     // TODO: fix the dialogs
