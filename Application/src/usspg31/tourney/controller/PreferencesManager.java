@@ -336,7 +336,16 @@ public class PreferencesManager {
      * @return the localized string
      */
     public String localizeString(String key) {
-        return this.getSelectedLanguage().getLanguageBundle().getString(key);
+        if (this.getSelectedLanguage().getLanguageBundle().containsKey(key)) {
+            return this.getSelectedLanguage().getLanguageBundle()
+                    .getString(key);
+        } else {
+            log.log(Level.SEVERE, "The key \"" + key
+                    + "\" does not exist in the language bundle \""
+                    + this.getSelectedLanguage().getLocale().getLanguage()
+                    + "\".");
+            return key;
+        }
     }
 
     /**
