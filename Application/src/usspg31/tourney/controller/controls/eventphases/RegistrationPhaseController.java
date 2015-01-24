@@ -128,14 +128,19 @@ public class RegistrationPhaseController implements EventUser {
 
         this.tableRegisteredPlayers.setItems(sortedPlayerList);
 
+        /* Set up the initial widths of the table columns */
         this.tableColumnPlayerFirstName.prefWidthProperty().set(
-                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+                this.tableRegisteredPlayers.widthProperty().get() * 0.2);
         this.tableColumnPlayerLastName.prefWidthProperty().set(
-                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+                this.tableRegisteredPlayers.widthProperty().get() * 0.2);
         this.tableColumnPlayerMailAddress.prefWidthProperty().set(
-                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+                this.tableRegisteredPlayers.widthProperty().get() * 0.2);
         this.tableColumnPlayerNickName.prefWidthProperty().set(
-                this.tableRegisteredPlayers.widthProperty().get() * 0.25);
+                this.tableRegisteredPlayers.widthProperty().get() * 0.2);
+        this.tableColumnPlayerPayed.prefWidthProperty().set(
+                this.tableRegisteredPlayers.widthProperty().get() * 0.1);
+        this.tableColumnPlayerStartNumber.prefWidthProperty().set(
+                this.tableRegisteredPlayers.widthProperty().get() * 0.1);
 
         // Bind the button's availability to the list selection
         this.buttonRemovePlayer.disableProperty().bind(
