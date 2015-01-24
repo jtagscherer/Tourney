@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -90,7 +91,20 @@ public class TournamentExecutionPhaseController implements EventUser {
     }
 
     public void showTournamentExecutionView(Tournament tournament) {
-        this.attendanceDialog.properties(tournament.getRegisteredPlayers())
+        /*
+         * Collect all players that are registered for this tournament and are
+         * attending in the event
+         */
+        ObservableList<Player> attendingPlayers = FXCollections
+                .observableArrayList();
+        for (Player player : tournament.getRegisteredPlayers()) {
+            if (!player.getStartingNumber().equals("")) {
+                attendingPlayers.add(player);
+            }
+        }
+
+        /* Open an attendance dialog with the collected players as the input */
+        this.attendanceDialog.properties(attendingPlayers)
                 .onResult((result, returnValue) -> {
                     if (result == DialogResult.OK) {
                         tournament.getAttendingPlayers().setAll(returnValue);
