@@ -203,12 +203,9 @@ public class TournamentDialog extends VBox implements
                         Bindings.size(this.tableTournamentPhases.getItems())
                                 .subtract(1)).or(selectedItem.isNull()));
 
-        // only enable remove button if an item is selected and there is more
-        // than one possible score
+        // only enable remove button if an item is selected
         this.buttonRemoveTournamentPhase.disableProperty().bind(
-                selectedItem.isNull().or(
-                        Bindings.size(this.tableTournamentPhases.getItems())
-                                .lessThanOrEqualTo(1)));
+                selectedItem.isNull());
 
         // only enable edit button if an item is selected
         this.buttonEditTournamentPhase.disableProperty().bind(
