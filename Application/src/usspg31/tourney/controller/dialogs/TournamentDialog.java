@@ -156,10 +156,12 @@ public class TournamentDialog extends VBox implements
                     super.updateItem(item, empty);
                     if (item != null) {
                         this.setText(String.format(
-                                "%02d:%02d "
+                                "%d:%02d "
                                         + preferences
                                                 .localizeString("dialogs.tournament.minutes"),
                                 item.getSeconds() / 60, item.getSeconds() % 60));
+                    } else {
+                        this.setText("");
                     }
                 }
             };
@@ -297,9 +299,17 @@ public class TournamentDialog extends VBox implements
         if (this.loadedTournament.getName().equals("")) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.tournament.errors.emptydata");
-        } else {
-            return null;
         }
+        if (this.loadedTournament.getRuleSet().getPossibleScores().size() == 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournament.errors.noscorings");
+        }
+        if (this.loadedTournament.getRuleSet().getPhaseList().size() == 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournament.errors.nophases");
+        }
+
+        return null;
     }
 
     @Override
@@ -314,10 +324,6 @@ public class TournamentDialog extends VBox implements
         this.textFieldTournamentTitle.textProperty().bindBidirectional(
                 this.loadedTournament.nameProperty());
 
-        if (tournament.getRuleSet().getPhaseList().size() == 0) {
-            // at least one phase has to be set
-            tournament.getRuleSet().getPhaseList().add(new GamePhase());
-        }
         this.tableTournamentPhases.setItems(tournament.getRuleSet()
                 .getPhaseList());
         this.tablePossibleScores.setItems(tournament.getRuleSet()

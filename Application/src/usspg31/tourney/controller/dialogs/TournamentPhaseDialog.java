@@ -113,12 +113,25 @@ public class TournamentPhaseDialog extends VBox implements
         if (this.loadedPhase.getRoundCount() <= 0) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.tournamentphase.errors.roundcounttoolow");
-        } else if (this.textFieldPlayTimeMinutes.getNumberValue() > 7 * 24 * 60) {
+        }
+        if (this.textFieldPlayTimeMinutes.getNumberValue() > 7 * 24 * 60) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.tournamentphase.errors.playtimetoobig");
-        } else {
-            return null;
         }
+        if (this.loadedPhase.getRoundDuration().getSeconds() == 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentphase.errors.playtimetoolow");
+        }
+        if (Integer.parseInt(this.textFieldPlayersPerPairing.getText()) < 2) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentphase.errors.playersperpairingtoolow");
+        }
+        if (this.comboBoxPairingStrategy.getSelectionModel().getSelectedItem() == null) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentphase.errors.nopairingstrategy");
+        }
+
+        return null;
     };
 
     @Override
