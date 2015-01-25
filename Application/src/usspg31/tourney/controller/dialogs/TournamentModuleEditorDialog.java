@@ -222,9 +222,17 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         if (this.loadedModule.getName().equals("")) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.tournamentmodule.errors.emptydata");
-        } else {
-            return null;
         }
+        if (this.loadedModule.getPossibleScores().size() == 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentmodule.errors.noscorings");
+        }
+        if (this.loadedModule.getPhaseList().size() == 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentmodule.errors.nophases");
+        }
+
+        return null;
     };
 
     @Override
@@ -243,9 +251,6 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         this.textAreaDescription.textProperty().bindBidirectional(
                 module.descriptionProperty());
 
-        if (module.getPhaseList().size() == 0) {
-            module.getPhaseList().add(new GamePhase());
-        }
         this.tableTournamentPhases.setItems(module.getPhaseList());
         this.tablePossibleScores.setItems(module.getPossibleScores());
 
@@ -267,12 +272,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                         Bindings.size(this.tableTournamentPhases.getItems())
                                 .subtract(1)).or(selectedPhase.isNull()));
 
-        // only enable remove button if an item is selected and there is more
-        // than one possible score
-        this.buttonRemovePhase.disableProperty().bind(
-                selectedPhase.isNull().or(
-                        Bindings.size(this.tableTournamentPhases.getItems())
-                                .lessThanOrEqualTo(1)));
+        // only enable remove button if an item is selected
+        this.buttonRemovePhase.disableProperty().bind(selectedPhase.isNull());
 
         // only enable edit button if an item is selected
         this.buttonEditPhase.disableProperty().bind(selectedPhase.isNull());
@@ -307,8 +308,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                         Bindings.size(this.tablePossibleScores.getItems())
                                 .subtract(1)).or(selectedItem.isNull()));
 
-        // only enable remove button if an item is selected and there is more
-        // than one possible score
+        // only enable remove button if an item is selected
         this.buttonRemoveScore.disableProperty().bind(selectedItem.isNull());
 
         // only enable edit button if an item is selected
