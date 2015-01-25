@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
  * Represents a bye that players can get in certain scenarios during the
  * tournament execution
  */
-public class Bye {
+public class Bye implements Cloneable {
     public enum ByeType {
         NORMAL_BYE,
         SUPER_BYE;
@@ -41,5 +41,17 @@ public class Bye {
 
     public ObservableList<Integer> getByePoints() {
         return this.byePoints;
+    }
+
+    @Override
+    public Object clone() {
+        Bye clone = new Bye();
+
+        clone.setByeType(this.getByeType());
+        for (Integer point : this.getByePoints()) {
+            clone.getByePoints().add(point);
+        }
+
+        return clone;
     }
 }

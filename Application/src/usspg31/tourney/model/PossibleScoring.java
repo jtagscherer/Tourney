@@ -1,6 +1,9 @@
 package usspg31.tourney.model;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -10,7 +13,7 @@ import javafx.collections.ObservableMap;
 /**
  * Represents a possible scoring priority
  */
-public class PossibleScoring {
+public class PossibleScoring implements Cloneable {
     private ObservableMap<String, Integer> scores;
     private IntegerProperty priority;
 
@@ -68,5 +71,23 @@ public class PossibleScoring {
      */
     public IntegerProperty priorityProperty() {
         return this.priority;
+    }
+
+    @Override
+    public Object clone() {
+        PossibleScoring clone = new PossibleScoring();
+
+        clone.setPriority(this.getPriority());
+
+        Iterator<Entry<String, Integer>> iterator = this.getScores().entrySet()
+                .iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<?, ?> pairs = (Map.Entry<?, ?>) iterator.next();
+            clone.getScores().put((String) pairs.getKey(),
+                    (Integer) pairs.getValue());
+            iterator.remove();
+        }
+
+        return clone;
     }
 }

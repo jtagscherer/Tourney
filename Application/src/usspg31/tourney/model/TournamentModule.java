@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 /**
  * Represents the rules of a tournament
  */
-public class TournamentModule {
+public class TournamentModule implements Cloneable {
 
     private final StringProperty name;
     private final StringProperty description;
@@ -117,5 +117,24 @@ public class TournamentModule {
      */
     public ObservableList<Bye> getByeList() {
         return this.byeList;
+    }
+
+    @Override
+    public Object clone() {
+        TournamentModule clone = new TournamentModule();
+
+        clone.setName(this.getName());
+        clone.setDescription(this.getDescription());
+        for (PossibleScoring scoring : this.getPossibleScores()) {
+            clone.getPossibleScores().add((PossibleScoring) scoring.clone());
+        }
+        for (GamePhase phase : this.getPhaseList()) {
+            clone.getPhaseList().add((GamePhase) phase.clone());
+        }
+        for (Bye bye : this.getByeList()) {
+            clone.getByeList().add((Bye) bye.clone());
+        }
+
+        return clone;
     }
 }

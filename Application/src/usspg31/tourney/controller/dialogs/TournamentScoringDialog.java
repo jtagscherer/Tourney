@@ -144,7 +144,7 @@ public class TournamentScoringDialog extends VBox implements
 
     @Override
     public void setProperties(PossibleScoring properties) {
-        this.loadedScoring = properties;
+        this.loadedScoring = (PossibleScoring) properties.clone();
 
         this.refreshTable();
     }

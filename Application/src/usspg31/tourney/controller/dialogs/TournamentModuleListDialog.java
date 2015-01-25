@@ -148,11 +148,17 @@ public class TournamentModuleListDialog extends HBox implements
      *            Tournament module to be edited
      */
     private void editTournamentModule(TournamentModule selectedModule) {
-        this.tournamentmoduleEditorDialog.properties(selectedModule)
-                .onResult((result, returnValue) -> {
-                    if (result == DialogResult.OK && returnValue != null) {
-
-                    }
-                }).show();
+        this.tournamentmoduleEditorDialog
+                .properties(selectedModule)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                this.tableTournamentModules.getItems().remove(
+                                        selectedModule);
+                                this.tableTournamentModules.getItems().add(
+                                        returnValue);
+                            }
+                        }).show();
     }
 }

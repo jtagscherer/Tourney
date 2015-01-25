@@ -306,7 +306,7 @@ public class TournamentDialog extends VBox implements
         if (this.loadedTournament != null) {
             this.unloadTournament();
         }
-        this.loadTournament(properties);
+        this.loadTournament((Tournament) properties.clone());
     }
 
     @Override
@@ -344,9 +344,9 @@ public class TournamentDialog extends VBox implements
         this.textFieldTournamentTitle.textProperty().bindBidirectional(
                 this.loadedTournament.nameProperty());
 
-        this.tableTournamentPhases.setItems(tournament.getRuleSet()
+        this.tableTournamentPhases.setItems(this.loadedTournament.getRuleSet()
                 .getPhaseList());
-        this.tablePossibleScores.setItems(tournament.getRuleSet()
+        this.tablePossibleScores.setItems(this.loadedTournament.getRuleSet()
                 .getPossibleScores());
 
         this.bindTournamentPhaseTableButtons();

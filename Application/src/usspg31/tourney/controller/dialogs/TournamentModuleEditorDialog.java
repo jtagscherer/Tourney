@@ -244,15 +244,17 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
     private void loadModule(TournamentModule module) {
         log.fine("Loading Tournament Module");
-        this.loadedModule = module;
+        this.loadedModule = (TournamentModule) module.clone();
 
         this.textFieldModuleTitle.textProperty().bindBidirectional(
-                module.nameProperty());
+                this.loadedModule.nameProperty());
         this.textAreaDescription.textProperty().bindBidirectional(
-                module.descriptionProperty());
+                this.loadedModule.descriptionProperty());
 
-        this.tableTournamentPhases.setItems(module.getPhaseList());
-        this.tablePossibleScores.setItems(module.getPossibleScores());
+        this.tableTournamentPhases.setItems(this.loadedModule.getPhaseList());
+
+        this.tablePossibleScores
+                .setItems(this.loadedModule.getPossibleScores());
 
         ReadOnlyIntegerProperty selectedPhaseIndex = this.tableTournamentPhases
                 .getSelectionModel().selectedIndexProperty();
