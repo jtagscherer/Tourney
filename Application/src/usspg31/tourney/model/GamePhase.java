@@ -12,7 +12,7 @@ import usspg31.tourney.model.pairingstrategies.SingleElimination;
 /**
  * Represents one of the phases a tournament is made up of
  */
-public class GamePhase {
+public class GamePhase implements Cloneable {
 
     private final IntegerProperty cutoff;
     private final ObjectProperty<PairingStrategy> pairingMethod;
@@ -200,5 +200,19 @@ public class GamePhase {
      */
     public IntegerProperty numberOfOpponentsProperty() {
         return this.numberOfOpponents;
+    }
+
+    @Override
+    public Object clone() {
+        GamePhase clone = new GamePhase();
+
+        clone.setCutoff(this.getCutoff());
+        clone.setPairingMethod(this.getPairingMethod());
+        clone.setRoundCount(this.getRoundCount());
+        clone.setPhaseNumber(this.getPhaseNumber());
+        clone.setRoundDuration(this.getRoundDuration());
+        clone.setNumberOfOpponents(this.getNumberOfOpponents());
+
+        return clone;
     }
 }

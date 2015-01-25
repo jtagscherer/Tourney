@@ -142,18 +142,19 @@ public class TournamentPhaseDialog extends VBox implements
 
     private void loadGamePhase(GamePhase gamePhase) {
         log.fine("Loading Game Phase");
-        this.loadedPhase = gamePhase;
+        this.loadedPhase = (GamePhase) gamePhase.clone();
 
         this.textFieldCutoff.numberValueProperty().bindBidirectional(
-                gamePhase.cutoffProperty());
+                this.loadedPhase.cutoffProperty());
         this.textFieldRoundCount.numberValueProperty().bindBidirectional(
-                gamePhase.roundCountProperty());
-        this.textFieldPlayTimeMinutes.setNumberValue((int) gamePhase
+                this.loadedPhase.roundCountProperty());
+        this.textFieldPlayTimeMinutes.setNumberValue((int) this.loadedPhase
                 .getRoundDuration().getSeconds() / 60);
-        this.textFieldPlayTimeSeconds.setNumberValue((int) gamePhase
+        this.textFieldPlayTimeSeconds.setNumberValue((int) this.loadedPhase
                 .getRoundDuration().getSeconds() % 60);
-        this.textFieldPlayersPerPairing.numberValueProperty()
-                .bindBidirectional(gamePhase.numberOfOpponentsProperty());
+        this.textFieldPlayersPerPairing
+                .numberValueProperty()
+                .bindBidirectional(this.loadedPhase.numberOfOpponentsProperty());
 
         this.textFieldPlayTimeMinutes.numberValueProperty().addListener(
                 this::timeUpdated);

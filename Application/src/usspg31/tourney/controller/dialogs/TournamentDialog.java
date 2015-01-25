@@ -471,12 +471,19 @@ public class TournamentDialog extends VBox implements
      *            Tournament phase to be edited
      */
     private void editTournamentPhase(GamePhase selectedTournamentPhase) {
-        this.tournamentPhaseDialog.properties(selectedTournamentPhase)
-                .onResult((result, returnValue) -> {
-                    if (result == DialogResult.OK && returnValue != null) {
-                        // this.loadedTournament.getRuleSet().getPhaseList().add(returnValue);
-                    }
-                }).show();
+        this.tournamentPhaseDialog
+                .properties(selectedTournamentPhase)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                this.loadedTournament.getRuleSet()
+                                        .getPhaseList()
+                                        .remove(selectedTournamentPhase);
+                                this.loadedTournament.getRuleSet()
+                                        .getPhaseList().add(returnValue);
+                            }
+                        }).show();
     }
 
     /**
