@@ -1,5 +1,8 @@
 package usspg31.tourney.model;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -12,6 +15,10 @@ public class Person {
     private final StringProperty lastName;
     private final StringProperty mailAddress;
 
+    private static Pattern EMAIL_PATTERN;
+    private static final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
     /**
      * Create a new person and initialize all its properties
      */
@@ -20,6 +27,9 @@ public class Person {
         this.lastName = new SimpleStringProperty("");
         this.mailAddress = new SimpleStringProperty("");
 
+        if (Person.EMAIL_PATTERN == null) {
+            Person.EMAIL_PATTERN = Pattern.compile(Person.EMAIL_REGEX);
+        }
     }
 
     /**
@@ -104,5 +114,16 @@ public class Person {
      */
     public StringProperty mailAdressProperty() {
         return this.mailAddress;
+    }
+
+    /**
+     * Check if the mail address of this player is valid using a simple regex
+     * 
+     * @return True if the mail address is valid, false otherwise
+     */
+    public boolean hasValidMailAddress() {
+        Matcher mailRegexMatcher = Person.EMAIL_PATTERN.matcher(this
+                .getMailAddress());
+        return mailRegexMatcher.matches();
     }
 }

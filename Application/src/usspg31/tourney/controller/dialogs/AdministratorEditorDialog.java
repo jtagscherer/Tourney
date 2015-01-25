@@ -93,6 +93,12 @@ public class AdministratorEditorDialog extends VBox implements
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.administratoreditor.errors.emptydata");
         }
+        if (!this.loadedAdministrator.hasValidMailAddress()
+                && this.textFieldEmail.getText().length() > 0) {
+            /* The entered mail address does not withstand simple regex matching */
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.personediting.errors.invalidmail");
+        }
         return null;
     }
 }

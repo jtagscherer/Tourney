@@ -174,13 +174,20 @@ public class PlayerPreRegistrationDialog extends VBox implements
                 && this.loadedPlayer.getNickName().equals("")) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.playerpreregistration.errors.emptydata");
-        } else if (duplicatePlayers > 1) {
+        }
+        if (duplicatePlayers > 1) {
             /* More than this player itself exists with the same data */
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.playerpreregistration.errors.duplicate");
-        } else {
-            return null;
         }
+        if (!this.loadedPlayer.hasValidMailAddress()
+                && this.textFieldEmail.getText().length() > 0) {
+            /* The entered mail address does not withstand simple regex matching */
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.personediting.errors.invalidmail");
+        }
+
+        return null;
     };
 
     @FXML
