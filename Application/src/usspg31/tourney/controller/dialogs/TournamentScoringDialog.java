@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.PreferencesManager;
@@ -121,6 +122,17 @@ public class TournamentScoringDialog extends VBox implements
 
         this.predefinedScores = FXCollections.observableArrayList();
         this.tablePossibleScores.setItems(this.predefinedScores);
+
+        /* Edit the predefined score on double click */
+        this.tablePossibleScores.setRowFactory(tableView -> {
+            TableRow<ScoringEntry> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editPredefinedScore(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -185,22 +197,25 @@ public class TournamentScoringDialog extends VBox implements
 
     @FXML
     private void onButtonEditPredefinedScoreClicked(ActionEvent event) {
-        final String originalName = this.getSelectedScore().getName();
-        final int originalScore = this.getSelectedScore().getScore();
-
-        final String selectedScoreKey = this.getSelectedScore().getName();
-
         log.fine("Button Edit Predefined Score was clicked");
+
+        this.editPredefinedScore(this.getSelectedScore());
+    }
+
+    private void editPredefinedScore(ScoringEntry selectedScore) {
+        final String originalName = selectedScore.getName();
+        final int originalScore = selectedScore.getScore();
+
         this.predefinedScoreDialog
                 .properties(this.predefinedScores)
                 .properties(this.getSelectedScore())
                 .onResult(
                         (result, value) -> {
                             if (result == DialogResult.OK) {
-                                this.removeScore(selectedScoreKey);
+                                this.removeScore(originalName);
                                 this.addScore(value);
                             } else {
-                                this.removeScore(selectedScoreKey);
+                                this.removeScore(originalName);
                                 this.addScore(new ScoringEntry(originalName,
                                         originalScore));
                             }

@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainWindow;
@@ -132,6 +133,17 @@ public class EventSetupPhaseController implements EventUser {
                 this.tableTournaments.widthProperty());
 
         this.tableTournaments.getColumns().add(this.tableColumnTournamentTitle);
+
+        /* Edit the tournament on double click */
+        this.tableTournaments.setRowFactory(tableView -> {
+            TableRow<Tournament> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editTournament(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -253,14 +265,24 @@ public class EventSetupPhaseController implements EventUser {
         log.fine("Edit Tournament Button clicked");
         this.checkEventLoaded();
         final Tournament selectedTournament = this.getSelectedTournament();
+        this.editTournament(selectedTournament);
+    }
+
+    /**
+     * Open a dialog to edit the given tournament
+     * 
+     * @param tournament
+     *            Tournament to be edited
+     */
+    private void editTournament(Tournament tournament) {
         this.tournamentDialog
-                .properties(selectedTournament)
+                .properties(tournament)
                 .onResult((result, returnValue) -> {
                     // TODO: well, this obviously won't work like that.
                         if (result == DialogResult.OK && returnValue != null) {
                             this.undoManager.beginUndoBatch();
-                            this.loadedEvent.getTournaments().remove(
-                                    selectedTournament);
+                            this.loadedEvent.getTournaments()
+                                    .remove(tournament);
                             this.loadedEvent.getTournaments().add(returnValue);
                             this.undoManager.endUndoBatch();
                         }

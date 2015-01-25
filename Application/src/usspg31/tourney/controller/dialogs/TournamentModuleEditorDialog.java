@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.UndoTextArea;
@@ -161,6 +162,17 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                         .asString());
         this.tableTournamentPhases.getColumns().add(
                 this.tableColumnPhasesNumberOfOpponents);
+
+        /* Edit the tournament phase on double click */
+        this.tableTournamentPhases.setRowFactory(tableView -> {
+            TableRow<GamePhase> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editTournamentPhase(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     private void initPossibleScoresTable() {
@@ -179,6 +191,17 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                 cellData -> new SimpleStringProperty(""));
         this.tablePossibleScores.getColumns().add(
                 this.tableColumnPossibleScoresScores);
+
+        /* Edit the possible score on double click */
+        this.tablePossibleScores.setRowFactory(tableView -> {
+            TableRow<PossibleScoring> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editPossibleScoring(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -374,8 +397,17 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     @FXML
     private void onButtonEditPhaseClicked(ActionEvent event) {
         log.fine("Edit Tournament Phase Button was clicked");
-        this.tournamentPhaseDialog
-                .properties(this.getSelectedTournamentPhase())
+        this.editTournamentPhase(this.getSelectedTournamentPhase());
+    }
+
+    /**
+     * Open a dialog to edit the given tournament phase
+     * 
+     * @param selectedTournamentPhase
+     *            Tournament phase to be edited
+     */
+    private void editTournamentPhase(GamePhase selectedTournamentPhase) {
+        this.tournamentPhaseDialog.properties(selectedTournamentPhase)
                 .onResult((result, returnValue) -> {
                     if (result == DialogResult.OK && returnValue != null) {
                         // this.loadedTournament.getRuleSet().getPhaseList().add(returnValue);
@@ -474,11 +506,20 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
         PossibleScoring selectedScoring = this.getSelectedPossibleScore();
 
+        this.editPossibleScoring(selectedScoring);
+    }
+
+    /**
+     * Open a dialog to edit the given possible scoring
+     * 
+     * @param selectedScoring
+     *            Possible scoring to be edited
+     */
+    private void editPossibleScoring(PossibleScoring selectedScoring) {
         this.possibleScoringDialog
                 .properties(selectedScoring)
                 .onResult(
                         (result, value) -> {
-                            System.out.println(result.toString());
                             if (result == DialogResult.OK) {
                                 this.tablePossibleScores.getItems().remove(
                                         selectedScoring);

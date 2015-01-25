@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import usspg31.tourney.controller.PreferencesManager;
@@ -96,6 +97,17 @@ public class TournamentAdministratorListDialog extends HBox implements
         this.buttonRemoveAdministrator.disableProperty().bind(
                 this.tableAdministrators.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+        /* Edit the administrator on double click */
+        this.tableAdministrators.setRowFactory(tableView -> {
+            TableRow<TournamentAdministrator> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editAdministrator(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -179,27 +191,36 @@ public class TournamentAdministratorListDialog extends HBox implements
 
         final Administrator selectedAdministrator = this.tableAdministrators
                 .getSelectionModel().getSelectedItem();
+        this.editAdministrator(selectedAdministrator);
+    }
 
+    /**
+     * Open a dialog to edit the given administrator
+     * 
+     * @param administrator
+     *            Administrator to be edited
+     */
+    private void editAdministrator(Administrator administrator) {
         this.tournamentAdministratorEditorDialog
-                .properties(selectedAdministrator)
+                .properties(administrator)
                 .onResult(
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
-                                TournamentAdministrator administrator = new TournamentAdministrator();
-                                administrator.setFirstName(returnValue
+                                TournamentAdministrator editedAdministrator = new TournamentAdministrator();
+                                editedAdministrator.setFirstName(returnValue
                                         .getFirstName());
-                                administrator.setLastName(returnValue
+                                editedAdministrator.setLastName(returnValue
                                         .getLastName());
-                                administrator.setMailAdress(returnValue
+                                editedAdministrator.setMailAdress(returnValue
                                         .getMailAddress());
-                                administrator.setPhoneNumber(returnValue
+                                editedAdministrator.setPhoneNumber(returnValue
                                         .getPhoneNumber());
 
                                 this.tournamentAdministratorList
-                                        .remove(selectedAdministrator);
+                                        .remove(administrator);
                                 this.tournamentAdministratorList
-                                        .add(administrator);
+                                        .add(editedAdministrator);
                             }
                         }).show();
     }

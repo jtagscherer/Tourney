@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import usspg31.tourney.controller.PreferencesManager;
@@ -80,6 +81,17 @@ public class TournamentModuleListDialog extends HBox implements
         this.buttonRemoveTournamentModule.disableProperty().bind(
                 this.tableTournamentModules.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+        /* Edit the tournament module on double click */
+        this.tableTournamentModules.setRowFactory(tableView -> {
+            TableRow<TournamentModule> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    this.editTournamentModule(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -125,10 +137,18 @@ public class TournamentModuleListDialog extends HBox implements
     @FXML
     private void onButtonEditTournamentModuleClicked(ActionEvent event) {
         log.fine("Edit Tournament Module Button clicked");
-        this.tournamentmoduleEditorDialog
-                .properties(
-                        this.tableTournamentModules.getSelectionModel()
-                                .getSelectedItem())
+        this.editTournamentModule(this.tableTournamentModules
+                .getSelectionModel().getSelectedItem());
+    }
+
+    /**
+     * Open a dialog to edit the given tournament module
+     * 
+     * @param selectedModule
+     *            Tournament module to be edited
+     */
+    private void editTournamentModule(TournamentModule selectedModule) {
+        this.tournamentmoduleEditorDialog.properties(selectedModule)
                 .onResult((result, returnValue) -> {
                     if (result == DialogResult.OK && returnValue != null) {
 
