@@ -16,130 +16,139 @@ import usspg31.tourney.model.Tournament;
 public class SingleElimination implements PairingStrategy {
 
     private static final Logger log = Logger.getLogger(SingleElimination.class
-            .getName());
+	    .getName());
 
     /*
      * (non-Javadoc)Level.FINER,
+     * 
      * @see
      * usspg31.tourney.model.pairingstrategies.PairingStrategy#generatePairing
      * (usspg31.tourney.model.Tournament)
      */
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
-        log.finer(this.getClass().toString());
+	log.finer(this.getClass().toString());
 
-        ArrayList<Pairing> result = new ArrayList<>();
-        Pairing partResult = new Pairing();
+	ArrayList<Pairing> result = new ArrayList<>();
+	Pairing partResult = new Pairing();
 
-        // checks if this round is the first round in the gamephase and modify
-        // the pairing strategy for this round
-        if (tournament.getRounds().size() == 0
-                || PairingHelper.isFirstInPhase(tournament.getRounds().size(),
-                        tournament, PairingHelper.findPhase(tournament
-                                .getRounds().size(), tournament))) {
+	// checks if this round is the first round in the gamephase and modify
+	// the pairing strategy for this round
+	if (tournament.getRounds().size() == 0
+		|| PairingHelper.isFirstInPhase(tournament.getRounds().size(),
+			tournament, PairingHelper.findPhase(tournament
+				.getRounds().size(), tournament))) {
 
-            Random randomGenerator = new Random();
-            ArrayList<Player> randomList = new ArrayList<>();
-            randomList.addAll(tournament.getRemainingPlayers());
-            int randomNumber;
+	    Random randomGenerator = new Random();
+	    ArrayList<Player> randomList = new ArrayList<>();
+	    randomList.addAll(tournament.getRemainingPlayers());
+	    int randomNumber;
 
-            while (randomList.size() >= PairingHelper.findPhase(
-                    tournament.getRounds().size(), tournament)
-                    .getNumberOfOpponents()) {
-                partResult = new Pairing();
-                partResult.setFlag(Pairing.PairingFlag.IGNORE);
-                for (int i = 0; i < PairingHelper.findPhase(
-                        tournament.getRounds().size(), tournament)
-                        .getNumberOfOpponents(); i++) {
-                    randomNumber = randomGenerator.nextInt(randomList.size());
+	    while (randomList.size() >= PairingHelper.findPhase(
+		    tournament.getRounds().size(), tournament)
+		    .getNumberOfOpponents()) {
+		partResult = new Pairing();
+		partResult.setFlag(Pairing.PairingFlag.IGNORE);
+		for (int i = 0; i < PairingHelper.findPhase(
+			tournament.getRounds().size(), tournament)
+			.getNumberOfOpponents(); i++) {
+		    randomNumber = randomGenerator.nextInt(randomList.size());
 
-                    partResult.getScoreTable().add(
-                            PairingHelper.generateEmptyScore(
-                                    randomList.get(randomNumber), tournament
-                                            .getRuleSet().getPossibleScores()
-                                            .size()));
+		    partResult.getScoreTable().add(
+			    PairingHelper.generateEmptyScore(
+				    randomList.get(randomNumber), tournament
+					    .getRuleSet().getPossibleScores()
+					    .size()));
 
-                    partResult.getOpponents().add(randomList.get(randomNumber));
-                    randomList.remove(randomNumber);
-                }
-                result.add(partResult);
-            }
+		    partResult.getOpponents().add(randomList.get(randomNumber));
+		    randomList.remove(randomNumber);
+		}
+		result.add(partResult);
+	    }
 
-            for (int i = 0; i < randomList.size(); i++) {
-                partResult = new Pairing();
-                partResult.setFlag(PairingFlag.IGNORE);
-                partResult.getOpponents().add(randomList.get(i));
-                partResult.getScoreTable().add(
-                        PairingHelper.generateEmptyScore(randomList.get(i),
-                                tournament.getRuleSet().getPossibleScores()
-                                        .size()));
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
-                }
-            }
+	    for (int i = 0; i < randomList.size(); i++) {
+		partResult = new Pairing();
+		partResult.setFlag(PairingFlag.IGNORE);
+		partResult.getOpponents().add(randomList.get(i));
+		partResult.getScoreTable().add(
+			PairingHelper.generateEmptyScore(randomList.get(i),
+				tournament.getRuleSet().getPossibleScores()
+					.size()));
+		for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+		    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+			partResult.getScoreTable().get(0).getScore()
+				.addAll(byeTest.byePointsProperty());
+			break;
+		    }
+		}
+		result.add(partResult);
+	    }
 
-        } else {
-            ArrayList<Pairing> tmp = new ArrayList<>();
-            tmp.addAll(tournament.getRounds()
-                    .get(tournament.getRounds().size() - 1).getPairings());
-            while (tmp.size() > PairingHelper.findPhase(
-                    tournament.getRounds().size(), tournament)
-                    .getNumberOfOpponents() - 1) {
-                partResult = new Pairing();
-                partResult.setFlag(PairingFlag.IGNORE);
-                for (int i = 0; i < PairingHelper.findPhase(
-                        tournament.getRounds().size(), tournament)
-                        .getNumberOfOpponents(); i++) {
+	} else {
+	    ArrayList<Pairing> allPreviousPairings = new ArrayList<>();
+	    allPreviousPairings.addAll(tournament.getRounds()
+		    .get(tournament.getRounds().size() - 1).getPairings());
+	    while (allPreviousPairings.size() > PairingHelper.findPhase(
+		    tournament.getRounds().size(), tournament)
+		    .getNumberOfOpponents() - 1) {
+		partResult = new Pairing();
+		partResult.setFlag(PairingFlag.IGNORE);
+		for (int i = 0; i < PairingHelper.findPhase(
+			tournament.getRounds().size(), tournament)
+			.getNumberOfOpponents(); i++) {
 
-                    partResult.getScoreTable().add(
-                            PairingHelper.generateEmptyScore(
-                                    PairingHelper.identifyWinner(tmp.get(0)),
-                                    tournament.getRuleSet().getPossibleScores()
-                                            .size()));
+		    for (Player winner : PairingHelper
+			    .identifyWinner(allPreviousPairings.get(0))) {
+			partResult.getScoreTable().add(
+				PairingHelper.generateEmptyScore(winner,
+					tournament.getRuleSet()
+						.getPossibleScores().size()));
+		    }
 
-                    partResult.getOpponents().add(
-                            PairingHelper.identifyWinner(tmp.get(0)));
+		    partResult.getOpponents().addAll(
+			    PairingHelper.identifyWinner(allPreviousPairings
+				    .get(0)));
 
-                    tmp.remove(0);
-                }
+		    allPreviousPairings.remove(0);
+		}
 
-                result.add(partResult);
+		result.add(partResult);
 
-            }
+	    }
 
-            for (int i = 0; i < tmp.size(); i++) {
-                partResult = new Pairing();
-                partResult.setFlag(PairingFlag.IGNORE);
-                partResult.getOpponents().add(
-                        PairingHelper.identifyWinner(tmp.get(i)));
-                partResult.getScoreTable().add(
-                        PairingHelper.generateEmptyScore(
-                                PairingHelper.identifyWinner(tmp.get(i)),
-                                tournament.getRuleSet().getPossibleScores()
-                                        .size()));
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
-                }
+	    for (int i = 0; i < allPreviousPairings.size(); i++) {
+		partResult = new Pairing();
+		partResult.setFlag(PairingFlag.IGNORE);
+		partResult.getOpponents()
+			.addAll(PairingHelper
+				.identifyWinner(allPreviousPairings.get(i)));
 
-                result.add(partResult);
-            }
+		for (Player winner : PairingHelper
+			.identifyWinner(allPreviousPairings.get(i))) {
+		    partResult.getScoreTable().add(
+			    PairingHelper.generateEmptyScore(winner, tournament
+				    .getRuleSet().getPossibleScores().size()));
+		}
 
-        }
+		for (Bye byeTest : tournament.getRuleSet().getByeList()) {
+		    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
+			partResult.getScoreTable().get(0).getScore()
+				.addAll(byeTest.byePointsProperty());
+			break;
+		    }
+		}
 
-        return result;
+		result.add(partResult);
+	    }
+
+	}
+
+	return result;
     }
 
     @Override
     public String getName() {
-        return PreferencesManager.getInstance().localizeString(
-                "pairingstrategy.singleelimination.name");
+	return PreferencesManager.getInstance().localizeString(
+		"pairingstrategy.singleelimination.name");
     }
 }
