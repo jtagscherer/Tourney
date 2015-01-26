@@ -36,7 +36,7 @@ public class TournamentModuleListDialog extends HBox implements
     @FXML private Button buttonRemoveTournamentModule;
     @FXML private Button buttonEditTournamentModule;
 
-    private ModalDialog<TournamentModule, TournamentModule> tournamentmoduleEditorDialog;
+    private ModalDialog<Object, TournamentModule> tournamentmoduleEditorDialog;
 
     public TournamentModuleListDialog() {
         try {
@@ -115,6 +115,7 @@ public class TournamentModuleListDialog extends HBox implements
         log.fine("Add Tournament Module Button clicked");
         this.tournamentmoduleEditorDialog
                 .properties(new TournamentModule())
+                .properties(this.tableTournamentModules.getItems())
                 .onResult(
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
@@ -126,6 +127,10 @@ public class TournamentModuleListDialog extends HBox implements
                                 }
                                 this.tableTournamentModules.getItems().add(
                                         returnValue);
+                                PreferencesManager.getInstance()
+                                        .saveTournamentModules(
+                                                this.tableTournamentModules
+                                                        .getItems());
                             }
                         }).show();
     }
@@ -133,6 +138,10 @@ public class TournamentModuleListDialog extends HBox implements
     @FXML
     private void onButtonRemoveTournamentModuleClicked(ActionEvent event) {
         log.fine("Remove Tournament Module Button clicked");
+
+        PreferencesManager.getInstance().removeTournamentFile(
+                this.tableTournamentModules.getSelectionModel()
+                        .getSelectedItem().getName());
         this.tableTournamentModules.getItems().remove(
                 this.tableTournamentModules.getSelectionModel()
                         .getSelectedIndex());
@@ -154,14 +163,22 @@ public class TournamentModuleListDialog extends HBox implements
     private void editTournamentModule(TournamentModule selectedModule) {
         this.tournamentmoduleEditorDialog
                 .properties(selectedModule)
+                .properties(this.tableTournamentModules.getItems())
                 .onResult(
                         (result, returnValue) -> {
                             if (result == DialogResult.OK
                                     && returnValue != null) {
+                                PreferencesManager.getInstance()
+                                        .removeTournamentFile(
+                                                selectedModule.getName());
                                 this.tableTournamentModules.getItems().remove(
                                         selectedModule);
                                 this.tableTournamentModules.getItems().add(
                                         returnValue);
+                                PreferencesManager.getInstance()
+                                        .saveTournamentModules(
+                                                this.tableTournamentModules
+                                                        .getItems());
                             }
                         }).show();
     }

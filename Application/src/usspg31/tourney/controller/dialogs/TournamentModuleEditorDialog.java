@@ -2,6 +2,7 @@ package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.TournamentModule;
 
 public class TournamentModuleEditorDialog extends SplitPane implements
-        IModalDialogProvider<TournamentModule, TournamentModule> {
+        IModalDialogProvider<Object, TournamentModule> {
 
     private static final Logger log = Logger
             .getLogger(TournamentModuleEditorDialog.class.getName());
@@ -70,6 +71,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
 
     private TournamentModule loadedModule;
+    private ArrayList<String> existingTournamentModuleNames;
 
     public TournamentModuleEditorDialog() {
         try {
@@ -91,6 +93,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     @FXML
     private void initialize() {
         this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
+        this.existingTournamentModuleNames = new ArrayList<String>();
 
         this.initTournamentPhaseTable();
         this.initPossibleScoresTable();
@@ -212,12 +215,20 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                 .getInstance().localizeString("tableplaceholder.noscorings")));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void setProperties(TournamentModule properties) {
-        if (this.loadedModule != null) {
-            this.unloadModule();
+    public void setProperties(Object properties) {
+        if (properties instanceof TournamentModule) {
+            if (this.loadedModule != null) {
+                this.unloadModule();
+            }
+            this.loadModule((TournamentModule) properties);
+        } else if (properties instanceof ObservableList<?>) {
+            this.existingTournamentModuleNames.clear();
+            for (TournamentModule module : (ObservableList<TournamentModule>) properties) {
+                this.existingTournamentModuleNames.add(module.getName());
+            }
         }
-        this.loadModule(properties);
     }
 
     @Override
@@ -240,12 +251,24 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                     "dialogs.tournamentmodule.errors.nophases");
         }
 
+        /* Check for another tournament module with the same name */
+        int duplicateModuleNames = 0;
+        for (String moduleName : this.existingTournamentModuleNames) {
+            if (this.loadedModule.getName().equals(moduleName)) {
+                duplicateModuleNames++;
+            }
+        }
+        if (duplicateModuleNames > 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentmodule.errors.duplicatename");
+        }
+
         return null;
     };
 
     @Override
     public void initModalDialog(
-            ModalDialog<TournamentModule, TournamentModule> modalDialog) {
+            ModalDialog<Object, TournamentModule> modalDialog) {
         modalDialog.title("dialogs.tournamentmoduleeditor").dialogButtons(
                 DialogButtons.OK_CANCEL);
     }
