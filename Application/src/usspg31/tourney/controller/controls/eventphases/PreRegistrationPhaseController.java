@@ -11,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
@@ -93,6 +94,10 @@ public class PreRegistrationPhaseController implements EventUser {
                         .mailAdressProperty());
         this.tablePreRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerMailAddress);
+
+	this.tablePreRegisteredPlayers.setPlaceholder(new Text(
+		PreferencesManager.getInstance().localizeString(
+			"tableplaceholder.noplayers")));
 
         /* Edit the player on double click */
         this.tablePreRegisteredPlayers.setRowFactory(tableView -> {

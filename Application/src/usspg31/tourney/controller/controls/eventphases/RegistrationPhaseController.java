@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import usspg31.tourney.controller.EntryPoint;
@@ -150,6 +151,9 @@ public class RegistrationPhaseController implements EventUser {
         this.buttonEditPlayer.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+	this.tableRegisteredPlayers.setPlaceholder(new Text(PreferencesManager
+		.getInstance().localizeString("tableplaceholder.noplayers")));
 
         /*
          * Bind the availability of the register and unregister buttons to

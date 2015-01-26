@@ -13,8 +13,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainWindow;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
@@ -131,6 +133,10 @@ public class EventSetupPhaseController implements EventUser {
 
         this.tableColumnTournamentTitle.prefWidthProperty().bind(
                 this.tableTournaments.widthProperty());
+
+	this.tableTournaments
+		.setPlaceholder(new Text(PreferencesManager.getInstance()
+			.localizeString("tableplaceholder.notournaments")));
 
         this.tableTournaments.getColumns().add(this.tableColumnTournamentTitle);
 
