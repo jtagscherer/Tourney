@@ -389,8 +389,9 @@ public class TournamentDialog extends VBox implements
     private void onButtonEditTournamentModulesClicked(ActionEvent event) {
         log.fine("Edit Tournament Modules Button was clicked");
 
-        // TODO: actually load tournament modules (-> preferencesManager?)
-        this.tournamentModuleListDialog.properties(null).show();
+        this.tournamentModuleListDialog.properties(
+                PreferencesManager.getInstance().loadTournamentModules())
+                .show();
     }
 
     @FXML
