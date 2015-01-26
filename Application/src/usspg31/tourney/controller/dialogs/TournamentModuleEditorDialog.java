@@ -20,6 +20,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
@@ -173,6 +174,10 @@ public class TournamentModuleEditorDialog extends SplitPane implements
             });
             return row;
         });
+
+        this.tableTournamentPhases.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString(
+                        "tableplaceholder.notournamentphases")));
     }
 
     private void initPossibleScoresTable() {
@@ -202,6 +207,9 @@ public class TournamentModuleEditorDialog extends SplitPane implements
             });
             return row;
         });
+
+        this.tablePossibleScores.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noscorings")));
     }
 
     @Override

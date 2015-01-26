@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -96,6 +97,10 @@ public class EventAdministratorListDialog extends HBox implements
         this.buttonRemoveAdministrator.disableProperty().bind(
                 this.tableAdministrators.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+        this.tableAdministrators.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString(
+                        "tableplaceholder.noadministrators")));
 
         /* Edit the administrator on double click */
         this.tableAdministrators.setRowFactory(tableView -> {

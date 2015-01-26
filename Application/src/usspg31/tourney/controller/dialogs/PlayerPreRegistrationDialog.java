@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -84,6 +85,10 @@ public class PlayerPreRegistrationDialog extends VBox implements
         this.tableColumnTournamentName.setCellValueFactory(cellData -> cellData
                 .getValue().nameProperty());
         this.tableTournaments.getColumns().add(this.tableColumnTournamentName);
+
+        this.tableTournaments
+                .setPlaceholder(new Text(PreferencesManager.getInstance()
+                        .localizeString("tableplaceholder.notournaments")));
     }
 
     private void updateTournamentList() {

@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -92,6 +93,9 @@ public class TournamentModuleListDialog extends HBox implements
             });
             return row;
         });
+
+        this.tableTournamentModules.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.nomodules")));
     }
 
     @Override

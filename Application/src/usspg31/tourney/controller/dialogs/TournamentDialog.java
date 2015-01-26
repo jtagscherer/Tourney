@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
@@ -190,6 +191,10 @@ public class TournamentDialog extends VBox implements
             });
             return row;
         });
+
+        this.tableTournamentPhases.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString(
+                        "tableplaceholder.notournamentphases")));
     }
 
     /**
@@ -259,6 +264,9 @@ public class TournamentDialog extends VBox implements
             });
             return row;
         });
+
+        this.tablePossibleScores.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noscorings")));
     }
 
     /**
