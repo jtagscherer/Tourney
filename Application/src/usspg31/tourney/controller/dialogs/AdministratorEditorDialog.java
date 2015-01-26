@@ -43,6 +43,10 @@ public class AdministratorEditorDialog extends VBox implements
 
     @Override
     public void setProperties(Administrator property) {
+        if (this.loadedAdministrator != null) {
+            this.unloadAdministrator();
+        }
+
         this.loadAdministrator(property);
     }
 

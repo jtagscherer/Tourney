@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import usspg31.tourney.controller.EntryPoint;
@@ -103,6 +104,10 @@ public class TournamentSelectionController implements EventUser {
                 });
         this.tableTournaments.getColumns()
                 .add(this.tableColumnTournamentStatus);
+
+        this.tableTournaments
+                .setPlaceholder(new Text(PreferencesManager.getInstance()
+                        .localizeString("tableplaceholder.notournaments")));
     }
 
     @Override

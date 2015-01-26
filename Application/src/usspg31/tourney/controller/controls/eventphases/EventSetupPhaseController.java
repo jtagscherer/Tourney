@@ -13,15 +13,19 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainWindow;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.controller.dialogs.EventAdministratorListDialog;
 import usspg31.tourney.controller.dialogs.TournamentDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.EventAdministrator;
 import usspg31.tourney.model.Tournament;
@@ -131,6 +135,10 @@ public class EventSetupPhaseController implements EventUser {
 
         this.tableColumnTournamentTitle.prefWidthProperty().bind(
                 this.tableTournaments.widthProperty());
+
+        this.tableTournaments
+                .setPlaceholder(new Text(PreferencesManager.getInstance()
+                        .localizeString("tableplaceholder.notournaments")));
 
         this.tableTournaments.getColumns().add(this.tableColumnTournamentTitle);
 
@@ -257,7 +265,32 @@ public class EventSetupPhaseController implements EventUser {
     private void onButtonRemoveTournamentClicked(ActionEvent event) {
         log.fine("Remove Tournament Button clicked");
         this.checkEventLoaded();
-        this.loadedEvent.getTournaments().remove(this.getSelectedTournament());
+
+        final Tournament selectedTournament = this.getSelectedTournament();
+
+        new SimpleDialog<>(
+                PreferencesManager
+                        .getInstance()
+                        .localizeString(
+                                "eventsetupphase.dialogs.deletetournament.message.before")
+                        + " \""
+                        + selectedTournament.getName()
+                        + "\" "
+                        + PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "eventsetupphase.dialogs.deletetournament.message.after"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("eventsetupphase.dialogs.deletetournament.title")
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.YES) {
+                                this.loadedEvent.getTournaments().remove(
+                                        selectedTournament);
+                            }
+                        }).show();
+
     }
 
     @FXML

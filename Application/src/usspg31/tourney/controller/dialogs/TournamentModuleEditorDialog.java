@@ -2,6 +2,7 @@ package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.controls.UndoTextField;
@@ -27,13 +29,14 @@ import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.TournamentModule;
 
 public class TournamentModuleEditorDialog extends SplitPane implements
-        IModalDialogProvider<TournamentModule, TournamentModule> {
+        IModalDialogProvider<Object, TournamentModule> {
 
     private static final Logger log = Logger
             .getLogger(TournamentModuleEditorDialog.class.getName());
@@ -69,6 +72,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
 
     private TournamentModule loadedModule;
+    private ArrayList<String> existingTournamentModuleNames;
 
     public TournamentModuleEditorDialog() {
         try {
@@ -90,6 +94,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     @FXML
     private void initialize() {
         this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
+        this.existingTournamentModuleNames = new ArrayList<String>();
 
         this.initTournamentPhaseTable();
         this.initPossibleScoresTable();
@@ -173,6 +178,10 @@ public class TournamentModuleEditorDialog extends SplitPane implements
             });
             return row;
         });
+
+        this.tableTournamentPhases.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString(
+                        "tableplaceholder.notournamentphases")));
     }
 
     private void initPossibleScoresTable() {
@@ -202,14 +211,25 @@ public class TournamentModuleEditorDialog extends SplitPane implements
             });
             return row;
         });
+
+        this.tablePossibleScores.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noscorings")));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void setProperties(TournamentModule properties) {
-        if (this.loadedModule != null) {
-            this.unloadModule();
+    public void setProperties(Object properties) {
+        if (properties instanceof TournamentModule) {
+            if (this.loadedModule != null) {
+                this.unloadModule();
+            }
+            this.loadModule((TournamentModule) properties);
+        } else if (properties instanceof ObservableList<?>) {
+            this.existingTournamentModuleNames.clear();
+            for (TournamentModule module : (ObservableList<TournamentModule>) properties) {
+                this.existingTournamentModuleNames.add(module.getName());
+            }
         }
-        this.loadModule(properties);
     }
 
     @Override
@@ -232,12 +252,24 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                     "dialogs.tournamentmodule.errors.nophases");
         }
 
+        /* Check for another tournament module with the same name */
+        int duplicateModuleNames = 0;
+        for (String moduleName : this.existingTournamentModuleNames) {
+            if (this.loadedModule.getName().equals(moduleName)) {
+                duplicateModuleNames++;
+            }
+        }
+        if (duplicateModuleNames > 0) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentmodule.errors.duplicatename");
+        }
+
         return null;
     };
 
     @Override
     public void initModalDialog(
-            ModalDialog<TournamentModule, TournamentModule> modalDialog) {
+            ModalDialog<Object, TournamentModule> modalDialog) {
         modalDialog.title("dialogs.tournamentmoduleeditor").dialogButtons(
                 DialogButtons.OK_CANCEL);
     }
@@ -383,17 +415,29 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private void onButtonRemovePhaseClicked(ActionEvent event) {
         log.fine("Remove Tournament Phase Button was clicked");
 
-        // update indices of all following GamePhases
-        int selectedTournamentPhase = this.getSelectedTournamentPhaseIndex();
-        int itemCount = this.tableTournamentPhases.getItems().size();
-        ObservableList<GamePhase> phases = this.tableTournamentPhases
-                .getItems();
-        for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
-            phases.get(i).setPhaseNumber(i - 1);
-        }
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.tournamentmoduleeditor.dialogs.removephase.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("dialogs.tournamentmoduleeditor.dialogs.removephase.title")
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        // update indices of all following GamePhases
+                        int selectedTournamentPhase = this
+                                .getSelectedTournamentPhaseIndex();
+                        int itemCount = this.tableTournamentPhases.getItems()
+                                .size();
+                        ObservableList<GamePhase> phases = this.tableTournamentPhases
+                                .getItems();
+                        for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
+                            phases.get(i).setPhaseNumber(i - 1);
+                        }
 
-        // actually remove the selected GamePhase
-        this.loadedModule.getPhaseList().remove(selectedTournamentPhase);
+                        // actually remove the selected GamePhase
+                        this.loadedModule.getPhaseList().remove(
+                                selectedTournamentPhase);
+                    }
+                }).show();
     }
 
     @FXML
@@ -495,17 +539,29 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private void onButtonRemoveScoreClicked(ActionEvent event) {
         log.fine("Remove Possible Score Button was clicked");
 
-        // update indices of all following PossibleScores
-        int selectedPossibleScore = this.getSelectedPossibleScoreIndex();
-        int itemCount = this.tablePossibleScores.getItems().size();
-        ObservableList<PossibleScoring> phases = this.tablePossibleScores
-                .getItems();
-        for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
-            phases.get(i).setPriority(i - 1);
-        }
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.tournamentmoduleeditor.dialogs.removescoring.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("dialogs.tournamentmoduleeditor.dialogs.removescoring.title")
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        // update indices of all following PossibleScores
+                        int selectedPossibleScore = this
+                                .getSelectedPossibleScoreIndex();
+                        int itemCount = this.tablePossibleScores.getItems()
+                                .size();
+                        ObservableList<PossibleScoring> phases = this.tablePossibleScores
+                                .getItems();
+                        for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
+                            phases.get(i).setPriority(i - 1);
+                        }
 
-        // actually remove the selected PossibleScore
-        this.loadedModule.getPossibleScores().remove(selectedPossibleScore);
+                        // actually remove the selected PossibleScore
+                        this.loadedModule.getPossibleScores().remove(
+                                selectedPossibleScore);
+                    }
+                }).show();
     }
 
     @FXML

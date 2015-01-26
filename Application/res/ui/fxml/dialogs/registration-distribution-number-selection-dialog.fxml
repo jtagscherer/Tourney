@@ -21,8 +21,8 @@
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
 	<VBox spacing="10.0">
-		<Label
-			text="%dialogs.registrationdistributionnumberselection.description" />
+		<Label fx:id="labelNumberSelectionInformation"
+			text="%dialogs.registrationdistributionnumberselection.description.uninformed" />
 		<NumberTextField fx:id="textFieldNumberOfRegistrator"
 			promptText="%dialogs.registrationdistributionnumberselection.numberprompt" />
 	</VBox>

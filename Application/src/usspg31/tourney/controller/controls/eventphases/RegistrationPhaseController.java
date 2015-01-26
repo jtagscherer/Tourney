@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import usspg31.tourney.controller.EntryPoint;
@@ -150,6 +151,9 @@ public class RegistrationPhaseController implements EventUser {
         this.buttonEditPlayer.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+        this.tableRegisteredPlayers.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noplayers")));
 
         /*
          * Bind the availability of the register and unregister buttons to
@@ -676,46 +680,80 @@ public class RegistrationPhaseController implements EventUser {
             }
 
             if (importedEvent != null) {
-                ArrayList<Player> newPlayers = new ArrayList<Player>();
-                /* Add all players that were already existent */
-                loaded_players: for (Player loadedPlayer : importedEvent
+                /*
+                 * First of all check if there will be any duplicate starting
+                 * numbers after importing
+                 */
+                boolean duplicateStartingNumbers = false;
+                existent_players: for (Player existentPlayer : this.loadedEvent
                         .getRegisteredPlayers()) {
-                    for (Player player : this.loadedEvent
+                    for (Player newPlayer : importedEvent
                             .getRegisteredPlayers()) {
-                        if (player.getId().equals(loadedPlayer.getId())) {
-                            if (player.getStartingNumber().equals("")
-                                    && !loadedPlayer.getStartingNumber()
-                                            .equals("")) {
-                                /*
-                                 * The loaded player has a starting number and
-                                 * should be preferred compared to the existent
-                                 * player that has none
-                                 */
-                                this.loadedEvent.getRegisteredPlayers().remove(
-                                        player);
-                                this.loadedEvent.getRegisteredPlayers().add(
-                                        loadedPlayer);
-                            }
-
-                            continue loaded_players;
+                        /*
+                         * Test if two players have the same starting number and
+                         * different IDs
+                         */
+                        if (!existentPlayer.getId().equals(newPlayer.getId())
+                                && existentPlayer.getStartingNumber().equals(
+                                        newPlayer.getStartingNumber())) {
+                            duplicateStartingNumbers = true;
+                            break existent_players;
                         }
                     }
-                    newPlayers.add(loadedPlayer);
                 }
 
-                /* Add all new players from the imported event */
-                for (Player loadedPlayer : newPlayers) {
-                    this.loadedEvent.getRegisteredPlayers().add(loadedPlayer);
-                }
+                if (!duplicateStartingNumbers) {
+                    ArrayList<Player> newPlayers = new ArrayList<Player>();
+                    /* Add all players that were already existent */
+                    loaded_players: for (Player loadedPlayer : importedEvent
+                            .getRegisteredPlayers()) {
+                        for (Player player : this.loadedEvent
+                                .getRegisteredPlayers()) {
+                            if (player.getId().equals(loadedPlayer.getId())) {
+                                if (player.getStartingNumber().equals("")
+                                        && !loadedPlayer.getStartingNumber()
+                                                .equals("")) {
+                                    /*
+                                     * The loaded player has a starting number
+                                     * and should be preferred compared to the
+                                     * existent player that has none
+                                     */
+                                    this.loadedEvent.getRegisteredPlayers()
+                                            .remove(player);
+                                    this.loadedEvent.getRegisteredPlayers()
+                                            .add(loadedPlayer);
+                                }
 
-                new SimpleDialog<>(
-                        PreferencesManager
-                                .getInstance()
-                                .localizeString(
-                                        "registrationphase.dialogs.merge.success.message"))
-                        .modalDialog().dialogButtons(DialogButtons.OK)
-                        .title("registrationphase.dialogs.merge.success.title")
-                        .show();
+                                continue loaded_players;
+                            }
+                        }
+                        newPlayers.add(loadedPlayer);
+                    }
+
+                    /* Add all new players from the imported event */
+                    for (Player loadedPlayer : newPlayers) {
+                        this.loadedEvent.getRegisteredPlayers().add(
+                                loadedPlayer);
+                    }
+
+                    new SimpleDialog<>(
+                            PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "registrationphase.dialogs.merge.success.message"))
+                            .modalDialog()
+                            .dialogButtons(DialogButtons.OK)
+                            .title("registrationphase.dialogs.merge.success.title")
+                            .show();
+                } else {
+                    new SimpleDialog<>(
+                            PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "registrationphase.dialogs.merge.errors.duplicatestartingnumbers"))
+                            .modalDialog().dialogButtons(DialogButtons.OK)
+                            .title("dialogs.titles.error").show();
+                }
             }
         }
     }
