@@ -29,6 +29,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
@@ -414,17 +415,29 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private void onButtonRemovePhaseClicked(ActionEvent event) {
         log.fine("Remove Tournament Phase Button was clicked");
 
-        // update indices of all following GamePhases
-        int selectedTournamentPhase = this.getSelectedTournamentPhaseIndex();
-        int itemCount = this.tableTournamentPhases.getItems().size();
-        ObservableList<GamePhase> phases = this.tableTournamentPhases
-                .getItems();
-        for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
-            phases.get(i).setPhaseNumber(i - 1);
-        }
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.tournamentmoduleeditor.dialogs.removephase.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("dialogs.tournamentmoduleeditor.dialogs.removephase.title")
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        // update indices of all following GamePhases
+                        int selectedTournamentPhase = this
+                                .getSelectedTournamentPhaseIndex();
+                        int itemCount = this.tableTournamentPhases.getItems()
+                                .size();
+                        ObservableList<GamePhase> phases = this.tableTournamentPhases
+                                .getItems();
+                        for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
+                            phases.get(i).setPhaseNumber(i - 1);
+                        }
 
-        // actually remove the selected GamePhase
-        this.loadedModule.getPhaseList().remove(selectedTournamentPhase);
+                        // actually remove the selected GamePhase
+                        this.loadedModule.getPhaseList().remove(
+                                selectedTournamentPhase);
+                    }
+                }).show();
     }
 
     @FXML
@@ -526,17 +539,29 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     private void onButtonRemoveScoreClicked(ActionEvent event) {
         log.fine("Remove Possible Score Button was clicked");
 
-        // update indices of all following PossibleScores
-        int selectedPossibleScore = this.getSelectedPossibleScoreIndex();
-        int itemCount = this.tablePossibleScores.getItems().size();
-        ObservableList<PossibleScoring> phases = this.tablePossibleScores
-                .getItems();
-        for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
-            phases.get(i).setPriority(i - 1);
-        }
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.tournamentmoduleeditor.dialogs.removescoring.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("dialogs.tournamentmoduleeditor.dialogs.removescoring.title")
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        // update indices of all following PossibleScores
+                        int selectedPossibleScore = this
+                                .getSelectedPossibleScoreIndex();
+                        int itemCount = this.tablePossibleScores.getItems()
+                                .size();
+                        ObservableList<PossibleScoring> phases = this.tablePossibleScores
+                                .getItems();
+                        for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
+                            phases.get(i).setPriority(i - 1);
+                        }
 
-        // actually remove the selected PossibleScore
-        this.loadedModule.getPossibleScores().remove(selectedPossibleScore);
+                        // actually remove the selected PossibleScore
+                        this.loadedModule.getPossibleScores().remove(
+                                selectedPossibleScore);
+                    }
+                }).show();
     }
 
     @FXML

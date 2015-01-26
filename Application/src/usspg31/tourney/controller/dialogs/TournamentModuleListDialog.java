@@ -20,6 +20,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.TournamentModule;
 
 public class TournamentModuleListDialog extends HBox implements
@@ -139,12 +140,26 @@ public class TournamentModuleListDialog extends HBox implements
     private void onButtonRemoveTournamentModuleClicked(ActionEvent event) {
         log.fine("Remove Tournament Module Button clicked");
 
-        PreferencesManager.getInstance().removeTournamentFile(
-                this.tableTournamentModules.getSelectionModel()
-                        .getSelectedItem().getName());
-        this.tableTournamentModules.getItems().remove(
-                this.tableTournamentModules.getSelectionModel()
-                        .getSelectedIndex());
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.tournamentmodulelist.dialogs.removemodule.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("dialogs.tournamentmodulelist.dialogs.removemodule.title")
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.YES) {
+                                PreferencesManager.getInstance()
+                                        .removeTournamentFile(
+                                                this.tableTournamentModules
+                                                        .getSelectionModel()
+                                                        .getSelectedItem()
+                                                        .getName());
+                                this.tableTournamentModules.getItems().remove(
+                                        this.tableTournamentModules
+                                                .getSelectionModel()
+                                                .getSelectedIndex());
+                            }
+                        }).show();
     }
 
     @FXML
