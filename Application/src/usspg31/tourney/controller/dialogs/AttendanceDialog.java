@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
@@ -59,6 +60,9 @@ public class AttendanceDialog extends VBox implements
             return cellValue.getValue().firstNameProperty().concat(" ")
                     .concat(cellValue.getValue().lastNameProperty());
         });
+
+        this.tableRegisteredPlayers.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        this.tableAttendingPlayers.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         this.tableAttendingPlayers.getColumns().add(attendingPlayerNameColumn);
         this.tableRegisteredPlayers.getColumns()
@@ -130,21 +134,17 @@ public class AttendanceDialog extends VBox implements
 
     @FXML
     private void onButtonAddAttendeeClicked(ActionEvent event) {
-        ObservableList<Player> selectedPlayers = this.tableRegisteredPlayers
-                .getSelectionModel().getSelectedItems();
-
-        for (Player p : selectedPlayers) {
-            this.tableRegisteredPlayers.getItems().remove(p);
+        while (this.tableRegisteredPlayers.getSelectionModel().getSelectedItems().size() > 0) {
+            Player p = this.tableRegisteredPlayers.getSelectionModel().getSelectedItems().get(0);
             this.tableAttendingPlayers.getItems().add(p);
+            this.tableRegisteredPlayers.getItems().remove(p);
         }
     }
 
     @FXML
     private void onButtonRemoveAttendeeClicked(ActionEvent event) {
-        ObservableList<Player> selectedPlayers = this.tableAttendingPlayers
-                .getSelectionModel().getSelectedItems();
-
-        for (Player p : selectedPlayers) {
+        while (this.tableAttendingPlayers.getSelectionModel().getSelectedItems().size() > 0) {
+            Player p = this.tableAttendingPlayers.getSelectionModel().getSelectedItems().get(0);
             this.tableAttendingPlayers.getItems().remove(p);
             this.tableRegisteredPlayers.getItems().add(p);
         }
