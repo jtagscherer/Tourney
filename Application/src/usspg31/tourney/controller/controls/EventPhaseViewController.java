@@ -264,19 +264,6 @@ public class EventPhaseViewController implements EventUser {
             this.registrationPhaseController.loadEvent(event);
             this.tournamentExecutionPhaseController.loadEvent(event);
 
-            /*
-             * Clean up if some values are still set from a previously opened
-             * event
-             */
-            this.breadcrumbEventSetup.setEffect(null);
-            this.breadcrumbEventSetup.setDisable(false);
-            this.breadcrumbPreRegistration.setEffect(null);
-            this.breadcrumbPreRegistration.setDisable(false);
-            this.breadcrumbRegistration.setEffect(null);
-            this.breadcrumbRegistration.setDisable(false);
-            this.breadcrumbTournamentExecution.setEffect(null);
-            this.breadcrumbTournamentExecution.setDisable(false);
-
             this.loadedEvent = event;
             switch (this.loadedEvent.getEventPhase()) {
             case EVENT_SETUP:
@@ -340,7 +327,22 @@ public class EventPhaseViewController implements EventUser {
 
     @Override
     public void unloadEvent() {
-        // TODO unload any registered listeners on the event
+        /*
+         * Clean up if some values are still set from a previously opened event
+         */
+        this.breadcrumbEventSetup.setEffect(null);
+        this.breadcrumbEventSetup.setDisable(false);
+        this.breadcrumbPreRegistration.setEffect(null);
+        this.breadcrumbPreRegistration.setDisable(false);
+        this.breadcrumbRegistration.setEffect(null);
+        this.breadcrumbRegistration.setDisable(false);
+        this.breadcrumbTournamentExecution.setEffect(null);
+        this.breadcrumbTournamentExecution.setDisable(false);
+
+        /* Unbind the undo manager */
+        this.unsetUndoManager();
+
+        /* Unload the event from the specific phases */
         this.eventSetupPhaseController.unloadEvent();
         this.preRegistrationPhaseController.unloadEvent();
         this.registrationPhaseController.unloadEvent();
