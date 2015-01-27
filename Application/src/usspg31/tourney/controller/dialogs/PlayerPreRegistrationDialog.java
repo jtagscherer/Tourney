@@ -71,11 +71,6 @@ public class PlayerPreRegistrationDialog extends VBox implements
 
         this.registeredTournaments = FXCollections.observableArrayList();
         this.initTournamentTable();
-
-        // Bind the remove button's availability to the selected item
-        this.buttonRemoveTournament.disableProperty().bind(
-                this.tableTournaments.getSelectionModel()
-                        .selectedItemProperty().isNull());
     }
 
     private void initTournamentTable() {
@@ -105,9 +100,6 @@ public class PlayerPreRegistrationDialog extends VBox implements
     @Override
     public void setProperties(Object properties) {
         if (properties instanceof Player) {
-            if (this.loadedPlayer != null) {
-                this.unloadPlayer();
-            }
             this.loadPlayer((Player) ((Player) properties).clone());
         } else if (properties instanceof Event) {
             this.loadedEvent = (Event) properties;
@@ -116,14 +108,19 @@ public class PlayerPreRegistrationDialog extends VBox implements
         if (this.loadedEvent != null && this.loadedPlayer != null) {
             this.updateTournamentList();
 
-            // create table bindings
+            /* Create bindings for the tournament table */
             this.tableTournaments.setItems(this.registeredTournaments);
         }
     }
 
     private void loadPlayer(Player player) {
+        if (this.loadedPlayer != null) {
+            this.unloadPlayer();
+        }
+
         this.loadedPlayer = player;
 
+        /* Bind the values of the text fields */
         this.textFieldFirstName.textProperty().bindBidirectional(
                 this.loadedPlayer.firstNameProperty());
         this.textFieldLastName.textProperty().bindBidirectional(
@@ -134,9 +131,15 @@ public class PlayerPreRegistrationDialog extends VBox implements
                 this.loadedPlayer.nickNameProperty());
         this.checkBoxPayed.selectedProperty().bindBidirectional(
                 this.loadedPlayer.payedProperty());
+
+        /* Bind the remove button's availability to the selected item */
+        this.buttonRemoveTournament.disableProperty().bind(
+                this.tableTournaments.getSelectionModel()
+                        .selectedItemProperty().isNull());
     }
 
     private void unloadPlayer() {
+        /* Unbind the values of the text fields */
         this.textFieldFirstName.textProperty().unbindBidirectional(
                 this.loadedPlayer.firstNameProperty());
         this.textFieldLastName.textProperty().unbindBidirectional(
@@ -147,6 +150,9 @@ public class PlayerPreRegistrationDialog extends VBox implements
                 this.loadedPlayer.nickNameProperty());
         this.checkBoxPayed.selectedProperty().unbindBidirectional(
                 this.loadedPlayer.payedProperty());
+
+        /* Unbind the remove button's availability to the selected item */
+        this.buttonRemoveTournament.disableProperty().unbind();
 
         this.loadedPlayer = null;
     }

@@ -68,8 +68,11 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     @FXML private Button buttonRemoveScore;
     @FXML private Button buttonEditScore;
 
-    private ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+    private final ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+    private final TournamentPhaseDialog tournamentPhaseDialogController;
+
     private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
+    private final TournamentScoringDialog possibleScoringDialogController;
 
     private TournamentModule loadedModule;
     private ArrayList<String> existingTournamentModuleNames;
@@ -87,13 +90,17 @@ public class TournamentModuleEditorDialog extends SplitPane implements
             log.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        this.possibleScoringDialog = new TournamentScoringDialog()
+        this.tournamentPhaseDialogController = new TournamentPhaseDialog();
+        this.tournamentPhaseDialog = this.tournamentPhaseDialogController
+                .modalDialog();
+
+        this.possibleScoringDialogController = new TournamentScoringDialog();
+        this.possibleScoringDialog = this.possibleScoringDialogController
                 .modalDialog();
     }
 
     @FXML
     private void initialize() {
-        this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
         this.existingTournamentModuleNames = new ArrayList<String>();
 
         this.initTournamentPhaseTable();
@@ -220,9 +227,6 @@ public class TournamentModuleEditorDialog extends SplitPane implements
     @Override
     public void setProperties(Object properties) {
         if (properties instanceof TournamentModule) {
-            if (this.loadedModule != null) {
-                this.unloadModule();
-            }
             this.loadModule((TournamentModule) properties);
         } else if (properties instanceof ObservableList<?>) {
             this.existingTournamentModuleNames.clear();
@@ -276,6 +280,10 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
     private void loadModule(TournamentModule module) {
         log.fine("Loading Tournament Module");
+        if (this.loadedModule != null) {
+            this.unloadModule();
+        }
+
         this.loadedModule = (TournamentModule) module.clone();
 
         this.textFieldModuleTitle.textProperty().bindBidirectional(
@@ -284,10 +292,16 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                 this.loadedModule.descriptionProperty());
 
         this.tableTournamentPhases.setItems(this.loadedModule.getPhaseList());
-
         this.tablePossibleScores
                 .setItems(this.loadedModule.getPossibleScores());
 
+        this.bindTournamentPhaseButtons();
+        this.bindPossibleScoringButtons();
+
+        log.fine("Tournament Module loaded");
+    }
+
+    private void bindTournamentPhaseButtons() {
         ReadOnlyIntegerProperty selectedPhaseIndex = this.tableTournamentPhases
                 .getSelectionModel().selectedIndexProperty();
         ReadOnlyObjectProperty<GamePhase> selectedPhase = this.tableTournamentPhases
@@ -317,10 +331,13 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         this.tableColumnPossibleScoresScores
                 .setCellValueFactory(cellValue -> new MapToStringBinding<>(
                         cellValue.getValue().getScores()).getStringProperty());
+    }
 
-        this.bindPossibleScoringButtons();
-
-        log.fine("Tournament Module loaded");
+    private void unbindTournamentPhaseButtons() {
+        this.buttonMovePhaseUp.disableProperty().unbind();
+        this.buttonMovePhaseDown.disableProperty().unbind();
+        this.buttonRemovePhase.disableProperty().unbind();
+        this.buttonEditPhase.disableProperty().unbind();
     }
 
     private void bindPossibleScoringButtons() {
@@ -349,13 +366,39 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         this.buttonEditScore.disableProperty().bind(selectedItem.isNull());
     }
 
-    private void unloadModule() {
+    private void unbindPossibleScoringButtons() {
+        this.buttonMoveScoreUp.disableProperty().unbind();
+        this.buttonMoveScoreDown.disableProperty().unbind();
+        this.buttonRemoveScore.disableProperty().unbind();
+        this.buttonAddScore.disableProperty().unbind();
+    }
+
+    public void unloadModule() {
         log.fine("Unloading Tournament Module");
 
+        if (this.loadedModule == null) {
+            return;
+        }
+
+        /* Unbind the table buttons */
+        this.unbindTournamentPhaseButtons();
+        this.unbindPossibleScoringButtons();
+
+        /* Unbind the text fields */
         this.textFieldModuleTitle.textProperty().unbindBidirectional(
                 this.loadedModule.nameProperty());
         this.textAreaDescription.textProperty().unbindBidirectional(
                 this.loadedModule.descriptionProperty());
+
+        /* Unbind and clear the tables */
+        this.tablePossibleScores.getSelectionModel().clearSelection();
+        this.tableTournamentPhases.getSelectionModel().clearSelection();
+
+        /* Unbind the dialogs */
+        this.tournamentPhaseDialogController.unloadGamePhase();
+        this.possibleScoringDialogController.unloadPossibleScoring();
+
+        this.loadedModule = null;
 
         log.fine("Tournament Module unloaded");
     }

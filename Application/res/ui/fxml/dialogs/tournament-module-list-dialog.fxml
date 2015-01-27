@@ -46,6 +46,15 @@
 					<Tooltip text="%dialogs.tournamentmodulelist.editmodule" />
 				</tooltip>
 			</Button>
+			<Button fx:id="buttonDuplicateTournamentModule" styleClass="table-edit-button"
+				onAction="#onButtonDuplicateTournamentModuleClicked">
+				<graphic>
+					<IconPane styleClass="icon-copy, half" />
+				</graphic>
+				<tooltip>
+					<Tooltip text="%dialogs.tournamentmodulelist.duplicatemodule" />
+				</tooltip>
+			</Button>
 		</VBox>
 	</children>
 </fx:root>

@@ -97,9 +97,6 @@ public class TournamentPhaseDialog extends VBox implements
 
     @Override
     public void setProperties(GamePhase properties) {
-        if (this.loadedPhase != null) {
-            this.unloadGamePhase();
-        }
         this.loadGamePhase(properties);
     }
 
@@ -142,6 +139,10 @@ public class TournamentPhaseDialog extends VBox implements
 
     private void loadGamePhase(GamePhase gamePhase) {
         log.fine("Loading Game Phase");
+        if (this.loadedPhase != null) {
+            this.unloadGamePhase();
+        }
+
         this.loadedPhase = (GamePhase) gamePhase.clone();
 
         this.textFieldCutoff.numberValueProperty().bindBidirectional(
@@ -167,8 +168,12 @@ public class TournamentPhaseDialog extends VBox implements
         log.fine("Game Phase loaded");
     }
 
-    private void unloadGamePhase() {
+    public void unloadGamePhase() {
         log.fine("Unloading Game Phase");
+
+        if (this.loadedPhase == null) {
+            return;
+        }
 
         this.textFieldCutoff.numberValueProperty().unbindBidirectional(
                 this.loadedPhase.cutoffProperty());

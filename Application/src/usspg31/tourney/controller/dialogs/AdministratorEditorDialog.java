@@ -43,14 +43,14 @@ public class AdministratorEditorDialog extends VBox implements
 
     @Override
     public void setProperties(Administrator property) {
-        if (this.loadedAdministrator != null) {
-            this.unloadAdministrator();
-        }
-
         this.loadAdministrator(property);
     }
 
     private void loadAdministrator(Administrator administrator) {
+        if (this.loadedAdministrator != null) {
+            this.unloadAdministrator();
+        }
+
         this.loadedAdministrator = (Administrator) administrator.clone();
 
         this.textFieldFirstName.textProperty().bindBidirectional(

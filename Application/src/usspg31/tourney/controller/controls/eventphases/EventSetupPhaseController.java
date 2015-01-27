@@ -207,7 +207,6 @@ public class EventSetupPhaseController implements EventUser {
         Event event = this.loadedEvent;
 
         // unbind the table
-        this.tableTournaments.getItems().clear();
         this.tableTournaments.getSelectionModel().clearSelection();
 
         // unbind all basic control's values
