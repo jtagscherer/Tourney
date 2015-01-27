@@ -196,4 +196,25 @@ public class Tournament implements Cloneable {
 
         return clone;
     }
+
+    /**
+     * adds a score to the tournament score table
+     * 
+     * @param score
+     *            consist of the player and the score which gets added to the
+     *            score table for the earlier mentioned player
+     */
+    public void addAScore(PlayerScore score) {
+        for (PlayerScore eachPlayerScore : this.scoreTable) {
+            if (eachPlayerScore.getPlayer() == score.getPlayer()) {
+                for (int i = 0; i < eachPlayerScore.getScore().size(); i++) {
+                    eachPlayerScore.getScore().set(
+                            i,
+                            eachPlayerScore.getScore().get(i)
+                                    + score.getScore().get(i));
+
+                }
+            }
+        }
+    }
 }
