@@ -90,14 +90,6 @@ public class EventAdministratorListDialog extends HBox implements
                 .getValue().phoneNumberProperty());
         this.tableAdministrators.getColumns().add(this.tableColumnPhoneNumber);
 
-        this.buttonEditAdministrator.disableProperty().bind(
-                this.tableAdministrators.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
-        this.buttonRemoveAdministrator.disableProperty().bind(
-                this.tableAdministrators.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
         this.tableAdministrators.setPlaceholder(new Text(PreferencesManager
                 .getInstance().localizeString(
                         "tableplaceholder.noadministrators")));
@@ -116,8 +108,32 @@ public class EventAdministratorListDialog extends HBox implements
 
     @Override
     public void setProperties(ObservableList<EventAdministrator> properties) {
-        this.eventAdministratorList = properties;
+        this.unloadAdministratorList();
+        this.loadAdministratorList(properties);
+    }
+
+    public void loadAdministratorList(
+            ObservableList<EventAdministrator> administrators) {
+        this.eventAdministratorList = administrators;
         this.tableAdministrators.setItems(this.eventAdministratorList);
+
+        /* Bind the edit button's availability */
+        this.buttonEditAdministrator.disableProperty().bind(
+                this.tableAdministrators.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonRemoveAdministrator.disableProperty().bind(
+                this.tableAdministrators.getSelectionModel()
+                        .selectedItemProperty().isNull());
+    }
+
+    public void unloadAdministratorList() {
+        /* Clear the table of administrators */
+        this.eventAdministratorList.clear();
+        this.tableAdministrators.getSelectionModel().clearSelection();
+
+        /* Unbind the edit button's availability */
+        this.buttonEditAdministrator.disableProperty().unbind();
+        this.buttonRemoveAdministrator.disableProperty().unbind();
     }
 
     @Override

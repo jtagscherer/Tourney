@@ -175,7 +175,6 @@ public class PreRegistrationPhaseController implements EventUser {
         }
 
         /* Unbind the player table */
-        this.tablePreRegisteredPlayers.getItems().clear();
         this.tablePreRegisteredPlayers.getSelectionModel().clearSelection();
 
         /* Unbind the buttons */

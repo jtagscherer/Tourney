@@ -79,12 +79,26 @@ public class AttendanceDialog extends VBox implements
 
     @Override
     public void setProperties(ObservableList<Player> properties) {
+
+    }
+
+    public void loadPlayerList(ObservableList<Player> players) {
+        this.unloadPlayerList();
+
         this.tableRegisteredPlayers.setItems(FXCollections
                 .observableArrayList());
         this.tableAttendingPlayers
                 .setItems(FXCollections.observableArrayList());
 
-        this.tableRegisteredPlayers.getItems().addAll(properties);
+        this.tableRegisteredPlayers.getItems().addAll(players);
+    }
+
+    public void unloadPlayerList() {
+        /* Unbind the table of attending players */
+        this.tableAttendingPlayers.getSelectionModel().clearSelection();
+
+        /* Unbind the table of registered players */
+        this.tableRegisteredPlayers.getSelectionModel().clearSelection();
     }
 
     @Override

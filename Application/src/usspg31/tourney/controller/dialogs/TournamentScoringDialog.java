@@ -112,15 +112,6 @@ public class TournamentScoringDialog extends VBox implements
         });
         this.tablePossibleScores.getColumns().add(possibleScoreScore);
 
-        // only enable the edit and remove buttons if a score is selected
-        this.buttonEditPredefinedScore.disableProperty().bind(
-                this.tablePossibleScores.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
-        this.buttonRemovePredefinedScore.disableProperty().bind(
-                this.tablePossibleScores.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
         this.predefinedScores = FXCollections.observableArrayList();
         this.tablePossibleScores.setItems(this.predefinedScores);
 
@@ -148,9 +139,37 @@ public class TournamentScoringDialog extends VBox implements
 
     @Override
     public void setProperties(PossibleScoring properties) {
-        this.loadedScoring = (PossibleScoring) properties.clone();
+        this.loadPossibleScoring(properties);
+    }
 
+    public void loadPossibleScoring(PossibleScoring scoring) {
+        if (this.loadedScoring != null) {
+            this.unloadPossibleScoring();
+        }
+
+        /* Set the table's content */
+        this.loadedScoring = (PossibleScoring) scoring.clone();
         this.refreshTable();
+
+        /* Bind the button's availability */
+        // only enable the edit and remove buttons if a score is selected
+        this.buttonEditPredefinedScore.disableProperty().bind(
+                this.tablePossibleScores.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonRemovePredefinedScore.disableProperty().bind(
+                this.tablePossibleScores.getSelectionModel()
+                        .selectedItemProperty().isNull());
+    }
+
+    public void unloadPossibleScoring() {
+        /* Clear the table */
+        this.tablePossibleScores.getSelectionModel().clearSelection();
+
+        /* Unbind the button's availability */
+        this.buttonEditPredefinedScore.disableProperty().unbind();
+        this.buttonRemovePredefinedScore.disableProperty().unbind();
+
+        this.loadedScoring = null;
     }
 
     public void refreshTable() {

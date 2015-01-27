@@ -37,7 +37,8 @@ public class TournamentModuleListDialog extends HBox implements
     @FXML private Button buttonRemoveTournamentModule;
     @FXML private Button buttonEditTournamentModule;
 
-    private ModalDialog<Object, TournamentModule> tournamentmoduleEditorDialog;
+    private final ModalDialog<Object, TournamentModule> tournamentmoduleEditorDialog;
+    private final TournamentModuleEditorDialog tournamentmoduleEditorDialogController;
 
     public TournamentModuleListDialog() {
         try {
@@ -51,14 +52,15 @@ public class TournamentModuleListDialog extends HBox implements
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
+
+        this.tournamentmoduleEditorDialogController = new TournamentModuleEditorDialog();
+        this.tournamentmoduleEditorDialog = this.tournamentmoduleEditorDialogController
+                .modalDialog();
     }
 
     @FXML
     private void initialize() {
         PreferencesManager preferences = PreferencesManager.getInstance();
-
-        this.tournamentmoduleEditorDialog = new TournamentModuleEditorDialog()
-                .modalDialog();
 
         this.tableColumnModuleName = new TableColumn<TournamentModule, String>(
                 preferences.localizeString("dialogs.tournamentmodulelist.name"));
@@ -75,14 +77,6 @@ public class TournamentModuleListDialog extends HBox implements
                         .descriptionProperty());
         this.tableTournamentModules.getColumns().add(
                 this.tableColumnModuleDescription);
-
-        this.buttonEditTournamentModule.disableProperty().bind(
-                this.tableTournamentModules.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
-        this.buttonRemoveTournamentModule.disableProperty().bind(
-                this.tableTournamentModules.getSelectionModel()
-                        .selectedItemProperty().isNull());
 
         /* Edit the tournament module on double click */
         this.tableTournamentModules.setRowFactory(tableView -> {
@@ -101,7 +95,35 @@ public class TournamentModuleListDialog extends HBox implements
 
     @Override
     public void setProperties(ObservableList<TournamentModule> properties) {
-        this.tableTournamentModules.setItems(properties);
+        this.loadTournamentModuleList(properties);
+    }
+
+    public void loadTournamentModuleList(
+            ObservableList<TournamentModule> tournamentModules) {
+        this.unloadTournamentModuleList();
+
+        /* Set the table contents */
+        this.tableTournamentModules.setItems(tournamentModules);
+
+        /* Bind the edit button's availablility */
+        this.buttonEditTournamentModule.disableProperty().bind(
+                this.tableTournamentModules.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonRemoveTournamentModule.disableProperty().bind(
+                this.tableTournamentModules.getSelectionModel()
+                        .selectedItemProperty().isNull());
+    }
+
+    public void unloadTournamentModuleList() {
+        /* Unbind the tournament table */
+        this.tableTournamentModules.getSelectionModel().clearSelection();
+
+        /* Unbind the button's availability */
+        this.buttonEditTournamentModule.disableProperty().unbind();
+        this.buttonRemoveTournamentModule.disableProperty().unbind();
+
+        /* Unbind the dialogs */
+        this.tournamentmoduleEditorDialogController.unloadModule();
     }
 
     @Override
