@@ -22,6 +22,7 @@ import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
+import usspg31.tourney.model.PossibleScoring.ScoringType;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentAdministrator;
 import usspg31.tourney.model.TournamentModule;
@@ -503,6 +504,11 @@ public class TournamentDocument {
             scoringElement.setAttributeNode(scoringPriorityAttribute);
             possibleScoresElement.appendChild(scoringElement);
 
+            /* Add the scoring flag */
+            Element scoringFlagElement = this.document.createElement("type");
+            scoringFlagElement.appendChild(this.document
+                    .createTextNode(scoringPriority.getScoreType().toString()));
+
             /*
              * Iterate over the actual scores in this scoring which are a map of
              * the score name and its value
@@ -633,6 +639,10 @@ public class TournamentDocument {
         /* Iterate over all possible scorings */
         for (Node scoring : FileLoader.getChildNodesByTag(scores, "scoring")) {
             PossibleScoring newScoring = new PossibleScoring();
+
+            /* Get the scoring flag */
+            newScoring.setScoreType(ScoringType.valueOf(FileLoader
+                    .getFirstChildNodeByTag(scoring, "type").getTextContent()));
 
             /* Attach the scoring's priority */
             newScoring.setPriority(Integer.valueOf(scoring.getAttributes()

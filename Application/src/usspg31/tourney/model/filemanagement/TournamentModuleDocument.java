@@ -18,6 +18,7 @@ import usspg31.tourney.model.Bye;
 import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
+import usspg31.tourney.model.PossibleScoring.ScoringType;
 import usspg31.tourney.model.TournamentModule;
 import usspg31.tourney.model.pairingstrategies.PairingStrategy;
 
@@ -119,6 +120,11 @@ public class TournamentModuleDocument {
             scoringElement.setAttributeNode(scoringPriorityAttribute);
             possibleScoresElement.appendChild(scoringElement);
 
+            /* Add the scoring flag */
+            Element scoringFlagElement = this.document.createElement("type");
+            scoringFlagElement.appendChild(this.document
+                    .createTextNode(scoringPriority.getScoreType().toString()));
+
             /* Iterate over the hash map of scores */
             Iterator<Entry<String, Integer>> iterator = scoringPriority
                     .getScores().entrySet().iterator();
@@ -159,6 +165,10 @@ public class TournamentModuleDocument {
         /* Iterate over all scorings in the node */
         for (Node scoring : FileLoader.getChildNodesByTag(scores, "scoring")) {
             PossibleScoring newScoring = new PossibleScoring();
+
+            /* Get the scoring flag */
+            newScoring.setScoreType(ScoringType.valueOf(FileLoader
+                    .getFirstChildNodeByTag(scoring, "type").getTextContent()));
 
             /* Extract the priority from the attribute */
             newScoring.setPriority(Integer.valueOf(scoring.getAttributes()
