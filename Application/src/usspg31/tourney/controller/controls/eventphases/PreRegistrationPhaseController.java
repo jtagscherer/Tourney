@@ -50,14 +50,6 @@ public class PreRegistrationPhaseController implements EventUser {
                 .modalDialog();
 
         this.initPlayerTable();
-
-        // Bind the button's availability to the list selection
-        this.buttonRemovePlayer.disableProperty().bind(
-                this.tablePreRegisteredPlayers.getSelectionModel()
-                        .selectedItemProperty().isNull());
-        this.buttonEditPlayer.disableProperty().bind(
-                this.tablePreRegisteredPlayers.getSelectionModel()
-                        .selectedItemProperty().isNull());
     }
 
     private void initPlayerTable() {
@@ -95,9 +87,9 @@ public class PreRegistrationPhaseController implements EventUser {
         this.tablePreRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerMailAddress);
 
-	this.tablePreRegisteredPlayers.setPlaceholder(new Text(
-		PreferencesManager.getInstance().localizeString(
-			"tableplaceholder.noplayers")));
+        this.tablePreRegisteredPlayers.setPlaceholder(new Text(
+                PreferencesManager.getInstance().localizeString(
+                        "tableplaceholder.noplayers")));
 
         /* Edit the player on double click */
         this.tablePreRegisteredPlayers.setRowFactory(tableView -> {
@@ -122,10 +114,14 @@ public class PreRegistrationPhaseController implements EventUser {
 
         this.loadedEvent = event;
 
-        // Add all registered players to the table view and enable searching
+        /* Add all registered players to the table view and enable searching */
         FilteredList<Player> filteredPlayerList = new FilteredList<>(
                 this.loadedEvent.getRegisteredPlayers(), p -> true);
 
+        /*
+         * Bind the content of the search text field to the displayed elements
+         * in the table
+         */
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     filteredPlayerList.setPredicate(player -> {
@@ -151,6 +147,7 @@ public class PreRegistrationPhaseController implements EventUser {
 
         this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
 
+        /* Set the inital column widths */
         this.tableColumnPlayerFirstName.prefWidthProperty().set(
                 this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
         this.tableColumnPlayerLastName.prefWidthProperty().set(
@@ -159,6 +156,14 @@ public class PreRegistrationPhaseController implements EventUser {
                 this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
         this.tableColumnPlayerNickName.prefWidthProperty().set(
                 this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
+
+        /* Bind the button's availability to the list selection */
+        this.buttonRemovePlayer.disableProperty().bind(
+                this.tablePreRegisteredPlayers.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonEditPlayer.disableProperty().bind(
+                this.tablePreRegisteredPlayers.getSelectionModel()
+                        .selectedItemProperty().isNull());
     }
 
     @Override
@@ -169,7 +174,13 @@ public class PreRegistrationPhaseController implements EventUser {
             return;
         }
 
-        // TODO: unregister all listeners we registered to anything in the event
+        /* Unbind the player table */
+        this.tablePreRegisteredPlayers.getItems().clear();
+        this.tablePreRegisteredPlayers.getSelectionModel().clearSelection();
+
+        /* Unbind the buttons */
+        this.buttonRemovePlayer.disableProperty().unbind();
+        this.buttonEditPlayer.disableProperty().unbind();
 
         this.loadedEvent = null;
     }

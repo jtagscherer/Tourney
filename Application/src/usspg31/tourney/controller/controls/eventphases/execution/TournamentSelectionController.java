@@ -54,14 +54,6 @@ public class TournamentSelectionController implements EventUser {
     @FXML
     private void initialize() {
         this.initPlayerTable();
-
-        // Bind the button's availability to the list selection
-        this.buttonExecuteTournament.disableProperty().bind(
-                this.tableTournaments.getSelectionModel()
-                        .selectedItemProperty().isNull());
-        this.buttonExportTournament.disableProperty().bind(
-                this.tableTournaments.getSelectionModel()
-                        .selectedItemProperty().isNull());
     }
 
     private void initPlayerTable() {
@@ -117,14 +109,13 @@ public class TournamentSelectionController implements EventUser {
             this.unloadEvent();
         }
 
-        this.tableTournaments.getSelectionModel().clearSelection();
-
         this.loadedEvent = event;
 
         // Add all tournaments to the table view and enable searching
         FilteredList<Tournament> filteredTournamentList = new FilteredList<>(
                 this.loadedEvent.getTournaments(), p -> true);
 
+        // Bind the search text fields text to the table
         this.textFieldTournamentSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     filteredTournamentList.setPredicate(tournament -> {
@@ -148,6 +139,14 @@ public class TournamentSelectionController implements EventUser {
                 this.tableTournaments.widthProperty().get() * 0.7);
         this.tableColumnTournamentStatus.prefWidthProperty().set(
                 this.tableTournaments.widthProperty().get() * 0.3);
+
+        // Bind the button's availability to the list selection
+        this.buttonExecuteTournament.disableProperty().bind(
+                this.tableTournaments.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonExportTournament.disableProperty().bind(
+                this.tableTournaments.getSelectionModel()
+                        .selectedItemProperty().isNull());
     }
 
     @Override
@@ -158,7 +157,13 @@ public class TournamentSelectionController implements EventUser {
             return;
         }
 
-        // TODO: unregister all listeners we registered to anything in the event
+        /* Unbind the table of tournaments */
+        this.tableTournaments.getItems().clear();
+        this.tableTournaments.getSelectionModel().clearSelection();
+
+        /* Unbind the button's availablity */
+        this.buttonExecuteTournament.disableProperty().unbind();
+        this.buttonExportTournament.disableProperty().unbind();
 
         this.loadedEvent = null;
     }
