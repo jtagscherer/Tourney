@@ -14,8 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import usspg31.tourney.model.Bye;
-import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
@@ -510,6 +508,12 @@ public class TournamentDocument {
                     .createTextNode(scoringPriority.getScoreType().toString()));
             scoringElement.appendChild(scoringFlagElement);
 
+            /* Add the scoring bye value */
+            Element byeValueElement = this.document.createElement("normal-bye");
+            byeValueElement.appendChild(this.document.createTextNode(String
+                    .valueOf(scoringPriority.getByeValue())));
+            scoringElement.appendChild(byeValueElement);
+
             /*
              * Iterate over the actual scores in this scoring which are a map of
              * the score name and its value
@@ -593,35 +597,6 @@ public class TournamentDocument {
             durationElement.appendChild(this.document.createTextNode(phase
                     .getRoundDuration().toString()));
         }
-
-        /* Append all possible byes in the rule set */
-
-        /* Create a node that will hold all byes */
-        Element byesElement = this.document.createElement("byes");
-        this.rootElement.appendChild(byesElement);
-
-        /* Add a child node for each bye */
-        for (Bye bye : ruleSet.getByeList()) {
-            Element byeElement = this.document.createElement("bye");
-            byesElement.appendChild(byeElement);
-
-            /* Add the bye type */
-            Element byeTypeElement = this.document.createElement("type");
-            byeElement.appendChild(byeTypeElement);
-            byeTypeElement.appendChild(this.document.createTextNode(String
-                    .valueOf(bye.getByeType())));
-
-            /* Add the points associated with this bye */
-            Element byePointsElements = this.document.createElement("points");
-            byeElement.appendChild(byePointsElements);
-
-            for (int score : bye.getByePoints()) {
-                Element byeScoreElement = this.document.createElement("score");
-                byeScoreElement.appendChild(this.document.createTextNode(String
-                        .valueOf(score)));
-                byePointsElements.appendChild(byeScoreElement);
-            }
-        }
     }
 
     /**
@@ -644,6 +619,11 @@ public class TournamentDocument {
             /* Get the scoring flag */
             newScoring.setScoreType(ScoringType.valueOf(FileLoader
                     .getFirstChildNodeByTag(scoring, "type").getTextContent()));
+
+            /* Get the bye value */
+            newScoring.setByeValue(Integer.valueOf(FileLoader
+                    .getFirstChildNodeByTag(scoring, "normal-bye")
+                    .getTextContent()));
 
             /* Attach the scoring's priority */
             newScoring.setPriority(Integer.valueOf(scoring.getAttributes()
@@ -718,31 +698,6 @@ public class TournamentDocument {
             gamePhases.add(phase);
         }
         tournamentModule.getPhaseList().setAll(gamePhases);
-
-        /* Load all possible byes in this rule set */
-
-        /* Get the node that contains all byes */
-        Node byes = this.document.getElementsByTagName("byes").item(0);
-
-        /* Extract all individual byes */
-        for (Node byeNode : FileLoader.getChildNodesByTag(byes, "bye")) {
-            Bye bye = new Bye();
-
-            /* Extract the bye type and the associated points */
-            bye.setByeType(ByeType.valueOf(FileLoader.getFirstChildNodeByTag(
-                    byeNode, "type").getTextContent()));
-
-            Node pointsNode = FileLoader.getFirstChildNodeByTag(byeNode,
-                    "points");
-
-            for (Node scoreNode : FileLoader.getChildNodesByTag(pointsNode,
-                    "score")) {
-                bye.getByePoints().add(
-                        Integer.parseInt(scoreNode.getTextContent()));
-            }
-
-            tournamentModule.getByeList().add(bye);
-        }
 
         return tournamentModule;
     }

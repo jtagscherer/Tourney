@@ -14,7 +14,6 @@ public class TournamentModule implements Cloneable {
     private final StringProperty description;
     private final ObservableList<PossibleScoring> possibleScorings;
     private final ObservableList<GamePhase> phaseList;
-    private final ObservableList<Bye> byeList;
 
     /**
      * Create a new tournament module and initialize all its properties
@@ -24,7 +23,6 @@ public class TournamentModule implements Cloneable {
         this.description = new SimpleStringProperty("");
         this.possibleScorings = FXCollections.observableArrayList();
         this.phaseList = FXCollections.observableArrayList();
-        this.byeList = FXCollections.observableArrayList();
     }
 
     /**
@@ -101,24 +99,6 @@ public class TournamentModule implements Cloneable {
         return this.phaseList;
     }
 
-    /**
-     * Get the bye list property of this tournament module
-     * 
-     * @return Current bye list property
-     */
-    public ObservableList<Bye> byeListProperty() {
-        return this.byeList;
-    }
-
-    /**
-     * Get a list of all possible byes in this tournament module
-     * 
-     * @return List of all possible byes
-     */
-    public ObservableList<Bye> getByeList() {
-        return this.byeList;
-    }
-
     @Override
     public Object clone() {
         TournamentModule clone = new TournamentModule();
@@ -130,9 +110,6 @@ public class TournamentModule implements Cloneable {
         }
         for (GamePhase phase : this.getPhaseList()) {
             clone.getPhaseList().add((GamePhase) phase.clone());
-        }
-        for (Bye bye : this.getByeList()) {
-            clone.getByeList().add((Bye) bye.clone());
         }
 
         return clone;

@@ -22,12 +22,14 @@ public class PossibleScoring implements Cloneable {
     private ObservableMap<String, Integer> scores;
     private IntegerProperty priority;
     private ScoringType scoreType;
+    private IntegerProperty byeValue;
 
     /**
      * Create a new possible scoring and initialize all its properties
      */
     public PossibleScoring() {
         this.priority = new SimpleIntegerProperty();
+        this.byeValue = new SimpleIntegerProperty();
         this.scores = FXCollections
                 .observableMap(new HashMap<String, Integer>());
         this.scoreType = ScoringType.NORMAL;
@@ -78,6 +80,34 @@ public class PossibleScoring implements Cloneable {
      */
     public IntegerProperty priorityProperty() {
         return this.priority;
+    }
+
+    /**
+     * Get the bye value of this scoring
+     * 
+     * @return Current bye value of this scoring
+     */
+    public int getByeValue() {
+        return this.byeValue.get();
+    }
+
+    /**
+     * Set the bye value of this scoring
+     * 
+     * @param priority
+     *            New priority of this scoring
+     */
+    public void setByeValue(int byeValue) {
+        this.byeValue.set(byeValue);
+    }
+
+    /**
+     * Get the bye value property of this scoring
+     * 
+     * @return Bye value property of this scoring
+     */
+    public IntegerProperty byeValueProperty() {
+        return this.byeValue;
     }
 
     public ScoringType getScoreType() {
