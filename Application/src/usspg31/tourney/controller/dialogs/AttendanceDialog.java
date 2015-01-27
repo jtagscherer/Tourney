@@ -1,6 +1,8 @@
 package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -134,8 +136,11 @@ public class AttendanceDialog extends VBox implements
 
     @FXML
     private void onButtonAddAttendeeClicked(ActionEvent event) {
-        while (this.tableRegisteredPlayers.getSelectionModel().getSelectedItems().size() > 0) {
-            Player p = this.tableRegisteredPlayers.getSelectionModel().getSelectedItems().get(0);
+        List<Player> selectedPlayers = new ArrayList<>(
+                this.tableRegisteredPlayers.getSelectionModel().getSelectedItems());
+
+        while (selectedPlayers.size() > 0) {
+            Player p = selectedPlayers.remove(0);
             this.tableAttendingPlayers.getItems().add(p);
             this.tableRegisteredPlayers.getItems().remove(p);
         }
@@ -143,8 +148,11 @@ public class AttendanceDialog extends VBox implements
 
     @FXML
     private void onButtonRemoveAttendeeClicked(ActionEvent event) {
-        while (this.tableAttendingPlayers.getSelectionModel().getSelectedItems().size() > 0) {
-            Player p = this.tableAttendingPlayers.getSelectionModel().getSelectedItems().get(0);
+        List<Player> selectedPlayers = new ArrayList<>(
+                this.tableAttendingPlayers.getSelectionModel().getSelectedItems());
+
+        while (selectedPlayers.size() > 0) {
+            Player p = selectedPlayers.remove(0);
             this.tableAttendingPlayers.getItems().remove(p);
             this.tableRegisteredPlayers.getItems().add(p);
         }
