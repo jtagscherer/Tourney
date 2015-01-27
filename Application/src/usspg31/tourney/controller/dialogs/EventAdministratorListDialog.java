@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -104,6 +105,8 @@ public class EventAdministratorListDialog extends HBox implements
             });
             return row;
         });
+
+        this.eventAdministratorList = FXCollections.observableArrayList();
     }
 
     @Override
