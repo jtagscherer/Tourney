@@ -88,14 +88,14 @@
 		</HBox>
 		<HBox fx:id="breadcrumbContainer" AnchorPane.topAnchor="42"
 			AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-			<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, multi-button, left"
+			<Button fx:id="breadcrumbEventSetup" styleClass="breadcrumb-button, left"
 				text="%eventphaseview.eventsetup" HBox.hgrow="ALWAYS"
 				onAction="#onBreadcrumbEventSetupClicked" />
-			<Button fx:id="breadcrumbPreRegistration" styleClass="breadcrumb-button, multi-button, middle"
+			<Button fx:id="breadcrumbPreRegistration" styleClass="breadcrumb-button, middle"
 				text="%eventphaseview.preregistration" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbPreRegistrationClicked" />
-			<Button fx:id="breadcrumbRegistration" styleClass="breadcrumb-button, multi-button, middle"
+			<Button fx:id="breadcrumbRegistration" styleClass="breadcrumb-button, middle"
 				text="%eventphaseview.registration" HBox.hgrow="ALWAYS" onAction="#onBreadcrumbRegistrationClicked" />
-			<Button fx:id="breadcrumbTournamentExecution" styleClass="breadcrumb-button, multi-button, right"
+			<Button fx:id="breadcrumbTournamentExecution" styleClass="breadcrumb-button, right"
 				text="%eventphaseview.tournamentexecution" HBox.hgrow="ALWAYS"
 				onAction="#onBreadcrumbTournamentExecutionClicked" />
 		</HBox>
