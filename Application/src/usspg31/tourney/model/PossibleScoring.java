@@ -123,6 +123,7 @@ public class PossibleScoring implements Cloneable {
         PossibleScoring clone = new PossibleScoring();
 
         clone.setPriority(this.getPriority());
+        clone.setByeValue(this.getByeValue());
 
         Iterator<Entry<String, Integer>> iterator = this.getScores().entrySet()
                 .iterator();
