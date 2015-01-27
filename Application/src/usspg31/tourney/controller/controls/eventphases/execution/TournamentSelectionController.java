@@ -1,12 +1,12 @@
 package usspg31.tourney.controller.controls.eventphases.execution;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -111,27 +111,26 @@ public class TournamentSelectionController implements EventUser {
 
         this.loadedEvent = event;
 
-        // Add all tournaments to the table view and enable searching
-        FilteredList<Tournament> filteredTournamentList = new FilteredList<>(
-                this.loadedEvent.getTournaments(), p -> true);
+        /* Add all tournaments to the table view and enable searching */
+        Comparator<Tournament> comparator = new Comparator<Tournament>() {
+            @Override
+            public int compare(Tournament firstTournament, Tournament lastPlayer) {
+                return (int) (SearchUtilities.getSearchRelevance(
+                        firstTournament.getName(),
+                        textFieldTournamentSearch.getText()) - SearchUtilities
+                        .getSearchRelevance(lastPlayer.getName(),
+                                textFieldTournamentSearch.getText()));
+            }
+        };
 
-        // Bind the search text fields text to the table
+        ObservableList<Tournament> sortedTournamentList = FXCollections
+                .observableArrayList();
+        sortedTournamentList.addAll(this.loadedEvent.getTournaments());
+
         this.textFieldTournamentSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    filteredTournamentList.setPredicate(tournament -> {
-                        if (newValue == null || newValue.isEmpty()) {
-                            return true;
-                        }
-
-                        return SearchUtilities.fuzzyMatches(
-                                tournament.getName(), newValue);
-                    });
+                    FXCollections.sort(sortedTournamentList, comparator);
                 });
-
-        SortedList<Tournament> sortedTournamentList = new SortedList<>(
-                filteredTournamentList);
-        sortedTournamentList.comparatorProperty().bind(
-                this.tableTournaments.comparatorProperty());
 
         this.tableTournaments.setItems(sortedTournamentList);
 

@@ -1,9 +1,10 @@
 package usspg31.tourney.controller.controls.eventphases;
 
+import java.util.Comparator;
 import java.util.logging.Logger;
 
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -115,35 +116,24 @@ public class PreRegistrationPhaseController implements EventUser {
         this.loadedEvent = event;
 
         /* Add all registered players to the table view and enable searching */
-        FilteredList<Player> filteredPlayerList = new FilteredList<>(
-                this.loadedEvent.getRegisteredPlayers(), p -> true);
+        Comparator<Player> comparator = new Comparator<Player>() {
+            @Override
+            public int compare(Player firstPlayer, Player lastPlayer) {
+                return (int) (SearchUtilities.getSearchRelevance(firstPlayer,
+                        textFieldPlayerSearch.getText()) - SearchUtilities
+                        .getSearchRelevance(lastPlayer,
+                                textFieldPlayerSearch.getText()));
+            }
+        };
 
-        /*
-         * Bind the content of the search text field to the displayed elements
-         * in the table
-         */
+        ObservableList<Player> sortedPlayerList = FXCollections
+                .observableArrayList();
+        sortedPlayerList.addAll(this.loadedEvent.getRegisteredPlayers());
+
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    filteredPlayerList.setPredicate(player -> {
-                        if (newValue == null || newValue.isEmpty()) {
-                            return true;
-                        }
-
-                        return SearchUtilities.fuzzyMatches(
-                                player.getFirstName(), newValue)
-                                || SearchUtilities.fuzzyMatches(
-                                        player.getLastName(), newValue)
-                                || SearchUtilities.fuzzyMatches(
-                                        player.getNickName(), newValue)
-                                || SearchUtilities.fuzzyMatches(
-                                        player.getMailAddress(), newValue);
-                    });
+                    FXCollections.sort(sortedPlayerList, comparator);
                 });
-
-        SortedList<Player> sortedPlayerList = new SortedList<>(
-                filteredPlayerList);
-        sortedPlayerList.comparatorProperty().bind(
-                this.tablePreRegisteredPlayers.comparatorProperty());
 
         this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
 
