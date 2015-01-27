@@ -1,0 +1,37 @@
+
+.material-text-field {
+	-fx-margin: -20px 0 0 0;
+	-fx-font-family: "Roboto";
+	-fx-background-color: transparent;
+	-fx-font-smoothing-type: gray;
+	-t-icon-color: transparent;
+}
+
+.material-text-field .prompt-label {
+	-fx-font-size: 14pt;
+	-fx-text-fill: #999;
+}
+
+.material-text-field .text-field {
+	-fx-background-color: transparent;
+	-fx-background-insets: 0;
+	-fx-background-radius: 0;
+	-fx-padding: 0 0 0 -1px;
+	-fx-font-size: 14pt;
+	-fx-highlight-fill: #17fa;
+}
+
+.material-text-field .default-underline {
+	-fx-min-height: 1px;
+	-fx-max-height: 1px;
+	-fx-background-color: #777;
+}
+.material-text-field .default-underline:disabled {
+	-fx-background-color: #777;
+}
+
+.material-text-field .highlighted-underline {
+	-fx-min-height: 2px;
+	-fx-max-height: 2px;
+	-fx-background-color: #17f;
+}

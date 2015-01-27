@@ -276,3 +276,59 @@
 	-t-icon-width: 18px;
 	-t-icon-height: 14px;
 }
+
+.icon-info {
+	-fx-shape: "M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm2 30h-4V22h4v12zm0-16h-4v-4h4v4z";
+	-t-icon-width: 40px;
+	-t-icon-height: 40px;
+}
+.icon-info.half {
+	-t-icon-width: 20px;
+	-t-icon-height: 20px;
+}
+.icon-info.third {
+	-t-icon-width: 13px;
+	-t-icon-height: 13px;
+}
+
+.icon-warning {
+	-fx-shape: "M2 42h44L24 4 2 42zm24-6h-4v-4h4v4zm0-8h-4v-8h4v8z";
+	-t-icon-width: 40px;
+	-t-icon-height: 40px;
+}
+.icon-warning.half {
+	-t-icon-width: 20px;
+	-t-icon-height: 20px;
+}
+.icon-warning.third {
+	-t-icon-width: 13px;
+	-t-icon-height: 13px;
+}
+
+.icon-error {
+	-fx-shape: "M24 4C12.96 4 4 12.95 4 24s8.96 20 20 20 20-8.95 20-20S35.04 4 24 4zm2 30h-4v-4h4v4zm0-8h-4V14h4v12z";
+	-t-icon-width: 40px;
+	-t-icon-height: 40px;
+}
+.icon-error.half {
+	-t-icon-width: 20px;
+	-t-icon-height: 20px;
+}
+.icon-error.third {
+	-t-icon-width: 13px;
+	-t-icon-height: 13px;
+}
+
+.icon-success {
+	-fx-shape: "M18 32.34L9.66 24l-2.83 2.83L18 38l24-24-2.83-2.83z";
+	-t-icon-width: 35px;
+	-t-icon-height: 27px;
+}
+.icon-success.half {
+	-t-icon-width: 18px;
+	-t-icon-height: 14px;
+}
+.icon-success.third {
+	-t-icon-width: 12px;
+	-t-icon-height: 9px;
+}

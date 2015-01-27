@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import usspg31.tourney.controller.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+
+<fx:root maxHeight="-Infinity" maxWidth="Infinity" minHeight="-Infinity"
+	minWidth="-Infinity" styleClass="material-text-field" type="AnchorPane"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@/ui/css/fonts.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/material.css" />
+	</stylesheets>
+	<children>
+		<Pane fx:id="defaultUnderline" styleClass="default-underline"
+			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+			AnchorPane.topAnchor="49.0" />
+		<Pane fx:id="activeUnderline" styleClass="highlighted-underline"
+			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+			AnchorPane.topAnchor="49.0" />
+		<Label fx:id="promptLabel" styleClass="prompt-label" text="Input #1"
+			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+			AnchorPane.topAnchor="20.0" />
+		<TextField fx:id="textField" text="" AnchorPane.leftAnchor="0.0"
+			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+		<HBox fx:id="hintContainer" AnchorPane.leftAnchor="0.0"
+			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" alignment="CENTER">
+			<Label fx:id="hintLabel" styleClass="error-label" />
+			<Pane HBox.hgrow="ALWAYS" />
+			<IconPane fx:id="hintIcon" styleClass="message-icon" />
+		</HBox>
+	</children>
+</fx:root>
