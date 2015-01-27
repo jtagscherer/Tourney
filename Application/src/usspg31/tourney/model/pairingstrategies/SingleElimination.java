@@ -5,12 +5,11 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import usspg31.tourney.controller.PreferencesManager;
-import usspg31.tourney.model.Bye;
-import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
 public class SingleElimination implements PairingStrategy {
@@ -73,12 +72,13 @@ public class SingleElimination implements PairingStrategy {
                         PairingHelper.generateEmptyScore(randomList.get(i),
                                 tournament.getRuleSet().getPossibleScores()
                                         .size()));
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
+                for (PossibleScoring byeScore : tournament.getRuleSet()
+                        .getPossibleScores()) {
+                    partResult
+                            .getScoreTable()
+                            .get(0)
+                            .getScore()
+                            .set(byeScore.getPriority(), byeScore.getByeValue());
                 }
                 result.add(partResult);
             }
@@ -123,12 +123,13 @@ public class SingleElimination implements PairingStrategy {
                                 tournament.getRuleSet().getPossibleScores()
                                         .size()));
 
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
+                for (PossibleScoring byeScore : tournament.getRuleSet()
+                        .getPossibleScores()) {
+                    partResult
+                            .getScoreTable()
+                            .get(0)
+                            .getScore()
+                            .set(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);

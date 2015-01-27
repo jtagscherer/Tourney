@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import usspg31.tourney.controller.PreferencesManager;
-import usspg31.tourney.model.Bye;
-import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Pairing.PairingFlag;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
 public class DoubleElimination implements PairingStrategy {
@@ -70,12 +69,13 @@ public class DoubleElimination implements PairingStrategy {
                         PairingHelper.generateEmptyScore(randomList.get(i),
                                 tournament.getRuleSet().getPossibleScores()
                                         .size()));
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
+                for (PossibleScoring byeScore : tournament.getRuleSet()
+                        .getPossibleScores()) {
+                    partResult
+                            .getScoreTable()
+                            .get(0)
+                            .getScore()
+                            .set(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);
@@ -160,7 +160,7 @@ public class DoubleElimination implements PairingStrategy {
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents() - 1) {
                     partResult = new Pairing();
-                    partResult.setFlag(PairingFlag.WINNER_BRACKET);
+                    partResult.setFlag(PairingFlag.LOSER_BRACKET);
                     for (int i = 0; i < PairingHelper.findPhase(
                             tournament.getRounds().size(), tournament)
                             .getNumberOfOpponents(); i++) {
@@ -280,7 +280,7 @@ public class DoubleElimination implements PairingStrategy {
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents() - 1) {
                     partResult = new Pairing();
-                    partResult.setFlag(PairingFlag.WINNER_BRACKET);
+                    partResult.setFlag(PairingFlag.LOSER_BRACKET);
                     for (int i = 0; i < PairingHelper.findPhase(
                             tournament.getRounds().size(), tournament)
                             .getNumberOfOpponents(); i++) {
@@ -305,36 +305,38 @@ public class DoubleElimination implements PairingStrategy {
 
             for (int i = 0; i < winnerBracket.size(); i++) {
                 partResult = new Pairing();
-                partResult.setFlag(PairingFlag.IGNORE);
+                partResult.setFlag(PairingFlag.WINNER_BRACKET);
                 partResult.getOpponents().add(winnerBracket.get(i));
                 partResult.getScoreTable().add(
                         PairingHelper.generateEmptyScore(winnerBracket.get(i),
                                 tournament.getRuleSet().getPossibleScores()
                                         .size()));
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
+                for (PossibleScoring byeScore : tournament.getRuleSet()
+                        .getPossibleScores()) {
+                    partResult
+                            .getScoreTable()
+                            .get(0)
+                            .getScore()
+                            .set(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);
             }
             for (int i = 0; i < loserBracket.size(); i++) {
                 partResult = new Pairing();
-                partResult.setFlag(PairingFlag.IGNORE);
+                partResult.setFlag(PairingFlag.LOSER_BRACKET);
                 partResult.getOpponents().add(loserBracket.get(i));
                 partResult.getScoreTable().add(
                         PairingHelper.generateEmptyScore(loserBracket.get(i),
                                 tournament.getRuleSet().getPossibleScores()
                                         .size()));
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
+                for (PossibleScoring byeScore : tournament.getRuleSet()
+                        .getPossibleScores()) {
+                    partResult
+                            .getScoreTable()
+                            .get(0)
+                            .getScore()
+                            .set(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);
@@ -342,19 +344,20 @@ public class DoubleElimination implements PairingStrategy {
 
             for (int i = 0; i < winnerLoserBracket.size(); i++) {
                 partResult = new Pairing();
-                partResult.setFlag(PairingFlag.IGNORE);
+                partResult.setFlag(PairingFlag.LOSER_BRACKET);
                 partResult.getOpponents().add(winnerLoserBracket.get(i));
                 partResult.getScoreTable().add(
                         PairingHelper.generateEmptyScore(
                                 winnerLoserBracket.get(i), tournament
                                         .getRuleSet().getPossibleScores()
                                         .size()));
-                for (Bye byeTest : tournament.getRuleSet().getByeList()) {
-                    if (byeTest.getByeType() == ByeType.NORMAL_BYE) {
-                        partResult.getScoreTable().get(0).getScore()
-                                .addAll(byeTest.byePointsProperty());
-                        break;
-                    }
+                for (PossibleScoring byeScore : tournament.getRuleSet()
+                        .getPossibleScores()) {
+                    partResult
+                            .getScoreTable()
+                            .get(0)
+                            .getScore()
+                            .set(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);
