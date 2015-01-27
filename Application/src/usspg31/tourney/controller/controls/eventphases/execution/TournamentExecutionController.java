@@ -58,7 +58,7 @@ public class TournamentExecutionController implements TournamentUser {
 
         this.pairingView.SelectedRoundProperty().addListener((ov, o, n) -> {
             if (n.intValue() > o.intValue()) {
-                this.updateRoundTimer();
+                //this.updateRoundTimer();
             }
         });
 
@@ -71,7 +71,7 @@ public class TournamentExecutionController implements TournamentUser {
             this.generateRound();
         }
 
-        this.updateRoundTimer();
+        //this.updateRoundTimer();
     }
 
     private void updateRoundTimer() {
@@ -120,7 +120,7 @@ public class TournamentExecutionController implements TournamentUser {
     }
 
     private void generateRound() {
-    log.info("Generating next round");
+        log.info("Generating next round");
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
@@ -136,12 +136,13 @@ public class TournamentExecutionController implements TournamentUser {
             if (result == DialogResult.OK) {
                 for (int i = 0; i < value.getScoreTable().size(); i++) {
                     PlayerScore score = value.getScoreTable().get(i);
+                    PlayerScore selectedScore = this.pairingView.getSelectedPairing().getScoreTable().get(i);
                     for (int j = 0; j < score.getScore().size(); j++) {
                         Integer newScore = score.getScore().get(j);
-                        PlayerScore selectedScore = this.pairingView.getSelectedPairing().getScoreTable().get(i);
                         selectedScore.getScore().clear();
                         selectedScore.getScore().add(newScore);
                     }
+                    //this.loadedTournament.getScoreTable().
                 }
                 this.pairingView.updatePairings();
             }

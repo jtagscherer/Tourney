@@ -19,6 +19,10 @@
 	</stylesheets>
 	<children>
 		<Label styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
+		<HBox>
+			<Button text="%tournamentexecutionphase.pairingoverview" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, left" />
+			<Button text="%tournamentexecutionphase.phaseoverview" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, right" />
+		</HBox>
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<children>
 				<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
@@ -41,7 +45,7 @@
 						</Button>
 					</children>
 				</VBox>
-            <VBox styleClass="round-timer">
+            <!-- <VBox styleClass="round-timer">
                <children>
                   <HBox>
                      <children>
@@ -103,7 +107,7 @@
                      </children>
                   </HBox>
                </children>
-            </VBox>
+            </VBox> -->
 			</children>
 		</HBox>
 	</children>
