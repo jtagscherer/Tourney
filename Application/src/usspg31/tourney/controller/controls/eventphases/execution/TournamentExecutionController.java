@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import usspg31.tourney.controller.RoundTimer;
 import usspg31.tourney.controller.controls.PairingView;
+import usspg31.tourney.controller.controls.PairingView.OverviewMode;
 import usspg31.tourney.controller.controls.TournamentUser;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog.PairingEntry;
@@ -18,12 +19,15 @@ import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.TournamentRound;
 
 public class TournamentExecutionController implements TournamentUser {
 
     private static final Logger log = Logger
             .getLogger(TournamentExecutionController.class.getName());
 
+    @FXML private Button buttonPairingOverview;
+    @FXML private Button buttonPhaseOverview;
     @FXML private PairingView pairingView;
     @FXML private Button buttonStartRound;
     @FXML private Button buttonEnterResult;
@@ -121,9 +125,30 @@ public class TournamentExecutionController implements TournamentUser {
 
     private void generateRound() {
         log.info("Generating next round");
+        if (this.loadedTournament.getRounds().size() > 0) {
+            TournamentRound currentRound = this.loadedTournament.getRounds().get(
+                    this.loadedTournament.getRounds().size() - 1);
+            for (Pairing pairing : currentRound.getPairings()) {
+                for (PlayerScore score : pairing.getScoreTable()) {
+                    this.loadedTournament.addAScore(score);
+                }
+            }
+        }
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
+    }
+
+    @FXML
+    private void onButtonPairingOverviewClicked(ActionEvent event) {
+        log.info("Pairing Overview Button was clicked");
+        this.pairingView.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
+    }
+
+    @FXML
+    private void onButtonPhaseOverviewClicked(ActionEvent event) {
+        log.info("Phase Overview Button was clicked");
+        this.pairingView.setOverviewMode(OverviewMode.PHASE_OVERVIEW);
     }
 
     @FXML
@@ -142,9 +167,8 @@ public class TournamentExecutionController implements TournamentUser {
                         selectedScore.getScore().clear();
                         selectedScore.getScore().add(newScore);
                     }
-                    //this.loadedTournament.getScoreTable().
                 }
-                this.pairingView.updatePairings();
+                this.pairingView.updateOverview();
             }
         })
         .show();

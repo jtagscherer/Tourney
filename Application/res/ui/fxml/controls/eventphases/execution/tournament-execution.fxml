@@ -20,8 +20,12 @@
 	<children>
 		<Label styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
 		<HBox>
-			<Button text="%tournamentexecutionphase.pairingoverview" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, left" />
-			<Button text="%tournamentexecutionphase.phaseoverview" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, right" />
+			<Button fx:id="buttonPairingOverview" text="%tournamentexecutionphase.pairingoverview"
+				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, left"
+				onAction="#onButtonPairingOverviewClicked" />
+			<Button fx:id="buttonPhaseOverview" text="%tournamentexecutionphase.phaseoverview"
+				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, right"
+				onAction="#onButtonPhaseOverviewClicked" />
 		</HBox>
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<children>

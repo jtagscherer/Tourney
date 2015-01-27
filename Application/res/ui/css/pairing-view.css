@@ -16,12 +16,12 @@
 
 #buttonScrollBreadcrumbsLeft,
 #buttonScrollBreadcrumbsRight {
-	-fx-min-height: 35px;
+	-fx-min-height: 25px;
 	-fx-pref-width: 40px;
 }
 
 .breadcrumb-button {
-	-fx-min-height: 35px;
+	-fx-min-height: 25px;
 	-fx-pref-width: 100px;
 	-fx-max-width: -t-max-value;
 }
