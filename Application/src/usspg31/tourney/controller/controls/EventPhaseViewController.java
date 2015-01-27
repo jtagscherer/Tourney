@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -36,6 +35,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Event.EventPhase;
 import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.filemanagement.FileSaver;
 import usspg31.tourney.model.filemanagement.pdfexport.PDFExporter;
@@ -67,8 +67,6 @@ public class EventPhaseViewController implements EventUser {
     @FXML private Button breadcrumbRegistration;
     @FXML private Button breadcrumbTournamentExecution;
 
-    private ColorAdjust highlightedBreadcrumbEffect;
-
     // Event phases
     @FXML private StackPane eventPhaseContainer;
 
@@ -92,6 +90,10 @@ public class EventPhaseViewController implements EventUser {
     private static Interpolator transitionInterpolator = Interpolator.SPLINE(
             .4, 0, 0, 1);
 
+    // Bread crumb effects
+    private static final String breadCrumbInactive = "-fx-background-color: #888, -t-button-color;";
+    private static final String breadCrumbActive = "-fx-background-color: #888, derive(-t-button-color, -7%);";
+
     // Event
     private Event loadedEvent;
 
@@ -106,7 +108,6 @@ public class EventPhaseViewController implements EventUser {
         this.phasePosition = new SimpleDoubleProperty(0);
 
         this.loadSubViews();
-        this.initBreadcrumbs();
 
         // only activate the lock button if a password is set
         this.buttonLock.disableProperty().bind(
@@ -118,11 +119,6 @@ public class EventPhaseViewController implements EventUser {
                 this.tournamentExecutionPhase);
 
         this.passwordDialog = new PasswordDialog().modalDialog();
-    }
-
-    private void initBreadcrumbs() {
-        this.highlightedBreadcrumbEffect = new ColorAdjust();
-        this.highlightedBreadcrumbEffect.setBrightness(-0.05);
     }
 
     private void loadSubViews() throws IOException {
@@ -268,29 +264,30 @@ public class EventPhaseViewController implements EventUser {
             switch (this.loadedEvent.getEventPhase()) {
             case EVENT_SETUP:
                 this.breadcrumbEventSetup
-                        .setEffect(this.highlightedBreadcrumbEffect);
+                        .setStyle(EventPhaseViewController.breadCrumbActive);
                 this.phasePosition.set(0);
                 break;
             case PRE_REGISTRATION:
                 this.breadcrumbPreRegistration
-                        .setEffect(this.highlightedBreadcrumbEffect);
+                        .setStyle(EventPhaseViewController.breadCrumbActive);
                 this.phasePosition.set(1);
                 break;
             case REGISTRATION:
                 this.breadcrumbRegistration
-                        .setEffect(this.highlightedBreadcrumbEffect);
+                        .setStyle(EventPhaseViewController.breadCrumbActive);
                 this.phasePosition.set(2);
                 break;
             case TOURNAMENT_EXECUTION:
                 this.breadcrumbTournamentExecution
-                        .setEffect(this.highlightedBreadcrumbEffect);
+                        .setStyle(EventPhaseViewController.breadCrumbActive);
                 this.phasePosition.set(3);
                 break;
             }
         } else if (event.getUserFlag() == UserFlag.REGISTRATION) {
             this.loadedEvent = event;
             this.registrationPhaseController.loadEvent(event);
-            this.breadcrumbRegistration.setEffect(null);
+            this.breadcrumbRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
 
             // TODO: Remove these lines after the undo manager works in this
             // view
@@ -306,7 +303,8 @@ public class EventPhaseViewController implements EventUser {
         } else if (event.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
             this.loadedEvent = event;
             this.tournamentExecutionPhaseController.loadEvent(event);
-            this.breadcrumbTournamentExecution.setEffect(null);
+            this.breadcrumbTournamentExecution
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
 
             // TODO: Remove these lines after the undo manager works in this
             // view
@@ -330,13 +328,17 @@ public class EventPhaseViewController implements EventUser {
         /*
          * Clean up if some values are still set from a previously opened event
          */
-        this.breadcrumbEventSetup.setEffect(null);
+        this.breadcrumbEventSetup
+                .setStyle(EventPhaseViewController.breadCrumbInactive);
         this.breadcrumbEventSetup.setDisable(false);
-        this.breadcrumbPreRegistration.setEffect(null);
+        this.breadcrumbPreRegistration
+                .setStyle(EventPhaseViewController.breadCrumbInactive);
         this.breadcrumbPreRegistration.setDisable(false);
-        this.breadcrumbRegistration.setEffect(null);
+        this.breadcrumbRegistration
+                .setStyle(EventPhaseViewController.breadCrumbInactive);
         this.breadcrumbRegistration.setDisable(false);
-        this.breadcrumbTournamentExecution.setEffect(null);
+        this.breadcrumbTournamentExecution
+                .setStyle(EventPhaseViewController.breadCrumbInactive);
         this.breadcrumbTournamentExecution.setDisable(false);
 
         /* Unbind the undo manager */
@@ -501,55 +503,166 @@ public class EventPhaseViewController implements EventUser {
     @FXML
     private void onBreadcrumbEventSetupClicked(ActionEvent event) {
         log.fine("Event Setup Breadcrumb was clicked");
-        this.slideToPhase(0);
-        this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
-
-        this.breadcrumbEventSetup.setEffect(this.highlightedBreadcrumbEffect);
-        this.breadcrumbPreRegistration.setEffect(null);
-        this.breadcrumbRegistration.setEffect(null);
-        this.breadcrumbTournamentExecution.setEffect(null);
+        if (this.loadedEvent.getEventPhase() == EventPhase.TOURNAMENT_EXECUTION) {
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "eventphaseview.warnings.tournamentexecution")
+                    + "\n\n"
+                    + PreferencesManager.getInstance().localizeString(
+                            "eventphaseview.warnings.confirm.message"))
+                    .modalDialog().title("dialogs.titles.warning")
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .onResult((result, returnValue) -> {
+                        if (result == DialogResult.YES) {
+                            this.switchToEventPhase(EventPhase.EVENT_SETUP);
+                        }
+                    }).show();
+        } else if (this.loadedEvent.getEventPhase() != EventPhase.EVENT_SETUP) {
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "eventphaseview.warnings.eventsetup")
+                    + "\n\n"
+                    + PreferencesManager.getInstance().localizeString(
+                            "eventphaseview.warnings.confirm.message"))
+                    .modalDialog().title("dialogs.titles.warning")
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .onResult((result, returnValue) -> {
+                        if (result == DialogResult.YES) {
+                            this.switchToEventPhase(EventPhase.EVENT_SETUP);
+                        }
+                    }).show();
+        } else {
+            this.switchToEventPhase(EventPhase.EVENT_SETUP);
+        }
     }
 
     @FXML
     private void onBreadcrumbPreRegistrationClicked(ActionEvent event) {
         log.fine("Pre Registration Breadcrumb was clicked");
-        this.slideToPhase(1);
-        this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
 
-        this.breadcrumbEventSetup.setEffect(null);
-        this.breadcrumbPreRegistration
-                .setEffect(this.highlightedBreadcrumbEffect);
-        this.breadcrumbRegistration.setEffect(null);
-        this.breadcrumbTournamentExecution.setEffect(null);
+        if (this.loadedEvent.getEventPhase() == EventPhase.REGISTRATION) {
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "eventphaseview.warnings.preregistration")
+                    + "\n\n"
+                    + PreferencesManager.getInstance().localizeString(
+                            "eventphaseview.warnings.confirm.message"))
+                    .modalDialog()
+                    .title("dialogs.titles.warning")
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.YES) {
+                                    this.switchToEventPhase(EventPhase.PRE_REGISTRATION);
+                                }
+                            }).show();
+        } else if (this.loadedEvent.getEventPhase() == EventPhase.TOURNAMENT_EXECUTION) {
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "eventphaseview.warnings.tournamentexecution")
+                    + "\n\n"
+                    + PreferencesManager.getInstance().localizeString(
+                            "eventphaseview.warnings.confirm.message"))
+                    .modalDialog()
+                    .title("dialogs.titles.warning")
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.YES) {
+                                    this.switchToEventPhase(EventPhase.PRE_REGISTRATION);
+                                }
+                            }).show();
+        } else {
+            this.switchToEventPhase(EventPhase.PRE_REGISTRATION);
+        }
     }
 
     @FXML
     private void onBreadcrumbRegistrationClicked(ActionEvent event) {
         log.fine("Registration Breadcrumb was clicked");
-        this.slideToPhase(2);
-        this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
 
-        this.breadcrumbEventSetup.setEffect(null);
-        this.breadcrumbPreRegistration.setEffect(null);
-        if (this.loadedEvent.getUserFlag() != UserFlag.REGISTRATION) {
-            this.breadcrumbRegistration
-                    .setEffect(this.highlightedBreadcrumbEffect);
+        if (this.loadedEvent.getEventPhase() == EventPhase.TOURNAMENT_EXECUTION) {
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "eventphaseview.warnings.tournamentexecution")
+                    + "\n\n"
+                    + PreferencesManager.getInstance().localizeString(
+                            "eventphaseview.warnings.confirm.message"))
+                    .modalDialog().title("dialogs.titles.warning")
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .onResult((result, returnValue) -> {
+                        if (result == DialogResult.YES) {
+                            this.switchToEventPhase(EventPhase.REGISTRATION);
+                        }
+                    }).show();
+        } else {
+            this.switchToEventPhase(EventPhase.REGISTRATION);
         }
-        this.breadcrumbTournamentExecution.setEffect(null);
     }
 
     @FXML
     private void onBreadcrumbTournamentExecutionClicked(ActionEvent event) {
         log.fine("Tournament Execution Breadcrumb was clicked");
-        this.slideToPhase(3);
-        this.loadedEvent.setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
+        this.switchToEventPhase(EventPhase.TOURNAMENT_EXECUTION);
+    }
 
-        this.breadcrumbEventSetup.setEffect(null);
-        this.breadcrumbPreRegistration.setEffect(null);
-        this.breadcrumbRegistration.setEffect(null);
-        if (this.loadedEvent.getUserFlag() != UserFlag.TOURNAMENT_EXECUTION) {
+    private void switchToEventPhase(EventPhase phase) {
+        switch (phase) {
+        case EVENT_SETUP:
+            this.slideToPhase(0);
+            this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
+
+            this.breadcrumbEventSetup
+                    .setStyle(EventPhaseViewController.breadCrumbActive);
+            this.breadcrumbPreRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
             this.breadcrumbTournamentExecution
-                    .setEffect(this.highlightedBreadcrumbEffect);
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            break;
+        case PRE_REGISTRATION:
+            this.slideToPhase(1);
+            this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
+
+            this.breadcrumbEventSetup
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbPreRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbActive);
+            this.breadcrumbRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbTournamentExecution
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            break;
+        case REGISTRATION:
+            this.slideToPhase(2);
+            this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
+
+            this.breadcrumbRegistration
+                    .setStyle("-fx-background-color: #888, derive(-t-button-color, -20%);");
+
+            this.breadcrumbEventSetup
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbPreRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            if (this.loadedEvent.getUserFlag() != UserFlag.REGISTRATION) {
+                this.breadcrumbRegistration
+                        .setStyle(EventPhaseViewController.breadCrumbActive);
+            }
+            this.breadcrumbTournamentExecution
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            break;
+        case TOURNAMENT_EXECUTION:
+            this.slideToPhase(3);
+            this.loadedEvent
+                    .setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
+
+            this.breadcrumbEventSetup
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbPreRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbRegistration
+                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            if (this.loadedEvent.getUserFlag() != UserFlag.TOURNAMENT_EXECUTION) {
+                this.breadcrumbTournamentExecution
+                        .setStyle(EventPhaseViewController.breadCrumbActive);
+            }
+            break;
         }
     }
 }
