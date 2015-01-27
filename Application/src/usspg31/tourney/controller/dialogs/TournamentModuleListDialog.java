@@ -36,6 +36,7 @@ public class TournamentModuleListDialog extends HBox implements
     @FXML private Button buttonAddTournamentModule;
     @FXML private Button buttonRemoveTournamentModule;
     @FXML private Button buttonEditTournamentModule;
+    @FXML private Button buttonDuplicateTournamentModule;
 
     private final ModalDialog<Object, TournamentModule> tournamentmoduleEditorDialog;
     private final TournamentModuleEditorDialog tournamentmoduleEditorDialogController;
@@ -112,6 +113,9 @@ public class TournamentModuleListDialog extends HBox implements
         this.buttonRemoveTournamentModule.disableProperty().bind(
                 this.tableTournamentModules.getSelectionModel()
                         .selectedItemProperty().isNull());
+        this.buttonDuplicateTournamentModule.disableProperty().bind(
+                this.tableTournamentModules.getSelectionModel()
+                        .selectedItemProperty().isNull());
     }
 
     public void unloadTournamentModuleList() {
@@ -121,6 +125,7 @@ public class TournamentModuleListDialog extends HBox implements
         /* Unbind the button's availability */
         this.buttonEditTournamentModule.disableProperty().unbind();
         this.buttonRemoveTournamentModule.disableProperty().unbind();
+        this.buttonDuplicateTournamentModule.disableProperty().unbind();
 
         /* Unbind the dialogs */
         this.tournamentmoduleEditorDialogController.unloadModule();
@@ -189,6 +194,21 @@ public class TournamentModuleListDialog extends HBox implements
         log.fine("Edit Tournament Module Button clicked");
         this.editTournamentModule(this.tableTournamentModules
                 .getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    private void onButtonDuplicateTournamentModuleClicked(ActionEvent event) {
+        log.fine("Duplicate Tournament Module Button clicked");
+
+        TournamentModule copiedTournamentModule = (TournamentModule) this.tableTournamentModules
+                .getSelectionModel().getSelectedItem().clone();
+        copiedTournamentModule.setName(PreferencesManager.getInstance()
+                .localizeString(
+                        "dialogs.tournamentmodulelist.duplicatemodule.prefix")
+                + " " + copiedTournamentModule.getName());
+        this.tableTournamentModules.getItems().add(copiedTournamentModule);
+        PreferencesManager.getInstance().saveTournamentModules(
+                this.tableTournamentModules.getItems());
     }
 
     /**
