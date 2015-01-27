@@ -10,9 +10,6 @@
 }
 
 .button:focused {
-	/*-fx-border-color: #888, derive(-t-button-color, -60%);
-	-fx-border-width: 1.3;
-	-fx-border-insets: 1.3;*/
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0.0, 0, 0);
 }
 

@@ -7,5 +7,6 @@
 	-fx-background-color: #888, #d8d8d8;
 	-fx-background-insets: 0, 1px;
 	-fx-background-radius: 1px;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.7), 15, 0.0, 0, 0);
 	-fx-padding: 20px;
 }
