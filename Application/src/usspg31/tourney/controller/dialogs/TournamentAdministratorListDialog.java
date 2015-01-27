@@ -134,7 +134,6 @@ public class TournamentAdministratorListDialog extends HBox implements
 
     public void unloadTournamentAdministratorList() {
         /* Unbind the table content */
-        this.tournamentAdministratorList.clear();
         this.tableAdministrators.getSelectionModel().clearSelection();
 
         /* Bind the edit button's availability to the selected item */
