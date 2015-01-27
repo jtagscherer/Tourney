@@ -1,11 +1,16 @@
 package usspg31.tourney.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import usspg31.tourney.model.PossibleScoring.ScoringType;
 
 /**
  * Represents a tournament that can be carried out in an event
@@ -212,8 +217,61 @@ public class Tournament implements Cloneable {
                             i,
                             eachPlayerScore.getScore().get(i)
                                     + score.getScore().get(i));
-
                 }
+            }
+        }
+    }
+
+    /**
+     * calculates the table strength for each player
+     * 
+     */
+    public void calculateTableStrength() {
+        for (Player player : this.attendingPlayers) {
+            this.calculateSinglePlayerTableStrength(player);
+        }
+    }
+
+    private void calculateSinglePlayerTableStrength(Player player) {
+        Set<Player> opponentPlayers = new HashSet<Player>();
+        ArrayList<Player> tmpPlayerStorage = new ArrayList<>();
+        PlayerScore tableStrengthScore = new PlayerScore();
+        int strength = 0;
+
+        for (TournamentRound tRound : this.getRounds()) {
+            for (Pairing tPairing : tRound.getPairings()) {
+                if (tPairing.getOpponents().contains(player)) {
+                    tmpPlayerStorage = new ArrayList<>();
+                    tmpPlayerStorage.addAll(tPairing.getOpponents());
+                    tmpPlayerStorage.remove(player);
+
+                    opponentPlayers.addAll(tmpPlayerStorage);
+                }
+            }
+        }
+
+        for (Player opponent : opponentPlayers) {
+            for (PlayerScore scoreTable : this.scoreTable) {
+                if (opponent == scoreTable.getPlayer()) {
+                    strength += scoreTable.getScore().get(0);
+                }
+            }
+        }
+        tableStrengthScore.setPlayer(player);
+        tableStrengthScore.getScore().add(strength);
+        int insertPosition = 0;
+        for (PossibleScoring possibleScore : this.getRuleSet()
+                .getPossibleScores()) {
+            if (possibleScore.getScoreType() == ScoringType.TABLE_STRENGTH) {
+                insertPosition = this.getRuleSet().getPossibleScores()
+                        .indexOf(possibleScore);
+                break;
+            }
+        }
+
+        for (PlayerScore scoreTableEntry : this.scoreTable) {
+            if (scoreTableEntry.getPlayer() == player) {
+                this.scoreTable.set(insertPosition, tableStrengthScore);
             }
         }
     }
