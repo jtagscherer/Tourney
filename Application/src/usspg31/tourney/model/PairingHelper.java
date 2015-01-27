@@ -20,12 +20,12 @@ public class PairingHelper {
      */
     public static GamePhase findPhase(int roundcount, Tournament value) {
         for (GamePhase actPhase : value.getRuleSet().getPhaseList()) {
+            roundcount -= actPhase.getRoundCount();
 
-            if (roundcount - actPhase.getRoundCount() < 0) {
+            if (roundcount < 0) {
                 return actPhase;
             }
 
-            roundcount -= actPhase.getRoundCount();
         }
         return null;
     }
@@ -81,9 +81,10 @@ public class PairingHelper {
         Pairing sortClone = new Pairing();
         ArrayList<Player> winningPlayers = new ArrayList<>();
         boolean isAlsoWinner = true;
-        int count = 1;
+        int count = 0;
 
         sortClone.getScoreTable().addAll(pairing.getScoreTable());
+        System.out.println(sortClone.getScoreTable().size());
         FXCollections.sort(sortClone.getScoreTable());
 
         winningPlayers.add(sortClone.getScoreTable()
