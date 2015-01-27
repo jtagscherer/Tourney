@@ -131,7 +131,6 @@ public class EventAdministratorListDialog extends HBox implements
 
     public void unloadAdministratorList() {
         /* Clear the table of administrators */
-        this.eventAdministratorList.clear();
         this.tableAdministrators.getSelectionModel().clearSelection();
 
         /* Unbind the edit button's availability */
