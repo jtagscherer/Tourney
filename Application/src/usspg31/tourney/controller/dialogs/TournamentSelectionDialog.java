@@ -45,6 +45,7 @@ public class TournamentSelectionDialog extends VBox implements
                     if (item == null || empty) {
                         this.setGraphic(null);
                         this.setText("");
+                        this.setVisible(false);
                     } else {
                         this.setText(item.getName());
                     }
@@ -60,6 +61,7 @@ public class TournamentSelectionDialog extends VBox implements
                         if (item == null || empty) {
                             this.setGraphic(null);
                             this.setText("");
+                            this.setVisible(false);
                         } else {
                             this.setText(item.getName());
                         }
