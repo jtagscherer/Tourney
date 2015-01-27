@@ -14,8 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import usspg31.tourney.model.Bye;
-import usspg31.tourney.model.Bye.ByeType;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.PossibleScoring.ScoringType;
@@ -126,6 +124,12 @@ public class TournamentModuleDocument {
                     .createTextNode(scoringPriority.getScoreType().toString()));
             scoringElement.appendChild(scoringFlagElement);
 
+            /* Add the scoring bye value */
+            Element byeValueElement = this.document.createElement("normal-bye");
+            byeValueElement.appendChild(this.document.createTextNode(String
+                    .valueOf(scoringPriority.getByeValue())));
+            scoringElement.appendChild(byeValueElement);
+
             /* Iterate over the hash map of scores */
             Iterator<Entry<String, Integer>> iterator = scoringPriority
                     .getScores().entrySet().iterator();
@@ -170,6 +174,11 @@ public class TournamentModuleDocument {
             /* Get the scoring flag */
             newScoring.setScoreType(ScoringType.valueOf(FileLoader
                     .getFirstChildNodeByTag(scoring, "type").getTextContent()));
+
+            /* Get the bye value */
+            newScoring.setByeValue(Integer.valueOf(FileLoader
+                    .getFirstChildNodeByTag(scoring, "normal-bye")
+                    .getTextContent()));
 
             /* Extract the priority from the attribute */
             newScoring.setPriority(Integer.valueOf(scoring.getAttributes()
@@ -312,75 +321,6 @@ public class TournamentModuleDocument {
         }
 
         return tournamentPhases;
-    }
-
-    /**
-     * Append a list of byes that can be used in this tournament rule set
-     * 
-     * @param byeList
-     *            List of byes to be appended
-     */
-    public void appendByeList(ObservableList<Bye> byeList) {
-        /* Create a node that will hold all byes */
-        Element byesElement = this.document.createElement("byes");
-        this.rootElement.appendChild(byesElement);
-
-        /* Add a child node for each bye */
-        for (Bye bye : byeList) {
-            Element byeElement = this.document.createElement("bye");
-            byesElement.appendChild(byeElement);
-
-            /* Add the bye type */
-            Element byeTypeElement = this.document.createElement("type");
-            byeElement.appendChild(byeTypeElement);
-            byeTypeElement.appendChild(this.document.createTextNode(String
-                    .valueOf(bye.getByeType())));
-
-            /* Add the points associated with this bye */
-            Element byePointsElements = this.document.createElement("points");
-            byeElement.appendChild(byePointsElements);
-
-            for (int score : bye.getByePoints()) {
-                Element byeScoreElement = this.document.createElement("score");
-                byeScoreElement.appendChild(this.document.createTextNode(String
-                        .valueOf(score)));
-                byePointsElements.appendChild(byeScoreElement);
-            }
-        }
-    }
-
-    /**
-     * Get the list of byes that can be used in this tournament rule set
-     * 
-     * @return The list of byes that can be used in this tournament rule set
-     */
-    public ArrayList<Bye> getByeList() {
-        ArrayList<Bye> byeList = new ArrayList<Bye>();
-
-        /* Get the node that contains all byes */
-        Node byes = this.document.getElementsByTagName("byes").item(0);
-
-        /* Extract all individual byes */
-        for (Node byeNode : FileLoader.getChildNodesByTag(byes, "bye")) {
-            Bye bye = new Bye();
-
-            /* Extract the bye type and the associated points */
-            bye.setByeType(ByeType.valueOf(FileLoader.getFirstChildNodeByTag(
-                    byeNode, "type").getTextContent()));
-
-            Node pointsNode = FileLoader.getFirstChildNodeByTag(byeNode,
-                    "points");
-
-            for (Node scoreNode : FileLoader.getChildNodesByTag(pointsNode,
-                    "score")) {
-                bye.getByePoints().add(
-                        Integer.parseInt(scoreNode.getTextContent()));
-            }
-
-            byeList.add(bye);
-        }
-
-        return byeList;
     }
 
     /**

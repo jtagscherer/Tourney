@@ -293,7 +293,6 @@ public class FileSaver {
         document.appendMetaData(module);
         document.appendPossibleScores(module.getPossibleScores());
         document.appendTournamentPhases(module.getPhaseList());
-        document.appendByeList(module.getByeList());
 
         FileSaver.saveDocumentToFile(document.getDocument(), path);
     }
