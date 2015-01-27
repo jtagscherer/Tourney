@@ -508,6 +508,7 @@ public class TournamentDocument {
             Element scoringFlagElement = this.document.createElement("type");
             scoringFlagElement.appendChild(this.document
                     .createTextNode(scoringPriority.getScoreType().toString()));
+            scoringElement.appendChild(scoringFlagElement);
 
             /*
              * Iterate over the actual scores in this scoring which are a map of
