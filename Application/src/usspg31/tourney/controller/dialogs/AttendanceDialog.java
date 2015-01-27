@@ -64,13 +64,6 @@ public class AttendanceDialog extends VBox implements
         this.tableRegisteredPlayers.getColumns()
                 .add(registeredPlayerNameColumn);
 
-        this.buttonAddAttendee.disableProperty().bind(
-                this.tableRegisteredPlayers.getSelectionModel()
-                        .selectedItemProperty().isNull());
-        this.buttonRemoveAttendee.disableProperty().bind(
-                this.tableAttendingPlayers.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
         this.tableAttendingPlayers.setPlaceholder(new Text(PreferencesManager
                 .getInstance().localizeString("tableplaceholder.noplayers")));
         this.tableRegisteredPlayers.setPlaceholder(new Text(PreferencesManager
@@ -79,18 +72,27 @@ public class AttendanceDialog extends VBox implements
 
     @Override
     public void setProperties(ObservableList<Player> properties) {
-
+        this.loadPlayerList(properties);
     }
 
     public void loadPlayerList(ObservableList<Player> players) {
         this.unloadPlayerList();
 
+        /* Set the items of the tables */
         this.tableRegisteredPlayers.setItems(FXCollections
                 .observableArrayList());
         this.tableAttendingPlayers
                 .setItems(FXCollections.observableArrayList());
 
         this.tableRegisteredPlayers.getItems().addAll(players);
+
+        /* Bind the button's availability */
+        this.buttonAddAttendee.disableProperty().bind(
+                this.tableRegisteredPlayers.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonRemoveAttendee.disableProperty().bind(
+                this.tableAttendingPlayers.getSelectionModel()
+                        .selectedItemProperty().isNull());
     }
 
     public void unloadPlayerList() {
@@ -99,6 +101,10 @@ public class AttendanceDialog extends VBox implements
 
         /* Unbind the table of registered players */
         this.tableRegisteredPlayers.getSelectionModel().clearSelection();
+
+        /* Unbind the button's availability */
+        this.buttonAddAttendee.disableProperty().unbind();
+        this.buttonRemoveAttendee.disableProperty().unbind();
     }
 
     @Override
