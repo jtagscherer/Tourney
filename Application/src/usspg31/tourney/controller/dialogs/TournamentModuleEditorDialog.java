@@ -229,9 +229,16 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         if (properties instanceof TournamentModule) {
             this.loadModule((TournamentModule) properties);
         } else if (properties instanceof ObservableList<?>) {
+            if (this.loadedModule == null) {
+                throw new IllegalStateException(
+                        "The tournament module has to be set before the list of existing tournament module names.");
+            }
+
             this.existingTournamentModuleNames.clear();
             for (TournamentModule module : (ObservableList<TournamentModule>) properties) {
-                this.existingTournamentModuleNames.add(module.getName());
+                if (!this.loadedModule.getName().equals(module.getName())) {
+                    this.existingTournamentModuleNames.add(module.getName());
+                }
             }
         }
     }
@@ -257,13 +264,14 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         }
 
         /* Check for another tournament module with the same name */
-        int duplicateModuleNames = 0;
+        boolean duplicateModuleNames = false;
         for (String moduleName : this.existingTournamentModuleNames) {
-            if (this.loadedModule.getName().equals(moduleName)) {
-                duplicateModuleNames++;
+            if (this.textFieldModuleTitle.getText().equals(moduleName)) {
+                duplicateModuleNames = true;
+                break;
             }
         }
-        if (duplicateModuleNames > 0) {
+        if (duplicateModuleNames) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.tournamentmodule.errors.duplicatename");
         }
