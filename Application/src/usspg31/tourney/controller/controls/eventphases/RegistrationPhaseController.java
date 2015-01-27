@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -113,16 +112,14 @@ public class RegistrationPhaseController implements EventUser {
             }
         };
 
-        ObservableList<Player> sortedPlayerList = FXCollections
-                .observableArrayList();
-        sortedPlayerList.addAll(this.loadedEvent.getRegisteredPlayers());
-
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    FXCollections.sort(sortedPlayerList, comparator);
+                    FXCollections.sort(this.tableRegisteredPlayers.getItems(),
+                            comparator);
                 });
 
-        this.tableRegisteredPlayers.setItems(sortedPlayerList);
+        this.tableRegisteredPlayers.setItems(this.loadedEvent
+                .getRegisteredPlayers());
 
         /* Set up the initial widths of the table columns */
         this.tableColumnPlayerFirstName.prefWidthProperty().set(
