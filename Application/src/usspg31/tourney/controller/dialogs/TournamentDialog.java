@@ -76,7 +76,8 @@ public class TournamentDialog extends VBox implements
     private final ModalDialog<ObservableList<TournamentModule>, Object> tournamentModuleListDialog;
     private final ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
     private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
-    private ModalDialog<ObservableList<TournamentAdministrator>, Object> tournamentAdministratorListDialog;
+    private final ModalDialog<ObservableList<TournamentAdministrator>, Object> tournamentAdministratorListDialog;
+    private final ModalDialog<ObservableList<TournamentModule>, TournamentModule> tournamentModuleSelectionDialog;
 
     private Tournament loadedTournament;
 
@@ -97,14 +98,16 @@ public class TournamentDialog extends VBox implements
         this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
         this.possibleScoringDialog = new TournamentScoringDialog()
                 .modalDialog();
+        this.tournamentAdministratorListDialog = new TournamentAdministratorListDialog()
+                .modalDialog();
+        this.tournamentModuleSelectionDialog = new TournamentModuleSelectionDialog()
+                .modalDialog();
     }
 
     @FXML
     private void initialize() {
         this.initTournamentPhaseTable();
         this.initPossibleScoresTable();
-        this.tournamentAdministratorListDialog = new TournamentAdministratorListDialog()
-                .modalDialog();
     }
 
     private void initTournamentPhaseTable() {
@@ -383,7 +386,20 @@ public class TournamentDialog extends VBox implements
 
     @FXML
     private void onButtonLoadTournamentModuleClicked(ActionEvent event) {
-        // TODO: show all available modules and let the use choose one
+        this.tournamentModuleSelectionDialog
+                .properties(
+                        PreferencesManager.getInstance()
+                                .loadTournamentModules())
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                this.loadedTournament
+                                        .setRuleSet((TournamentModule) returnValue
+                                                .clone());
+                                this.loadTournament(this.loadedTournament);
+                            }
+                        }).show();
     }
 
     @FXML
