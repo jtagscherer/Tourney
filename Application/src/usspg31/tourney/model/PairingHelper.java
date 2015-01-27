@@ -19,15 +19,15 @@ public class PairingHelper {
      * @return GamePhase in which the round is located
      */
     public static GamePhase findPhase(int roundcount, Tournament value) {
-        for (GamePhase actPhase : value.getRuleSet().getPhaseList()) {
+	for (GamePhase actPhase : value.getRuleSet().getPhaseList()) {
 
-            if (roundcount - actPhase.getRoundCount() < 0) {
-                return actPhase;
-            }
+	    if (roundcount - actPhase.getRoundCount() < 0) {
+		return actPhase;
+	    }
 
-            roundcount -= actPhase.getRoundCount();
-        }
-        return null;
+	    roundcount -= actPhase.getRoundCount();
+	}
+	return null;
     }
 
     /**
@@ -42,12 +42,12 @@ public class PairingHelper {
      * @return if the round is the first in his gamephase
      */
     public static boolean isFirstInPhase(int roundcount, Tournament value,
-            GamePhase chkPhase) {
-        if (findPhase(roundcount - 1, value) != chkPhase) {
-            return true;
-        } else {
-            return false;
-        }
+	    GamePhase chkPhase) {
+	if (findPhase(roundcount - 1, value) != chkPhase) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /**
@@ -58,16 +58,16 @@ public class PairingHelper {
      * @return the unsorted scores for the remaining players in the tournament
      */
     public static ArrayList<PlayerScore> mergeScoreRemainingPlayer(
-            Tournament tournament) {
-        ArrayList<PlayerScore> remainingPlayerScore = new ArrayList<>();
-        for (Player player : tournament.getRemainingPlayers()) {
-            for (PlayerScore chkScore : tournament.getScoreTable()) {
-                if (player == chkScore.getPlayer()) {
-                    remainingPlayerScore.add(chkScore);
-                }
-            }
-        }
-        return remainingPlayerScore;
+	    Tournament tournament) {
+	ArrayList<PlayerScore> remainingPlayerScore = new ArrayList<>();
+	for (Player player : tournament.getRemainingPlayers()) {
+	    for (PlayerScore chkScore : tournament.getScoreTable()) {
+		if (player == chkScore.getPlayer()) {
+		    remainingPlayerScore.add(chkScore);
+		}
+	    }
+	}
+	return remainingPlayerScore;
     }
 
     /**
@@ -77,12 +77,35 @@ public class PairingHelper {
      *            the pairing for whom the winnier will be identified
      * @return the winner of the pairing
      */
-    public static Player identifyWinner(Pairing pairing) {
-        Pairing sortClone = new Pairing();
-        sortClone.getScoreTable().addAll(pairing.getScoreTable());
-        FXCollections.sort(sortClone.getScoreTable());
-        return pairing.getScoreTable().get(pairing.getScoreTable().size() - 1)
-                .getPlayer();
+    public static ArrayList<Player> identifyWinner(Pairing pairing) {
+	Pairing sortClone = new Pairing();
+	ArrayList<Player> winningPlayers = new ArrayList<>();
+	boolean isAlsoWinner = true;
+	int count = 1;
+
+	sortClone.getScoreTable().addAll(pairing.getScoreTable());
+	FXCollections.sort(sortClone.getScoreTable());
+
+	winningPlayers.add(sortClone.getScoreTable()
+		.get(sortClone.getScoreTable().size() - 1).getPlayer());
+	while (isAlsoWinner) {
+	    if (sortClone
+		    .getScoreTable()
+		    .get(sortClone.getScoreTable().size() - 1 - count)
+		    .compareTo(
+			    sortClone.getScoreTable().get(
+				    sortClone.getScoreTable().size() - 1)) == 0) {
+		winningPlayers.add(sortClone.getScoreTable()
+			.get(sortClone.getScoreTable().size() - 1 - count)
+			.getPlayer());
+	    } else {
+		isAlsoWinner = false;
+	    }
+	    count++;
+	}
+
+	return winningPlayers;
+
     }
 
     /**
@@ -93,16 +116,16 @@ public class PairingHelper {
      * @return if there this pairing already take place in the tournament
      */
     public static boolean isThereASimilarPairings(Pairing value,
-            Tournament tournament) {
-        for (TournamentRound tRound : tournament.getRounds()) {
-            for (Pairing tPairing : tRound.getPairings()) {
-                if (tPairing.getOpponents().containsAll(value.getOpponents())) {
-                    return true;
-                }
-            }
-        }
+	    Tournament tournament) {
+	for (TournamentRound tRound : tournament.getRounds()) {
+	    for (Pairing tPairing : tRound.getPairings()) {
+		if (tPairing.getOpponents().containsAll(value.getOpponents())) {
+		    return true;
+		}
+	    }
+	}
 
-        return false;
+	return false;
     }
 
     /**
@@ -114,11 +137,11 @@ public class PairingHelper {
      * @return the player score
      */
     public static PlayerScore generateEmptyScore(Player opponent,
-            Integer numberOfScores) {
-        PlayerScore result = new PlayerScore();
-        result.setPlayer(opponent);
+	    Integer numberOfScores) {
+	PlayerScore result = new PlayerScore();
+	result.setPlayer(opponent);
 
-        return result;
+	return result;
     }
 
     /**
@@ -128,12 +151,12 @@ public class PairingHelper {
      * @return
      */
     public static ArrayList<Player> identifyLoser(Pairing pairing) {
-        ArrayList<Player> result = new ArrayList<>();
+	ArrayList<Player> result = new ArrayList<>();
 
-        result.addAll(pairing.getOpponents());
+	result.addAll(pairing.getOpponents());
 
-        result.remove(PairingHelper.identifyWinner(pairing));
+	result.remove(PairingHelper.identifyWinner(pairing));
 
-        return result;
+	return result;
     }
 }

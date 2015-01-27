@@ -20,12 +20,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.controller.util.MapToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
@@ -190,6 +192,10 @@ public class TournamentDialog extends VBox implements
             });
             return row;
         });
+
+        this.tableTournamentPhases.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString(
+                        "tableplaceholder.notournamentphases")));
     }
 
     /**
@@ -259,6 +265,9 @@ public class TournamentDialog extends VBox implements
             });
             return row;
         });
+
+        this.tablePossibleScores.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noscorings")));
     }
 
     /**
@@ -381,8 +390,9 @@ public class TournamentDialog extends VBox implements
     private void onButtonEditTournamentModulesClicked(ActionEvent event) {
         log.fine("Edit Tournament Modules Button was clicked");
 
-        // TODO: actually load tournament modules (-> preferencesManager?)
-        this.tournamentModuleListDialog.properties(null).show();
+        this.tournamentModuleListDialog.properties(
+                PreferencesManager.getInstance().loadTournamentModules())
+                .show();
     }
 
     @FXML
@@ -444,18 +454,29 @@ public class TournamentDialog extends VBox implements
     private void onButtonRemoveTournamentPhaseClicked(ActionEvent event) {
         log.fine("Remove Tournament Phase Button was clicked");
 
-        // update indices of all following GamePhases
-        int selectedTournamentPhase = this.getSelectedTournamentPhaseIndex();
-        int itemCount = this.tableTournamentPhases.getItems().size();
-        ObservableList<GamePhase> phases = this.tableTournamentPhases
-                .getItems();
-        for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
-            phases.get(i).setPhaseNumber(i - 1);
-        }
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.tournament.dialogs.deletephase.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("dialogs.tournament.dialogs.deletephase.title")
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        // update indices of all following GamePhases
+                        int selectedTournamentPhase = this
+                                .getSelectedTournamentPhaseIndex();
+                        int itemCount = this.tableTournamentPhases.getItems()
+                                .size();
+                        ObservableList<GamePhase> phases = this.tableTournamentPhases
+                                .getItems();
+                        for (int i = selectedTournamentPhase + 1; i < itemCount; i++) {
+                            phases.get(i).setPhaseNumber(i - 1);
+                        }
 
-        // actually remove the selected GamePhase
-        this.loadedTournament.getRuleSet().getPhaseList()
-                .remove(selectedTournamentPhase);
+                        // actually remove the selected GamePhase
+                        this.loadedTournament.getRuleSet().getPhaseList()
+                                .remove(selectedTournamentPhase);
+                    }
+                }).show();
     }
 
     @FXML
@@ -558,18 +579,29 @@ public class TournamentDialog extends VBox implements
     private void onButtonRemovePossibleScoreClicked(ActionEvent event) {
         log.fine("Remove Possible Score Button was clicked");
 
-        // update indices of all following PossibleScores
-        int selectedPossibleScore = this.getSelectedPossibleScoreIndex();
-        int itemCount = this.tablePossibleScores.getItems().size();
-        ObservableList<PossibleScoring> phases = this.tablePossibleScores
-                .getItems();
-        for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
-            phases.get(i).setPriority(i - 1);
-        }
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "dialogs.tournament.dialogs.deletescoring.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("dialogs.tournament.dialogs.deletescoring.title")
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        // update indices of all following PossibleScores
+                        int selectedPossibleScore = this
+                                .getSelectedPossibleScoreIndex();
+                        int itemCount = this.tablePossibleScores.getItems()
+                                .size();
+                        ObservableList<PossibleScoring> phases = this.tablePossibleScores
+                                .getItems();
+                        for (int i = selectedPossibleScore + 1; i < itemCount; i++) {
+                            phases.get(i).setPriority(i - 1);
+                        }
 
-        // actually remove the selected PossibleScore
-        this.loadedTournament.getRuleSet().getPossibleScores()
-                .remove(selectedPossibleScore);
+                        // actually remove the selected PossibleScore
+                        this.loadedTournament.getRuleSet().getPossibleScores()
+                                .remove(selectedPossibleScore);
+                    }
+                }).show();
     }
 
     @FXML

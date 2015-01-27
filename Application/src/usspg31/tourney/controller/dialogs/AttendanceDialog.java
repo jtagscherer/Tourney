@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -69,6 +70,11 @@ public class AttendanceDialog extends VBox implements
         this.buttonRemoveAttendee.disableProperty().bind(
                 this.tableAttendingPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+        this.tableAttendingPlayers.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noplayers")));
+        this.tableRegisteredPlayers.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noplayers")));
     }
 
     @Override

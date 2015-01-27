@@ -97,10 +97,8 @@ public class MainMenuController {
     private void onButtonOpenTournamentModuleEditorClicked(ActionEvent event) {
         log.fine("Open Tournament Module Editor Button was clicked");
 
-        this.tournamentModuleListDialog.properties(null) // TODO: get all
-                                                         // available tournament
-                                                         // modules from the
-                                                         // preferencesManager
+        this.tournamentModuleListDialog.properties(
+                PreferencesManager.getInstance().loadTournamentModules())
                 .show();
     }
 

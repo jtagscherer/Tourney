@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -133,6 +134,9 @@ public class TournamentScoringDialog extends VBox implements
             });
             return row;
         });
+
+        this.tablePossibleScores.setPlaceholder(new Text(PreferencesManager
+                .getInstance().localizeString("tableplaceholder.noscorings")));
     }
 
     @Override

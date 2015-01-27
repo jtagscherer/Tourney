@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.NumberTextField;
@@ -23,6 +24,7 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
     private int maximumRegistratorNumber;
 
     @FXML private NumberTextField textFieldNumberOfRegistrator;
+    @FXML private Label labelNumberSelectionInformation;
 
     public RegistrationDistributionNumberSelectionDialog() {
         try {
@@ -48,6 +50,38 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
     @Override
     public void setProperties(Integer properties) {
         this.maximumRegistratorNumber = properties;
+
+        /* Display the maximum number of registrators in the text field */
+        this.textFieldNumberOfRegistrator
+                .setPromptText(PreferencesManager
+                        .getInstance()
+                        .localizeString(
+                                "dialogs.registrationdistributionnumberselection.numberprompt")
+                        + " "
+                        + PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "dialogs.registrationdistributionnumberselection.numberprompt.info.before")
+                        + " "
+                        + this.maximumRegistratorNumber
+                        + PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "dialogs.registrationdistributionnumberselection.numberprompt.info.after"));
+
+        /* Display the maximum number of registrators in the information label */
+        this.labelNumberSelectionInformation
+                .setText(PreferencesManager
+                        .getInstance()
+                        .localizeString(
+                                "dialogs.registrationdistributionnumberselection.description.informed.before")
+                        + " "
+                        + this.maximumRegistratorNumber
+                        + " "
+                        + PreferencesManager
+                                .getInstance()
+                                .localizeString(
+                                        "dialogs.registrationdistributionnumberselection.description.informed.after"));
     }
 
     @Override
@@ -66,15 +100,28 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
                     .getInstance()
                     .localizeString(
                             "dialogs.registrationdistributionnumberselection.errors.emptydata");
-        } else if (this.getReturnValue() <= 1
-                || this.getReturnValue() > this.maximumRegistratorNumber) {
+        }
+        if (this.getReturnValue() <= 1) {
             return PreferencesManager
                     .getInstance()
                     .localizeString(
-                            "dialogs.registrationdistributionnumberselection.errors.numberinvalid");
-        } else {
-            return null;
+                            "dialogs.registrationdistributionnumberselection.errors.numbertoolow");
         }
+        if (this.getReturnValue() > this.maximumRegistratorNumber) {
+            return PreferencesManager
+                    .getInstance()
+                    .localizeString(
+                            "dialogs.registrationdistributionnumberselection.errors.numbertoohigh.before")
+                    + " "
+                    + String.valueOf(this.maximumRegistratorNumber)
+                    + " "
+                    + PreferencesManager
+                            .getInstance()
+                            .localizeString(
+                                    "dialogs.registrationdistributionnumberselection.errors.numbertoohigh.after");
+        }
+
+        return null;
     }
 
     @Override

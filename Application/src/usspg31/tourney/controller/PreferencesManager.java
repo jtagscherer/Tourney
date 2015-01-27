@@ -1,6 +1,8 @@
 package usspg31.tourney.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -28,6 +30,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import org.xml.sax.SAXException;
+
+import usspg31.tourney.model.TournamentModule;
+import usspg31.tourney.model.filemanagement.FileLoader;
+import usspg31.tourney.model.filemanagement.FileSaver;
 
 /**
  * Central class used to store and restore user settings, as well as to load and
@@ -93,6 +101,8 @@ public class PreferencesManager {
     private static final String preferencesFolder = "preferences";
     private static final String preferencesFile = "preferences.properties";
 
+    private static final String tournamentModuleFolder = "preferences/tournament-modules/";
+
     private static PreferencesManager instance;
 
     /**
@@ -122,6 +132,112 @@ public class PreferencesManager {
 
         this.loadLanguages();
         this.loadPreferences();
+    }
+
+    /**
+     * Load all tournament modules from the preferences folder
+     * 
+     * @return All tournament modules that have been saved previously
+     */
+    public ObservableList<TournamentModule> loadTournamentModules() {
+        ObservableList<TournamentModule> savedModules = FXCollections
+                .observableArrayList();
+
+        /*
+         * No folder for the tournament modules exists, therefore return an
+         * empty list
+         */
+        if (!Files.exists(Paths.get(tournamentModuleFolder))) {
+            return savedModules;
+        }
+
+        File tournamentModuleFolder = new File(
+                PreferencesManager.tournamentModuleFolder);
+
+        File[] moduleFiles = tournamentModuleFolder
+                .listFiles(new FilenameFilter() {
+                    public boolean accept(File dir, String name) {
+                        return name.toLowerCase().endsWith(".ttm");
+                    }
+                });
+
+        for (File moduleFile : moduleFiles) {
+            try {
+                savedModules.add(FileLoader
+                        .loadTournamentModuleFromFile(moduleFile
+                                .getAbsolutePath()));
+            } catch (SAXException | IOException e) {
+                log.log(Level.SEVERE, "Could not load the tournament module \""
+                        + moduleFile.getName() + "\".", e);
+            }
+        }
+
+        return savedModules;
+    }
+
+    /**
+     * Save all tournament modules to the preferences folder replacing possible
+     * existing ones
+     * 
+     * @param modules
+     *            List of tournament modules to save
+     */
+    public void saveTournamentModules(ObservableList<TournamentModule> modules) {
+        /*
+         * Create the needed folder infrastructure to save the tournament
+         * modules
+         */
+        if (!Files.exists(Paths.get(tournamentModuleFolder))) {
+            try {
+                Files.createDirectories(Paths.get(tournamentModuleFolder));
+            } catch (IOException e) {
+                log.log(Level.SEVERE,
+                        "Could not create the folders needed to save tournament modules.",
+                        e);
+            }
+        }
+
+        /* Save the actual modules overwriting existing ones */
+        for (TournamentModule module : modules) {
+            File moduleFile = new File(
+                    PreferencesManager.tournamentModuleFolder
+                            + module.getName() + ".ttm");
+            if (moduleFile.exists()) {
+                moduleFile.delete();
+            }
+
+            FileSaver.saveTournamentModuleToFile(module,
+                    moduleFile.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Remove a tournament file from the preferences folder
+     * 
+     * @param tournamentName
+     *            Name of the tournament module to be removed
+     */
+    public void removeTournamentFile(String tournamentName) {
+        if (!Files.exists(Paths.get(tournamentModuleFolder))) {
+            return;
+        }
+
+        File tournamentModuleFolder = new File(
+                PreferencesManager.tournamentModuleFolder);
+
+        File[] moduleFiles = tournamentModuleFolder
+                .listFiles(new FilenameFilter() {
+                    public boolean accept(File dir, String name) {
+                        return name.toLowerCase().endsWith(".ttm");
+                    }
+                });
+
+        for (File moduleFile : moduleFiles) {
+            if (moduleFile.getName().equals(tournamentName + ".ttm")
+                    || moduleFile.getName().equals(tournamentName + ".TTM")) {
+                moduleFile.delete();
+            }
+        }
     }
 
     /**
