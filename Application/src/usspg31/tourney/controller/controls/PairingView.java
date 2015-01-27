@@ -144,6 +144,7 @@ public class PairingView extends VBox implements TournamentUser {
                 this.setSelectedPhase(0);
             }
         }
+        this.refreshBreadcrumbs();
         this.updateOverview();
     }
 
@@ -198,7 +199,8 @@ public class PairingView extends VBox implements TournamentUser {
             this.addDoubleEliminationNodes();
         } else {
             this.pairingContainer.getChildren().add(new Label(
-                    PreferencesManager.getInstance().localizeString("pairingview.cantdisplayphase")));
+                    PreferencesManager.getInstance().localizeString(
+                            "pairingview.cantdisplayphase")));
         }
     }
 
@@ -229,6 +231,7 @@ public class PairingView extends VBox implements TournamentUser {
                         }
                         if (found != null) {
                             orderedPairings.add(found);
+                            unorderedPairings.remove(found);
                         }
                     }
                 }
@@ -261,7 +264,7 @@ public class PairingView extends VBox implements TournamentUser {
                 node.layoutXProperty().bind(currentMaxX);
                 container.getChildren().add(node);
 
-                maxX = Bindings.max(maxX, node.layoutXProperty().add(node.widthProperty()));
+                maxX = Bindings.max(maxX, node.layoutXProperty().add(node.widthProperty()).add(50));
                 maxY = Bindings.max(maxY, node.layoutYProperty().add(node.heightProperty()));
                 previousNode = node;
             }
