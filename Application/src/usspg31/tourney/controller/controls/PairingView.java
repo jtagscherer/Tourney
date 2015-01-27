@@ -2,7 +2,10 @@ package usspg31.tourney.controller.controls;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -295,17 +298,38 @@ public class PairingView extends VBox implements TournamentUser {
 
     private void createConnections(List<PairingNode> previousPairings,
             List<PairingNode> nextPairings, Pane container) {
+        Map<PairingNode, List<PairingNode>> precedingNodes = new HashMap<>();
+
         for (PairingNode prev : previousPairings) {
             Pairing prevPairing = prev.getPairing();
             for (Player prevPlayer : prevPairing.getOpponents()) {
                 for (PairingNode next : nextPairings) {
+                    List<PairingNode> predecessors = precedingNodes.get(next);
+                    if (predecessors == null) {
+                        predecessors = new ArrayList<>();
+                        precedingNodes.put(next, predecessors);
+                    }
                     Pairing nextPairing = next.getPairing();
                     if (nextPairing.getOpponents().contains(prevPlayer)) {
+                        predecessors.add(prev);
                         this.createConnection(prev, prevPlayer, next, container);
                         break;
                     }
                 }
             }
+        }
+
+        for (Entry<PairingNode, List<PairingNode>> entry : precedingNodes.entrySet()) {
+            NumberExpression averageY = new SimpleDoubleProperty(0);
+
+            for (PairingNode node : entry.getValue()) {
+                averageY = averageY.add(node.layoutYProperty().add(node.heightProperty().divide(2d)));
+            }
+
+            averageY = averageY.divide((double) entry.getValue().size());
+
+            entry.getKey().layoutYProperty().unbind();
+            entry.getKey().layoutYProperty().bind(averageY.subtract(entry.getKey().heightProperty().divide(2d)));
         }
     }
 
@@ -325,13 +349,13 @@ public class PairingView extends VBox implements TournamentUser {
                         .multiply(previousNode.getPairing().getOpponents()
                                 .indexOf(previousPlayer) / previousNode
                                 .getPairing().getOpponents().size())
-                                .divide(2)
+                                .divide(2d)
                                 .add(previousNode.heightProperty()
-                                        .divide(4))));
+                                        .divide(4d))));
         curve.endXProperty().bind(nextNode.layoutXProperty().subtract(curve.layoutXProperty()));
         curve.endYProperty().bind(nextNode.layoutYProperty()
                 .add(nextNode.heightProperty()
-                        .divide(2))
+                        .divide(2d))
                 .subtract(curve.layoutYProperty()));
 
         container.getChildren().add(curve);
