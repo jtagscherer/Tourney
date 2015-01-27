@@ -20,7 +20,8 @@ public class SearchUtilities {
     }
 
     /**
-     * Calculate the edit distance between two strings
+     * Calculate the edit distance between two strings. This method calculates
+     * the Levenshtein distance using dynamic programming.
      * 
      * @param firstString
      *            First given string
