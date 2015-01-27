@@ -155,7 +155,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                     super.updateItem(item, empty);
                     if (item != null) {
                         this.setText(String.format(
-                                "%02d:%02d "
+                                "%d:%02d "
                                         + preferences
                                                 .localizeString("dialogs.tournamentmodule.minutes"),
                                 item.getSeconds() / 60, item.getSeconds() % 60));
