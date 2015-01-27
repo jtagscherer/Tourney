@@ -14,8 +14,14 @@ import javafx.collections.ObservableMap;
  * Represents a possible scoring priority
  */
 public class PossibleScoring implements Cloneable {
+    public enum ScoringType {
+        TABLE_STRENGTH,
+        NORMAL;
+    }
+
     private ObservableMap<String, Integer> scores;
     private IntegerProperty priority;
+    private ScoringType scoreType;
 
     /**
      * Create a new possible scoring and initialize all its properties
@@ -71,6 +77,14 @@ public class PossibleScoring implements Cloneable {
      */
     public IntegerProperty priorityProperty() {
         return this.priority;
+    }
+
+    public ScoringType getScoreType() {
+        return this.scoreType;
+    }
+
+    public void setScoreType(ScoringType scoreType) {
+        this.scoreType = scoreType;
     }
 
     @Override

@@ -1,22 +1,56 @@
 package usspg31.tourney.controller.util;
 
+import usspg31.tourney.model.Player;
+
 /**
  * Helper class for fuzzy searching
  * 
  * @author Jan Tagscherer
  */
 public class SearchUtilities {
-    public static boolean fuzzyMatches(String input, String filter) {
-        input = input.toLowerCase();
-        filter = filter.toLowerCase();
-
-        if (input.indexOf(filter) != -1) {
-            return true;
-        } else if (SearchUtilities.calculateDistance(input, filter) < 3) {
-            return true;
+    /**
+     * Get the search relevance of the input string
+     * 
+     * @param input
+     *            Content string
+     * @param filter
+     *            Search term
+     * @return The search relevance of these two strings, the lower it is the
+     *         more relevant the input
+     */
+    public static double getSearchRelevance(String input, String filter) {
+        String shortenedInput = input;
+        if (filter.length() < shortenedInput.length()) {
+            shortenedInput = input.substring(0, filter.length());
         }
 
-        return false;
+        return SearchUtilities.calculateDistance(shortenedInput, filter);
+    }
+
+    /**
+     * Get the search relevance of the input player. This will return the
+     * minimum relevance after iterating over all searchable fields.
+     * 
+     * @param input
+     *            Content player
+     * @param filter
+     *            Search term
+     * @return The search relevance of the two values
+     */
+    public static double getSearchRelevance(Player input, String filter) {
+        String[] attributes = { input.getFirstName(), input.getLastName(),
+                input.getNickName(), input.getMailAddress() };
+        double minimumRelevance = Double.MAX_VALUE;
+
+        for (String attribute : attributes) {
+            double relevance = SearchUtilities.getSearchRelevance(attribute,
+                    filter);
+            if (relevance < minimumRelevance) {
+                minimumRelevance = relevance;
+            }
+        }
+
+        return minimumRelevance;
     }
 
     /**

@@ -1,6 +1,7 @@
 package usspg31.tourney.controller.dialogs;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -202,10 +203,28 @@ public class TournamentModuleListDialog extends HBox implements
 
         TournamentModule copiedTournamentModule = (TournamentModule) this.tableTournamentModules
                 .getSelectionModel().getSelectedItem().clone();
-        copiedTournamentModule.setName(PreferencesManager.getInstance()
-                .localizeString(
-                        "dialogs.tournamentmodulelist.duplicatemodule.prefix")
-                + " " + copiedTournamentModule.getName());
+        String copiedModuleName = copiedTournamentModule.getName();
+
+        /* Get the next possible tournament module name */
+        ArrayList<String> tournamentModuleNames = new ArrayList<String>();
+        for (TournamentModule module : this.tableTournamentModules.getItems()) {
+            tournamentModuleNames.add(module.getName());
+        }
+
+        while (tournamentModuleNames.contains(copiedModuleName)) {
+            copiedModuleName = PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournamentmodulelist.duplicatemodule.prefix")
+                    + " " + copiedModuleName;
+
+            tournamentModuleNames.clear();
+            for (TournamentModule module : this.tableTournamentModules
+                    .getItems()) {
+                tournamentModuleNames.add(module.getName());
+            }
+        }
+
+        /* Add and save the tournament module */
+        copiedTournamentModule.setName(copiedModuleName);
         this.tableTournamentModules.getItems().add(copiedTournamentModule);
         PreferencesManager.getInstance().saveTournamentModules(
                 this.tableTournamentModules.getItems());
