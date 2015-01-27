@@ -5,10 +5,13 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,10 +36,25 @@ public class TournamentScoringDialog extends VBox implements
     public static class ScoringEntry {
         private final StringProperty name;
         private final IntegerProperty score;
+        private final BooleanProperty editable;
 
         public ScoringEntry(String name, int score) {
             this.name = new SimpleStringProperty(name);
             this.score = new SimpleIntegerProperty(score);
+            this.editable = new SimpleBooleanProperty();
+            this.setEditable(true);
+        }
+
+        public void setEditable(boolean editable) {
+            this.editable.set(editable);
+        }
+
+        public boolean isEditable() {
+            return this.editable.get();
+        }
+
+        public BooleanProperty editableProperty() {
+            return this.editable;
         }
 
         public StringProperty nameProperty() {
@@ -151,23 +169,34 @@ public class TournamentScoringDialog extends VBox implements
         this.loadedScoring = (PossibleScoring) scoring.clone();
         this.refreshTable();
 
-        /* Bind the button's availability */
-        // only enable the edit and remove buttons if a score is selected
-        this.buttonEditPredefinedScore.disableProperty().bind(
-                this.tablePossibleScores.getSelectionModel()
-                        .selectedItemProperty().isNull());
-        this.buttonRemovePredefinedScore.disableProperty().bind(
-                this.tablePossibleScores.getSelectionModel()
-                        .selectedItemProperty().isNull());
+        /*
+         * Bind the button's availability to true if an item is selected and if
+         * it is editable
+         */
+        this.tablePossibleScores
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        (ChangeListener<ScoringEntry>) (arg0, oldVal, newVal) -> {
+                            if (newVal != null) {
+                                if (newVal.isEditable()) {
+                                    this.buttonEditPredefinedScore
+                                            .setDisable(false);
+                                    this.buttonRemovePredefinedScore
+                                            .setDisable(false);
+                                } else {
+                                    this.buttonEditPredefinedScore
+                                            .setDisable(true);
+                                    this.buttonRemovePredefinedScore
+                                            .setDisable(true);
+                                }
+                            }
+                        });
     }
 
     public void unloadPossibleScoring() {
         /* Clear the table */
         this.tablePossibleScores.getSelectionModel().clearSelection();
-
-        /* Unbind the button's availability */
-        this.buttonEditPredefinedScore.disableProperty().unbind();
-        this.buttonRemovePredefinedScore.disableProperty().unbind();
 
         this.loadedScoring = null;
     }
@@ -180,6 +209,13 @@ public class TournamentScoringDialog extends VBox implements
             this.predefinedScores.add(new ScoringEntry(entry.getKey(), entry
                     .getValue()));
         }
+
+        /* Add the bye to the table */
+        ScoringEntry byeEntry = new ScoringEntry(PreferencesManager
+                .getInstance().localizeString("pairingnode.bye"),
+                this.loadedScoring.getByeValue());
+        byeEntry.setEditable(false);
+        this.tablePossibleScores.getItems().add(byeEntry);
     }
 
     @Override
@@ -196,6 +232,18 @@ public class TournamentScoringDialog extends VBox implements
         return null;
     }
 
+    private void updateNormalBye() {
+        int maximumValue = 0;
+        for (ScoringEntry entry : this.predefinedScores) {
+            if (entry.getScore() > maximumValue) {
+                maximumValue = entry.getScore();
+            }
+        }
+        this.loadedScoring.setByeValue(maximumValue);
+
+        this.refreshTable();
+    }
+
     @FXML
     private void onButtonAddPredefinedScoreClicked(ActionEvent event) {
         log.fine("Button Add Predefined Score was clicked");
@@ -208,6 +256,7 @@ public class TournamentScoringDialog extends VBox implements
                                 0)).onResult((result, value) -> {
                     if (result == DialogResult.OK) {
                         this.addScore(value);
+                        this.updateNormalBye();
                     }
                 }).show();
     }
@@ -215,7 +264,9 @@ public class TournamentScoringDialog extends VBox implements
     @FXML
     private void onButtonRemovePredefinedScoreClicked(ActionEvent event) {
         log.fine("Button Remove Predefined Score was clicked");
+
         this.removeScore(this.getSelectedScore());
+        this.updateNormalBye();
     }
 
     @FXML
@@ -223,6 +274,7 @@ public class TournamentScoringDialog extends VBox implements
         log.fine("Button Edit Predefined Score was clicked");
 
         this.editPredefinedScore(this.getSelectedScore());
+        this.updateNormalBye();
     }
 
     private void editPredefinedScore(ScoringEntry selectedScore) {
