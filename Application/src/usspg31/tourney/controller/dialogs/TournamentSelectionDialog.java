@@ -44,6 +44,7 @@ public class TournamentSelectionDialog extends VBox implements
                     super.updateItem(item, empty);
                     if (item == null || empty) {
                         this.setGraphic(null);
+                        this.setText("");
                     } else {
                         this.setText(item.getName());
                     }
@@ -58,6 +59,7 @@ public class TournamentSelectionDialog extends VBox implements
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             this.setGraphic(null);
+                            this.setText("");
                         } else {
                             this.setText(item.getName());
                         }
