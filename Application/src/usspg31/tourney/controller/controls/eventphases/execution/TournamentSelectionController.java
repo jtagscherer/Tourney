@@ -123,16 +123,13 @@ public class TournamentSelectionController implements EventUser {
             }
         };
 
-        ObservableList<Tournament> sortedTournamentList = FXCollections
-                .observableArrayList();
-        sortedTournamentList.addAll(this.loadedEvent.getTournaments());
-
         this.textFieldTournamentSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    FXCollections.sort(sortedTournamentList, comparator);
+                    FXCollections.sort(this.tableTournaments.getItems(),
+                            comparator);
                 });
 
-        this.tableTournaments.setItems(sortedTournamentList);
+        this.tableTournaments.setItems(this.loadedEvent.getTournaments());
 
         this.tableColumnTournamentName.prefWidthProperty().set(
                 this.tableTournaments.widthProperty().get() * 0.7);
@@ -224,7 +221,8 @@ public class TournamentSelectionController implements EventUser {
 
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "dialogs.messages.couldnotsave")).modalDialog()
-                    .title("dialogs.titles.error").show();
+                    .title("dialogs.titles.error")
+                    .dialogButtons(DialogButtons.OK).show();
         }
 
         this.loadedEvent.setUserFlag(UserFlag.ADMINISTRATION);

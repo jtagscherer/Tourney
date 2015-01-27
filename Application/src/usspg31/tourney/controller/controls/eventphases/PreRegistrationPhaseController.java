@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -126,16 +125,15 @@ public class PreRegistrationPhaseController implements EventUser {
             }
         };
 
-        ObservableList<Player> sortedPlayerList = FXCollections
-                .observableArrayList();
-        sortedPlayerList.addAll(this.loadedEvent.getRegisteredPlayers());
-
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    FXCollections.sort(sortedPlayerList, comparator);
+                    FXCollections.sort(
+                            this.tablePreRegisteredPlayers.getItems(),
+                            comparator);
                 });
 
-        this.tablePreRegisteredPlayers.setItems(sortedPlayerList);
+        this.tablePreRegisteredPlayers.setItems(this.loadedEvent
+                .getRegisteredPlayers());
 
         /* Set the inital column widths */
         this.tableColumnPlayerFirstName.prefWidthProperty().set(

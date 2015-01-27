@@ -30,6 +30,7 @@ public class PossibleScoring implements Cloneable {
         this.priority = new SimpleIntegerProperty();
         this.scores = FXCollections
                 .observableMap(new HashMap<String, Integer>());
+        this.scoreType = ScoringType.NORMAL;
     }
 
     /**
