@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -91,14 +92,6 @@ public class TournamentAdministratorListDialog extends HBox implements
                 .getValue().phoneNumberProperty());
         this.tableAdministrators.getColumns().add(this.tableColumnPhoneNumber);
 
-        this.buttonEditAdministrator.disableProperty().bind(
-                this.tableAdministrators.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
-        this.buttonRemoveAdministrator.disableProperty().bind(
-                this.tableAdministrators.getSelectionModel()
-                        .selectedItemProperty().isNull());
-
         /* Edit the administrator on double click */
         this.tableAdministrators.setRowFactory(tableView -> {
             TableRow<TournamentAdministrator> row = new TableRow<>();
@@ -113,12 +106,40 @@ public class TournamentAdministratorListDialog extends HBox implements
         this.tableAdministrators.setPlaceholder(new Text(PreferencesManager
                 .getInstance().localizeString(
                         "tableplaceholder.noadministrators")));
+
+        this.tournamentAdministratorList = FXCollections.observableArrayList();
     }
 
     @Override
     public void setProperties(ObservableList<TournamentAdministrator> properties) {
-        this.tournamentAdministratorList = properties;
+        this.loadTournamentAdministratorList(properties);
+    }
+
+    public void loadTournamentAdministratorList(
+            ObservableList<TournamentAdministrator> tournamentAdministrators) {
+        this.unloadTournamentAdministratorList();
+
+        /* Bind the table content */
+        this.tournamentAdministratorList = tournamentAdministrators;
         this.tableAdministrators.setItems(this.tournamentAdministratorList);
+
+        /* Bind the edit button's availability to the selected item */
+        this.buttonEditAdministrator.disableProperty().bind(
+                this.tableAdministrators.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonRemoveAdministrator.disableProperty().bind(
+                this.tableAdministrators.getSelectionModel()
+                        .selectedItemProperty().isNull());
+    }
+
+    public void unloadTournamentAdministratorList() {
+        /* Unbind the table content */
+        this.tournamentAdministratorList.clear();
+        this.tableAdministrators.getSelectionModel().clearSelection();
+
+        /* Bind the edit button's availability to the selected item */
+        this.buttonEditAdministrator.disableProperty().unbind();
+        this.buttonRemoveAdministrator.disableProperty().unbind();
     }
 
     @Override

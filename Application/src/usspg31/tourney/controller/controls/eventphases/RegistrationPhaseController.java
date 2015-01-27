@@ -219,7 +219,6 @@ public class RegistrationPhaseController implements EventUser {
         }
 
         /* Clear the player table bindings */
-        this.tableRegisteredPlayers.getItems().clear();
         this.tableRegisteredPlayers.getSelectionModel().clearSelection();
 
         /* Unbind the edit button's availablity */

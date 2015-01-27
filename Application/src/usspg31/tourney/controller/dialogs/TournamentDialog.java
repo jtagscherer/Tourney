@@ -74,10 +74,19 @@ public class TournamentDialog extends VBox implements
     @FXML private Button buttonEditPossibleScore;
 
     private final ModalDialog<ObservableList<TournamentModule>, Object> tournamentModuleListDialog;
+    private final TournamentModuleListDialog tournamentModuleListDialogController;
+
     private final ModalDialog<GamePhase, GamePhase> tournamentPhaseDialog;
+    private final TournamentPhaseDialog tournamentPhaseDialogController;
+
     private final ModalDialog<PossibleScoring, PossibleScoring> possibleScoringDialog;
+    private final TournamentScoringDialog possibleScoringDialogController;
+
     private final ModalDialog<ObservableList<TournamentAdministrator>, Object> tournamentAdministratorListDialog;
+    private final TournamentAdministratorListDialog tournamentAdministratorListDialogController;
+
     private final ModalDialog<ObservableList<TournamentModule>, TournamentModule> tournamentModuleSelectionDialog;
+    private final TournamentModuleSelectionDialog tournamentModuleSelectionDialogController;
 
     private Tournament loadedTournament;
 
@@ -93,14 +102,22 @@ public class TournamentDialog extends VBox implements
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
-        this.tournamentModuleListDialog = new TournamentModuleListDialog()
+
+        this.tournamentModuleListDialogController = new TournamentModuleListDialog();
+        this.tournamentPhaseDialogController = new TournamentPhaseDialog();
+        this.possibleScoringDialogController = new TournamentScoringDialog();
+        this.tournamentAdministratorListDialogController = new TournamentAdministratorListDialog();
+        this.tournamentModuleSelectionDialogController = new TournamentModuleSelectionDialog();
+
+        this.tournamentModuleListDialog = this.tournamentModuleListDialogController
                 .modalDialog();
-        this.tournamentPhaseDialog = new TournamentPhaseDialog().modalDialog();
-        this.possibleScoringDialog = new TournamentScoringDialog()
+        this.tournamentPhaseDialog = this.tournamentPhaseDialogController
                 .modalDialog();
-        this.tournamentAdministratorListDialog = new TournamentAdministratorListDialog()
+        this.possibleScoringDialog = this.possibleScoringDialogController
                 .modalDialog();
-        this.tournamentModuleSelectionDialog = new TournamentModuleSelectionDialog()
+        this.tournamentAdministratorListDialog = this.tournamentAdministratorListDialogController
+                .modalDialog();
+        this.tournamentModuleSelectionDialog = this.tournamentModuleSelectionDialogController
                 .modalDialog();
     }
 
@@ -315,9 +332,6 @@ public class TournamentDialog extends VBox implements
 
     @Override
     public void setProperties(Tournament properties) {
-        if (this.loadedTournament != null) {
-            this.unloadTournament();
-        }
         this.loadTournament((Tournament) properties.clone());
     }
 
@@ -352,6 +366,10 @@ public class TournamentDialog extends VBox implements
 
     private void loadTournament(Tournament tournament) {
         log.fine("Loading Tournament");
+        if (this.loadedTournament != null) {
+            this.unloadTournament();
+        }
+
         this.loadedTournament = tournament;
         this.textFieldTournamentTitle.textProperty().bindBidirectional(
                 this.loadedTournament.nameProperty());
@@ -369,11 +387,25 @@ public class TournamentDialog extends VBox implements
 
     private void unloadTournament() {
         log.fine("Unloading Tournament");
+
+        /* Unbind the tournament title text field */
         this.textFieldTournamentTitle.textProperty().unbindBidirectional(
                 this.loadedTournament.nameProperty());
 
+        /* Unbind all tables */
+        this.tableTournamentPhases.getSelectionModel().clearSelection();
+        this.tablePossibleScores.getSelectionModel().clearSelection();
+
+        /* Unbind all buttons */
         this.unbindTournamentPhaseTableButtons();
         this.unbindPossibleScoresTableButtons();
+
+        /* Unbind all properties of dialogs */
+        this.tournamentModuleListDialogController.unloadTournamentModuleList();
+        this.tournamentPhaseDialogController.unloadGamePhase();
+        this.possibleScoringDialogController.unloadPossibleScoring();
+        this.tournamentAdministratorListDialogController
+                .unloadTournamentAdministratorList();
 
         log.fine("Tournament unloaded");
     }

@@ -158,7 +158,6 @@ public class TournamentSelectionController implements EventUser {
         }
 
         /* Unbind the table of tournaments */
-        this.tableTournaments.getItems().clear();
         this.tableTournaments.getSelectionModel().clearSelection();
 
         /* Unbind the button's availablity */
