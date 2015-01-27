@@ -76,13 +76,17 @@ public class TournamentExecutionPhaseController implements EventUser {
 
     @Override
     public void loadEvent(Event event) {
+        if (this.loadedEvent != null) {
+            this.unloadEvent();
+        }
+
         this.loadedEvent = event;
         this.selectionController.loadEvent(this.loadedEvent);
     }
 
     @Override
     public void unloadEvent() {
-        // TODO: Unload and unbind everything
+        this.loadedEvent = null;
     }
 
     public void showSelectionView() {

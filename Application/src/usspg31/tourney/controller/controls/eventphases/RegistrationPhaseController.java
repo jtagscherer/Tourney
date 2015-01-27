@@ -144,7 +144,7 @@ public class RegistrationPhaseController implements EventUser {
         this.tableColumnPlayerStartNumber.prefWidthProperty().set(
                 this.tableRegisteredPlayers.widthProperty().get() * 0.1);
 
-        // Bind the button's availability to the list selection
+        /* Bind the button's availability to the list selection */
         this.buttonRemovePlayer.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
@@ -218,8 +218,17 @@ public class RegistrationPhaseController implements EventUser {
             return;
         }
 
-        // TODO: unregister all listeners we registered to anything in the event
-        this.tableRegisteredPlayers.getColumns().clear();
+        /* Clear the player table bindings */
+        this.tableRegisteredPlayers.getItems().clear();
+        this.tableRegisteredPlayers.getSelectionModel().clearSelection();
+
+        /* Unbind the edit button's availablity */
+        this.buttonRemovePlayer.disableProperty().unbind();
+        this.buttonEditPlayer.disableProperty().unbind();
+
+        /* Unbind the listeners added to the register and de-register buttons */
+        this.buttonRegisterPlayer.setDisable(false);
+        this.buttonUnregisterPlayer.setDisable(false);
 
         this.loadedEvent = null;
     }

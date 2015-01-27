@@ -66,12 +66,6 @@ public class EventSetupPhaseController implements EventUser {
                 .modalDialog();
 
         this.initTournamentTable();
-        this.buttonEditTournament.disableProperty().bind(
-                this.tableTournaments.getSelectionModel()
-                        .selectedItemProperty().isNull());
-        this.buttonRemoveTournament.disableProperty().bind(
-                this.tableTournaments.getSelectionModel()
-                        .selectedItemProperty().isNull());
 
         EntryPoint
                 .getPrimaryStage()
@@ -83,7 +77,7 @@ public class EventSetupPhaseController implements EventUser {
                                 Bindings.concat("Tourney \u2014 ").concat(
                                         textFieldEventTitle.textProperty())));
 
-        // restrict the maximum startDate to be at most the end date
+        // restrict the maximum start date to be at most the end date
         this.datePickerStartDate.setDayCellFactory(value -> {
             return new DateCell() {
                 @Override
@@ -100,7 +94,7 @@ public class EventSetupPhaseController implements EventUser {
             };
         });
 
-        // restrict the minimum endDate to be at least the start date
+        // restrict the minimum end date to be at least the start date
         this.datePickerEndDate.setDayCellFactory(value -> {
             return new DateCell() {
                 @Override
@@ -177,6 +171,14 @@ public class EventSetupPhaseController implements EventUser {
         this.textAreaEventLocation.undoTextProperty().bindBidirectional(
                 event.locationProperty());
 
+        // bind the button disable property
+        this.buttonEditTournament.disableProperty().bind(
+                this.tableTournaments.getSelectionModel()
+                        .selectedItemProperty().isNull());
+        this.buttonRemoveTournament.disableProperty().bind(
+                this.tableTournaments.getSelectionModel()
+                        .selectedItemProperty().isNull());
+
         // create table bindings
         this.tableTournaments.setItems(this.loadedEvent.getTournaments());
 
@@ -202,8 +204,11 @@ public class EventSetupPhaseController implements EventUser {
         MainWindow.getInstance().getEventPhaseViewController()
                 .unsetUndoManager();
 
-        // TODO: unregister all listeners we registered to anything in the event
         Event event = this.loadedEvent;
+
+        // unbind the table
+        this.tableTournaments.getItems().clear();
+        this.tableTournaments.getSelectionModel().clearSelection();
 
         // unbind all basic control's values
         event.nameProperty().unbindBidirectional(
@@ -215,6 +220,10 @@ public class EventSetupPhaseController implements EventUser {
                 this.datePickerStartDate.valueProperty());
         event.endDateProperty().unbindBidirectional(
                 this.datePickerEndDate.valueProperty());
+
+        // unbind the buttons
+        this.buttonEditTournament.disableProperty().unbind();
+        this.buttonRemoveTournament.disableProperty().unbind();
 
         // unregister all undo properties we registered with the UndoManager
         this.undoManager.unregisterUndoProperty(this.textFieldEventTitle
