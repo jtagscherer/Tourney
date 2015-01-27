@@ -124,6 +124,7 @@ public class TournamentModuleDocument {
             Element scoringFlagElement = this.document.createElement("type");
             scoringFlagElement.appendChild(this.document
                     .createTextNode(scoringPriority.getScoreType().toString()));
+            scoringElement.appendChild(scoringFlagElement);
 
             /* Iterate over the hash map of scores */
             Iterator<Entry<String, Integer>> iterator = scoringPriority
