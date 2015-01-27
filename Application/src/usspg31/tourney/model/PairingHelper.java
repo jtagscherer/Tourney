@@ -84,7 +84,6 @@ public class PairingHelper {
         int count = 0;
 
         sortClone.getScoreTable().addAll(pairing.getScoreTable());
-        System.out.println(sortClone.getScoreTable().size());
         FXCollections.sort(sortClone.getScoreTable());
 
         winningPlayers.add(sortClone.getScoreTable()
@@ -99,10 +98,16 @@ public class PairingHelper {
                 winningPlayers.add(sortClone.getScoreTable()
                         .get(sortClone.getScoreTable().size() - 1 - count)
                         .getPlayer());
+                System.out.println("winner");
             } else {
                 isAlsoWinner = false;
             }
-            count++;
+            if (count == sortClone.getScoreTable().size() - 1) {
+                isAlsoWinner = false;
+            } else {
+
+                count++;
+            }
         }
 
         return winningPlayers;
