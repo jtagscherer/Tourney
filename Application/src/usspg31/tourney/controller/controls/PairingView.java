@@ -71,6 +71,8 @@ public class PairingView extends VBox implements TournamentUser {
     private ObjectProperty<Pairing> selectedPairing;
     private ObjectProperty<OverviewMode> overviewMode;
 
+    private ObjectProperty<Runnable> onNodeDoubleClicked;
+
 
 
     public PairingView() {
@@ -191,6 +193,9 @@ public class PairingView extends VBox implements TournamentUser {
             pairingNode.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 pairingNode.requestFocus();
                 this.selectedPairingNode.set(pairingNode);
+                if (event.getClickCount() == 2) {
+                    this.getOnNodeDoubleClicked().run();
+                }
             });
 
             this.pairingContainer.getChildren().add(pairingNode);
@@ -235,6 +240,7 @@ public class PairingView extends VBox implements TournamentUser {
     }
 
 
+
     private List<Node> generatePairingNodes(List<List<Pairing>> pairings, NumberExpression xMin, NumberExpression yMin) {
         List<Node> nodes = new ArrayList<>();
 
@@ -249,7 +255,7 @@ public class PairingView extends VBox implements TournamentUser {
 
             nextNodes = new ArrayList<>();
             PairingNode prevNode = null;
-            int pairingId = 0;
+            int pairingId = 1;
             for (Pairing pairing : round) {
                 PairingNode node = new PairingNode(this.loadedTournament, pairing, pairingId++);
 
@@ -655,5 +661,20 @@ public class PairingView extends VBox implements TournamentUser {
      */
     private void setSelectedPairing(Pairing value) {
         this.selectedPairingProperty().set(value);
+    }
+
+    public ObjectProperty<Runnable> onNodeDoubleClickedProperty() {
+        if (this.onNodeDoubleClicked == null) {
+            this.onNodeDoubleClicked = new SimpleObjectProperty<Runnable>(() -> { });
+        }
+        return this.onNodeDoubleClicked;
+    }
+
+    public Runnable getOnNodeDoubleClicked() {
+        return this.onNodeDoubleClickedProperty().get();
+    }
+
+    public void setOnNodeDoubleClicked(Runnable value) {
+        this.onNodeDoubleClickedProperty().set(value);
     }
 }

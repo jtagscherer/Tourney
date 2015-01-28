@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.RoundTimer;
 import usspg31.tourney.controller.controls.PairingView;
 import usspg31.tourney.controller.controls.PairingView.OverviewMode;
@@ -20,6 +21,7 @@ import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.TournamentRound;
+import usspg31.tourney.model.undo.UndoManager;
 
 public class TournamentExecutionController implements TournamentUser {
 
@@ -50,10 +52,6 @@ public class TournamentExecutionController implements TournamentUser {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
     }
 
-    @FXML
-    public void initialize() {
-    }
-
     @Override
     public void loadTournament(Tournament tournament) {
         log.info("Loading Tournament");
@@ -66,6 +64,10 @@ public class TournamentExecutionController implements TournamentUser {
             }
         });
 
+        this.pairingView.setOnNodeDoubleClicked(() -> {
+            this.onButtonEnterResultClicked(null);
+        });
+
         this.pairingView.loadTournament(tournament);
 
         this.buttonEnterResult.disableProperty().bind(
@@ -74,6 +76,11 @@ public class TournamentExecutionController implements TournamentUser {
         if (tournament.getRounds().size() == 0) {
             this.generateRound();
         }
+
+        // register undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.registerUndoProperty(this.loadedTournament.getRounds());
 
         //this.updateRoundTimer();
     }
@@ -115,6 +122,11 @@ public class TournamentExecutionController implements TournamentUser {
     public void unloadTournament() {
         log.info("Unloading Tournament");
         this.pairingView.unloadTournament();
+
+        // unregister undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.unregisterUndoProperty(this.loadedTournament.getRounds());
     }
 
     @FXML

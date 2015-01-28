@@ -92,7 +92,7 @@ public class PairingNode extends VBox {
                         return new SimpleStringProperty(Integer.toString(scoreValue));
                     }
                 }
-                return new SimpleStringProperty("-----------------");
+                return new SimpleStringProperty("-");
             });
             this.opponentTable.getColumns().add(scoreColumn);
 
