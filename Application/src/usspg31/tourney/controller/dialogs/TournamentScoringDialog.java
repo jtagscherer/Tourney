@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
@@ -29,6 +30,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.PossibleScoring;
+import usspg31.tourney.model.PossibleScoring.ScoringType;
 
 public class TournamentScoringDialog extends VBox implements
         IModalDialogProvider<PossibleScoring, PossibleScoring> {
@@ -90,9 +92,19 @@ public class TournamentScoringDialog extends VBox implements
     @FXML private Button buttonRemovePredefinedScore;
     @FXML private Button buttonEditPredefinedScore;
 
+    @FXML private Button buttonScoringTypeNormal;
+    @FXML private Button buttonScoringTypeTableStrength;
+
+    @FXML private HBox scoringTypeBox;
+    @FXML private HBox normalScoringBox;
+
     private ObservableList<ScoringEntry> predefinedScores;
 
     private final ModalDialog<Object, ScoringEntry> predefinedScoreDialog;
+
+    // Scoring button effects
+    private static final String scoringButtonInactive = "-fx-background-color: #888, -t-button-color;";
+    private static final String scoringButtonActive = "-fx-background-color: #888, derive(-t-button-color, -7%);";
 
     private PossibleScoring loadedScoring;
 
@@ -192,11 +204,24 @@ public class TournamentScoringDialog extends VBox implements
                                 }
                             }
                         });
+
+        /* Set the scoring type button's width to half of the dialog */
+        this.buttonScoringTypeNormal.prefWidthProperty().bind(
+                this.scoringTypeBox.widthProperty().divide(2));
+        this.buttonScoringTypeTableStrength.prefWidthProperty().bind(
+                this.scoringTypeBox.widthProperty().divide(2));
+
+        /* Set the initial buttons for the scoring type */
+        this.updateDisplayedScoringType();
     }
 
     public void unloadPossibleScoring() {
         /* Clear the table */
         this.tablePossibleScores.getSelectionModel().clearSelection();
+
+        /* Unbind the scoring type buttons */
+        this.buttonScoringTypeNormal.prefWidthProperty().unbind();
+        this.buttonScoringTypeTableStrength.prefWidthProperty().unbind();
 
         this.loadedScoring = null;
     }
@@ -225,7 +250,8 @@ public class TournamentScoringDialog extends VBox implements
 
     @Override
     public String getInputErrorString() {
-        if (this.loadedScoring.getScores().size() == 0) {
+        if (this.loadedScoring.getScores().size() == 0
+                && this.loadedScoring.getScoreType() == ScoringType.NORMAL) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.tournamentscoring.error.emptydata");
         }
@@ -275,6 +301,40 @@ public class TournamentScoringDialog extends VBox implements
 
         this.editPredefinedScore(this.getSelectedScore());
         this.updateNormalBye();
+    }
+
+    @FXML
+    private void onButtonScoringTypeNormalClicked(ActionEvent event) {
+        log.fine("Normal scoring type was selected");
+        this.loadedScoring.setScoreType(ScoringType.NORMAL);
+        this.updateDisplayedScoringType();
+    }
+
+    @FXML
+    private void onButtonScoringTypeTableStrengthClicked(ActionEvent event) {
+        log.fine("Table strength scoring type was selected");
+        this.loadedScoring.setScoreType(ScoringType.TABLE_STRENGTH);
+        this.updateDisplayedScoringType();
+
+    }
+
+    private void updateDisplayedScoringType() {
+        switch (this.loadedScoring.getScoreType()) {
+        case NORMAL:
+            this.buttonScoringTypeNormal
+                    .setStyle(TournamentScoringDialog.scoringButtonActive);
+            this.buttonScoringTypeTableStrength
+                    .setStyle(TournamentScoringDialog.scoringButtonInactive);
+            this.normalScoringBox.setDisable(false);
+            break;
+        case TABLE_STRENGTH:
+            this.buttonScoringTypeTableStrength
+                    .setStyle(TournamentScoringDialog.scoringButtonActive);
+            this.buttonScoringTypeNormal
+                    .setStyle(TournamentScoringDialog.scoringButtonInactive);
+            this.normalScoringBox.setDisable(true);
+            break;
+        }
     }
 
     private void editPredefinedScore(ScoringEntry selectedScore) {
