@@ -1,5 +1,9 @@
 package usspg31.tourney.model.undo;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -14,7 +18,7 @@ import javafx.collections.ObservableList;
  * perform undo and redo actions on using {@link#registerUndoProperty}. To undo
  * or redo the last performed action on any of the registered values, call the
  * {@link#undo} or {@link#redo} methods accordingly.
- * 
+ *
  * @author Jonas Auer
  */
 public class UndoManager {
@@ -42,6 +46,12 @@ public class UndoManager {
     private UndoBatch undoBatch;
 
     /**
+     * Set containing all properties that changes automatically get batched when
+     * changes occur on them.
+     */
+    private Set<Observable> autoBatchingProperties;
+
+    /**
      * Initializes a new UndoManager.
      */
     public UndoManager() {
@@ -54,6 +64,8 @@ public class UndoManager {
         this.isPerformingAction = false;
 
         this.undoBatch = null;
+
+        this.autoBatchingProperties = new HashSet<>();
     }
 
     /**
@@ -88,7 +100,7 @@ public class UndoManager {
 
     /**
      * Property indicating if an undo action is available.
-     * 
+     *
      * @return a read-only property
      */
     public ReadOnlyBooleanProperty undoAvailableProperty() {
@@ -113,7 +125,7 @@ public class UndoManager {
 
     /**
      * Property indicating if an undo action is available.
-     * 
+     *
      * @return a read-only property
      */
     public ReadOnlyBooleanProperty redoAvailableProperty() {
@@ -178,17 +190,34 @@ public class UndoManager {
      * Registers a property to watch for changes. Adds a listener to the
      * property that automatically stores changes to the property in in the undo
      * history.
-     * 
+     *
      * @param property
      */
     public <T> void registerUndoProperty(Property<T> property) {
+        this.registerUndoProperty(property, false);
+    }
+
+    /**
+     * Registers a property to watch for changes. Adds a listener to the
+     * property that automatically stores changes to the property in in the undo
+     * history. If autoBatching is set to true, the UndoManager will
+     * automatically batch changes on the property to combine them to a single
+     * undo action.
+     *
+     * @param property
+     * @param isAutoBatching
+     */
+    public <T> void registerUndoProperty(Property<T> property, boolean isAutoBatching) {
         property.addListener(this::propertyChangeListener);
+        if (isAutoBatching) {
+            this.autoBatchingProperties.add(property);
+        }
     }
 
     /**
      * Unregisters a property to stop watching for changes. Entries in the undo
      * history will not be removed.
-     * 
+     *
      * @param property
      */
     public <T> void unregisterUndoProperty(Property<T> property) {
@@ -198,17 +227,34 @@ public class UndoManager {
     /**
      * Registers a list to watch for changes. Adds a listener to the list that
      * automatically stores changes to the list in in the undo history.
-     * 
+     *
      * @param property
      */
     public <T> void registerUndoProperty(ObservableList<T> list) {
+        this.registerUndoProperty(list, false);
+    }
+
+    /**
+     * Registers a list to watch for changes. Adds a listener to the list that
+     * automatically stores changes to the list in in the undo history. If
+     * autoBatching is set to true, the UndoManager will automatically batch
+     * changes on the property to combine them to a single
+     * undo action.
+     *
+     * @param property
+     * @param isAutoBatching
+     */
+    public <T> void registerUndoProperty(ObservableList<T> list, boolean isAutoBatching) {
         list.addListener(this::listChangeListener);
+        if (isAutoBatching) {
+            this.autoBatchingProperties.add(list);
+        }
     }
 
     /**
      * Unregisters a list to stop watching for changes. Entries in the undo
      * history will not be removed.
-     * 
+     *
      * @param list
      */
     public <T> void unregisterUndoProperty(ObservableList<T> list) {
@@ -217,22 +263,47 @@ public class UndoManager {
 
     /**
      * Adds an undoAction to the undo history.
-     * 
+     *
      * @param undoAction
      */
     private void addUndoAction(UndoAction undoAction) {
         if (this.undoBatch != null) {
-            this.undoBatch.addUndoAction(undoAction);
-            // did we just add the first element to the undoBatch?
-            if (this.undoBatch.getUndoActionCount() == 1) {
+            if (this.undoBatch instanceof AutoUndoBatch) {
+                AutoUndoBatch autoUndo = (AutoUndoBatch) this.undoBatch;
+                if (autoUndo.getObservable() == undoAction.getObservable()) {
+                    autoUndo.addUndoAction(undoAction);
+                } else {
+                    this.endUndoBatch();
+                }
+            } else {
+                this.undoBatch.addUndoAction(undoAction);
+            }
+
+            // did we just cancel an autoUndoBatch?
+            if (this.undoBatch == null) {
+                this.currentNode.setNext(new UndoNode(this.currentNode, undoAction));
+                this.currentNode = this.currentNode.getNext();
+            } else if (this.undoBatch.getUndoActionCount() == 1) {
+                // we just added the first element to the current undoBatch
                 this.currentNode.setNext(new UndoNode(this.currentNode,
                         this.undoBatch));
                 this.currentNode = this.currentNode.getNext();
             }
         } else {
-            this.currentNode
-                    .setNext(new UndoNode(this.currentNode, undoAction));
-            this.currentNode = this.currentNode.getNext();
+            // is the property that was changed auto-undoable?
+            if (this.autoBatchingProperties.contains(undoAction.getObservable())) {
+                // create a new autoUndoBatch for the given observable
+                AutoUndoBatch autoUndo = new AutoUndoBatch(undoAction.getObservable());
+                autoUndo.addUndoAction(undoAction);
+                this.undoBatch = autoUndo;
+                this.currentNode.setNext(new UndoNode(this.currentNode, autoUndo));
+                this.currentNode = this.currentNode.getNext();
+            } else {
+                // we don't have an auto undo observable here
+                this.currentNode
+                        .setNext(new UndoNode(this.currentNode, undoAction));
+                this.currentNode = this.currentNode.getNext();
+            }
         }
 
         this.setUndoAvailable(true);
@@ -241,7 +312,7 @@ public class UndoManager {
 
     /**
      * Listener that is being attached to registered properties.
-     * 
+     *
      * @param observable
      *            the property that is being changed
      * @param oldValue
@@ -260,7 +331,7 @@ public class UndoManager {
 
     /**
      * Listener that is being attached to registered lists.
-     * 
+     *
      * @param change
      *            the change that occurred on the list
      */

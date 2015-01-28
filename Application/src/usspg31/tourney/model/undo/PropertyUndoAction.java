@@ -1,5 +1,6 @@
 package usspg31.tourney.model.undo;
 
+import javafx.beans.Observable;
 import javafx.beans.property.Property;
 
 class PropertyUndoAction<T> implements UndoAction {
@@ -21,5 +22,10 @@ class PropertyUndoAction<T> implements UndoAction {
     @Override
     public void redo() {
         this.property.setValue(this.newValue);
+    }
+
+    @Override
+    public Observable getObservable() {
+        return this.property;
     }
 }

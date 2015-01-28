@@ -3,6 +3,7 @@ package usspg31.tourney.model.undo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.Observable;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 
@@ -54,5 +55,10 @@ class ListUndoAction<T> implements UndoAction {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    @Override
+    public Observable getObservable() {
+        return this.list;
     }
 }

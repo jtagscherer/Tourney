@@ -3,6 +3,8 @@ package usspg31.tourney.model.undo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.Observable;
+
 public class UndoBatch implements UndoAction {
 
     private List<UndoAction> undoActions;
@@ -31,6 +33,11 @@ public class UndoBatch implements UndoAction {
         for (int i = 0; i < this.undoActions.size(); i++) {
             this.undoActions.get(i).redo();
         }
+    }
+
+    @Override
+    public Observable getObservable() {
+        return null;
     }
 
 }
