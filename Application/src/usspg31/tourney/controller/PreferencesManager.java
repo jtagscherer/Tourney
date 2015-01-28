@@ -98,10 +98,12 @@ public class PreferencesManager {
             .compile("^(?<language>[a-z]+)_(?<country>[A-Z]+)$");
 
     private static final String defaultPreferencesFile = "defaultPreferences.properties";
-    private static final String preferencesFolder = "preferences";
+    private static final String preferencesFolder = System
+            .getProperty("user.dir") + "/Tourney/preferences";
     private static final String preferencesFile = "preferences.properties";
 
-    private static final String tournamentModuleFolder = "preferences/tournament-modules/";
+    private static final String tournamentModuleFolder = PreferencesManager.preferencesFolder
+            + "/tournament-modules/";
 
     private static PreferencesManager instance;
 
