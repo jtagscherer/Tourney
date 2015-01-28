@@ -1,5 +1,7 @@
 package usspg31.tourney.controller.dialogs;
 
+import static java.util.Comparator.comparing;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
@@ -10,6 +12,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -87,6 +90,9 @@ public class TournamentDialog extends VBox implements
 
     private final ModalDialog<ObservableList<TournamentModule>, TournamentModule> tournamentModuleSelectionDialog;
     private final TournamentModuleSelectionDialog tournamentModuleSelectionDialogController;
+
+    private boolean scoreTableSorting = false;
+    private boolean phaseTableSorting = false;
 
     private Tournament loadedTournament;
 
@@ -381,6 +387,37 @@ public class TournamentDialog extends VBox implements
 
         this.bindTournamentPhaseTableButtons();
         this.bindPossibleScoresTableButtons();
+
+        /* Disable resorting the tables */
+        this.tablePossibleScores.getItems().addListener(
+                new ListChangeListener<PossibleScoring>() {
+                    @Override
+                    public void onChanged(
+                            Change<? extends PossibleScoring> change) {
+                        if (!scoreTableSorting) {
+                            scoreTableSorting = true;
+                            change.next();
+                            tablePossibleScores.getItems().sort(
+                                    comparing(PossibleScoring::getPriority));
+                            scoreTableSorting = false;
+                        }
+
+                    }
+                });
+        this.tableTournamentPhases.getItems().addListener(
+                new ListChangeListener<GamePhase>() {
+                    @Override
+                    public void onChanged(Change<? extends GamePhase> change) {
+                        if (!phaseTableSorting) {
+                            phaseTableSorting = true;
+                            change.next();
+                            tableTournamentPhases.getItems().sort(
+                                    comparing(GamePhase::getPhaseNumber));
+                            phaseTableSorting = false;
+                        }
+
+                    }
+                });
 
         log.fine("Tournament loaded");
     }

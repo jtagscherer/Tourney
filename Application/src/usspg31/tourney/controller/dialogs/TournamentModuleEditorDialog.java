@@ -1,5 +1,7 @@
 package usspg31.tourney.controller.dialogs;
 
+import static java.util.Comparator.comparing;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,6 +79,9 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
     private TournamentModule loadedModule;
     private ArrayList<String> existingTournamentModuleNames;
+
+    private boolean scoreTableSorting = false;
+    private boolean phaseTableSorting = false;
 
     public TournamentModuleEditorDialog() {
         try {
@@ -309,6 +315,37 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         this.tableTournamentPhases.setItems(this.loadedModule.getPhaseList());
         this.tablePossibleScores
                 .setItems(this.loadedModule.getPossibleScores());
+
+        /* Disable resorting the tables */
+        this.tablePossibleScores.getItems().addListener(
+                new ListChangeListener<PossibleScoring>() {
+                    @Override
+                    public void onChanged(
+                            Change<? extends PossibleScoring> change) {
+                        if (!scoreTableSorting) {
+                            scoreTableSorting = true;
+                            change.next();
+                            tablePossibleScores.getItems().sort(
+                                    comparing(PossibleScoring::getPriority));
+                            scoreTableSorting = false;
+                        }
+
+                    }
+                });
+        this.tableTournamentPhases.getItems().addListener(
+                new ListChangeListener<GamePhase>() {
+                    @Override
+                    public void onChanged(Change<? extends GamePhase> change) {
+                        if (!phaseTableSorting) {
+                            phaseTableSorting = true;
+                            change.next();
+                            tableTournamentPhases.getItems().sort(
+                                    comparing(GamePhase::getPhaseNumber));
+                            phaseTableSorting = false;
+                        }
+
+                    }
+                });
 
         this.bindTournamentPhaseButtons();
         this.bindPossibleScoringButtons();
