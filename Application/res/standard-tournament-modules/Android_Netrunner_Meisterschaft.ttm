@@ -13,12 +13,8 @@
                 <points>0</points>
             </score>
             <score>
-                <name>Unendschieden</name>
+                <name>Unentschieden</name>
                 <points>1</points>
-            </score>
-            <score>
-                <name>Freilos-Gewinn</name>
-                <points>4</points>
             </score>
             <score>
                 <name>Gewinn</name>
