@@ -179,7 +179,7 @@ public class PairingView extends VBox implements TournamentUser {
         boolean isCurrentRound = this.getSelectedRound() == this.loadedTournament.getRounds().size() - 1;
         for (int i = 0; i < round.getPairings().size(); i++) {
             PairingNode pairingNode = new PairingNode(this.loadedTournament,
-                    round.getPairings().get(i), i);
+                    round.getPairings().get(i), i + 1);
             if (!isCurrentRound) {
                 pairingNode.setDisable(true);
             }
@@ -434,7 +434,7 @@ public class PairingView extends VBox implements TournamentUser {
             }
 
             // disable breadcrumbs for phases that are yet to be begun
-            breadcrumb.setDisable(phaseNumber <= maxPhaseIndex);
+            breadcrumb.setDisable(phaseNumber > maxPhaseIndex);
 
             this.breadcrumbContainer.getChildren().add(breadcrumb);
         }
