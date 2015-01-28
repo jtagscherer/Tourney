@@ -98,7 +98,7 @@ public class EventPhaseViewController implements EventUser {
     private Event loadedEvent;
 
     // UndoManager
-    private UndoManager activeUndoManager;
+    private UndoManager undoManager;
 
     // PasswordDialog
     private ModalDialog<Object, Object> passwordDialog;
@@ -119,6 +119,16 @@ public class EventPhaseViewController implements EventUser {
                 this.tournamentExecutionPhase);
 
         this.passwordDialog = new PasswordDialog().modalDialog();
+
+        this.undoManager = new UndoManager();
+
+        this.buttonUndo.disableProperty().bind(
+                this.undoManager.undoAvailableProperty().not());
+        this.buttonRedo.disableProperty().bind(
+                this.undoManager.redoAvailableProperty().not());
+
+        this.buttonSave.disableProperty().bind(
+                this.undoManager.undoAvailableProperty().not());
     }
 
     private void loadSubViews() throws IOException {
@@ -213,27 +223,8 @@ public class EventPhaseViewController implements EventUser {
         this.currentAnimation.play();
     }
 
-    public void setActiveUndoManager(UndoManager undoManager) {
-        this.activeUndoManager = undoManager;
-        this.buttonUndo.disableProperty().bind(
-                undoManager.undoAvailableProperty().not());
-        this.buttonRedo.disableProperty().bind(
-                undoManager.redoAvailableProperty().not());
-
-        this.buttonSave.disableProperty().bind(
-                undoManager.undoAvailableProperty().not());
-    }
-
     public UndoManager getActiveUndoManager() {
-        return this.activeUndoManager;
-    }
-
-    public void unsetUndoManager() {
-        this.activeUndoManager = null;
-        this.buttonUndo.disableProperty().unbind();
-        this.buttonUndo.disableProperty().set(true);
-        this.buttonRedo.disableProperty().unbind();
-        this.buttonRedo.disableProperty().set(true);
+        return this.undoManager;
     }
 
     public File getLoadedEventFile() {
@@ -341,8 +332,8 @@ public class EventPhaseViewController implements EventUser {
                 .setStyle(EventPhaseViewController.breadCrumbInactive);
         this.breadcrumbTournamentExecution.setDisable(false);
 
-        /* Unbind the undo manager */
-        this.unsetUndoManager();
+        /* clear the undo manager's history */
+        this.undoManager.clearHistory();
 
         /* Unload the event from the specific phases */
         this.eventSetupPhaseController.unloadEvent();
@@ -392,14 +383,14 @@ public class EventPhaseViewController implements EventUser {
     private void onButtonCloseClicked(ActionEvent event) {
         log.fine("Close Button was clicked");
 
-        if (this.activeUndoManager == null) {
+        if (this.undoManager == null) {
             this.unloadEvent();
             MainWindow.getInstance().slideDown(
                     MainWindow.getInstance().getMainMenu());
             return;
         }
 
-        if (this.activeUndoManager.undoAvailable()) {
+        if (this.undoManager.undoAvailable()) {
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "dialogs.messages.unsavedchanges"))
                     .modalDialog()
@@ -427,17 +418,13 @@ public class EventPhaseViewController implements EventUser {
     @FXML
     private void onButtonUndoClicked(ActionEvent event) {
         log.fine("Undo Button was clicked");
-        if (this.activeUndoManager != null) {
-            this.activeUndoManager.undo();
-        }
+        this.undoManager.undo();
     }
 
     @FXML
     private void onButtonRedoClicked(ActionEvent event) {
         log.fine("Redo Button was clicked");
-        if (this.activeUndoManager != null) {
-            this.activeUndoManager.redo();
-        }
+        this.undoManager.redo();
     }
 
     @FXML
@@ -484,7 +471,11 @@ public class EventPhaseViewController implements EventUser {
     private void onButtonLockClicked(ActionEvent event) {
         log.fine("Lock Button was clicked");
 
-        this.passwordDialog.show();
+        EntryPoint.lockApplication();
+        this.passwordDialog
+        .onResult((result, value) -> {
+            EntryPoint.unlockApplication();
+        }).show();
     }
 
     @FXML
