@@ -2,6 +2,7 @@ package usspg31.tourney.model.pairingstrategies;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
@@ -12,11 +13,14 @@ import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
 public class DoubleElimination implements PairingStrategy {
-    private enum PreviousRoundState {
+    private enum ActualRoundState {
         SECOND_ROUND,
         INTER_ROUND,
         COMPLETE_ROUND;
     }
+
+    private static Logger log = Logger.getLogger(DoubleElimination.class
+            .getName());
 
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
@@ -84,28 +88,28 @@ public class DoubleElimination implements PairingStrategy {
 
         } else {
 
-            PreviousRoundState roundState; // differentiate between the
+            ActualRoundState roundState; // differentiate between the
             // different possible outcome for a
             // double elimination round
 
-            boolean secondRound = true;
+            boolean firstRound = true;
             boolean interRound = true;
-            for (Pairing testPairing : tournament.getRounds()
+            for (Pairing previousRoundPairing : tournament.getRounds()
                     .get(tournament.getRounds().size() - 1).getPairings()) {
-                if (testPairing.getFlag() == Pairing.PairingFlag.WINNER_BRACKET) {
+                if (previousRoundPairing.getFlag() == Pairing.PairingFlag.WINNER_BRACKET) {
                     interRound = false;
-                } else if (testPairing.getFlag() == PairingFlag.LOSER_BRACKET) {
-                    secondRound = false;
+                } else if (previousRoundPairing.getFlag() == PairingFlag.LOSER_BRACKET) {
+                    firstRound = false;
                 }
 
             }
 
-            if (interRound && !secondRound) {
-                roundState = PreviousRoundState.INTER_ROUND;
-            } else if (secondRound && !interRound) {
-                roundState = PreviousRoundState.SECOND_ROUND;
+            if (firstRound) {
+                roundState = ActualRoundState.SECOND_ROUND;
+            } else if (interRound) {
+                roundState = ActualRoundState.COMPLETE_ROUND;
             } else {
-                roundState = PreviousRoundState.COMPLETE_ROUND;
+                roundState = ActualRoundState.INTER_ROUND;
             }
 
             // if (PairingHelper.findPhase(tournament.getRounds().size(),
@@ -117,7 +121,7 @@ public class DoubleElimination implements PairingStrategy {
             // tournament rounds
             switch (roundState) {
 
-            case INTER_ROUND:
+            case COMPLETE_ROUND:
 
                 ArrayList<Pairing> tmp = new ArrayList<>();
 
@@ -127,11 +131,20 @@ public class DoubleElimination implements PairingStrategy {
                     if (pairing.getFlag() == PairingFlag.LOSER_BRACKET) {
                         loserBracket.addAll(PairingHelper
                                 .identifyWinner(pairing));
-                    } else if (pairing.getFlag() == PairingFlag.WINNER_BRACKET) {
+                    }
+                }
+
+                tmp = new ArrayList<>();
+
+                tmp.addAll(tournament.getRounds()
+                        .get(tournament.getRounds().size() - 2).getPairings());
+                for (Pairing pairing : tmp) {
+                    if (pairing.getFlag() == PairingFlag.WINNER_BRACKET) {
                         winnerBracket.addAll(PairingHelper
                                 .identifyWinner(pairing));
                     }
                 }
+
                 while (winnerBracket.size() > PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents() - 1) {
@@ -180,7 +193,7 @@ public class DoubleElimination implements PairingStrategy {
 
                 }
                 break;
-            case COMPLETE_ROUND:
+            case INTER_ROUND:
 
                 tmp = new ArrayList<>();
                 loserBracket = new ArrayList<>();
@@ -196,15 +209,18 @@ public class DoubleElimination implements PairingStrategy {
                                 .identifyLoser(pairing));
                     }
                 }
-                while (winnerLoserBracket.size() > PairingHelper.findPhase(
-                        tournament.getRounds().size(), tournament)
-                        .getNumberOfOpponents() - 1
-                        && loserBracket.size() > PairingHelper.findPhase(
-                                tournament.getRounds().size(), tournament)
-                                .getNumberOfOpponents() - 1) {
+
+                log.finer("Loser list size before generating the pairings is: "
+                        + loserBracket.size());
+                log.finer("WinnerLoser list size before generating the pairings is: "
+                        + winnerLoserBracket.size());
+                while (winnerLoserBracket.size() + loserBracket.size() > PairingHelper
+                        .findPhase(tournament.getRounds().size(), tournament)
+                        .getNumberOfOpponents() - 1) {
                     partResult = new Pairing();
                     partResult.setFlag(PairingFlag.LOSER_BRACKET);
 
+                    log.finer("Next pairing gets generated");
                     for (int i = 0; i < PairingHelper.findPhase(
                             tournament.getRounds().size(), tournament)
                             .getNumberOfOpponents(); i++) {
@@ -303,6 +319,9 @@ public class DoubleElimination implements PairingStrategy {
                 break;
             }
 
+            log.finer("Winner bracket list size is : " + winnerBracket.size());
+            log.finer("Loser bracket list size is : " + loserBracket.size());
+            log.finer("WinnerLoser list size is : " + winnerLoserBracket.size());
             for (int i = 0; i < winnerBracket.size(); i++) {
                 partResult = new Pairing();
                 partResult.setFlag(PairingFlag.WINNER_BRACKET);
@@ -317,7 +336,7 @@ public class DoubleElimination implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .set(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);
@@ -336,7 +355,7 @@ public class DoubleElimination implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .set(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);
@@ -357,7 +376,7 @@ public class DoubleElimination implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .set(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(), byeScore.getByeValue());
                 }
 
                 result.add(partResult);
