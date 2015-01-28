@@ -15,6 +15,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.UndoTextArea;
@@ -28,6 +29,7 @@ import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.EventAdministrator;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.undo.UndoManager;
 
 public class EventSetupPhaseController implements EventUser {
 
@@ -171,6 +173,17 @@ public class EventSetupPhaseController implements EventUser {
 
         // create table bindings
         this.tableTournaments.setItems(this.loadedEvent.getTournaments());
+
+        // register undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.registerUndoProperty(this.textFieldEventTitle.textProperty(), true);
+        undo.registerUndoProperty(this.textAreaEventLocation.textProperty(), true);
+        undo.registerUndoProperty(this.datePickerStartDate.valueProperty());
+        undo.registerUndoProperty(this.datePickerEndDate.valueProperty());
+        undo.registerUndoProperty(this.tableTournaments.getItems());
+
+        undo.clearHistory();
     }
 
     @Override
@@ -200,6 +213,15 @@ public class EventSetupPhaseController implements EventUser {
         // unbind the buttons
         this.buttonEditTournament.disableProperty().unbind();
         this.buttonRemoveTournament.disableProperty().unbind();
+
+        // unregister undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.unregisterUndoProperty(this.textFieldEventTitle.textProperty());
+        undo.unregisterUndoProperty(this.textAreaEventLocation.textProperty());
+        undo.unregisterUndoProperty(this.datePickerStartDate.valueProperty());
+        undo.unregisterUndoProperty(this.datePickerEndDate.valueProperty());
+        undo.unregisterUndoProperty(this.tableTournaments.getItems());
 
         this.loadedEvent = null;
     }
@@ -285,9 +307,13 @@ public class EventSetupPhaseController implements EventUser {
                 .onResult((result, returnValue) -> {
                     // TODO: well, this obviously won't work like that.
                         if (result == DialogResult.OK && returnValue != null) {
+                            UndoManager undo = MainWindow.getInstance()
+                                    .getEventPhaseViewController().getUndoManager();
+                            undo.beginUndoBatch();
                             this.loadedEvent.getTournaments()
                                     .remove(tournament);
                             this.loadedEvent.getTournaments().add(returnValue);
+                            undo.endUndoBatch();
                         }
                     }).show();
     }

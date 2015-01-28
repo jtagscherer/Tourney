@@ -223,7 +223,7 @@ public class EventPhaseViewController implements EventUser {
         this.currentAnimation.play();
     }
 
-    public UndoManager getActiveUndoManager() {
+    public UndoManager getUndoManager() {
         return this.undoManager;
     }
 
@@ -593,6 +593,14 @@ public class EventPhaseViewController implements EventUser {
     }
 
     private void switchToEventPhase(EventPhase phase) {
+        // don't do anything if we already are in the given phase
+        if (phase == this.loadedEvent.getEventPhase()) {
+            return;
+        }
+
+        // clear the history of the undoManager
+        this.undoManager.clearHistory();
+
         switch (phase) {
         case EVENT_SETUP:
             this.slideToPhase(0);
