@@ -25,7 +25,6 @@ public class SingleElimination implements PairingStrategy {
      */
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
-        log.finer(this.getClass().toString());
 
         ArrayList<Pairing> result = new ArrayList<>();
         Pairing partResult = new Pairing();
@@ -112,7 +111,8 @@ public class SingleElimination implements PairingStrategy {
                 result.add(partResult);
 
             }
-
+            log.finer("Remaining player in the list which will receive a bye "
+                    + allPlayers.size());
             for (int i = 0; i < allPlayers.size(); i++) {
                 partResult = new Pairing();
                 partResult.setFlag(PairingFlag.IGNORE);

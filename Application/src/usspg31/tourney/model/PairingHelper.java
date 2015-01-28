@@ -81,32 +81,33 @@ public class PairingHelper {
         Pairing sortClone = new Pairing();
         ArrayList<Player> winningPlayers = new ArrayList<>();
         boolean isAlsoWinner = true;
-        int count = 0;
+        int count = 1;
 
         sortClone.getScoreTable().addAll(pairing.getScoreTable());
         FXCollections.sort(sortClone.getScoreTable());
 
         winningPlayers.add(sortClone.getScoreTable()
                 .get(sortClone.getScoreTable().size() - 1).getPlayer());
-        while (isAlsoWinner) {
-            if (sortClone
-                    .getScoreTable()
-                    .get(sortClone.getScoreTable().size() - 1 - count)
-                    .compareTo(
-                            sortClone.getScoreTable().get(
-                                    sortClone.getScoreTable().size() - 1)) == 0) {
-                winningPlayers.add(sortClone.getScoreTable()
+        if (count + 1 <= sortClone.getScoreTable().size()) {
+            while (isAlsoWinner) {
+                if (sortClone
+                        .getScoreTable()
                         .get(sortClone.getScoreTable().size() - 1 - count)
-                        .getPlayer());
-                System.out.println("winner");
-            } else {
-                isAlsoWinner = false;
-            }
-            if (count == sortClone.getScoreTable().size() - 1) {
-                isAlsoWinner = false;
-            } else {
+                        .compareTo(
+                                sortClone.getScoreTable().get(
+                                        sortClone.getScoreTable().size() - 1)) == 0) {
+                    winningPlayers.add(sortClone.getScoreTable()
+                            .get(sortClone.getScoreTable().size() - 1 - count)
+                            .getPlayer());
+                } else {
+                    isAlsoWinner = false;
+                }
+                if (count == sortClone.getScoreTable().size() - 1) {
+                    isAlsoWinner = false;
+                } else {
 
-                count++;
+                    count++;
+                }
             }
         }
 
