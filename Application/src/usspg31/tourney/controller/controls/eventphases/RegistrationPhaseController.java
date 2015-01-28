@@ -3,6 +3,7 @@ package usspg31.tourney.controller.controls.eventphases;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,6 +42,7 @@ import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.filemanagement.FileLoader;
 import usspg31.tourney.model.filemanagement.FileSaver;
+import usspg31.tourney.model.undo.UndoManager;
 
 public class RegistrationPhaseController implements EventUser {
 
@@ -104,15 +106,10 @@ public class RegistrationPhaseController implements EventUser {
         this.initPlayerTable();
 
         /* Add all registered players to the table view and enable searching */
-        Comparator<Player> comparator = new Comparator<Player>() {
-            @Override
-            public int compare(Player firstPlayer, Player lastPlayer) {
-                return (int) (SearchUtilities.getSearchRelevance(firstPlayer,
-                        textFieldPlayerSearch.getText()) - SearchUtilities
-                        .getSearchRelevance(lastPlayer,
-                                textFieldPlayerSearch.getText()));
-            }
-        };
+        Comparator<Player> comparator = (firstPlayer, lastPlayer) -> (int) (SearchUtilities.getSearchRelevance(firstPlayer,
+                RegistrationPhaseController.this.textFieldPlayerSearch.getText()) - SearchUtilities
+                .getSearchRelevance(lastPlayer,
+                        RegistrationPhaseController.this.textFieldPlayerSearch.getText()));
 
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -188,22 +185,28 @@ public class RegistrationPhaseController implements EventUser {
             });
             return row;
         });
+
+        // register undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.registerUndoProperty(this.loadedEvent.getRegisteredPlayers());
+
+        undo.clearHistory();
     }
 
     public void chooseRegistratorNumber(EventPhaseViewController superController) {
         this.distributionNumberSelectionDialog
-                .properties(this.loadedEvent.getNumberOfRegistrators())
-                .dialogButtons(DialogButtons.OK_CANCEL)
-                .onResult(
-                        (result, returnValue) -> {
-                            if (result != DialogResult.OK) {
-                                superController.unloadEvent();
-                                MainWindow.getInstance().slideDown(
-                                        MainWindow.getInstance().getMainMenu());
-                                return;
-                            }
-                            this.registratorNumber = returnValue;
-                        }).show();
+        .properties(this.loadedEvent.getNumberOfRegistrators())
+        .dialogButtons(DialogButtons.OK_CANCEL)
+        .onResult((result, returnValue) -> {
+            if (result != DialogResult.OK) {
+                superController.unloadEvent();
+                MainWindow.getInstance().slideDown(
+                        MainWindow.getInstance().getMainMenu());
+                return;
+            }
+            this.registratorNumber = returnValue;
+        }).show();
     }
 
     @Override
@@ -225,6 +228,11 @@ public class RegistrationPhaseController implements EventUser {
         /* Unbind the listeners added to the register and de-register buttons */
         this.buttonRegisterPlayer.setDisable(false);
         this.buttonUnregisterPlayer.setDisable(false);
+
+        // register undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.unregisterUndoProperty(this.loadedEvent.getRegisteredPlayers());
 
         this.loadedEvent = null;
     }
@@ -315,18 +323,14 @@ public class RegistrationPhaseController implements EventUser {
         log.fine("Add Player Button clicked");
         this.checkEventLoaded();
         this.registrationDialog
-                .properties(new Player())
-                .properties(this.loadedEvent)
-                .onResult(
-                        (result, returnValue) -> {
-                            if (result == DialogResult.OK
-                                    && returnValue != null) {
-                                returnValue.setId(IdentificationManager
-                                        .generateId(returnValue));
-                                this.loadedEvent.getRegisteredPlayers().add(
-                                        returnValue);
-                            }
-                        }).show();
+        .properties(new Player())
+        .properties(this.loadedEvent)
+        .onResult((result, returnValue) -> {
+            if (result == DialogResult.OK && returnValue != null) {
+                returnValue.setId(IdentificationManager.generateId(returnValue));
+                this.loadedEvent.getRegisteredPlayers().add(returnValue);
+            }
+        }).show();
     }
 
     @FXML
@@ -351,14 +355,13 @@ public class RegistrationPhaseController implements EventUser {
                     + "\" "
                     + PreferencesManager.getInstance().localizeString(
                             "preregistrationphase.dialogs.delete.after"))
-                    .modalDialog()
-                    .dialogButtons(DialogButtons.YES_NO)
-                    .title("preregistrationphase.dialogs.delete.title")
-                    .onResult(
-                            (result, returnValue) -> {
+                            .modalDialog()
+                            .dialogButtons(DialogButtons.YES_NO)
+                            .title("preregistrationphase.dialogs.delete.title")
+                            .onResult((result, returnValue) -> {
                                 if (result == DialogResult.YES) {
                                     this.loadedEvent.getRegisteredPlayers()
-                                            .remove(selectedPlayer);
+                                    .remove(selectedPlayer);
                                 }
                             }).show();
         }
@@ -383,24 +386,25 @@ public class RegistrationPhaseController implements EventUser {
 
     /**
      * Open a dialog to edit the chosen player
-     * 
+     *
      * @param player
      *            Player to be edited
      */
     public void editPlayer(Player player) {
         this.registrationDialog
-                .properties(player)
-                .properties(this.loadedEvent)
-                .onResult(
-                        (result, returnValue) -> {
-                            if (result == DialogResult.OK
-                                    && returnValue != null) {
-                                this.loadedEvent.getRegisteredPlayers().remove(
-                                        player);
-                                this.loadedEvent.getRegisteredPlayers().add(
-                                        returnValue);
-                            }
-                        }).show();
+        .properties(player)
+        .properties(this.loadedEvent)
+        .onResult((result, returnValue) -> {
+            if (result == DialogResult.OK && returnValue != null) {
+                UndoManager undo = MainWindow.getInstance()
+                        .getEventPhaseViewController().getUndoManager();
+                undo.beginUndoBatch();
+                this.loadedEvent.getRegisteredPlayers().remove(player);
+                this.loadedEvent.getRegisteredPlayers().add(
+                        returnValue);
+                undo.endUndoBatch();
+            }
+        }).show();
     }
 
     // TODO: fix the dialogs
@@ -447,87 +451,68 @@ public class RegistrationPhaseController implements EventUser {
             if (highestStartingNumber == 0) {
                 final int currentStartingNumber = this.registratorNumber;
                 new SimpleDialog<>(
-                        PreferencesManager
-                                .getInstance()
-                                .localizeString(
-                                        "registrationphase.dialogs.register.message.before")
-                                + " \""
-                                + selectedPlayer.getFirstName()
-                                + " "
-                                + selectedPlayer.getLastName()
-                                + "\" "
-                                + PreferencesManager
-                                        .getInstance()
-                                        .localizeString(
-                                                "registrationphase.dialogs.register.message.after"))
-                        .modalDialog()
-                        .dialogButtons(DialogButtons.YES_NO)
-                        .title(PreferencesManager
-                                .getInstance()
-                                .localizeString(
-                                        "registrationphase.dialogs.register.title.before")
-                                + " "
-                                + currentStartingNumber
-                                + " "
-                                + PreferencesManager
-                                        .getInstance()
-                                        .localizeString(
-                                                "registrationphase.dialogs.register.title.after"),
+                        PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.message.before")
+                        + " \""
+                        + selectedPlayer.getFirstName()
+                        + " "
+                        + selectedPlayer.getLastName()
+                        + "\" "
+                        + PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.message.after"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title(PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.title.before")
+                        + " " + currentStartingNumber + " "
+                        + PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.title.after"),
                                 false)
-                        .onResult(
-                                (result, returnValue) -> {
-                                    if (result == DialogResult.YES) {
-                                        selectedPlayer.setStartingNumber(String
-                                                .valueOf(currentStartingNumber));
-                                        this.buttonRegisterPlayer
-                                                .setDisable(true);
-                                        this.buttonUnregisterPlayer
-                                                .setDisable(false);
-                                    }
-                                }).show();
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        UndoManager undo = MainWindow.getInstance().getEventPhaseViewController().getUndoManager();
+                        undo.beginUndoBatch();
+                        Player clone = (Player) selectedPlayer.clone();
+                        clone.setStartingNumber(String.valueOf(currentStartingNumber));
+                        this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
+                        this.loadedEvent.getRegisteredPlayers().add(clone);
+                        undo.endUndoBatch();
+                        this.buttonRegisterPlayer.setDisable(true);
+                        this.buttonUnregisterPlayer.setDisable(false);
+                    }
+                }).show();
             } else {
                 final int currentStartingNumber = highestStartingNumber
                         + Math.max(this.loadedEvent.getNumberOfRegistrators(),
                                 1);
-                new SimpleDialog<>(
-                        PreferencesManager
-                                .getInstance()
-                                .localizeString(
-                                        "registrationphase.dialogs.register.message.before")
-                                + " \""
-                                + selectedPlayer.getFirstName()
-                                + " "
-                                + selectedPlayer.getLastName()
-                                + "\" "
-                                + PreferencesManager
-                                        .getInstance()
-                                        .localizeString(
-                                                "registrationphase.dialogs.register.message.after"))
-                        .modalDialog()
-                        .dialogButtons(DialogButtons.YES_NO)
-                        .title(PreferencesManager
-                                .getInstance()
-                                .localizeString(
-                                        "registrationphase.dialogs.register.title.before")
-                                + " "
-                                + currentStartingNumber
-                                + " "
-                                + PreferencesManager
-                                        .getInstance()
-                                        .localizeString(
-                                                "registrationphase.dialogs.register.title.after"),
-                                false)
-                        .onResult(
-                                (result, returnValue) -> {
-                                    if (result == DialogResult.YES) {
-                                        selectedPlayer.setStartingNumber(String
-                                                .valueOf(currentStartingNumber));
-                                        this.buttonRegisterPlayer
-                                                .setDisable(true);
-                                        this.buttonUnregisterPlayer
-                                                .setDisable(false);
-                                    }
-                                }).show();
+                new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.message.before")
+                        + " \"" + selectedPlayer.getFirstName() + " "
+                        + selectedPlayer.getLastName() + "\" "
+                        + PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.message.after"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title(PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.title.before")
+                        + " " + currentStartingNumber + " "
+                        + PreferencesManager.getInstance().localizeString(
+                                "registrationphase.dialogs.register.title.after"),
+                        false)
+                .onResult((result, returnValue) -> {
+                    if (result == DialogResult.YES) {
+                        UndoManager undo = MainWindow.getInstance().getEventPhaseViewController().getUndoManager();
+                        undo.beginUndoBatch();
+                        Player clone = (Player) selectedPlayer.clone();
+                        clone.setStartingNumber(String.valueOf(currentStartingNumber));
+                        this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
+                        this.loadedEvent.getRegisteredPlayers().add(clone);
+                        undo.endUndoBatch();
+
+                        this.buttonRegisterPlayer.setDisable(true);
+                        this.buttonUnregisterPlayer.setDisable(false);
+                    }
+                }).show();
             }
         }
     }
@@ -537,55 +522,60 @@ public class RegistrationPhaseController implements EventUser {
         log.fine("Register All Players Button clicked");
         this.checkEventLoaded();
 
-        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
-                "registrationphase.dialogs.registerall.message"))
-                .modalDialog()
-                .dialogButtons(DialogButtons.YES_NO)
-                .title("registrationphase.dialogs.registerall.title")
-                .onResult(
-                        (result, returnValue) -> {
-                            if (result == DialogResult.YES) {
-                                /*
-                                 * Get the currently highest starting number to
-                                 * generate the next one
-                                 */
-                                int startingNumber = 0;
-                                for (Player player : this.loadedEvent
-                                        .getRegisteredPlayers()) {
-                                    if (!player.getStartingNumber().equals("")) {
-                                        if (Integer.parseInt(player
-                                                .getStartingNumber()) > startingNumber) {
-                                            startingNumber = Integer.parseInt(player
-                                                    .getStartingNumber());
-                                        }
-                                    }
-                                }
-                                if (startingNumber == 0) {
-                                    startingNumber = this.registratorNumber;
-                                } else {
-                                    startingNumber = startingNumber
-                                            + Math.max(this.loadedEvent
-                                                    .getNumberOfRegistrators(),
-                                                    1);
-                                }
+        new SimpleDialog<>(PreferencesManager.getInstance()
+                .localizeString("registrationphase.dialogs.registerall.message"))
+        .modalDialog()
+        .dialogButtons(DialogButtons.YES_NO)
+        .title("registrationphase.dialogs.registerall.title")
+        .onResult((result, returnValue) -> {
+            if (result == DialogResult.YES) {
+                /*
+                 * Get the currently highest starting number to
+                 * generate the next one
+                 */
+                int startingNumber = 0;
+                for (Player player : this.loadedEvent.getRegisteredPlayers()) {
+                    if (!player.getStartingNumber().equals("")) {
+                        if (Integer.parseInt(player
+                                .getStartingNumber()) > startingNumber) {
+                            startingNumber = Integer.parseInt(player
+                                    .getStartingNumber());
+                        }
+                    }
+                }
+                if (startingNumber == 0) {
+                    startingNumber = this.registratorNumber;
+                } else {
+                    startingNumber = startingNumber + Math.max(
+                            this.loadedEvent.getNumberOfRegistrators(), 1);
+                }
 
-                                for (Player player : this.loadedEvent
-                                        .getRegisteredPlayers()) {
-                                    if (player.getStartingNumber().equals("")) {
-                                        player.setStartingNumber(String
-                                                .valueOf(startingNumber));
-                                        startingNumber = startingNumber
-                                                + Math.max(
-                                                        this.loadedEvent
-                                                                .getNumberOfRegistrators(),
-                                                        1);
-                                    }
-                                }
+                UndoManager undo = MainWindow.getInstance()
+                        .getEventPhaseViewController().getUndoManager();
+                undo.beginUndoBatch();
 
-                                this.buttonRegisterPlayer.setDisable(true);
-                                this.buttonUnregisterPlayer.setDisable(false);
-                            }
-                        }).show();
+                List<Player> playersToRegister = new ArrayList<>();
+                playersToRegister.addAll(this.loadedEvent.getRegisteredPlayers());
+
+                while (playersToRegister.size() > 0) {
+                    Player player = playersToRegister.get(0);
+                    if (player.getStartingNumber().equals("")) {
+                        Player clone = (Player) player.clone();
+                        clone.setStartingNumber(String.valueOf(startingNumber));
+                        startingNumber = startingNumber + Math.max(
+                                this.loadedEvent.getNumberOfRegistrators(), 1);
+                        this.loadedEvent.getRegisteredPlayers().remove(player);
+                        this.loadedEvent.getRegisteredPlayers().add(clone);
+                    }
+                    playersToRegister.remove(player);
+                }
+
+                undo.endUndoBatch();
+
+                this.buttonRegisterPlayer.setDisable(true);
+                this.buttonUnregisterPlayer.setDisable(false);
+            }
+        }).show();
     }
 
     @FXML
@@ -603,10 +593,9 @@ public class RegistrationPhaseController implements EventUser {
         } else {
             if (selectedPlayer.getStartingNumber().equals("")) {
                 new SimpleDialog<>(PreferencesManager.getInstance()
-                        .localizeString(
-                                "registrationphase.dialogs.notregistered"))
-                        .modalDialog().dialogButtons(DialogButtons.OK)
-                        .title("dialogs.titles.error").show();
+                        .localizeString("registrationphase.dialogs.notregistered"))
+                .modalDialog().dialogButtons(DialogButtons.OK)
+                .title("dialogs.titles.error").show();
                 return;
             }
 
@@ -614,29 +603,28 @@ public class RegistrationPhaseController implements EventUser {
              * Ask the user for confirmation and unregister the player if
              * necessary
              */
-            new SimpleDialog<>(
-                    PreferencesManager
-                            .getInstance()
-                            .localizeString(
-                                    "registrationphase.dialogs.unregister.message.before")
-                            + " \""
-                            + selectedPlayer.getFirstName()
-                            + " "
-                            + selectedPlayer.getLastName()
-                            + "\" "
-                            + PreferencesManager
-                                    .getInstance()
-                                    .localizeString(
-                                            "registrationphase.dialogs.unregister.message.after"))
-                    .modalDialog().dialogButtons(DialogButtons.YES_NO)
-                    .title("registrationphase.dialogs.unregister.title")
-                    .onResult((result, returnValue) -> {
-                        if (result == DialogResult.YES) {
-                            selectedPlayer.setStartingNumber("");
-                            this.buttonRegisterPlayer.setDisable(false);
-                            this.buttonUnregisterPlayer.setDisable(true);
-                        }
-                    }).show();
+            new SimpleDialog<>(PreferencesManager.getInstance()
+                    .localizeString("registrationphase.dialogs.unregister.message.before")
+                    + " \"" + selectedPlayer.getFirstName() + " "
+                    + selectedPlayer.getLastName() + "\" "
+                    + PreferencesManager.getInstance().localizeString(
+                            "registrationphase.dialogs.unregister.message.after"))
+            .modalDialog().dialogButtons(DialogButtons.YES_NO)
+            .title("registrationphase.dialogs.unregister.title")
+            .onResult((result, returnValue) -> {
+                if (result == DialogResult.YES) {
+                    UndoManager undo = MainWindow.getInstance().getEventPhaseViewController().getUndoManager();
+                    undo.beginUndoBatch();
+                    Player clone = (Player) selectedPlayer.clone();
+                    clone.setStartingNumber("");
+                    this.loadedEvent.getRegisteredPlayers().remove(selectedPlayer);
+                    this.loadedEvent.getRegisteredPlayers().add(clone);
+                    undo.endUndoBatch();
+
+                    this.buttonRegisterPlayer.setDisable(false);
+                    this.buttonUnregisterPlayer.setDisable(true);
+                }
+            }).show();
         }
     }
 

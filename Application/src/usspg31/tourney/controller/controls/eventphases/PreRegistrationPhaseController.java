@@ -12,6 +12,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
@@ -23,6 +24,7 @@ import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.undo.UndoManager;
 
 public class PreRegistrationPhaseController implements EventUser {
 
@@ -115,15 +117,10 @@ public class PreRegistrationPhaseController implements EventUser {
         this.loadedEvent = event;
 
         /* Add all registered players to the table view and enable searching */
-        Comparator<Player> comparator = new Comparator<Player>() {
-            @Override
-            public int compare(Player firstPlayer, Player lastPlayer) {
-                return (int) (SearchUtilities.getSearchRelevance(firstPlayer,
-                        textFieldPlayerSearch.getText()) - SearchUtilities
-                        .getSearchRelevance(lastPlayer,
-                                textFieldPlayerSearch.getText()));
-            }
-        };
+        Comparator<Player> comparator = (firstPlayer, lastPlayer) -> (int) (SearchUtilities.getSearchRelevance(firstPlayer,
+                PreRegistrationPhaseController.this.textFieldPlayerSearch.getText()) - SearchUtilities
+                .getSearchRelevance(lastPlayer,
+                        PreRegistrationPhaseController.this.textFieldPlayerSearch.getText()));
 
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -152,6 +149,13 @@ public class PreRegistrationPhaseController implements EventUser {
         this.buttonEditPlayer.disableProperty().bind(
                 this.tablePreRegisteredPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
+
+        // register undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.registerUndoProperty(this.tablePreRegisteredPlayers.getItems());
+
+        undo.clearHistory();
     }
 
     @Override
@@ -169,6 +173,11 @@ public class PreRegistrationPhaseController implements EventUser {
         this.buttonRemovePlayer.disableProperty().unbind();
         this.buttonEditPlayer.disableProperty().unbind();
 
+        // unregister undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.unregisterUndoProperty(this.tablePreRegisteredPlayers.getItems());
+
         this.loadedEvent = null;
     }
 
@@ -177,18 +186,14 @@ public class PreRegistrationPhaseController implements EventUser {
         log.fine("Add Player Button clicked");
         this.checkEventLoaded();
         this.preRegistrationDialog
-                .properties(new Player())
-                .properties(this.loadedEvent)
-                .onResult(
-                        (result, returnValue) -> {
-                            if (result == DialogResult.OK
-                                    && returnValue != null) {
-                                returnValue.setId(IdentificationManager
-                                        .generateId(returnValue));
-                                this.loadedEvent.getRegisteredPlayers().add(
-                                        returnValue);
-                            }
-                        }).show();
+        .properties(new Player())
+        .properties(this.loadedEvent)
+        .onResult((result, returnValue) -> {
+            if (result == DialogResult.OK && returnValue != null) {
+                returnValue.setId(IdentificationManager.generateId(returnValue));
+                this.loadedEvent.getRegisteredPlayers().add(returnValue);
+            }
+        }).show();
     }
 
     @FXML
@@ -248,24 +253,24 @@ public class PreRegistrationPhaseController implements EventUser {
 
     /**
      * Open a dialog to edit the chosen player
-     * 
+     *
      * @param player
      *            Player to be edited
      */
     public void editPlayer(Player player) {
         this.preRegistrationDialog
-                .properties(player)
-                .properties(this.loadedEvent)
-                .onResult(
-                        (result, returnValue) -> {
-                            if (result == DialogResult.OK
-                                    && returnValue != null) {
-                                this.loadedEvent.getRegisteredPlayers().remove(
-                                        player);
-                                this.loadedEvent.getRegisteredPlayers().add(
-                                        returnValue);
-                            }
-                        }).show();
+        .properties(player)
+        .properties(this.loadedEvent)
+        .onResult((result, returnValue) -> {
+            if (result == DialogResult.OK  && returnValue != null) {
+                UndoManager undo = MainWindow.getInstance()
+                        .getEventPhaseViewController().getUndoManager();
+                undo.beginUndoBatch();
+                this.loadedEvent.getRegisteredPlayers().remove(player);
+                this.loadedEvent.getRegisteredPlayers().add(returnValue);
+                undo.endUndoBatch();
+            }
+        }).show();
     }
 
     private void checkEventLoaded() {
