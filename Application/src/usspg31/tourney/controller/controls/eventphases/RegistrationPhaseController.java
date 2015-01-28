@@ -185,13 +185,6 @@ public class RegistrationPhaseController implements EventUser {
             });
             return row;
         });
-
-        // register undo properties
-        UndoManager undo = MainWindow.getInstance()
-                .getEventPhaseViewController().getUndoManager();
-        undo.registerUndoProperty(this.loadedEvent.getRegisteredPlayers());
-
-        undo.clearHistory();
     }
 
     public void chooseRegistratorNumber(EventPhaseViewController superController) {
@@ -228,11 +221,6 @@ public class RegistrationPhaseController implements EventUser {
         /* Unbind the listeners added to the register and de-register buttons */
         this.buttonRegisterPlayer.setDisable(false);
         this.buttonUnregisterPlayer.setDisable(false);
-
-        // register undo properties
-        UndoManager undo = MainWindow.getInstance()
-                .getEventPhaseViewController().getUndoManager();
-        undo.unregisterUndoProperty(this.loadedEvent.getRegisteredPlayers());
 
         this.loadedEvent = null;
     }
@@ -394,7 +382,7 @@ public class RegistrationPhaseController implements EventUser {
      */
     public void editPlayer(Player player) {
         this.registrationDialog
-        .properties(player)
+        .properties(player.clone())
         .properties(this.loadedEvent)
         .onResult((result, returnValue) -> {
             if (result == DialogResult.OK && returnValue != null) {
@@ -402,8 +390,7 @@ public class RegistrationPhaseController implements EventUser {
                         .getEventPhaseViewController().getUndoManager();
                 undo.beginUndoBatch();
                 this.loadedEvent.getRegisteredPlayers().remove(player);
-                this.loadedEvent.getRegisteredPlayers().add(
-                        returnValue);
+                this.loadedEvent.getRegisteredPlayers().add(returnValue);
                 undo.endUndoBatch();
             }
         }).show();

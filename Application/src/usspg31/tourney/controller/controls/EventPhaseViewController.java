@@ -312,6 +312,11 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbPreRegistration.setDisable(true);
             this.breadcrumbRegistration.setDisable(true);
         }
+
+        // register undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.registerUndoProperty(this.loadedEvent.getRegisteredPlayers());
     }
 
     @Override
@@ -339,6 +344,13 @@ public class EventPhaseViewController implements EventUser {
         this.eventSetupPhaseController.unloadEvent();
         this.preRegistrationPhaseController.unloadEvent();
         this.registrationPhaseController.unloadEvent();
+
+        // unregister undo properties
+        UndoManager undo = MainWindow.getInstance()
+                .getEventPhaseViewController().getUndoManager();
+        undo.unregisterUndoProperty(this.loadedEvent.getRegisteredPlayers());
+
+        undo.clearHistory();
 
         this.loadedEvent = null;
     }

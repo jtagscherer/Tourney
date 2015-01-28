@@ -149,13 +149,6 @@ public class PreRegistrationPhaseController implements EventUser {
         this.buttonEditPlayer.disableProperty().bind(
                 this.tablePreRegisteredPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
-
-        // register undo properties
-        UndoManager undo = MainWindow.getInstance()
-                .getEventPhaseViewController().getUndoManager();
-        undo.registerUndoProperty(this.tablePreRegisteredPlayers.getItems());
-
-        undo.clearHistory();
     }
 
     @Override
@@ -172,11 +165,6 @@ public class PreRegistrationPhaseController implements EventUser {
         /* Unbind the buttons */
         this.buttonRemovePlayer.disableProperty().unbind();
         this.buttonEditPlayer.disableProperty().unbind();
-
-        // unregister undo properties
-        UndoManager undo = MainWindow.getInstance()
-                .getEventPhaseViewController().getUndoManager();
-        undo.unregisterUndoProperty(this.tablePreRegisteredPlayers.getItems());
 
         this.loadedEvent = null;
     }
