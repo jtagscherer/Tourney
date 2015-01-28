@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rule-template>
+    <meta>
+        <name>Android_Netrunner_Meisterschaft</name>
+        <description>Meisterschaftsmodus</description>
+    </meta>
+    <possible-scores>
+        <scoring priority="0">
+            <type>NORMAL</type>
+            <normal-bye>4</normal-bye>
+            <score>
+                <name>Niederlage</name>
+                <points>0</points>
+            </score>
+            <score>
+                <name>Unendschieden</name>
+                <points>1</points>
+            </score>
+            <score>
+                <name>Freilos-Gewinn</name>
+                <points>4</points>
+            </score>
+            <score>
+                <name>Gewinn</name>
+                <points>2</points>
+            </score>
+        </scoring>
+        <scoring priority="1">
+            <type>TABLE_STRENGTH</type>
+            <normal-bye>0</normal-bye>
+        </scoring>
+    </possible-scores>
+    <game-phases>
+        <game-phase>
+            <phase-number>0</phase-number>
+            <number-of-rounds>5</number-of-rounds>
+            <pairing-strategy>usspg31.tourney.model.pairingstrategies.SwissSystem</pairing-strategy>
+            <opponents-in-pairing>2</opponents-in-pairing>
+            <cutoff-number>16</cutoff-number>
+            <round-duration>PT1H5M</round-duration>
+        </game-phase>
+        <game-phase>
+            <phase-number>1</phase-number>
+            <number-of-rounds>15</number-of-rounds>
+            <pairing-strategy>usspg31.tourney.model.pairingstrategies.DoubleElimination</pairing-strategy>
+            <opponents-in-pairing>2</opponents-in-pairing>
+            <cutoff-number>0</cutoff-number>
+            <round-duration>PT35M</round-duration>
+        </game-phase>
+    </game-phases>
+</rule-template>

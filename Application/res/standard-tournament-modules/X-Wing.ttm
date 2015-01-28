@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rule-template>
+    <meta>
+        <name>X-Wing</name>
+        <description/>
+    </meta>
+    <possible-scores>
+        <scoring priority="0">
+            <type>NORMAL</type>
+            <normal-bye>5</normal-bye>
+            <score>
+                <name>Niederlage</name>
+                <points>0</points>
+            </score>
+            <score>
+                <name>Unentschieden</name>
+                <points>1</points>
+            </score>
+            <score>
+                <name>Sieg</name>
+                <points>5</points>
+            </score>
+            <score>
+                <name>Modifizierter Sieg</name>
+                <points>3</points>
+            </score>
+        </scoring>
+        <scoring priority="1">
+            <type>NORMAL</type>
+            <normal-bye>150</normal-bye>
+            <score>
+                <name>Sieg</name>
+                <points>150</points>
+            </score>
+        </scoring>
+        <scoring priority="2">
+            <type>TABLE_STRENGTH</type>
+            <normal-bye>0</normal-bye>
+        </scoring>
+    </possible-scores>
+    <game-phases>
+        <game-phase>
+            <phase-number>0</phase-number>
+            <number-of-rounds>5</number-of-rounds>
+            <pairing-strategy>usspg31.tourney.model.pairingstrategies.ModifiedSwissSystem</pairing-strategy>
+            <opponents-in-pairing>2</opponents-in-pairing>
+            <cutoff-number>0</cutoff-number>
+            <round-duration>PT1H15M</round-duration>
+        </game-phase>
+    </game-phases>
+</rule-template>
