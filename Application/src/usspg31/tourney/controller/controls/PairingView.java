@@ -2,7 +2,10 @@ package usspg31.tourney.controller.controls;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +28,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.CubicCurve;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
@@ -144,6 +149,7 @@ public class PairingView extends VBox implements TournamentUser {
                 this.setSelectedPhase(0);
             }
         }
+        this.refreshBreadcrumbs();
         this.updateOverview();
     }
 
@@ -198,7 +204,8 @@ public class PairingView extends VBox implements TournamentUser {
             this.addDoubleEliminationNodes();
         } else {
             this.pairingContainer.getChildren().add(new Label(
-                    PreferencesManager.getInstance().localizeString("pairingview.cantdisplayphase")));
+                    PreferencesManager.getInstance().localizeString(
+                            "pairingview.cantdisplayphase")));
         }
     }
 
@@ -229,6 +236,7 @@ public class PairingView extends VBox implements TournamentUser {
                         }
                         if (found != null) {
                             orderedPairings.add(found);
+                            unorderedPairings.remove(found);
                         }
                     }
                 }
@@ -240,11 +248,15 @@ public class PairingView extends VBox implements TournamentUser {
             }
         }
 
+        List<PairingNode> prevNodes = null;
+        List<PairingNode> nextNodes = null;
+
         NumberExpression maxX = new SimpleDoubleProperty(0.0);
         NumberExpression maxY = new SimpleDoubleProperty(0.0);
         for (List<Pairing> round : pairings) {
             NumberExpression currentMaxX = maxX;
 
+            nextNodes = new ArrayList<>();
             PairingNode previousNode = null;
             int pairingId = 1;
             for (Pairing pairing : round) {
@@ -260,44 +272,93 @@ public class PairingView extends VBox implements TournamentUser {
 
                 node.layoutXProperty().bind(currentMaxX);
                 container.getChildren().add(node);
+                nextNodes.add(node);
 
-                maxX = Bindings.max(maxX, node.layoutXProperty().add(node.widthProperty()));
+                maxX = Bindings.max(maxX, node.layoutXProperty().add(node.widthProperty()).add(50));
                 maxY = Bindings.max(maxY, node.layoutYProperty().add(node.heightProperty()));
                 previousNode = node;
             }
 
+            if (prevNodes != null && nextNodes.size() > 0) {
+                this.createConnections(prevNodes, nextNodes, container);
+            }
+            prevNodes = nextNodes;
+
             maxX.add(50);
         }
 
+        // FIXME: doesn't display scrollbars in the pairing container unless the
+        // application gets maximized and resized again
         container.minWidthProperty().bind(maxX.subtract(40));
-        container.maxWidthProperty().bind(container.minWidthProperty());
         container.minHeightProperty().bind(maxY);
-        container.maxHeightProperty().bind(container.minHeightProperty());
-
-/*
-        for (TournamentRound round : this.getAffectedTournamentRounds(
-                this.loadedTournament, this.getPhaseById(this.getSelectedPhase()))) {
-            int pairingId = 1;
-            PairingNode previousNode = null;
-            for (Pairing pairing : round.getPairings()) {
-                PairingNode pairingNode = new PairingNode(this.loadedTournament, pairing, pairingId++);
-
-                if (previousNode != null) {
-                    pairingNode.layoutYProperty()
-                    .bind(previousNode.layoutYProperty()
-                            .add(previousNode.heightProperty())
-                            .add(5));
-                }
-                previousNode = pairingNode;
-
-                container.getChildren().add(pairingNode);
-            }
-        }*/
-
-        // TODO: bind the minheight of the container to the bottommost pixel of the pairing nodes (+10)
 
         this.pairingContainer.getChildren().add(container);
         container.requestLayout();
+    }
+
+    private void createConnections(List<PairingNode> previousPairings,
+            List<PairingNode> nextPairings, Pane container) {
+        Map<PairingNode, List<PairingNode>> precedingNodes = new HashMap<>();
+
+        for (PairingNode prev : previousPairings) {
+            Pairing prevPairing = prev.getPairing();
+            for (Player prevPlayer : prevPairing.getOpponents()) {
+                for (PairingNode next : nextPairings) {
+                    List<PairingNode> predecessors = precedingNodes.get(next);
+                    if (predecessors == null) {
+                        predecessors = new ArrayList<>();
+                        precedingNodes.put(next, predecessors);
+                    }
+                    Pairing nextPairing = next.getPairing();
+                    if (nextPairing.getOpponents().contains(prevPlayer)) {
+                        predecessors.add(prev);
+                        this.createConnection(prev, prevPlayer, next, container);
+                        break;
+                    }
+                }
+            }
+        }
+
+        for (Entry<PairingNode, List<PairingNode>> entry : precedingNodes.entrySet()) {
+            NumberExpression averageY = new SimpleDoubleProperty(0);
+
+            for (PairingNode node : entry.getValue()) {
+                averageY = averageY.add(node.layoutYProperty().add(node.heightProperty().divide(2d)));
+            }
+
+            averageY = averageY.divide((double) entry.getValue().size());
+
+            entry.getKey().layoutYProperty().unbind();
+            entry.getKey().layoutYProperty().bind(averageY.subtract(entry.getKey().heightProperty().divide(2d)));
+        }
+    }
+
+    private void createConnection(PairingNode previousNode, Player previousPlayer, PairingNode nextNode, Pane container) {
+        CubicCurve curve = new CubicCurve();
+        curve.setFill(Color.TRANSPARENT);
+        curve.setStroke(Color.BLACK);
+        curve.setStartX(0);
+        curve.setStartY(0);
+        curve.controlX1Property().bind(curve.endXProperty());
+        curve.setControlY1(0);
+        curve.setControlX2(0);
+        curve.controlY2Property().bind(curve.endYProperty());
+        curve.layoutXProperty().bind(previousNode.layoutXProperty().add(previousNode.widthProperty()));
+        curve.layoutYProperty().bind(previousNode.layoutYProperty()
+                .add(previousNode.heightProperty()
+                        .multiply(previousNode.getPairing().getOpponents()
+                                .indexOf(previousPlayer) / previousNode
+                                .getPairing().getOpponents().size())
+                                .divide(2d)
+                                .add(previousNode.heightProperty()
+                                        .divide(4d))));
+        curve.endXProperty().bind(nextNode.layoutXProperty().subtract(curve.layoutXProperty()));
+        curve.endYProperty().bind(nextNode.layoutYProperty()
+                .add(nextNode.heightProperty()
+                        .divide(2d))
+                .subtract(curve.layoutYProperty()));
+
+        container.getChildren().add(curve);
     }
 
     private void addDoubleEliminationNodes() {
@@ -347,7 +408,7 @@ public class PairingView extends VBox implements TournamentUser {
         int phaseCount = this.loadedTournament.getRuleSet().getPhaseList().size();
 
         GamePhase currentPhase = PairingHelper.findPhase(
-                this.loadedTournament.getRounds().size(), this.loadedTournament);
+                this.loadedTournament.getRounds().size() - 1, this.loadedTournament);
         int maxPhaseIndex = currentPhase.getPhaseNumber();
 
         for (int phaseNumber = 0; phaseNumber < phaseCount; phaseNumber++) {

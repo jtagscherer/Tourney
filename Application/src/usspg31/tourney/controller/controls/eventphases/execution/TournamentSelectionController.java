@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -80,12 +81,12 @@ public class TournamentSelectionController implements EventUser {
                             super.updateItem(item, empty);
                             if (item != null) {
                                 if (item.size() == 0) {
-                                    setText(PreferencesManager
+                                    this.setText(PreferencesManager
                                             .getInstance()
                                             .localizeString(
                                                     "tournamentselection.tournamentstatus.notexecuted"));
                                 } else {
-                                    setText(PreferencesManager
+                                    this.setText(PreferencesManager
                                             .getInstance()
                                             .localizeString(
                                                     "tournamentselection.tournamentstatus.executed"));
@@ -100,6 +101,17 @@ public class TournamentSelectionController implements EventUser {
         this.tableTournaments
                 .setPlaceholder(new Text(PreferencesManager.getInstance()
                         .localizeString("tableplaceholder.notournaments")));
+
+        // start the selected tournament when double-clicked
+        this.tableTournaments.setRowFactory(tableView -> {
+            TableRow<Tournament> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    this.onButtonExecuteTournamentClicked(null);
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -112,16 +124,11 @@ public class TournamentSelectionController implements EventUser {
         this.loadedEvent = event;
 
         /* Add all tournaments to the table view and enable searching */
-        Comparator<Tournament> comparator = new Comparator<Tournament>() {
-            @Override
-            public int compare(Tournament firstTournament, Tournament lastPlayer) {
-                return (int) (SearchUtilities.getSearchRelevance(
-                        firstTournament.getName(),
-                        textFieldTournamentSearch.getText()) - SearchUtilities
-                        .getSearchRelevance(lastPlayer.getName(),
-                                textFieldTournamentSearch.getText()));
-            }
-        };
+        Comparator<Tournament> comparator = (firstTournament, lastPlayer) -> (int) (SearchUtilities.getSearchRelevance(
+                firstTournament.getName(),
+                TournamentSelectionController.this.textFieldTournamentSearch.getText()) - SearchUtilities
+                .getSearchRelevance(lastPlayer.getName(),
+                        TournamentSelectionController.this.textFieldTournamentSearch.getText()));
 
         this.textFieldTournamentSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {

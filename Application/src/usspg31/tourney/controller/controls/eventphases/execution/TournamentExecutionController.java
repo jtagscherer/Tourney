@@ -169,10 +169,14 @@ public class TournamentExecutionController implements TournamentUser {
                     }
                 }
                 this.pairingView.updateOverview();
+                this.checkRoundFinished();
             }
         })
         .show();
+    }
 
+    private void checkRoundFinished() {
+        // FIXME: this method does return true even though we didn't fill out all pairings
         // check, if all pairings have a score
         boolean roundFinished = true;
         roundFinishCheck:
