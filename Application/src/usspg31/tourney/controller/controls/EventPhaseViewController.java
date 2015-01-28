@@ -11,6 +11,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -127,8 +128,13 @@ public class EventPhaseViewController implements EventUser {
         this.buttonRedo.disableProperty().bind(
                 this.undoManager.redoAvailableProperty().not());
 
-        this.buttonSave.disableProperty().bind(
-                this.undoManager.undoAvailableProperty().not());
+        ChangeListener<Boolean> saveAvailableListener = (ov, o, n) -> {
+            if (n) {
+                this.buttonSave.setDisable(false);
+            }
+        };
+        this.undoManager.undoAvailableProperty().addListener(saveAvailableListener);
+        this.undoManager.redoAvailableProperty().addListener(saveAvailableListener);
     }
 
     private void loadSubViews() throws IOException {
@@ -280,11 +286,6 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbRegistration
                     .setStyle(EventPhaseViewController.breadCrumbInactive);
 
-            // TODO: Remove these lines after the undo manager works in this
-            // view
-            this.buttonSave.disableProperty().unbind();
-            this.buttonSave.setDisable(false);
-
             this.phasePosition.set(2);
             this.breadcrumbEventSetup.setDisable(true);
             this.breadcrumbPreRegistration.setDisable(true);
@@ -296,11 +297,6 @@ public class EventPhaseViewController implements EventUser {
             this.tournamentExecutionPhaseController.loadEvent(event);
             this.breadcrumbTournamentExecution
                     .setStyle(EventPhaseViewController.breadCrumbInactive);
-
-            // TODO: Remove these lines after the undo manager works in this
-            // view
-            this.buttonSave.disableProperty().unbind();
-            this.buttonSave.setDisable(false);
 
             this.phasePosition.set(3);
 
@@ -439,10 +435,19 @@ public class EventPhaseViewController implements EventUser {
         this.undoManager.redo();
     }
 
+    public void activateSaveButton() {
+        this.buttonSave.setDisable(false);
+    }
+
+    public boolean saveAvailable() {
+        return !this.buttonSave.isDisabled();
+    }
+
     @FXML
     private void onButtonSaveClicked(ActionEvent event) {
         log.fine("Save Button was clicked");
         this.saveEvent();
+        this.buttonSave.setDisable(true);
     }
 
     @FXML
@@ -609,6 +614,8 @@ public class EventPhaseViewController implements EventUser {
         if (phase == this.loadedEvent.getEventPhase()) {
             return;
         }
+
+        this.saveAvailable();
 
         // clear the history of the undoManager
         this.undoManager.clearHistory();

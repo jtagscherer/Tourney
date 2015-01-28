@@ -28,7 +28,7 @@
 					<Tooltip text="%eventphaseview.closeevent" />
 				</tooltip>
 			</Button>
-			<Button fx:id="buttonSave" styleClass="menu-button" onAction="#onButtonSaveClicked">
+			<Button fx:id="buttonSave" styleClass="menu-button" onAction="#onButtonSaveClicked" disable="true">
 				<graphic>
 					<IconPane styleClass="icon-save, half" />
 				</graphic>

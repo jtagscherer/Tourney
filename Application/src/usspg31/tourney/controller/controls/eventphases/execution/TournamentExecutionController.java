@@ -182,6 +182,8 @@ public class TournamentExecutionController implements TournamentUser {
                 }
                 this.pairingView.updateOverview();
                 this.checkRoundFinished();
+
+                MainWindow.getInstance().getEventPhaseViewController().activateSaveButton();
             }
         })
         .show();

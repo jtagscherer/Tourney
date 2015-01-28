@@ -102,8 +102,7 @@ public class EntryPoint extends Application {
     }
 
     private void requestSaveBeforeClose() {
-        if (MainWindow.getInstance().getEventPhaseViewController()
-                .getUndoManager().undoAvailable()) {
+        if (MainWindow.getInstance().getEventPhaseViewController().saveAvailable()) {
             EntryPoint.this.closeRequested = true;
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "dialogs.messages.unsavedchanges"))
