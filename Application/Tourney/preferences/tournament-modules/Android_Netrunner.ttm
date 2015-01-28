@@ -9,7 +9,15 @@
             <type>NORMAL</type>
             <normal-bye>4</normal-bye>
             <score>
+<<<<<<< HEAD
                 <name>Unendschieden</name>
+=======
+                <name>Freilos-Punkte</name>
+                <points>4</points>
+            </score>
+            <score>
+                <name>Unentschieden</name>
+>>>>>>> branch 'master' of https://Novanoid@bitbucket.org/usspg31/tourney.git
                 <points>1</points>
             </score>
             <score>
