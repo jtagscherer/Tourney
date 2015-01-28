@@ -203,8 +203,6 @@ public class TournamentExecutionController implements TournamentUser {
             return;
         }
 
-        // FIXME: this method does return true even though we didn't fill out all pairings
-        // check, if all pairings have a score
         boolean roundFinished = true;
         roundFinishCheck:
         for (Pairing pairing : this.loadedTournament.getRounds().get(
