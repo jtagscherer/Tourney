@@ -47,6 +47,8 @@ public class PDFDocument {
     Document document;
     Event event;
 
+    private int chapterNumber = 1;
+
     /**
      * Create a new PDF document
      * 
@@ -251,6 +253,81 @@ public class PDFDocument {
     }
 
     /**
+     * Add all registered players to the document
+     * 
+     * @throws DocumentException
+     *             When the data can not be added to the document
+     */
+    public void addRegisteredPlayers() throws DocumentException {
+        /* Add a section for the players */
+        Anchor playerAnchor = new Anchor(PreferencesManager.getInstance()
+                .localizeString("pdfoutput.players.title"),
+                PDFExporter.BIG_HEADER_FONT);
+        playerAnchor.setName(PreferencesManager.getInstance().localizeString(
+                "pdfoutput.players.title"));
+        Chapter playerChapter = new Chapter(new Paragraph(playerAnchor),
+                this.chapterNumber);
+        playerChapter.add(Chunk.NEWLINE);
+
+        for (Player player : this.event.getRegisteredPlayers()) {
+            String[][] playerAttributes = {
+                    { "Name",
+                            player.getFirstName() + " " + player.getLastName() },
+                    { "Nickname", player.getNickName() },
+                    { "Mail", player.getMailAddress() },
+                    { "Starting number", player.getStartingNumber() } };
+
+            for (String[] attribute : playerAttributes) {
+                if (attribute[1].equals("")) {
+                    if (attribute[0].equals("Starting number")) {
+                        playerChapter.add(new Paragraph(PreferencesManager
+                                .getInstance().localizeString(
+                                        "pdfoutput.players.nostartingnumber"),
+                                PDFExporter.TEXT_FONT));
+                    } else if (attribute[0].equals("Name")) {
+                        playerChapter.add(new Paragraph(PreferencesManager
+                                .getInstance().localizeString(
+                                        "pdfoutput.players.noname"),
+                                PDFExporter.SMALL_BOLD));
+                    }
+                } else {
+                    if (attribute[0].equals("Name")) {
+                        playerChapter.add(new Paragraph(attribute[1],
+                                PDFExporter.SMALL_BOLD));
+                    } else {
+                        playerChapter.add(new Paragraph(attribute[1],
+                                PDFExporter.TEXT_FONT));
+                    }
+                }
+            }
+
+            if (player.hasPayed()) {
+                playerChapter.add(new Paragraph(PreferencesManager
+                        .getInstance().localizeString(
+                                "pdfoutput.players.payed.true"),
+                        PDFExporter.TEXT_FONT));
+            } else {
+                playerChapter.add(new Paragraph(PreferencesManager
+                        .getInstance().localizeString(
+                                "pdfoutput.players.payed.false"),
+                        PDFExporter.TEXT_FONT));
+            }
+
+            if (player.isDisqualified()) {
+                playerChapter.add(new Paragraph(PreferencesManager
+                        .getInstance().localizeString(
+                                "pdfoutput.players.disqualified.true"),
+                        PDFExporter.TEXT_FONT));
+            }
+
+            playerChapter.add(Chunk.NEWLINE);
+        }
+
+        this.chapterNumber++;
+        this.document.add(playerChapter);
+    }
+
+    /**
      * Add all tournaments to the document including their score tables and
      * tournament histories
      * 
@@ -268,7 +345,7 @@ public class PDFDocument {
                     PDFExporter.BIG_HEADER_FONT);
             tournamentAnchor.setName(tournament.getName());
             Chapter tournamentChapter = new Chapter(new Paragraph(
-                    tournamentAnchor), tournamentNumber + 1);
+                    tournamentAnchor), this.chapterNumber);
             tournamentChapter.add(Chunk.NEWLINE);
 
             /* Add a subsection for the tournament administrators */
@@ -377,6 +454,7 @@ public class PDFDocument {
 
             historyChapter.add(tournamentHistory);
 
+            this.chapterNumber++;
             this.document.add(tournamentChapter);
         }
     }
