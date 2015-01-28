@@ -132,7 +132,6 @@ public class PossibleScoring implements Cloneable {
             Map.Entry<?, ?> pairs = (Map.Entry<?, ?>) iterator.next();
             clone.getScores().put((String) pairs.getKey(),
                     (Integer) pairs.getValue());
-            iterator.remove();
         }
 
         return clone;
