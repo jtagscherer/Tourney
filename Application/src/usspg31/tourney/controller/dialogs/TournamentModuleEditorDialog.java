@@ -30,7 +30,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
-import usspg31.tourney.controller.util.MapToStringBinding;
+import usspg31.tourney.controller.util.ScoringToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.TournamentModule;
@@ -119,7 +119,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                 this.tableColumnPhasesPhaseNumber);
 
         this.tableColumnPhasesPairingMethod = new TableColumn<>(
-                "Paarungsmethode");
+                PreferencesManager.getInstance().localizeString(
+                        "dialogs.tournamentmodule.pairingmethod"));
         this.tableColumnPhasesPairingMethod.cellValueFactoryProperty().set(
                 cellData -> new SimpleStringProperty(cellData.getValue()
                         .getPairingMethod().getName()));
@@ -207,6 +208,12 @@ public class TournamentModuleEditorDialog extends SplitPane implements
                 cellData -> new SimpleStringProperty(""));
         this.tablePossibleScores.getColumns().add(
                 this.tableColumnPossibleScoresScores);
+        // this.tableColumnPossibleScoresScores
+        // .setCellValueFactory(cellValue -> new MapToStringBinding<>(
+        // cellValue.getValue().getScores()).getStringProperty());
+        this.tableColumnPossibleScoresScores
+                .setCellValueFactory(cellValue -> new ScoringToStringBinding(
+                        cellValue.getValue()));
 
         /* Edit the possible score on double click */
         this.tablePossibleScores.setRowFactory(tableView -> {
@@ -336,9 +343,6 @@ public class TournamentModuleEditorDialog extends SplitPane implements
 
         // TODO: add bindings for the possible score table's buttons (see
         // TournamentDialog#loadTournament())
-        this.tableColumnPossibleScoresScores
-                .setCellValueFactory(cellValue -> new MapToStringBinding<>(
-                        cellValue.getValue().getScores()).getStringProperty());
     }
 
     private void unbindTournamentPhaseButtons() {
