@@ -241,6 +241,7 @@ public class UndoManager {
      */
     public <T> void unregisterUndoProperty(Property<T> property) {
         property.removeListener(this::propertyChangeListener);
+        this.autoBatchingProperties.remove(property);
     }
 
     /**
@@ -278,6 +279,7 @@ public class UndoManager {
      */
     public <T> void unregisterUndoProperty(ObservableList<T> list) {
         list.removeListener(this::listChangeListener);
+        this.autoBatchingProperties.remove(list);
     }
 
     /**
