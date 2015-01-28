@@ -192,6 +192,17 @@ public class TournamentExecutionController implements TournamentUser {
     }
 
     private void checkRoundFinished() {
+        int totalRoundCount = 0;
+        for (GamePhase phase : this.loadedTournament.getRuleSet().getPhaseList()) {
+            totalRoundCount += phase.getRoundCount();
+        }
+
+        // have we reached the last available round?
+        if (this.pairingView.getSelectedRound() >= totalRoundCount - 1) {
+            this.buttonStartRound.setDisable(true);
+            return;
+        }
+
         // FIXME: this method does return true even though we didn't fill out all pairings
         // check, if all pairings have a score
         boolean roundFinished = true;
@@ -199,6 +210,10 @@ public class TournamentExecutionController implements TournamentUser {
         for (Pairing pairing : this.loadedTournament.getRounds().get(
                 this.pairingView.getSelectedRound()).getPairings()) {
             for (PlayerScore playerScore : pairing.getScoreTable()) {
+                if (playerScore.getScore().size() < this.loadedTournament.getRuleSet().getPossibleScores().size()) {
+                    roundFinished = false;
+                    break roundFinishCheck;
+                }
                 for (Integer score : playerScore.getScore()) {
                     if (score == null) {
                         roundFinished = false;
