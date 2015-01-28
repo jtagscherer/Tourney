@@ -28,7 +28,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
-import usspg31.tourney.controller.util.MapToStringBinding;
+import usspg31.tourney.controller.util.ScoringToStringBinding;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
@@ -270,8 +270,8 @@ public class TournamentDialog extends VBox implements
         this.tableColumnPossibleScoresScores = new TableColumn<>(
                 preferences.localizeString("dialogs.tournament.scores"));
         this.tableColumnPossibleScoresScores
-                .setCellValueFactory(cellData -> new MapToStringBinding<>(
-                        cellData.getValue().getScores()).getStringProperty());
+                .setCellValueFactory(cellData -> new ScoringToStringBinding(
+                        cellData.getValue()));
         this.tablePossibleScores.getColumns().add(
                 this.tableColumnPossibleScoresScores);
 
