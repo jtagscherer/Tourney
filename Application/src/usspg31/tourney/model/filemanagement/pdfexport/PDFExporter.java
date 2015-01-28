@@ -62,6 +62,7 @@ public class PDFExporter {
         document.addTitlePage();
         document.addWatermark(writer);
         document.newPage();
+        document.addRegisteredPlayers();
         document.addTournaments();
         document.close();
     }
