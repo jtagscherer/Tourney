@@ -299,6 +299,8 @@ public class RegistrationPhaseController implements EventUser {
                         } else {
                             this.setText(item);
                         }
+                    } else {
+                        this.setText("");
                     }
                 }
             };
