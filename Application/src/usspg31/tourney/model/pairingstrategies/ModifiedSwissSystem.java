@@ -186,7 +186,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                                         .getScoreTable()
                                         .get(0)
                                         .getScore()
-                                        .set(byeScore.getPriority(),
+                                        .add(byeScore.getPriority(),
                                                 byeScore.getByeValue());
                             }
 
