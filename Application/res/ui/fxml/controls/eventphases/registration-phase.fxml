@@ -70,6 +70,15 @@
 							<Tooltip text="%registrationphase.unregisterplayer" />
 						</tooltip>
 					</Button>
+					<Button fx:id="buttonRegisterAllPlayers" styleClass="table-edit-button"
+						onAction="#onButtonRegisterAllPlayersClicked">
+						<graphic>
+							<IconPane styleClass="icon-register-all, half" />
+						</graphic>
+						<tooltip>
+							<Tooltip text="%registrationphase.registerallplayers" />
+						</tooltip>
+					</Button>
 				</VBox>
 				<VBox alignment="BOTTOM_LEFT" spacing="5.0" styleClass="distribution-button-container" VBox.vgrow="ALWAYS">
  					<Button fx:id="buttonDistributeRegistration" styleClass="distribution-button"
