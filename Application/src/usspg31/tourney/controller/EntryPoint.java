@@ -84,7 +84,7 @@ public class EntryPoint extends Application {
                     return;
                 }
                 UndoManager undoManager = MainWindow.getInstance()
-                        .getEventPhaseViewController().getActiveUndoManager();
+                        .getEventPhaseViewController().getUndoManager();
                 if (undoManager != null && !EntryPoint.this.closeRequested) {
                     this.requestSaveBeforeClose();
                 } else {
@@ -103,7 +103,7 @@ public class EntryPoint extends Application {
 
     private void requestSaveBeforeClose() {
         if (MainWindow.getInstance().getEventPhaseViewController()
-                .getActiveUndoManager().undoAvailable()) {
+                .getUndoManager().undoAvailable()) {
             EntryPoint.this.closeRequested = true;
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "dialogs.messages.unsavedchanges"))
