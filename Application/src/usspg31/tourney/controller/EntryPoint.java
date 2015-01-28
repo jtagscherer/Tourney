@@ -19,6 +19,8 @@ public class EntryPoint extends Application {
             .getName());
 
     private static Stage primaryStage;
+    private static boolean applicationLocked;
+
     private boolean closeRequested;
 
     public static void main(String[] args) {
@@ -33,6 +35,16 @@ public class EntryPoint extends Application {
                                 // us
             log.log(Level.SEVERE, t.getMessage(), t);
         }
+
+
+        applicationLocked = false;
+    }
+
+    public static void lockApplication() {
+        applicationLocked = true;
+    }
+    public static void unlockApplication() {
+        applicationLocked = false;
     }
 
     public static Stage getPrimaryStage() {
@@ -67,6 +79,10 @@ public class EntryPoint extends Application {
             Platform.setImplicitExit(false);
             primaryStage.setOnCloseRequest(event -> {
                 event.consume();
+                // surpress the close request when the application is locked
+                if (applicationLocked) {
+                    return;
+                }
                 UndoManager undoManager = MainWindow.getInstance()
                         .getEventPhaseViewController().getActiveUndoManager();
                 if (undoManager != null && !EntryPoint.this.closeRequested) {

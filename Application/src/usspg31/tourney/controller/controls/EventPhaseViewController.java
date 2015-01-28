@@ -418,17 +418,13 @@ public class EventPhaseViewController implements EventUser {
     @FXML
     private void onButtonUndoClicked(ActionEvent event) {
         log.fine("Undo Button was clicked");
-        if (this.undoManager != null) {
-            this.undoManager.undo();
-        }
+        this.undoManager.undo();
     }
 
     @FXML
     private void onButtonRedoClicked(ActionEvent event) {
         log.fine("Redo Button was clicked");
-        if (this.undoManager != null) {
-            this.undoManager.redo();
-        }
+        this.undoManager.redo();
     }
 
     @FXML
@@ -475,7 +471,11 @@ public class EventPhaseViewController implements EventUser {
     private void onButtonLockClicked(ActionEvent event) {
         log.fine("Lock Button was clicked");
 
-        this.passwordDialog.show();
+        EntryPoint.lockApplication();
+        this.passwordDialog
+        .onResult((result, value) -> {
+            EntryPoint.unlockApplication();
+        }).show();
     }
 
     @FXML
