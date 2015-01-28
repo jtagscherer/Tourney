@@ -370,7 +370,7 @@ public class TournamentDialog extends VBox implements
             this.unloadTournament();
         }
 
-        this.loadedTournament = tournament;
+        this.loadedTournament = (Tournament) tournament.clone();
         this.textFieldTournamentTitle.textProperty().bindBidirectional(
                 this.loadedTournament.nameProperty());
 
