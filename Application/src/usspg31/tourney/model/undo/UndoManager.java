@@ -78,7 +78,6 @@ public class UndoManager {
 
         this.autoBatchingCancelTimer = new Timeline(
                 new KeyFrame(Duration.millis(1000), event -> {
-                    System.out.println("Cancel Timer terminated");
                     if (this.undoBatch != null && this.undoBatch instanceof AutoUndoBatch) {
                         this.endUndoBatch();
                     }
@@ -112,7 +111,6 @@ public class UndoManager {
      * Ends a previously started collection of undo actions.
      */
     public void endUndoBatch() {
-        System.out.println("timer stop");
         this.autoBatchingCancelTimer.stop();
         this.undoBatch = null;
     }
@@ -294,7 +292,6 @@ public class UndoManager {
                 if (autoUndo.getObservable() == undoAction.getObservable()) {
                     autoUndo.addUndoAction(undoAction);
                     // reset the autoBatching cancel timer
-                    System.out.println("timer reset");
                     this.autoBatchingCancelTimer.playFromStart();
                 } else {
                     this.endUndoBatch();
@@ -321,7 +318,6 @@ public class UndoManager {
                 this.undoBatch = autoUndo;
                 this.currentNode.setNext(new UndoNode(this.currentNode, autoUndo));
                 this.currentNode = this.currentNode.getNext();
-                System.out.println("timer reset");
                 this.autoBatchingCancelTimer.playFromStart();
             } else {
                 // we don't have an auto undo observable here
