@@ -17,7 +17,7 @@
 	<VBox spacing="10.0">
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<VBox HBox.hgrow="ALWAYS">
-				<Label styleClass="sub-heading" text="Angemeldete Spieler" />
+				<Label styleClass="sub-heading" text="%dialogs.attendancedialog.registeredplayers" />
 				<TableView fx:id="tableRegisteredPlayers" maxHeight="1.7976931348623157E308"
 					maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 			</VBox>
@@ -38,7 +38,7 @@
 				<Pane VBox.vgrow="ALWAYS" />
 			</VBox>
 			<VBox HBox.hgrow="ALWAYS">
-				<Label styleClass="sub-heading" text="Anwesende Spieler" />
+				<Label styleClass="sub-heading" text="%dialogs.attendancedialog.attendantplayers" />
 				<TableView fx:id="tableAttendingPlayers" maxHeight="1.7976931348623157E308"
 					maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 			</VBox>

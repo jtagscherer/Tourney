@@ -37,7 +37,9 @@ public class AttendanceDialog extends VBox implements
     public AttendanceDialog() {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-                    "/ui/fxml/dialogs/attendance-dialog.fxml"));
+                    "/ui/fxml/dialogs/attendance-dialog.fxml"),
+                    PreferencesManager.getInstance().getSelectedLanguage()
+                            .getLanguageBundle());
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
@@ -63,8 +65,10 @@ public class AttendanceDialog extends VBox implements
                     .concat(cellValue.getValue().lastNameProperty());
         });
 
-        this.tableRegisteredPlayers.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        this.tableAttendingPlayers.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        this.tableRegisteredPlayers.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE);
+        this.tableAttendingPlayers.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE);
 
         this.tableAttendingPlayers.getColumns().add(attendingPlayerNameColumn);
         this.tableRegisteredPlayers.getColumns()
@@ -137,7 +141,8 @@ public class AttendanceDialog extends VBox implements
     @FXML
     private void onButtonAddAttendeeClicked(ActionEvent event) {
         List<Player> selectedPlayers = new ArrayList<>(
-                this.tableRegisteredPlayers.getSelectionModel().getSelectedItems());
+                this.tableRegisteredPlayers.getSelectionModel()
+                        .getSelectedItems());
 
         while (selectedPlayers.size() > 0) {
             Player p = selectedPlayers.remove(0);
@@ -149,7 +154,8 @@ public class AttendanceDialog extends VBox implements
     @FXML
     private void onButtonRemoveAttendeeClicked(ActionEvent event) {
         List<Player> selectedPlayers = new ArrayList<>(
-                this.tableAttendingPlayers.getSelectionModel().getSelectedItems());
+                this.tableAttendingPlayers.getSelectionModel()
+                        .getSelectedItems());
 
         while (selectedPlayers.size() > 0) {
             Player p = selectedPlayers.remove(0);

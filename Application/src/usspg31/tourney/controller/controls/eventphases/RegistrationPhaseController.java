@@ -280,7 +280,8 @@ public class RegistrationPhaseController implements EventUser {
                 this.tableColumnPlayerPayed);
 
         this.tableColumnPlayerStartNumber = new TableColumn<Player, String>(
-                "Startnummer");
+                PreferencesManager.getInstance().localizeString(
+                        "registrationphase.player.startingnumber"));
         this.tableColumnPlayerStartNumber
                 .setCellValueFactory(cellData -> cellData.getValue()
                         .startingNumberProperty());
