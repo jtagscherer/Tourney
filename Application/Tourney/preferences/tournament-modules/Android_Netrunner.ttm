@@ -9,10 +9,6 @@
             <type>NORMAL</type>
             <normal-bye>4</normal-bye>
             <score>
-                <name>Freilos-Punkte</name>
-                <points>4</points>
-            </score>
-            <score>
                 <name>Unendschieden</name>
                 <points>1</points>
             </score>
