@@ -3,9 +3,11 @@ package usspg31.tourney.controller.controls;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +22,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener.Change;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -210,19 +213,83 @@ public class PairingView extends VBox implements TournamentUser {
     }
 
     private void addSingleEliminationNodes() {
-        Pane container = new Pane();
+        //Pane container = new Pane();
 
         List<List<Pairing>> pairings = new ArrayList<>();
 
         List<TournamentRound> rounds = this.getAffectedTournamentRounds(
                 this.loadedTournament, this.getPhaseById(this.getSelectedPhase()));
 
-        for (int i = rounds.size() - 1; i >= 0; i--) {
+        List<List<Pairing>> unsortedPairings = new ArrayList<>();
+        for (TournamentRound round : rounds) {
+            unsortedPairings.add(round.getPairings());
+        }
+
+        pairings = this.sortPairings(unsortedPairings);
+
+        Pane container = new Pane();
+        container.getChildren().addAll(this.generatePairingNodes(pairings,
+                new SimpleDoubleProperty(0), new SimpleDoubleProperty(0)));
+
+        this.pairingContainer.getChildren().add(container);
+    }
+
+
+    private List<Node> generatePairingNodes(List<List<Pairing>> pairings, NumberExpression xMin, NumberExpression yMin) {
+        List<Node> nodes = new ArrayList<>();
+
+        List<PairingNode> prevNodes = null;
+        List<PairingNode> nextNodes = null;
+
+        NumberExpression maxX = xMin;
+        NumberExpression maxY = yMin;
+
+        for (List<Pairing> round : pairings) {
+            NumberExpression currentMaxX = maxX;
+
+            nextNodes = new ArrayList<>();
+            PairingNode prevNode = null;
+            int pairingId = 0;
+            for (Pairing pairing : round) {
+                PairingNode node = new PairingNode(this.loadedTournament, pairing, pairingId++);
+
+                if (prevNode == null) {
+                    node.layoutYProperty().bind(yMin);
+                } else {
+                    node.layoutYProperty().bind(prevNode.layoutYProperty()
+                            .add(prevNode.heightProperty())
+                            .add(10));
+                }
+
+                node.layoutXProperty().bind(currentMaxX);
+                nodes.add(node);
+                nextNodes.add(node);
+
+                maxX = Bindings.max(maxX, node.layoutXProperty().add(node.widthProperty()).add(50));
+                maxY = Bindings.max(maxY,  node.layoutYProperty().add(node.heightProperty()));
+                prevNode = node;
+            }
+
+            if (prevNodes != null && nextNodes.size() > 0) {
+                this.createConnections(prevNodes, nextNodes, nodes);
+            }
+            prevNodes = nextNodes;
+
+            maxX.add(50);
+        }
+
+        return nodes;
+    }
+
+    private List<List<Pairing>> sortPairings(List<List<Pairing>> unsortedPairings) {
+        List<List<Pairing>> sortedPairings = new ArrayList<>();
+
+        for (int i = unsortedPairings.size() - 1; i >= 0; i--) {
             // sort the pairings in the current round according to the pairings
             // in the next round
-            if (i < rounds.size() - 1) {
-                List<Pairing> pairingsInPreviousRound = rounds.get(i + 1).getPairings();
-                List<Pairing> unorderedPairings = new ArrayList<>(rounds.get(i).getPairings());
+            if (i < unsortedPairings.size() - 1) {
+                List<Pairing> pairingsInPreviousRound = unsortedPairings.get(i + 1);
+                List<Pairing> unorderedPairings = new ArrayList<>(unsortedPairings.get(i));
                 List<Pairing> orderedPairings = new ArrayList<>();
 
                 for (Pairing previousPairing : pairingsInPreviousRound) {
@@ -242,62 +309,17 @@ public class PairingView extends VBox implements TournamentUser {
                 }
                 // add pairings that aren't currently in the final list
                 orderedPairings.addAll(unorderedPairings);
-                pairings.add(0, orderedPairings);
+                sortedPairings.add(0, orderedPairings);
             } else {
-                pairings.add(rounds.get(i).getPairings());
+                sortedPairings.add(unsortedPairings.get(i));
             }
         }
 
-        List<PairingNode> prevNodes = null;
-        List<PairingNode> nextNodes = null;
-
-        NumberExpression maxX = new SimpleDoubleProperty(0.0);
-        NumberExpression maxY = new SimpleDoubleProperty(0.0);
-        for (List<Pairing> round : pairings) {
-            NumberExpression currentMaxX = maxX;
-
-            nextNodes = new ArrayList<>();
-            PairingNode previousNode = null;
-            int pairingId = 1;
-            for (Pairing pairing : round) {
-                PairingNode node = new PairingNode(this.loadedTournament, pairing, pairingId++);
-
-                if (previousNode == null) {
-                    node.setLayoutY(0);
-                } else {
-                    node.layoutYProperty().bind(previousNode.layoutYProperty()
-                            .add(previousNode.heightProperty())
-                            .add(5));
-                }
-
-                node.layoutXProperty().bind(currentMaxX);
-                container.getChildren().add(node);
-                nextNodes.add(node);
-
-                maxX = Bindings.max(maxX, node.layoutXProperty().add(node.widthProperty()).add(50));
-                maxY = Bindings.max(maxY, node.layoutYProperty().add(node.heightProperty()));
-                previousNode = node;
-            }
-
-            if (prevNodes != null && nextNodes.size() > 0) {
-                this.createConnections(prevNodes, nextNodes, container);
-            }
-            prevNodes = nextNodes;
-
-            maxX.add(50);
-        }
-
-        // FIXME: doesn't display scrollbars in the pairing container unless the
-        // application gets maximized and resized again
-        container.minWidthProperty().bind(maxX.subtract(40));
-        container.minHeightProperty().bind(maxY);
-
-        this.pairingContainer.getChildren().add(container);
-        container.requestLayout();
+        return sortedPairings;
     }
 
     private void createConnections(List<PairingNode> previousPairings,
-            List<PairingNode> nextPairings, Pane container) {
+            List<PairingNode> nextPairings, List<Node> nodes) {
         Map<PairingNode, List<PairingNode>> precedingNodes = new HashMap<>();
 
         for (PairingNode prev : previousPairings) {
@@ -312,7 +334,7 @@ public class PairingView extends VBox implements TournamentUser {
                     Pairing nextPairing = next.getPairing();
                     if (nextPairing.getOpponents().contains(prevPlayer)) {
                         predecessors.add(prev);
-                        this.createConnection(prev, prevPlayer, next, container);
+                        this.createConnection(prev, prevPlayer, next, nodes);
                         break;
                     }
                 }
@@ -333,7 +355,7 @@ public class PairingView extends VBox implements TournamentUser {
         }
     }
 
-    private void createConnection(PairingNode previousNode, Player previousPlayer, PairingNode nextNode, Pane container) {
+    private void createConnection(PairingNode previousNode, Player previousPlayer, PairingNode nextNode, List<Node> nodes) {
         CubicCurve curve = new CubicCurve();
         curve.setFill(Color.TRANSPARENT);
         curve.setStroke(Color.BLACK);
@@ -351,18 +373,80 @@ public class PairingView extends VBox implements TournamentUser {
                                 .getPairing().getOpponents().size())
                                 .divide(2d)
                                 .add(previousNode.heightProperty()
-                                        .divide(4d))));
+                                        .divide(2d))));
         curve.endXProperty().bind(nextNode.layoutXProperty().subtract(curve.layoutXProperty()));
         curve.endYProperty().bind(nextNode.layoutYProperty()
                 .add(nextNode.heightProperty()
                         .divide(2d))
                 .subtract(curve.layoutYProperty()));
 
-        container.getChildren().add(curve);
+        nodes.add(curve);
     }
 
     private void addDoubleEliminationNodes() {
-        this.pairingContainer.getChildren().add(new Label("NOT YET IMPLEMENTED (coming soon™)"));
+        Pane container = new Pane();
+
+        List<List<Pairing>> winnerBracket = new ArrayList<>();
+        List<List<Pairing>> loserBracket = new ArrayList<>();
+
+        List<TournamentRound> rounds = this.getAffectedTournamentRounds(
+                this.loadedTournament, this.getPhaseById(this.getSelectedPhase()));
+
+        Set<Player> previousWinners = new HashSet<>();
+        Set<Player> previousLosers = new HashSet<>();
+
+        previousWinners.addAll(this.loadedTournament.getAttendingPlayers());
+
+        // sort all pairings into winner and loser brackets, according to their
+        // preceding pairing results
+        for (int i = 0; i < rounds.size(); i++) {
+            ArrayList<Pairing> winnerPairings = new ArrayList<>();
+            ArrayList<Pairing> loserPairings = new ArrayList<>();
+
+            for (Pairing pairing : rounds.get(i).getPairings()) {
+                boolean isWinnerBracket = true;
+                for (Player player : pairing.getOpponents()) {
+                    if (previousLosers.contains(player)) {
+                        isWinnerBracket = false;
+                    }
+                }
+                (isWinnerBracket ? winnerPairings : loserPairings).add(pairing);
+            }
+
+            // add losers of the current round to the loser set
+            for (Pairing pairing : rounds.get(i).getPairings()) {
+                previousLosers.addAll(PairingHelper.identifyLoser(pairing));
+            }
+            // remove all people that previously lost from the winner set
+            previousWinners.removeIf(player -> previousLosers.contains(player));
+
+            winnerBracket.add(winnerPairings);
+            loserBracket.add(loserPairings);
+        }
+
+        List<List<Pairing>> sortedWinnerBracket = this.sortPairings(winnerBracket);
+        List<List<Pairing>> sortedLoserBracket = this.sortPairings(loserBracket);
+
+        container.getChildren().addAll(this.generatePairingNodes(
+                sortedWinnerBracket, new SimpleDoubleProperty(0),
+                new SimpleDoubleProperty(0)));
+
+        NumberExpression maxY = null;
+        for (Node node : container.getChildren()) {
+            if (node instanceof PairingNode) {
+                PairingNode pairingNode = (PairingNode) node;
+                if (maxY == null) {
+                    maxY = pairingNode.layoutYProperty().add(pairingNode.heightProperty());
+                } else {
+                    maxY = Bindings.max(maxY, pairingNode.layoutYProperty().add(pairingNode.heightProperty()));
+                }
+            }
+        }
+
+        container.getChildren().addAll(this.generatePairingNodes(
+                sortedLoserBracket, new SimpleDoubleProperty(0), maxY.add(50)));
+
+        this.pairingContainer.getChildren().add(container);
     }
 
     private GamePhase getPhaseById(int phaseNumber) {
