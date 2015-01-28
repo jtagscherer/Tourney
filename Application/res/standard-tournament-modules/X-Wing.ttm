@@ -2,7 +2,7 @@
 <rule-template>
     <meta>
         <name>X-Wing</name>
-        <description>Die 2. Bewertung ist die Sieghöhe diese muss manuell eingegeben werden.</description>
+        <description/>
     </meta>
     <possible-scores>
         <scoring priority="0">
@@ -21,7 +21,7 @@
                 <points>5</points>
             </score>
             <score>
-                <name>Modifizierte Sieg</name>
+                <name>Modifizierter Sieg</name>
                 <points>3</points>
             </score>
         </scoring>
