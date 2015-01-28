@@ -164,6 +164,17 @@ public class TournamentPhaseDialog extends VBox implements
 
         this.comboBoxPairingStrategy.valueProperty().addListener(
                 this::pairingStrategyUpdated);
+        int selectionIndex = 0;
+        for (PairingStrategy availableStrategy : this.comboBoxPairingStrategy
+                .getItems()) {
+            if (this.loadedPhase.getPairingMethod().getName()
+                    .equals(availableStrategy.getName())) {
+                this.comboBoxPairingStrategy.getSelectionModel().select(
+                        selectionIndex);
+                break;
+            }
+            selectionIndex++;
+        }
 
         log.fine("Game Phase loaded");
     }
