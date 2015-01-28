@@ -3,6 +3,8 @@ package usspg31.tourney.model.undo;
 import java.util.HashSet;
 import java.util.Set;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.Property;
@@ -11,6 +13,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
+import javafx.util.Duration;
 
 /**
  * Provides functionality for undoing and redoing actions performed on javafx
@@ -52,6 +55,12 @@ public class UndoManager {
     private Set<Observable> autoBatchingProperties;
 
     /**
+     * Timer used to cancel an automatic batch after a certain time of not
+     * changing the value.
+     */
+    private Timeline autoBatchingCancelTimer;
+
+    /**
      * Initializes a new UndoManager.
      */
     public UndoManager() {
@@ -66,6 +75,14 @@ public class UndoManager {
         this.undoBatch = null;
 
         this.autoBatchingProperties = new HashSet<>();
+
+        this.autoBatchingCancelTimer = new Timeline(
+                new KeyFrame(Duration.millis(1000), event -> {
+                    System.out.println("Cancel Timer terminated");
+                    if (this.undoBatch != null && this.undoBatch instanceof AutoUndoBatch) {
+                        this.endUndoBatch();
+                    }
+                }));
     }
 
     /**
@@ -95,6 +112,8 @@ public class UndoManager {
      * Ends a previously started collection of undo actions.
      */
     public void endUndoBatch() {
+        System.out.println("timer stop");
+        this.autoBatchingCancelTimer.stop();
         this.undoBatch = null;
     }
 
@@ -272,6 +291,9 @@ public class UndoManager {
                 AutoUndoBatch autoUndo = (AutoUndoBatch) this.undoBatch;
                 if (autoUndo.getObservable() == undoAction.getObservable()) {
                     autoUndo.addUndoAction(undoAction);
+                    // reset the autoBatching cancel timer
+                    System.out.println("timer reset");
+                    this.autoBatchingCancelTimer.playFromStart();
                 } else {
                     this.endUndoBatch();
                 }
@@ -281,8 +303,7 @@ public class UndoManager {
 
             // did we just cancel an autoUndoBatch?
             if (this.undoBatch == null) {
-                this.currentNode.setNext(new UndoNode(this.currentNode, undoAction));
-                this.currentNode = this.currentNode.getNext();
+                this.addUndoAction(undoAction);
             } else if (this.undoBatch.getUndoActionCount() == 1) {
                 // we just added the first element to the current undoBatch
                 this.currentNode.setNext(new UndoNode(this.currentNode,
@@ -298,6 +319,8 @@ public class UndoManager {
                 this.undoBatch = autoUndo;
                 this.currentNode.setNext(new UndoNode(this.currentNode, autoUndo));
                 this.currentNode = this.currentNode.getNext();
+                System.out.println("timer reset");
+                this.autoBatchingCancelTimer.playFromStart();
             } else {
                 // we don't have an auto undo observable here
                 this.currentNode
