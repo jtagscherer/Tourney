@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -53,6 +54,7 @@ public class RegistrationPhaseController implements EventUser {
     @FXML private Button buttonEditPlayer;
     @FXML private Button buttonRegisterPlayer;
     @FXML private Button buttonUnregisterPlayer;
+    @FXML private Button buttonRegisterAllPlayers;
 
     @FXML private Button buttonDistributeRegistration;
     @FXML private Button buttonImportRegistration;
@@ -142,6 +144,9 @@ public class RegistrationPhaseController implements EventUser {
         this.buttonEditPlayer.disableProperty().bind(
                 this.tableRegisteredPlayers.getSelectionModel()
                         .selectedItemProperty().isNull());
+        this.buttonRegisterAllPlayers.disableProperty().bind(
+                Bindings.size(this.tableRegisteredPlayers.getItems())
+                        .greaterThan(0).not());
 
         this.tableRegisteredPlayers.setPlaceholder(new Text(PreferencesManager
                 .getInstance().localizeString("tableplaceholder.noplayers")));
@@ -215,6 +220,7 @@ public class RegistrationPhaseController implements EventUser {
         /* Unbind the edit button's availablity */
         this.buttonRemovePlayer.disableProperty().unbind();
         this.buttonEditPlayer.disableProperty().unbind();
+        this.buttonRegisterAllPlayers.disableProperty().unbind();
 
         /* Unbind the listeners added to the register and de-register buttons */
         this.buttonRegisterPlayer.setDisable(false);
@@ -523,6 +529,62 @@ public class RegistrationPhaseController implements EventUser {
                                 }).show();
             }
         }
+    }
+
+    @FXML
+    private void onButtonRegisterAllPlayersClicked(ActionEvent event) {
+        log.fine("Register All Players Button clicked");
+        this.checkEventLoaded();
+
+        new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                "registrationphase.dialogs.registerall.message"))
+                .modalDialog()
+                .dialogButtons(DialogButtons.YES_NO)
+                .title("registrationphase.dialogs.registerall.title")
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.YES) {
+                                /*
+                                 * Get the currently highest starting number to
+                                 * generate the next one
+                                 */
+                                int startingNumber = 0;
+                                for (Player player : this.loadedEvent
+                                        .getRegisteredPlayers()) {
+                                    if (!player.getStartingNumber().equals("")) {
+                                        if (Integer.parseInt(player
+                                                .getStartingNumber()) > startingNumber) {
+                                            startingNumber = Integer.parseInt(player
+                                                    .getStartingNumber());
+                                        }
+                                    }
+                                }
+                                if (startingNumber == 0) {
+                                    startingNumber = this.registratorNumber;
+                                } else {
+                                    startingNumber = startingNumber
+                                            + Math.max(this.loadedEvent
+                                                    .getNumberOfRegistrators(),
+                                                    1);
+                                }
+
+                                for (Player player : this.loadedEvent
+                                        .getRegisteredPlayers()) {
+                                    if (player.getStartingNumber().equals("")) {
+                                        player.setStartingNumber(String
+                                                .valueOf(startingNumber));
+                                        startingNumber = startingNumber
+                                                + Math.max(
+                                                        this.loadedEvent
+                                                                .getNumberOfRegistrators(),
+                                                        1);
+                                    }
+                                }
+
+                                this.buttonRegisterPlayer.setDisable(true);
+                                this.buttonUnregisterPlayer.setDisable(false);
+                            }
+                        }).show();
     }
 
     @FXML
