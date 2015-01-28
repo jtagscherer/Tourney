@@ -166,7 +166,6 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML
     private void onButtonEnterResultClicked(ActionEvent event) {
         log.info("Enter Result Button was clicked");
-        // FIXME: if the user selects 0 as a score for a player, the value doesn't get set
         this.pairingScoreDialog
         .properties(new PairingEntry(this.loadedTournament, this.pairingView.getSelectedPairing()))
         .onResult((result, value) -> {
@@ -176,6 +175,9 @@ public class TournamentExecutionController implements TournamentUser {
                     PlayerScore selectedScore = this.pairingView.getSelectedPairing().getScoreTable().get(i);
                     for (int j = 0; j < score.getScore().size(); j++) {
                         Integer newScore = score.getScore().get(j);
+                        if (newScore == null) {
+                            newScore = 0;
+                        }
                         selectedScore.getScore().clear();
                         selectedScore.getScore().add(newScore);
                     }
