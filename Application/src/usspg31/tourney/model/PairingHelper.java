@@ -1,10 +1,13 @@
 package usspg31.tourney.model;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 
 public class PairingHelper {
+    private static final Logger log = Logger.getLogger(PairingHelper.class
+            .getName());
 
     /**
      * identify the phase in which the round takes place
@@ -90,6 +93,12 @@ public class PairingHelper {
                 .get(sortClone.getScoreTable().size() - 1).getPlayer());
         if (count + 1 <= sortClone.getScoreTable().size()) {
             while (isAlsoWinner) {
+                sortClone
+                        .getScoreTable()
+                        .get(sortClone.getScoreTable().size() - 1 - count)
+                        .compareTo(
+                                sortClone.getScoreTable().get(
+                                        sortClone.getScoreTable().size() - 1));
                 if (sortClone
                         .getScoreTable()
                         .get(sortClone.getScoreTable().size() - 1 - count)
@@ -161,9 +170,7 @@ public class PairingHelper {
         ArrayList<Player> result = new ArrayList<>();
 
         result.addAll(pairing.getOpponents());
-
-        result.remove(PairingHelper.identifyWinner(pairing));
-
+        result.removeAll(PairingHelper.identifyWinner(pairing));
         return result;
     }
 
