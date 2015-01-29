@@ -19,6 +19,15 @@
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
    <children>
-      <ComboBox fx:id="comboBoxSelectedTournament" prefWidth="150.0" />
+      <VBox spacing="10.0">
+          <VBox spacing="5.0">
+		      <Label styleClass="sub-heading" text="%dialogs.pdfoutputselection.header.general" />
+		      <CheckBox fx:id="checkBoxExportPlayers" text="%dialogs.pdfoutputselection.config.players" />
+		      <CheckBox fx:id="checkBoxExportTournaments" text="%dialogs.pdfoutputselection.config.tournaments" />
+		  </VBox>
+		  <VBox spacing="5.0">
+		      <Label styleClass="sub-heading" text="%dialogs.pdfoutputselection.header.tournaments" />
+		  </VBox>
+	  </VBox>
    </children>
 </fx:root>
