@@ -22,6 +22,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
+
+import org.xml.sax.SAXException;
+
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainMenuController;
 import usspg31.tourney.controller.MainWindow;
@@ -31,6 +34,8 @@ import usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseContr
 import usspg31.tourney.controller.controls.eventphases.RegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
 import usspg31.tourney.controller.dialogs.PasswordDialog;
+import usspg31.tourney.controller.dialogs.PdfOutputConfiguration;
+import usspg31.tourney.controller.dialogs.PdfOutputSelectionDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
@@ -38,6 +43,7 @@ import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.EventPhase;
 import usspg31.tourney.model.Event.UserFlag;
+import usspg31.tourney.model.filemanagement.FileLoader;
 import usspg31.tourney.model.filemanagement.FileSaver;
 import usspg31.tourney.model.filemanagement.pdfexport.PDFExporter;
 import usspg31.tourney.model.undo.UndoManager;
@@ -104,6 +110,9 @@ public class EventPhaseViewController implements EventUser {
     // PasswordDialog
     private ModalDialog<Object, Object> passwordDialog;
 
+    // PdfOutputDialog
+    private ModalDialog<PdfOutputConfiguration, PdfOutputConfiguration> pdfOutputDialog;
+
     @FXML
     private void initialize() throws IOException {
         this.phasePosition = new SimpleDoubleProperty(0);
@@ -120,6 +129,7 @@ public class EventPhaseViewController implements EventUser {
                 this.tournamentExecutionPhase);
 
         this.passwordDialog = new PasswordDialog().modalDialog();
+        this.pdfOutputDialog = new PdfOutputSelectionDialog().modalDialog();
 
         this.undoManager = new UndoManager();
 
@@ -133,8 +143,10 @@ public class EventPhaseViewController implements EventUser {
                 this.buttonSave.setDisable(false);
             }
         };
-        this.undoManager.undoAvailableProperty().addListener(saveAvailableListener);
-        this.undoManager.redoAvailableProperty().addListener(saveAvailableListener);
+        this.undoManager.undoAvailableProperty().addListener(
+                saveAvailableListener);
+        this.undoManager.redoAvailableProperty().addListener(
+                saveAvailableListener);
     }
 
     private void loadSubViews() throws IOException {
@@ -454,6 +466,8 @@ public class EventPhaseViewController implements EventUser {
     private void onButtonExportClicked(ActionEvent event) {
         log.fine("Export Button was clicked");
 
+        this.pdfOutputDialog.properties(new PdfOutputConfiguration()).show();
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(PreferencesManager.getInstance().localizeString(
                 "eventphaseview.savepdf.title"));
@@ -489,8 +503,7 @@ public class EventPhaseViewController implements EventUser {
         log.fine("Lock Button was clicked");
 
         EntryPoint.lockApplication();
-        this.passwordDialog
-        .onResult((result, value) -> {
+        this.passwordDialog.onResult((result, value) -> {
             EntryPoint.unlockApplication();
         }).show();
     }
@@ -669,6 +682,18 @@ public class EventPhaseViewController implements EventUser {
             this.slideToPhase(3);
             this.loadedEvent
                     .setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
+
+            File tempEvent = new File(System.getProperty("user.dir")
+                    + "/tmp/tmp.tef");
+            FileSaver.saveEventToFile(this.loadedEvent,
+                    tempEvent.getAbsolutePath());
+            try {
+                this.loadEvent(FileLoader.loadEventFromFile(tempEvent
+                        .getAbsolutePath()));
+            } catch (IOException | SAXException e) {
+                log.log(Level.SEVERE, "Could not save the event.", e);
+            }
+            tempEvent.delete();
 
             this.breadcrumbEventSetup
                     .setStyle(EventPhaseViewController.breadCrumbInactive);
