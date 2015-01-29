@@ -24,6 +24,7 @@ import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class PreRegistrationPhaseController implements EventUser {
@@ -117,10 +118,15 @@ public class PreRegistrationPhaseController implements EventUser {
         this.loadedEvent = event;
 
         /* Add all registered players to the table view and enable searching */
-        Comparator<Player> comparator = (firstPlayer, lastPlayer) -> (int) (SearchUtilities.getSearchRelevance(firstPlayer,
-                PreRegistrationPhaseController.this.textFieldPlayerSearch.getText()) - SearchUtilities
-                .getSearchRelevance(lastPlayer,
-                        PreRegistrationPhaseController.this.textFieldPlayerSearch.getText()));
+        Comparator<Player> comparator = (firstPlayer, lastPlayer) -> (int) (SearchUtilities
+                .getSearchRelevance(
+                        firstPlayer,
+                        PreRegistrationPhaseController.this.textFieldPlayerSearch
+                                .getText()) - SearchUtilities
+                .getSearchRelevance(
+                        lastPlayer,
+                        PreRegistrationPhaseController.this.textFieldPlayerSearch
+                                .getText()));
 
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -174,14 +180,18 @@ public class PreRegistrationPhaseController implements EventUser {
         log.fine("Add Player Button clicked");
         this.checkEventLoaded();
         this.preRegistrationDialog
-        .properties(new Player())
-        .properties(this.loadedEvent)
-        .onResult((result, returnValue) -> {
-            if (result == DialogResult.OK && returnValue != null) {
-                returnValue.setId(IdentificationManager.generateId(returnValue));
-                this.loadedEvent.getRegisteredPlayers().add(returnValue);
-            }
-        }).show();
+                .properties(new Player())
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                returnValue.setId(IdentificationManager
+                                        .generateId(returnValue));
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                            }
+                        }).show();
     }
 
     @FXML
@@ -217,6 +227,15 @@ public class PreRegistrationPhaseController implements EventUser {
                                 if (result == DialogResult.YES) {
                                     this.loadedEvent.getRegisteredPlayers()
                                             .remove(selectedPlayer);
+                                    /* Remove the player from the tournaments */
+                                    for (Tournament tournament : this.loadedEvent
+                                            .getTournaments()) {
+                                        if (tournament.getRegisteredPlayers()
+                                                .contains(selectedPlayer)) {
+                                            tournament.getRegisteredPlayers()
+                                                    .remove(selectedPlayer);
+                                        }
+                                    }
                                 }
                             }).show();
         }
@@ -247,18 +266,34 @@ public class PreRegistrationPhaseController implements EventUser {
      */
     public void editPlayer(Player player) {
         this.preRegistrationDialog
-        .properties(player)
-        .properties(this.loadedEvent)
-        .onResult((result, returnValue) -> {
-            if (result == DialogResult.OK  && returnValue != null) {
-                UndoManager undo = MainWindow.getInstance()
-                        .getEventPhaseViewController().getUndoManager();
-                undo.beginUndoBatch();
-                this.loadedEvent.getRegisteredPlayers().remove(player);
-                this.loadedEvent.getRegisteredPlayers().add(returnValue);
-                undo.endUndoBatch();
-            }
-        }).show();
+                .properties(player)
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                UndoManager undo = MainWindow.getInstance()
+                                        .getEventPhaseViewController()
+                                        .getUndoManager();
+                                undo.beginUndoBatch();
+                                this.loadedEvent.getRegisteredPlayers().remove(
+                                        player);
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                                /* Update the player in the tournaments */
+                                for (Tournament tournament : this.loadedEvent
+                                        .getTournaments()) {
+                                    if (tournament.getRegisteredPlayers()
+                                            .contains(player)) {
+                                        tournament.getRegisteredPlayers()
+                                                .remove(player);
+                                        tournament.getRegisteredPlayers().add(
+                                                returnValue);
+                                    }
+                                }
+                                undo.endUndoBatch();
+                            }
+                        }).show();
     }
 
     private void checkEventLoaded() {
