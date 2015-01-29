@@ -466,36 +466,62 @@ public class EventPhaseViewController implements EventUser {
     private void onButtonExportClicked(ActionEvent event) {
         log.fine("Export Button was clicked");
 
-        this.pdfOutputDialog.properties(new PdfOutputConfiguration()).show();
+        PdfOutputConfiguration configuration = new PdfOutputConfiguration();
+        configuration.exportPlayerList(true);
+        configuration.exportTournaments(true);
+        configuration.setTournaments(this.loadedEvent.getTournaments());
+        this.pdfOutputDialog
+                .properties(configuration)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK) {
+                                FileChooser fileChooser = new FileChooser();
+                                fileChooser
+                                        .setTitle(PreferencesManager
+                                                .getInstance()
+                                                .localizeString(
+                                                        "eventphaseview.savepdf.title"));
+                                fileChooser
+                                        .getExtensionFilters()
+                                        .add(new ExtensionFilter(
+                                                PreferencesManager
+                                                        .getInstance()
+                                                        .localizeString(
+                                                                "dialogs.extensions.pdffile"),
+                                                "*.pdf"));
+                                File selectedFile = fileChooser
+                                        .showSaveDialog(EntryPoint
+                                                .getPrimaryStage());
+                                if (selectedFile == null) {
+                                    return;
+                                }
+                                if (!selectedFile.getName().endsWith(".pdf")) {
+                                    selectedFile = new File(selectedFile
+                                            .getAbsolutePath() + ".pdf");
+                                }
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(PreferencesManager.getInstance().localizeString(
-                "eventphaseview.savepdf.title"));
-        fileChooser
-                .getExtensionFilters()
-                .add(new ExtensionFilter(PreferencesManager.getInstance()
-                        .localizeString("dialogs.extensions.pdffile"), "*.pdf"));
-        File selectedFile = fileChooser.showSaveDialog(EntryPoint
-                .getPrimaryStage());
-        if (selectedFile == null) {
-            return;
-        }
-        if (!selectedFile.getName().endsWith(".pdf")) {
-            selectedFile = new File(selectedFile.getAbsolutePath() + ".pdf");
-        }
+                                try {
+                                    PDFExporter.exportEventAsPdf(
+                                            this.loadedEvent,
+                                            selectedFile.getAbsolutePath(),
+                                            returnValue);
+                                } catch (Exception e) {
+                                    log.log(Level.SEVERE,
+                                            "Could not export the event.", e);
 
-        try {
-            PDFExporter.exportEventAsPdf(this.loadedEvent,
-                    selectedFile.getAbsolutePath());
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Could not export the event.", e);
-
-            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
-                    "dialogs.messages.couldnotsave")).modalDialog()
-                    .title("dialogs.titles.error")
-                    .dialogButtons(DialogButtons.OK).show();
-            return;
-        }
+                                    new SimpleDialog<>(
+                                            PreferencesManager
+                                                    .getInstance()
+                                                    .localizeString(
+                                                            "dialogs.messages.couldnotsave"))
+                                            .modalDialog()
+                                            .title("dialogs.titles.error")
+                                            .dialogButtons(DialogButtons.OK)
+                                            .show();
+                                    return;
+                                }
+                            }
+                        }).show();
     }
 
     @FXML

@@ -8,7 +8,9 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<fx:root type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity"
+	minWidth="-Infinity" spacing="5.0" type="VBox"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
 		<URL value="@/ui/css/main.css" />
 		<URL value="@/ui/css/icons.css" />
@@ -27,6 +29,8 @@
 		  </VBox>
 		  <VBox spacing="5.0">
 		      <Label styleClass="sub-heading" text="%dialogs.pdfoutputselection.header.tournaments" />
+		      <TableView fx:id="tableTournaments" maxHeight="1.7976931348623157E308"
+					minWidth="-Infinity" VBox.vgrow="ALWAYS" />
 		  </VBox>
 	  </VBox>
    </children>

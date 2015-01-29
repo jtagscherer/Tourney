@@ -9,6 +9,8 @@ import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.controller.dialogs.PdfOutputConfiguration;
+import usspg31.tourney.controller.dialogs.PdfOutputConfiguration.TournamentEntry;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.EventAdministrator;
 import usspg31.tourney.model.GamePhase;
@@ -294,6 +296,11 @@ public class PDFDocument {
                     if (attribute[0].equals("Name")) {
                         playerChapter.add(new Paragraph(attribute[1],
                                 PDFExporter.SMALL_BOLD));
+                    } else if (attribute[0].equals("Starting number")) {
+                        playerChapter.add(new Paragraph(PreferencesManager
+                                .getInstance().localizeString(
+                                        "pdfoutput.players.startingnumber")
+                                + " " + attribute[1], PDFExporter.TEXT_FONT));
                     } else {
                         playerChapter.add(new Paragraph(attribute[1],
                                 PDFExporter.TEXT_FONT));
@@ -334,11 +341,21 @@ public class PDFDocument {
      * @throws DocumentException
      *             When the data can not be added to the document
      */
-    public void addTournaments() throws DocumentException {
-        for (int tournamentNumber = 0; tournamentNumber < this.event
+    public void addTournaments(PdfOutputConfiguration configuration)
+            throws DocumentException {
+        tournament_loop: for (int tournamentNumber = 0; tournamentNumber < this.event
                 .getTournaments().size(); tournamentNumber++) {
             Tournament tournament = this.event.getTournaments().get(
                     tournamentNumber);
+
+            for (TournamentEntry entry : configuration.getTournamentList()) {
+                if (entry.getCorrespondingTournament().getId()
+                        .equals(tournament.getId())) {
+                    if (!entry.shouldBeExported()) {
+                        continue tournament_loop;
+                    }
+                }
+            }
 
             /* Add a section for the tournament */
             Anchor tournamentAnchor = new Anchor(tournament.getName(),
@@ -355,38 +372,50 @@ public class PDFDocument {
                     PDFExporter.MEDIUM_HEADER_FONT);
             Section administratorChapter = tournamentChapter
                     .addSection(administratorSuperParagraph);
-            administratorChapter.add(Chunk.NEWLINE);
 
             /* Add the tournament administrators */
             Paragraph administrators = new Paragraph();
-            for (TournamentAdministrator eventAdministrator : tournament
-                    .getAdministrators()) {
-                Paragraph administratorParagraph = new Paragraph();
-                administratorParagraph.setIndentationLeft(10);
+            if (tournament.getAdministrators().size() == 0) {
+                Paragraph noAdministrators = new Paragraph();
+                this.addNewLines(noAdministrators, 1);
+                noAdministrators.add(new Phrase(PreferencesManager
+                        .getInstance().localizeString(
+                                "pdfoutput.tournament.administratorsmissing"),
+                        PDFExporter.ITALIC_FONT));
+                this.addNewLines(noAdministrators, 2);
+                administratorChapter.add(noAdministrators);
+            } else {
+                administratorChapter.add(Chunk.NEWLINE);
+                for (TournamentAdministrator eventAdministrator : tournament
+                        .getAdministrators()) {
+                    Paragraph administratorParagraph = new Paragraph();
+                    administratorParagraph.setIndentationLeft(10);
 
-                administratorParagraph.add(new Paragraph(eventAdministrator
-                        .getFirstName()
-                        + " "
-                        + eventAdministrator.getLastName(),
-                        PDFExporter.SMALL_HEADER_FONT));
-                if (!eventAdministrator.getMailAddress().equals("")) {
                     administratorParagraph.add(new Paragraph(eventAdministrator
-                            .getMailAddress(), PDFExporter.TEXT_FONT));
-                }
-                if (!eventAdministrator.getPhoneNumber().equals("")) {
-                    administratorParagraph
-                            .add(new Paragraph(
-                                    PreferencesManager
-                                            .getInstance()
-                                            .localizeString(
-                                                    "pdfoutput.event.administration.phonenumber")
-                                            + ": "
-                                            + eventAdministrator
-                                                    .getPhoneNumber(),
-                                    PDFExporter.TEXT_FONT));
-                }
+                            .getFirstName()
+                            + " "
+                            + eventAdministrator.getLastName(),
+                            PDFExporter.SMALL_HEADER_FONT));
+                    if (!eventAdministrator.getMailAddress().equals("")) {
+                        administratorParagraph.add(new Paragraph(
+                                eventAdministrator.getMailAddress(),
+                                PDFExporter.TEXT_FONT));
+                    }
+                    if (!eventAdministrator.getPhoneNumber().equals("")) {
+                        administratorParagraph
+                                .add(new Paragraph(
+                                        PreferencesManager
+                                                .getInstance()
+                                                .localizeString(
+                                                        "pdfoutput.event.administration.phonenumber")
+                                                + ": "
+                                                + eventAdministrator
+                                                        .getPhoneNumber(),
+                                        PDFExporter.TEXT_FONT));
+                    }
 
-                administrators.add(administratorParagraph);
+                    administrators.add(administratorParagraph);
+                }
             }
             this.addNewLines(administrators, 1);
 
