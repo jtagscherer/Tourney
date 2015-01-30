@@ -20,6 +20,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener.Change;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -64,6 +66,9 @@ public class PairingView extends VBox implements TournamentUser {
 
     private Tournament loadedTournament;
 
+    private static final double scaleDelta = 0.1;
+    private static final double moveDelta = 1.0;
+
     private IntegerProperty selectedRound;
     private IntegerProperty selectedPhase;
 
@@ -72,6 +77,9 @@ public class PairingView extends VBox implements TournamentUser {
     private ObjectProperty<OverviewMode> overviewMode;
 
     private ObjectProperty<Runnable> onNodeDoubleClicked;
+
+    public double lastMouseX = -1.0;
+    public double lastMouseY = -1.0;
 
     public PairingView() {
         try {
@@ -106,6 +114,68 @@ public class PairingView extends VBox implements TournamentUser {
         this.SelectedRoundProperty().addListener(this::onSelectedRoundChanged);
         this.SelectedPhaseProperty().addListener(this::onSelectedPhaseChanged);
         this.overviewModeProperty().addListener(this::onOverviewModeChanged);
+
+        /* Enable zooming */
+        this.pairingContainer.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                event.consume();
+
+                double scaleFactor = 0;
+                if (event.getDeltaY() > 0) {
+                    scaleFactor = 1 + PairingView.scaleDelta;
+                } else if (event.getDeltaY() < 0) {
+                    scaleFactor = 1 - PairingView.scaleDelta;
+                }
+
+                for (Node child : pairingContainer.getChildren()) {
+                    if (scaleFactor > 1 && child.getScaleX() < 5) {
+                        child.setScaleX(child.getScaleX() * scaleFactor);
+                        child.setScaleY(child.getScaleY() * scaleFactor);
+                    }
+                    if (scaleFactor < 1 && child.getScaleX() > 0.2) {
+                        child.setScaleX(child.getScaleX() * scaleFactor);
+                        child.setScaleY(child.getScaleY() * scaleFactor);
+                    }
+                }
+            }
+        });
+
+        /* Enable moving the view */
+        this.pairingContainer.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                event.consume();
+
+                if (lastMouseX == -1.0 || lastMouseY == -1.0) {
+                    lastMouseX = event.getX();
+                    lastMouseY = event.getY();
+                } else {
+                    for (Node child : pairingContainer.getChildren()) {
+                        child.setTranslateX(child.getTranslateX()
+                                + (event.getX() - lastMouseX)
+                                * PairingView.moveDelta);
+                        child.setTranslateY(child.getTranslateY()
+                                + (event.getY() - lastMouseY)
+                                * PairingView.moveDelta);
+                    }
+
+                    lastMouseX = event.getX();
+                    lastMouseY = event.getY();
+                }
+            }
+        });
+
+        this.pairingContainer
+                .setOnMouseReleased(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        event.consume();
+
+                        lastMouseX = -1.0;
+                        lastMouseY = -1.0;
+                    }
+                });
     }
 
     @Override
