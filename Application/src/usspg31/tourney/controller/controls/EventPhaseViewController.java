@@ -455,6 +455,10 @@ public class EventPhaseViewController implements EventUser {
         return !this.buttonSave.isDisabled();
     }
 
+    public boolean hasLoadedEvent() {
+        return this.loadedEvent != null;
+    }
+
     @FXML
     private void onButtonSaveClicked(ActionEvent event) {
         log.fine("Save Button was clicked");
