@@ -714,7 +714,7 @@ public class EventPhaseViewController implements EventUser {
                     .setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
 
             File tempEvent = new File(System.getProperty("user.dir")
-                    + "/tmp/tmp.tef");
+                    + "/tmp.tef");
             FileSaver.saveEventToFile(this.loadedEvent,
                     tempEvent.getAbsolutePath());
             try {
