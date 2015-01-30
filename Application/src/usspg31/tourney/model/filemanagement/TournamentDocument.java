@@ -22,6 +22,7 @@ import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.PossibleScoring.ScoringType;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.Tournament.ExecutionState;
 import usspg31.tourney.model.TournamentAdministrator;
 import usspg31.tourney.model.TournamentModule;
 import usspg31.tourney.model.TournamentRound;
@@ -40,11 +41,6 @@ public class TournamentDocument {
     private Element rootElement;
 
     private String id;
-
-    /*
-     * public static final int REGISTERED_PLAYERS = 0; public static final int
-     * ATTENDANT_PLAYERS = 1; public static final int REMAINING_PLAYERS = 2;
-     */
 
     public enum PlayerListType {
         REGISTERED_PLAYERS,
@@ -83,6 +79,12 @@ public class TournamentDocument {
         Element name = this.document.createElement("name");
         meta.appendChild(name);
         name.appendChild(this.document.createTextNode(tournament.getName()));
+
+        /* Add the execution state to the meta data */
+        Element executionState = this.document.createElement("execution-state");
+        meta.appendChild(executionState);
+        executionState.appendChild(this.document.createTextNode(tournament
+                .getExecutionState().toString()));
     }
 
     /**
@@ -99,6 +101,23 @@ public class TournamentDocument {
                 .getTextContent();
 
         return name;
+    }
+
+    /**
+     * Extract the tournament execution state out of the attached meta data
+     * 
+     * @return Execution state of the tournament
+     */
+    public ExecutionState getExecutionState() {
+        ExecutionState executionState = null;
+
+        /* Extract the tournament from the corresponding XML tag */
+        Node metaData = this.document.getElementsByTagName("meta").item(0);
+        executionState = ExecutionState.valueOf(FileLoader
+                .getFirstChildNodeByTag(metaData, "execution-state")
+                .getTextContent());
+
+        return executionState;
     }
 
     /**
