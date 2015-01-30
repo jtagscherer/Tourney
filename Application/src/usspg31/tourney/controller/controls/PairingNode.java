@@ -6,7 +6,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.css.PseudoClass;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
@@ -21,7 +23,8 @@ import usspg31.tourney.model.Tournament;
  */
 public class PairingNode extends VBox {
 
-    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
+    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass
+            .getPseudoClass("selected");
 
     private final Tournament tournament;
     private final Pairing pairing;
@@ -64,7 +67,9 @@ public class PairingNode extends VBox {
         if (this.pairing.getOpponents().size() > 1) {
             this.getChildren().add(new Label("#" + this.index));
         } else {
-            this.getChildren().add(new Label(PreferencesManager.getInstance().localizeString("pairingnode.bye")));
+            this.getChildren().add(
+                    new Label(PreferencesManager.getInstance().localizeString(
+                            "pairingnode.bye")));
         }
 
         this.opponentTable = new TableView<>();
@@ -72,31 +77,85 @@ public class PairingNode extends VBox {
         this.opponentTable.setFocusTraversable(false);
 
         TableColumn<PlayerScore, String> playerNameColumn = new TableColumn<>(
-                "Name");
+                PreferencesManager.getInstance().localizeString(
+                        "pairingnode.name"));
         playerNameColumn.setCellValueFactory(score -> {
-            return score.getValue().getPlayer().lastNameProperty();
+            return score.getValue().getPlayer().firstNameProperty().concat(" ")
+                    .concat(score.getValue().getPlayer().lastNameProperty());
         });
 
-        DoubleBinding tableWidthBinding = playerNameColumn.widthProperty().add(1);
+        TableColumn<PlayerScore, String> playerStartingNumberColumn = new TableColumn<>(
+                PreferencesManager.getInstance().localizeString(
+                        "pairingnode.startingnumber"));
+        playerStartingNumberColumn.setCellValueFactory(score -> {
+            return score.getValue().getPlayer().startingNumberProperty();
+        });
+        /* Style the cells to be centered */
+        playerStartingNumberColumn.setCellFactory(column -> {
+            return new TableCell<PlayerScore, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
 
+                    if (item == null || empty) {
+                        this.setText(null);
+                        this.setGraphic(null);
+                        this.setStyle("");
+                    } else {
+                        this.setText(item);
+                        this.setAlignment(Pos.CENTER);
+                    }
+                }
+            };
+        });
+
+        DoubleBinding tableWidthBinding = playerNameColumn.widthProperty()
+                .add(playerStartingNumberColumn.widthProperty()).add(2);
+
+        this.opponentTable.getColumns().add(playerStartingNumberColumn);
         this.opponentTable.getColumns().add(playerNameColumn);
 
         for (PossibleScoring scoring : this.tournament.getRuleSet()
                 .getPossibleScores()) {
             TableColumn<PlayerScore, String> scoreColumn = new TableColumn<>(
-                    Integer.toString(scoring.getPriority()));
-            scoreColumn.setCellValueFactory(score -> {
-                if (score.getValue().getScore().size() > scoring.getPriority()) {
-                    Integer scoreValue = score.getValue().getScore().get(scoring.getPriority());
-                    if (scoreValue != null) {
-                        return new SimpleStringProperty(Integer.toString(scoreValue));
+                    Integer.toString(scoring.getPriority() + 1));
+            scoreColumn
+                    .setCellValueFactory(score -> {
+                        if (score.getValue().getScore().size() > scoring
+                                .getPriority()) {
+                            Integer scoreValue = score.getValue().getScore()
+                                    .get(scoring.getPriority());
+                            if (scoreValue != null) {
+                                return new SimpleStringProperty(Integer
+                                        .toString(scoreValue));
+                            }
+                        }
+                        return new SimpleStringProperty("-");
+                    });
+            /* Style the cells to be centered and bold */
+            scoreColumn.setCellFactory(column -> {
+                return new TableCell<PlayerScore, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            this.setText(null);
+                            this.setGraphic(null);
+                            this.setStyle("");
+                        } else {
+                            this.setText(item);
+                            this.setAlignment(Pos.CENTER);
+                            this.setStyle(this.getStyle()
+                                    + "-fx-font-weight: bold;");
+                        }
                     }
-                }
-                return new SimpleStringProperty("-");
+                };
             });
             this.opponentTable.getColumns().add(scoreColumn);
 
-            tableWidthBinding = tableWidthBinding.add(scoreColumn.widthProperty()).add(1);
+            tableWidthBinding = tableWidthBinding.add(
+                    scoreColumn.widthProperty()).add(1);
         }
 
         this.opponentTable.setFixedCellSize(25);
@@ -104,7 +163,9 @@ public class PairingNode extends VBox {
 
         this.opponentTable.prefHeightProperty().bind(
                 this.opponentTable.fixedCellSizeProperty()
-                .multiply(Bindings.size(this.opponentTable.getItems()).add(1.085)));
+                        .multiply(
+                                Bindings.size(this.opponentTable.getItems())
+                                        .add(1.085)));
 
         this.opponentTable.prefWidthProperty().bind(tableWidthBinding);
 
