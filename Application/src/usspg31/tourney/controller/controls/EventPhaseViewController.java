@@ -97,10 +97,6 @@ public class EventPhaseViewController implements EventUser {
     private static Interpolator transitionInterpolator = Interpolator.SPLINE(
             .4, 0, 0, 1);
 
-    // Bread crumb effects
-    private static final String breadCrumbInactive = "-fx-background-color: #888, -t-button-color;";
-    private static final String breadCrumbActive = "-fx-background-color: #888, derive(-t-button-color, -7%);";
-
     // Event
     private Event loadedEvent;
 
@@ -272,31 +268,43 @@ public class EventPhaseViewController implements EventUser {
             this.loadedEvent = event;
             switch (this.loadedEvent.getEventPhase()) {
             case EVENT_SETUP:
-                this.breadcrumbEventSetup
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbEventSetup.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbEventSetup.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(0);
                 break;
             case PRE_REGISTRATION:
-                this.breadcrumbPreRegistration
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbPreRegistration.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbPreRegistration.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(1);
                 break;
             case REGISTRATION:
-                this.breadcrumbRegistration
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbRegistration.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbRegistration.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(2);
                 break;
             case TOURNAMENT_EXECUTION:
-                this.breadcrumbTournamentExecution
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbTournamentExecution.getStyleClass()
+                        .contains("selected-button")) {
+                    this.breadcrumbTournamentExecution.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(3);
                 break;
             }
         } else if (event.getUserFlag() == UserFlag.REGISTRATION) {
             this.loadedEvent = event;
             this.registrationPhaseController.loadEvent(event);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
 
             this.phasePosition.set(2);
             this.breadcrumbEventSetup.setDisable(true);
@@ -307,8 +315,8 @@ public class EventPhaseViewController implements EventUser {
         } else if (event.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
             this.loadedEvent = event;
             this.tournamentExecutionPhaseController.loadEvent(event);
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
 
             this.phasePosition.set(3);
 
@@ -332,17 +340,15 @@ public class EventPhaseViewController implements EventUser {
         /*
          * Clean up if some values are still set from a previously opened event
          */
-        this.breadcrumbEventSetup
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
         this.breadcrumbEventSetup.setDisable(false);
-        this.breadcrumbPreRegistration
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbPreRegistration.getStyleClass()
+                .remove("selected-button");
         this.breadcrumbPreRegistration.setDisable(false);
-        this.breadcrumbRegistration
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbRegistration.getStyleClass().remove("selected-button");
         this.breadcrumbRegistration.setDisable(false);
-        this.breadcrumbTournamentExecution
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbTournamentExecution.getStyleClass().remove(
+                "selected-button");
         this.breadcrumbTournamentExecution.setDisable(false);
 
         /* clear the undo manager's history */
@@ -668,45 +674,49 @@ public class EventPhaseViewController implements EventUser {
             this.slideToPhase(0);
             this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
 
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbActive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            if (!this.breadcrumbEventSetup.getStyleClass().contains(
+                    "selected-button")) {
+                this.breadcrumbEventSetup.getStyleClass()
+                        .add("selected-button");
+            }
+            this.breadcrumbPreRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
             break;
         case PRE_REGISTRATION:
             this.slideToPhase(1);
             this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
 
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbActive);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
+            if (!this.breadcrumbPreRegistration.getStyleClass().contains(
+                    "selected-button")) {
+                this.breadcrumbPreRegistration.getStyleClass().add(
+                        "selected-button");
+            }
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
             break;
         case REGISTRATION:
             this.slideToPhase(2);
             this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
 
-            this.breadcrumbRegistration
-                    .setStyle("-fx-background-color: #888, derive(-t-button-color, -20%);");
-
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
+            this.breadcrumbPreRegistration.getStyleClass().remove(
+                    "selected-button");
             if (this.loadedEvent.getUserFlag() != UserFlag.REGISTRATION) {
-                this.breadcrumbRegistration
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbRegistration.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbRegistration.getStyleClass().add(
+                            "selected-button");
+                }
             }
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
             break;
         case TOURNAMENT_EXECUTION:
             this.slideToPhase(3);
@@ -729,15 +739,17 @@ public class EventPhaseViewController implements EventUser {
             }
             tempEvent.delete();
 
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
+            this.breadcrumbPreRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
             if (this.loadedEvent.getUserFlag() != UserFlag.TOURNAMENT_EXECUTION) {
-                this.breadcrumbTournamentExecution
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbTournamentExecution.getStyleClass()
+                        .contains("selected-button")) {
+                    this.breadcrumbTournamentExecution.getStyleClass().add(
+                            "selected-button");
+                }
             }
             break;
         }
