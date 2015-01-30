@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,7 +14,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -29,7 +27,7 @@ import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.Tournament;
-import usspg31.tourney.model.TournamentRound;
+import usspg31.tourney.model.Tournament.ExecutionState;
 import usspg31.tourney.model.filemanagement.FileLoader;
 import usspg31.tourney.model.filemanagement.FileSaver;
 
@@ -46,7 +44,7 @@ public class TournamentSelectionController implements EventUser {
     @FXML private Button buttonImportTournament;
 
     private TableColumn<Tournament, String> tableColumnTournamentName;
-    private TableColumn<Tournament, ObservableList<TournamentRound>> tableColumnTournamentStatus;
+    private TableColumn<Tournament, ExecutionState> tableColumnTournamentStatus;
 
     private Event loadedEvent;
 
@@ -69,32 +67,38 @@ public class TournamentSelectionController implements EventUser {
                 .getInstance().localizeString(
                         "tournamentselection.tournamentstatus"));
         this.tableColumnTournamentStatus
-                .setCellValueFactory(new PropertyValueFactory<Tournament, ObservableList<TournamentRound>>(
-                        "rounds"));
-        this.tableColumnTournamentStatus
-                .setCellFactory(column -> {
-                    return new TableCell<Tournament, ObservableList<TournamentRound>>() {
-                        @Override
-                        protected void updateItem(
-                                ObservableList<TournamentRound> item,
-                                boolean empty) {
-                            super.updateItem(item, empty);
-                            if (item != null) {
-                                if (item.size() == 0) {
-                                    this.setText(PreferencesManager
-                                            .getInstance()
-                                            .localizeString(
-                                                    "tournamentselection.tournamentstatus.notexecuted"));
-                                } else {
-                                    this.setText(PreferencesManager
-                                            .getInstance()
-                                            .localizeString(
-                                                    "tournamentselection.tournamentstatus.executed"));
-                                }
-                            }
+                .setCellValueFactory(cellData -> cellData.getValue()
+                        .executionStateProperty());
+        this.tableColumnTournamentStatus.setCellFactory(column -> {
+            return new TableCell<Tournament, ExecutionState>() {
+                @Override
+                protected void updateItem(ExecutionState item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null) {
+                        switch (item) {
+                        case NOT_EXECUTED:
+                            this.setText(PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "tournamentselection.tournamentstatus.notexecuted"));
+                            break;
+                        case CURRENTLY_EXECUTED:
+                            this.setText(PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "tournamentselection.tournamentstatus.executing"));
+                            break;
+                        case FINISHED:
+                            this.setText(PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "tournamentselection.tournamentstatus.finished"));
+                            break;
                         }
-                    };
-                });
+                    }
+                }
+            };
+        });
         this.tableTournaments.getColumns()
                 .add(this.tableColumnTournamentStatus);
 
@@ -124,11 +128,15 @@ public class TournamentSelectionController implements EventUser {
         this.loadedEvent = event;
 
         /* Add all tournaments to the table view and enable searching */
-        Comparator<Tournament> comparator = (firstTournament, lastPlayer) -> (int) (SearchUtilities.getSearchRelevance(
-                firstTournament.getName(),
-                TournamentSelectionController.this.textFieldTournamentSearch.getText()) - SearchUtilities
-                .getSearchRelevance(lastPlayer.getName(),
-                        TournamentSelectionController.this.textFieldTournamentSearch.getText()));
+        Comparator<Tournament> comparator = (firstTournament, lastPlayer) -> (int) (SearchUtilities
+                .getSearchRelevance(
+                        firstTournament.getName(),
+                        TournamentSelectionController.this.textFieldTournamentSearch
+                                .getText()) - SearchUtilities
+                .getSearchRelevance(
+                        lastPlayer.getName(),
+                        TournamentSelectionController.this.textFieldTournamentSearch
+                                .getText()));
 
         this.textFieldTournamentSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {

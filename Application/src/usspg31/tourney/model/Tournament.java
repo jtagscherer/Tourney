@@ -36,8 +36,7 @@ public class Tournament implements Cloneable {
     private final ObjectProperty<ExecutionState> executionState;
 
     /**
-     * new TournamentModule() Create a new tournament and initialize all its
-     * properties
+     * Create a new tournament and initialize all its properties
      */
     public Tournament() {
         this.registeredPlayers = FXCollections.observableArrayList();

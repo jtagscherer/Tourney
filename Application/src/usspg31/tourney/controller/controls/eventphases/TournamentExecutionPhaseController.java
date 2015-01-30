@@ -15,11 +15,14 @@ import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.eventphases.execution.TournamentExecutionController;
 import usspg31.tourney.controller.controls.eventphases.execution.TournamentSelectionController;
 import usspg31.tourney.controller.dialogs.AttendanceDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.Tournament.ExecutionState;
 
 public class TournamentExecutionPhaseController implements EventUser {
 
@@ -107,15 +110,50 @@ public class TournamentExecutionPhaseController implements EventUser {
             }
         }
 
-        /* Open an attendance dialog with the collected players as the input */
-        this.attendanceDialog.properties(attendingPlayers)
-                .onResult((result, returnValue) -> {
-                    if (result == DialogResult.OK) {
-                        tournament.getAttendingPlayers().setAll(returnValue);
-                        this.contentBox.getChildren().clear();
-                        this.executionController.loadTournament(tournament);
-                        this.contentBox.getChildren().add(this.executionPhase);
-                    }
-                }).show();
+        switch (tournament.getExecutionState()) {
+        case NOT_EXECUTED:
+            /* Open an attendance dialog with the collected players as the input */
+            this.attendanceDialog
+                    .properties(attendingPlayers)
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.OK) {
+                                    tournament.getAttendingPlayers().setAll(
+                                            returnValue);
+                                    tournament
+                                            .setExecutionState(ExecutionState.CURRENTLY_EXECUTED);
+                                    this.contentBox.getChildren().clear();
+                                    this.executionController
+                                            .loadTournament(tournament);
+                                    this.contentBox.getChildren().add(
+                                            this.executionPhase);
+                                }
+                            }).show();
+            break;
+        case CURRENTLY_EXECUTED:
+            this.contentBox.getChildren().clear();
+            this.executionController.loadTournament(tournament);
+            this.contentBox.getChildren().add(this.executionPhase);
+            break;
+        case FINISHED:
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "tournamentselection.dialogs.execute.error"))
+                    .modalDialog()
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .title("dialogs.titles.error")
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.YES) {
+                                    tournament.getRounds().clear();
+                                    tournament.getScoreTable().clear();
+                                    tournament.getAttendingPlayers().clear();
+                                    tournament.getRemainingPlayers().clear();
+                                    tournament.getReceivedByePlayers().clear();
+                                    tournament
+                                            .setExecutionState(ExecutionState.NOT_EXECUTED);
+                                }
+                            }).show();
+            break;
+        }
     }
 }

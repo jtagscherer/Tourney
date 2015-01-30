@@ -113,9 +113,13 @@ public class TournamentDocument {
 
         /* Extract the tournament from the corresponding XML tag */
         Node metaData = this.document.getElementsByTagName("meta").item(0);
-        executionState = ExecutionState.valueOf(FileLoader
-                .getFirstChildNodeByTag(metaData, "execution-state")
-                .getTextContent());
+        if (FileLoader.getFirstChildNodeByTag(metaData, "execution-state") != null) {
+            executionState = ExecutionState.valueOf(FileLoader
+                    .getFirstChildNodeByTag(metaData, "execution-state")
+                    .getTextContent());
+        } else {
+            executionState = ExecutionState.NOT_EXECUTED;
+        }
 
         return executionState;
     }
