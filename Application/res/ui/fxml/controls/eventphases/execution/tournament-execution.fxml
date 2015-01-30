@@ -30,24 +30,43 @@
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<children>
 				<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
-				<VBox spacing="5.0" styleClass="table-edit-button-container">
-					<children>
+				<VBox spacing="5.0">
+					<VBox spacing="5.0" styleClass="table-edit-button-container">
 						<Button fx:id="buttonStartRound" disable="true" onAction="#onButtonStartRoundClicked" styleClass="table-edit-button">
 							<graphic>
 								<IconPane styleClass="icon-add, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.startround" />
+							</tooltip>
 						</Button>
 						<Button fx:id="buttonEnterResult" disable="true" onAction="#onButtonEnterResultClicked" styleClass="table-edit-button">
 							<graphic>
 								<IconPane styleClass="icon-edit, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.enterresult" />
+							</tooltip>
 						</Button>
 						<Button fx:id="buttonSwapPlayers" disable="true" onAction="#onButtonSwapPlayersClicked" styleClass="table-edit-button">
 							<graphic>
 								<IconPane styleClass="icon-swap-horizontal, half" />
 							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.swapplayers" />
+							</tooltip>
 						</Button>
-					</children>
+					</VBox>
+					<VBox spacing="5.0" styleClass="table-edit-button-container" alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
+						<Button fx:id="cancelExecution" onAction="#onButtonCancelExecutionClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-cancel, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.cancel" />
+							</tooltip>
+						</Button>
+					</VBox>
 				</VBox>
             <!-- <VBox styleClass="round-timer">
                <children>

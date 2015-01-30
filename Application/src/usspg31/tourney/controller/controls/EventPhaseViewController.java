@@ -123,6 +123,7 @@ public class EventPhaseViewController implements EventUser {
         this.eventPhaseContainer.getChildren().addAll(this.eventSetupPhase,
                 this.preRegistrationPhase, this.registrationPhase,
                 this.tournamentExecutionPhase);
+        this.eventPhaseContainer.toBack();
 
         this.passwordDialog = new PasswordDialog().modalDialog();
         this.pdfOutputDialog = new PdfOutputSelectionDialog().modalDialog();

@@ -13,6 +13,7 @@ import usspg31.tourney.controller.RoundTimer;
 import usspg31.tourney.controller.controls.PairingView;
 import usspg31.tourney.controller.controls.PairingView.OverviewMode;
 import usspg31.tourney.controller.controls.TournamentUser;
+import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog.PairingEntry;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -51,6 +52,8 @@ public class TournamentExecutionController implements TournamentUser {
 
     private final ModalDialog<PairingEntry, Pairing> pairingScoreDialog;
 
+    private TournamentExecutionPhaseController superController;
+
     public TournamentExecutionController() {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
     }
@@ -58,6 +61,11 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML
     public void initialize() {
 
+    }
+
+    public void setSuperController(
+            TournamentExecutionPhaseController superController) {
+        this.superController = superController;
     }
 
     @Override
@@ -249,6 +257,10 @@ public class TournamentExecutionController implements TournamentUser {
             totalRoundCount += phase.getRoundCount();
         }
 
+        System.out.println("Current round: "
+                + this.pairingView.getSelectedRound());
+        System.out.println("Total round count: " + totalRoundCount);
+
         // have we reached the last available round?
         if (this.pairingView.getSelectedRound() >= totalRoundCount - 1) {
             this.buttonStartRound.setDisable(true);
@@ -280,5 +292,11 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonSwapPlayersClicked(ActionEvent e) {
         log.info("Swap Players Button clicked");
 
+    }
+
+    @FXML
+    private void onButtonCancelExecutionClicked(ActionEvent e) {
+        log.info("Cancel Execution Button clicked");
+        this.superController.cancelExecution();
     }
 }
