@@ -34,7 +34,7 @@
 					<VBox spacing="5.0" styleClass="table-edit-button-container">
 						<Button fx:id="buttonStartRound" disable="true" onAction="#onButtonStartRoundClicked" styleClass="table-edit-button">
 							<graphic>
-								<IconPane styleClass="icon-add, half" />
+								<IconPane fx:id="iconPaneStartRound" styleClass="icon-add, half" />
 							</graphic>
 							<tooltip>
 								<Tooltip text="%tournamentexecutionphase.tooltips.startround" />

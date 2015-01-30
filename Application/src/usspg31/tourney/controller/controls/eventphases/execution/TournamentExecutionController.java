@@ -16,14 +16,18 @@ import usspg31.tourney.controller.controls.TournamentUser;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog.PairingEntry;
+import usspg31.tourney.controller.dialogs.VictoryConfiguration;
+import usspg31.tourney.controller.dialogs.VictoryDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
+import usspg31.tourney.controller.layout.IconPane;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.Tournament.ExecutionState;
 import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.undo.UndoManager;
 
@@ -45,17 +49,23 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML private Button buttonResetTime;
     @FXML private Button buttonSubtractTime;
 
+    @FXML private IconPane iconPaneStartRound;
+
     private RoundTimer roundTimer;
 
     private Tournament loadedTournament;
     private RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
 
     private final ModalDialog<PairingEntry, Pairing> pairingScoreDialog;
+    private final ModalDialog<VictoryConfiguration, Object> victoryDialog;
 
     private TournamentExecutionPhaseController superController;
+    private boolean tournamentFinished = false;
+    private boolean displayVictoryMessage = false;
 
     public TournamentExecutionController() {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
+        this.victoryDialog = new VictoryDialog().modalDialog();
     }
 
     @FXML
@@ -94,6 +104,7 @@ public class TournamentExecutionController implements TournamentUser {
 
         if (tournament.getRounds().size() == 0) {
             this.generateRound();
+            this.checkForTournamentFinish();
         }
 
         // register undo properties
@@ -153,7 +164,19 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML
     private void onButtonStartRoundClicked(ActionEvent event) {
         log.finer("Start Round Button was clicked");
-        this.generateRound();
+        if (!this.displayVictoryMessage) {
+            this.generateRound();
+            this.checkForTournamentFinish();
+        } else {
+            this.buttonStartRound.setDisable(true);
+            this.loadedTournament.setExecutionState(ExecutionState.FINISHED);
+            VictoryConfiguration configuration = new VictoryConfiguration();
+            configuration.setWinningPlayer(this.loadedTournament.getRounds()
+                    .get(this.loadedTournament.getRounds().size() - 1)
+                    .getPairings().get(0).getOpponents().get(0));
+            configuration.setTournamentName(this.loadedTournament.getName());
+            this.victoryDialog.properties(configuration).show();
+        }
     }
 
     private void generateRound() {
@@ -186,6 +209,25 @@ public class TournamentExecutionController implements TournamentUser {
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
+
+        if (this.tournamentFinished) {
+            this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
+                    "icon-finish", "half");
+            this.buttonStartRound.setDisable(false);
+            this.displayVictoryMessage = true;
+        }
+    }
+
+    private void checkForTournamentFinish() {
+        /* Check if this is the last game phase and there are no pairings left */
+        if (this.loadedTournament.getRounds()
+                .get(this.loadedTournament.getRounds().size() - 1)
+                .getPairings().size() == 1
+                && this.loadedTournament.getRuleSet().getPhaseList().size() - 1 == PairingHelper
+                        .findPhase(this.loadedTournament.getRounds().size(),
+                                this.loadedTournament).getPhaseNumber()) {
+            this.tournamentFinished = true;
+        }
     }
 
     @FXML
@@ -256,10 +298,6 @@ public class TournamentExecutionController implements TournamentUser {
                 .getPhaseList()) {
             totalRoundCount += phase.getRoundCount();
         }
-
-        System.out.println("Current round: "
-                + this.pairingView.getSelectedRound());
-        System.out.println("Total round count: " + totalRoundCount);
 
         // have we reached the last available round?
         if (this.pairingView.getSelectedRound() >= totalRoundCount - 1) {

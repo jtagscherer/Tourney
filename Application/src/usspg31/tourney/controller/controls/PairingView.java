@@ -129,13 +129,15 @@ public class PairingView extends VBox implements TournamentUser {
                 }
 
                 for (Node child : pairingContainer.getChildren()) {
-                    if (scaleFactor > 1 && child.getScaleX() < 5) {
-                        child.setScaleX(child.getScaleX() * scaleFactor);
-                        child.setScaleY(child.getScaleY() * scaleFactor);
-                    }
-                    if (scaleFactor < 1 && child.getScaleX() > 0.2) {
-                        child.setScaleX(child.getScaleX() * scaleFactor);
-                        child.setScaleY(child.getScaleY() * scaleFactor);
+                    if (!(child instanceof PairingNode)) {
+                        if (scaleFactor > 1 && child.getScaleX() < 5) {
+                            child.setScaleX(child.getScaleX() * scaleFactor);
+                            child.setScaleY(child.getScaleY() * scaleFactor);
+                        }
+                        if (scaleFactor < 1 && child.getScaleX() > 0.2) {
+                            child.setScaleX(child.getScaleX() * scaleFactor);
+                            child.setScaleY(child.getScaleY() * scaleFactor);
+                        }
                     }
                 }
             }

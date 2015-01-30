@@ -30,10 +30,22 @@
 	-fx-min-height: 480px;
 }
 
+.big-heading {
+	-fx-font-family: "Roboto Slab";
+	-fx-font-weight: bold;
+	-fx-font-size: 36;
+}
+
 .heading {
 	-fx-font-family: "Roboto Slab";
 	-fx-font-weight: bold;
 	-fx-font-size: 30;
+}
+
+.medium-heading {
+	-fx-font-family: "Roboto Slab";
+	-fx-font-weight: bold;
+	-fx-font-size: 26;
 }
 
 .sub-heading {
