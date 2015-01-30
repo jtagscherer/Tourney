@@ -55,11 +55,19 @@ public class TournamentExecutionController implements TournamentUser {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
     }
 
+    @FXML
+    public void initialize() {
+
+    }
+
     @Override
     public void loadTournament(Tournament tournament) {
         log.info("Loading Tournament");
         this.loadedTournament = tournament;
-        this.loadedTournament.getRemainingPlayers().addAll(this.loadedTournament.getAttendingPlayers());
+        this.loadedTournament.getRemainingPlayers().addAll(
+                this.loadedTournament.getAttendingPlayers());
+
+        this.buttonPairingOverview.getStyleClass().add("selected-button");
 
         this.pairingView.SelectedRoundProperty().addListener((ov, o, n) -> {
             if (n.intValue() > o.intValue()) {
@@ -175,12 +183,22 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML
     private void onButtonPairingOverviewClicked(ActionEvent event) {
         log.info("Pairing Overview Button was clicked");
+        this.buttonPhaseOverview.getStyleClass().remove("selected-button");
+        if (!this.buttonPairingOverview.getStyleClass().contains(
+                "selected-button")) {
+            this.buttonPairingOverview.getStyleClass().add("selected-button");
+        }
         this.pairingView.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
     }
 
     @FXML
     private void onButtonPhaseOverviewClicked(ActionEvent event) {
         log.info("Phase Overview Button was clicked");
+        this.buttonPairingOverview.getStyleClass().remove("selected-button");
+        if (!this.buttonPhaseOverview.getStyleClass().contains(
+                "selected-button")) {
+            this.buttonPhaseOverview.getStyleClass().add("selected-button");
+        }
         this.pairingView.setOverviewMode(OverviewMode.PHASE_OVERVIEW);
     }
 
@@ -226,7 +244,8 @@ public class TournamentExecutionController implements TournamentUser {
         // all pairings
         // check, if all pairings have a score
         int totalRoundCount = 0;
-        for (GamePhase phase : this.loadedTournament.getRuleSet().getPhaseList()) {
+        for (GamePhase phase : this.loadedTournament.getRuleSet()
+                .getPhaseList()) {
             totalRoundCount += phase.getRoundCount();
         }
 
@@ -236,13 +255,13 @@ public class TournamentExecutionController implements TournamentUser {
             return;
         }
 
-       
         boolean roundFinished = true;
         roundFinishCheck: for (Pairing pairing : this.loadedTournament
                 .getRounds().get(this.pairingView.getSelectedRound())
                 .getPairings()) {
             for (PlayerScore playerScore : pairing.getScoreTable()) {
-                if (playerScore.getScore().size() < this.loadedTournament.getRuleSet().getPossibleScores().size()) {
+                if (playerScore.getScore().size() < this.loadedTournament
+                        .getRuleSet().getPossibleScores().size()) {
                     roundFinished = false;
                     break roundFinishCheck;
                 }

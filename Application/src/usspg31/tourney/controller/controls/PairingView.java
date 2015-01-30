@@ -537,6 +537,7 @@ public class PairingView extends VBox implements TournamentUser {
             // make the button select the correct phase
             breadcrumb.setOnAction(event -> {
                 this.setSelectedPhase(selectedPhase);
+                breadcrumb.getStyleClass().add("selected-button");
             });
 
             // assign the correct style classes to our breadcrumb button
@@ -550,7 +551,7 @@ public class PairingView extends VBox implements TournamentUser {
                 breadcrumb.getStyleClass().add("middle");
             }
 
-            // disable breadcrumbs for phases that are yet to be begun
+            // disable breadcrumbs for phases that are yet to be begin
             breadcrumb.setDisable(phaseNumber > maxPhaseIndex);
 
             this.breadcrumbContainer.getChildren().add(breadcrumb);
@@ -570,6 +571,7 @@ public class PairingView extends VBox implements TournamentUser {
             // make the button select the correct round
             breadcrumb.setOnAction(event -> {
                 this.setSelectedRound(selectRound);
+                breadcrumb.getStyleClass().add("selected-button");
             });
 
             // assign the correct style classes to our breadcrumb button
@@ -636,6 +638,15 @@ public class PairingView extends VBox implements TournamentUser {
      *            sets the new value for the SelectedRound property
      */
     public void setSelectedRound(int value) {
+        for (Node breadcrumbNode : this.breadcrumbContainer.getChildren()) {
+            Button breadcrumbButton = (Button) breadcrumbNode;
+            if (breadcrumbButton.getText().startsWith(
+                    PreferencesManager.getInstance().localizeString(
+                            "pairingview.round"))) {
+                breadcrumbButton.getStyleClass().remove("selected-button");
+            }
+        }
+
         this.SelectedRoundProperty().set(value);
     }
 
@@ -661,6 +672,14 @@ public class PairingView extends VBox implements TournamentUser {
      *            sets the new value for the SelectedRound property
      */
     public void setSelectedPhase(int value) {
+        for (Node breadcrumbNode : this.breadcrumbContainer.getChildren()) {
+            Button breadcrumbButton = (Button) breadcrumbNode;
+            if (breadcrumbButton.getText().startsWith(
+                    PreferencesManager.getInstance().localizeString(
+                            "pairingview.phase"))) {
+                breadcrumbButton.getStyleClass().remove("selected-button");
+            }
+        }
         this.SelectedPhaseProperty().set(value);
     }
 
