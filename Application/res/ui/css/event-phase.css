@@ -61,6 +61,11 @@
 	-fx-font-size: 42;
 }
 
+.time-big {
+	-fx-font-family: "Roboto Light";
+	-fx-font-size: 62;
+}
+
 .timer-button {
 	-fx-padding: 10px 10px 10px 10px;
 	-fx-pref-width: 20;

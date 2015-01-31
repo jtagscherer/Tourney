@@ -1,14 +1,20 @@
 package usspg31.tourney.controller.controls.eventphases.execution;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import usspg31.tourney.controller.MainWindow;
+import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.RoundTimer;
 import usspg31.tourney.controller.controls.PairingView;
 import usspg31.tourney.controller.controls.PairingView.OverviewMode;
@@ -41,6 +47,8 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML private PairingView pairingView;
     @FXML private Button buttonStartRound;
     @FXML private Button buttonEnterResult;
+    @FXML private Button buttonSwapPlayers;
+    @FXML private Button buttonOpenProjectorWindow;
 
     @FXML private Label labelTime;
     @FXML private Button buttonAddTime;
@@ -67,9 +75,14 @@ public class TournamentExecutionController implements TournamentUser {
     private boolean tournamentFinished = false;
     private boolean displayVictoryMessage = false;
 
+    private ArrayList<TournamentExecutionProjectionController> projectorWindowControllers;
+    private OverviewMode currentOverviewMode;
+
     public TournamentExecutionController() {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
         this.victoryDialog = new VictoryDialog().modalDialog();
+        this.projectorWindowControllers = new ArrayList<TournamentExecutionProjectionController>();
+        this.currentOverviewMode = OverviewMode.PAIRING_OVERVIEW;
     }
 
     @FXML
@@ -95,7 +108,7 @@ public class TournamentExecutionController implements TournamentUser {
 
         this.pairingView.SelectedRoundProperty().addListener((ov, o, n) -> {
             if (n.intValue() > o.intValue()) {
-                // this.updateRoundTimer();
+                this.updateRoundTimer();
             }
         });
 
@@ -189,6 +202,7 @@ public class TournamentExecutionController implements TournamentUser {
         if (!this.displayVictoryMessage) {
             this.generateRound();
             this.checkForTournamentFinish();
+            this.updateProjectorWindows();
         } else {
             this.buttonStartRound.setDisable(true);
             this.loadedTournament.setExecutionState(ExecutionState.FINISHED);
@@ -232,8 +246,6 @@ public class TournamentExecutionController implements TournamentUser {
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
 
-        this.updateRoundTimer();
-
         if (this.tournamentFinished) {
             this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                     "icon-finish", "half");
@@ -263,7 +275,7 @@ public class TournamentExecutionController implements TournamentUser {
                 "selected-button")) {
             this.buttonPairingOverview.getStyleClass().add("selected-button");
         }
-        this.pairingView.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
+        this.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
     }
 
     @FXML
@@ -274,7 +286,16 @@ public class TournamentExecutionController implements TournamentUser {
                 "selected-button")) {
             this.buttonPhaseOverview.getStyleClass().add("selected-button");
         }
-        this.pairingView.setOverviewMode(OverviewMode.PHASE_OVERVIEW);
+        this.setOverviewMode(OverviewMode.PHASE_OVERVIEW);
+    }
+
+    public void setOverviewMode(OverviewMode mode) {
+        this.currentOverviewMode = mode;
+        this.pairingView.setOverviewMode(mode);
+    }
+
+    public OverviewMode getOverviewMode() {
+        return this.currentOverviewMode;
     }
 
     @FXML
@@ -307,6 +328,7 @@ public class TournamentExecutionController implements TournamentUser {
                                 this.pairingView.updateOverview();
                                 this.checkRoundFinished();
 
+                                this.updateProjectorWindows();
                                 MainWindow.getInstance()
                                         .getEventPhaseViewController()
                                         .activateSaveButton();
@@ -354,12 +376,61 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML
     private void onButtonSwapPlayersClicked(ActionEvent e) {
         log.info("Swap Players Button clicked");
-
+        this.updateProjectorWindows();
     }
 
     @FXML
     private void onButtonCancelExecutionClicked(ActionEvent e) {
         log.info("Cancel Execution Button clicked");
         this.superController.cancelExecution();
+    }
+
+    private void updateProjectorWindows() {
+        for (TournamentExecutionProjectionController controller : this.projectorWindowControllers) {
+            controller.loadTournament((Tournament) this.loadedTournament
+                    .clone());
+            switch (controller.getOverviewMode()) {
+            case PHASE_OVERVIEW:
+                controller.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
+                controller.setOverviewMode(OverviewMode.PHASE_OVERVIEW);
+                break;
+            case PAIRING_OVERVIEW:
+                controller.setOverviewMode(OverviewMode.PHASE_OVERVIEW);
+                controller.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
+                break;
+            }
+        }
+    }
+
+    @FXML
+    private void onButtonOpenProjectorWindowClicked(ActionEvent e) {
+        log.info("Open Projector Window Button clicked");
+
+        try {
+            FXMLLoader executionLoader = new FXMLLoader(
+                    this.getClass()
+                            .getResource(
+                                    "/ui/fxml/controls/eventphases/execution/tournament-execution-projection.fxml"),
+                    PreferencesManager.getInstance().getSelectedLanguage()
+                            .getLanguageBundle());
+            Parent executionWindow = executionLoader.load();
+
+            TournamentExecutionProjectionController controller = executionLoader
+                    .getController();
+            controller.loadTournament((Tournament) this.loadedTournament
+                    .clone());
+            this.projectorWindowControllers.add(controller);
+            this.roundTimer
+                    .setProjectionControllers(this.projectorWindowControllers);
+            this.roundTimer.updateTimerString();
+
+            Stage stage = new Stage();
+            stage.setTitle(this.loadedTournament.getName());
+            stage.setScene(new Scene(executionWindow, 600, 450));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
     }
 }

@@ -111,6 +111,7 @@ public class PairingView extends VBox implements TournamentUser {
 
     @FXML
     private void initialize() {
+        this.overviewMode = new SimpleObjectProperty<PairingView.OverviewMode>();
         this.SelectedRoundProperty().addListener(this::onSelectedRoundChanged);
         this.SelectedPhaseProperty().addListener(this::onSelectedPhaseChanged);
         this.overviewModeProperty().addListener(this::onOverviewModeChanged);
@@ -128,17 +129,17 @@ public class PairingView extends VBox implements TournamentUser {
                     scaleFactor = 1 - PairingView.scaleDelta;
                 }
 
-                for (Node child : pairingContainer.getChildren()) {
-                    if (!(child instanceof PairingNode)) {
-                        if (scaleFactor > 1 && child.getScaleX() < 5) {
-                            child.setScaleX(child.getScaleX() * scaleFactor);
-                            child.setScaleY(child.getScaleY() * scaleFactor);
-                        }
-                        if (scaleFactor < 1 && child.getScaleX() > 0.2) {
-                            child.setScaleX(child.getScaleX() * scaleFactor);
-                            child.setScaleY(child.getScaleY() * scaleFactor);
-                        }
-                    }
+                if (scaleFactor > 1 && pairingContainer.getScaleX() < 5) {
+                    pairingContainer.setScaleX(pairingContainer.getScaleX()
+                            * scaleFactor);
+                    pairingContainer.setScaleY(pairingContainer.getScaleY()
+                            * scaleFactor);
+                }
+                if (scaleFactor < 1 && pairingContainer.getScaleX() > 0.2) {
+                    pairingContainer.setScaleX(pairingContainer.getScaleX()
+                            * scaleFactor);
+                    pairingContainer.setScaleY(pairingContainer.getScaleY()
+                            * scaleFactor);
                 }
             }
         });
