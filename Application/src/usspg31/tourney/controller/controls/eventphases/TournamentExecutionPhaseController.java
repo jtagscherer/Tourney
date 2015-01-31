@@ -159,6 +159,13 @@ public class TournamentExecutionPhaseController implements EventUser {
                                     this.executionController
                                             .loadTournament(tournament);
                                     this.slideToPhase(1);
+                                } else {
+                                    MainWindow.getInstance()
+                                            .getEventPhaseViewController()
+                                            .unloadEvent();
+                                    MainWindow.getInstance().slideDown(
+                                            MainWindow.getInstance()
+                                                    .getMainMenu());
                                 }
                             }).show();
             break;

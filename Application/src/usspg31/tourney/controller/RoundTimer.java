@@ -4,6 +4,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.util.Duration;
 
 public class RoundTimer {
@@ -11,14 +13,21 @@ public class RoundTimer {
     private final int initialTimerDuration;
     private IntegerProperty timerDuration;
 
+    private final StringProperty timerString;
+
     private final Timeline timer;
+    private boolean paused = true;
 
     public RoundTimer(int initialDuration) {
         this.initialTimerDuration = initialDuration;
         this.timerDuration = new SimpleIntegerProperty(initialDuration);
+        this.timerString = new SimpleStringProperty(String.format("%d:%02d",
+                initialDuration / 60, initialDuration % 60));
+
         this.timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (this.timerDuration.get() > 0) {
                 this.timerDuration.set(this.timerDuration.get() - 1);
+                this.updateTimerString();
             } else {
                 this.pause();
             }
@@ -29,19 +38,27 @@ public class RoundTimer {
     public void resume() {
         if (this.timerDuration.get() > 0) {
             this.timer.play();
+            this.paused = false;
         }
     }
 
     public void pause() {
         this.timer.stop();
+        this.paused = true;
     }
 
     public void reset() {
         this.timerDuration.set(this.initialTimerDuration);
+        this.updateTimerString();
+    }
+
+    public boolean isPaused() {
+        return this.paused;
     }
 
     public void addTime() {
         this.timerDuration.set(this.timerDuration.get() + 30);
+        this.updateTimerString();
     }
 
     public void subtractTime() {
@@ -50,10 +67,19 @@ public class RoundTimer {
             this.timerDuration.set(0);
             this.pause();
         }
+        this.updateTimerString();
+    }
+
+    private void updateTimerString() {
+        this.timerString.set(String.format("%d:%02d",
+                this.timerDuration.get() / 60, this.timerDuration.get() % 60));
     }
 
     public IntegerProperty getTimerDuration() {
         return this.timerDuration;
     }
 
+    public StringProperty timerStringProperty() {
+        return this.timerString;
+    }
 }

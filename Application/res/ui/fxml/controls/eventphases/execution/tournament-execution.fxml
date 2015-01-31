@@ -18,7 +18,58 @@
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
-		<Label styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
+		<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+			<Label fx:id="labelHeader" styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
+			<Pane HBox.hgrow="ALWAYS" />
+			<VBox styleClass="round-timer">
+               <children>
+                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="labelTime" styleClass="time" text="Label" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Button fx:id="buttonAddTime" styleClass="multi-button, left" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-add" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonPauseResumeTime" styleClass="multi-button, middle" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane fx:id="iconPanePauseResume" styleClass="icon-play, half" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonResetTime" styleClass="multi-button, middle" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-reset" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonSubtractTime" styleClass="multi-button, right" mnemonicParsing="false">
+                           <graphic>
+                              <IconPane>
+                                 <styleClass>
+                                    <String fx:value="icon-remove" />
+                                    <String fx:value="half" />
+                                 </styleClass>
+                              </IconPane>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+		</HBox>
 		<HBox>
 			<Button fx:id="buttonPairingOverview" text="%tournamentexecutionphase.pairingoverview"
 				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, left"
@@ -68,69 +119,6 @@
 						</Button>
 					</VBox>
 				</VBox>
-            <!-- <VBox styleClass="round-timer">
-               <children>
-                  <HBox>
-                     <children>
-                        <Label fx:id="labelTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="time" text="Label" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Button fx:id="buttonAddTime" mnemonicParsing="false">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-add" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="buttonPauseTime" mnemonicParsing="false">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-pause" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="buttonResumeTime" mnemonicParsing="false">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-play" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="buttonResetTime" mnemonicParsing="false">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-reset" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="buttonSubtractTime" mnemonicParsing="false">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-remove" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox> -->
 			</children>
 		</HBox>
 	</children>

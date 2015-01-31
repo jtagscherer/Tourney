@@ -44,12 +44,14 @@ public class TournamentExecutionController implements TournamentUser {
 
     @FXML private Label labelTime;
     @FXML private Button buttonAddTime;
-    @FXML private Button buttonPauseTime;
-    @FXML private Button buttonResumeTime;
+    @FXML private Button buttonPauseResumeTime;
     @FXML private Button buttonResetTime;
     @FXML private Button buttonSubtractTime;
+    @FXML private IconPane iconPanePauseResume;
 
     @FXML private Button buttonCancelExecution;
+
+    @FXML private Label labelHeader;
 
     @FXML private IconPane iconPaneStartRound;
 
@@ -87,6 +89,8 @@ public class TournamentExecutionController implements TournamentUser {
         this.loadedTournament.getRemainingPlayers().addAll(
                 this.loadedTournament.getAttendingPlayers());
 
+        this.labelHeader.setText(this.loadedTournament.getName());
+
         this.buttonPairingOverview.getStyleClass().add("selected-button");
 
         this.pairingView.SelectedRoundProperty().addListener((ov, o, n) -> {
@@ -107,6 +111,13 @@ public class TournamentExecutionController implements TournamentUser {
         if (tournament.getRounds().size() == 0) {
             this.generateRound();
             this.checkForTournamentFinish();
+            if (this.tournamentFinished) {
+                this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
+                        "icon-finish", "half");
+                this.buttonStartRound.setDisable(false);
+                this.displayVictoryMessage = true;
+                this.roundTimer.reset();
+            }
         }
 
         // register undo properties
@@ -114,7 +125,7 @@ public class TournamentExecutionController implements TournamentUser {
                 .getEventPhaseViewController().getUndoManager();
         undo.registerUndoProperty(this.loadedTournament.getRounds());
 
-        // this.updateRoundTimer();
+        this.updateRoundTimer();
     }
 
     public void disableCancelButton(boolean disable) {
@@ -138,18 +149,23 @@ public class TournamentExecutionController implements TournamentUser {
 
         this.labelTime.textProperty().unbind();
         this.labelTime.textProperty().bind(
-                this.roundTimer.getTimerDuration().asString().concat("s"));
+                this.roundTimer.timerStringProperty());
         this.buttonAddTime.setOnAction(event -> {
             this.roundTimer.addTime();
         });
         this.buttonSubtractTime.setOnAction(event -> {
             this.roundTimer.subtractTime();
         });
-        this.buttonPauseTime.setOnAction(event -> {
-            this.roundTimer.pause();
-        });
-        this.buttonResumeTime.setOnAction(event -> {
-            this.roundTimer.resume();
+        this.buttonPauseResumeTime.setOnAction(event -> {
+            if (!this.roundTimer.isPaused()) {
+                this.roundTimer.pause();
+                this.iconPanePauseResume.getStyleClass().remove("icon-pause");
+                this.iconPanePauseResume.getStyleClass().add("icon-play");
+            } else {
+                this.roundTimer.resume();
+                this.iconPanePauseResume.getStyleClass().remove("icon-play");
+                this.iconPanePauseResume.getStyleClass().add("icon-pause");
+            }
         });
         this.buttonResetTime.setOnAction(event -> {
             this.roundTimer.reset();
@@ -216,11 +232,14 @@ public class TournamentExecutionController implements TournamentUser {
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
 
+        this.updateRoundTimer();
+
         if (this.tournamentFinished) {
             this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                     "icon-finish", "half");
             this.buttonStartRound.setDisable(false);
             this.displayVictoryMessage = true;
+            this.roundTimer.reset();
         }
     }
 
