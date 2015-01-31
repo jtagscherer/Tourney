@@ -106,11 +106,36 @@ public class TournamentExecutionController implements TournamentUser {
 
         this.buttonPairingOverview.getStyleClass().add("selected-button");
 
-        this.pairingView.SelectedRoundProperty().addListener((ov, o, n) -> {
-            if (n.intValue() > o.intValue()) {
-                this.updateRoundTimer();
-            }
-        });
+        this.pairingView
+                .SelectedRoundProperty()
+                .addListener(
+                        (ov, o, n) -> {
+                            if (n.intValue() > o.intValue()) {
+                                if (this.roundTimer != null) {
+                                    if (!this.roundTimer.isPaused()) {
+                                        this.roundTimer.pause();
+                                        this.iconPanePauseResume
+                                                .getStyleClass().remove(
+                                                        "icon-pause");
+                                        this.iconPanePauseResume
+                                                .getStyleClass().add(
+                                                        "icon-play");
+                                    }
+                                    int roundDuration = 0;
+                                    int round = 0;
+                                    for (GamePhase phase : this.loadedTournament
+                                            .getRuleSet().getPhaseList()) {
+                                        if ((round += phase.getRoundCount()) > this.loadedTournament
+                                                .getRounds().size()) {
+                                            roundDuration = (int) phase
+                                                    .getRoundDuration()
+                                                    .getSeconds();
+                                        }
+                                    }
+                                    this.roundTimer.setTime(roundDuration);
+                                }
+                            }
+                        });
 
         this.pairingView.setOnNodeDoubleClicked(() -> {
             this.onButtonEnterResultClicked(null);
@@ -123,7 +148,6 @@ public class TournamentExecutionController implements TournamentUser {
 
         if (tournament.getRounds().size() == 0) {
             this.generateRound();
-            this.checkForTournamentFinish();
             if (this.tournamentFinished) {
                 this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                         "icon-finish", "half");
@@ -131,6 +155,7 @@ public class TournamentExecutionController implements TournamentUser {
                 this.displayVictoryMessage = true;
                 this.roundTimer.reset();
             }
+            this.checkForTournamentFinish();
         }
 
         // register undo properties
@@ -212,6 +237,9 @@ public class TournamentExecutionController implements TournamentUser {
                     .getPairings().get(0).getOpponents().get(0));
             configuration.setTournamentName(this.loadedTournament.getName());
             this.victoryDialog.properties(configuration).show();
+            for (TournamentExecutionProjectionController controller : this.projectorWindowControllers) {
+                controller.showVictoryDialog(configuration);
+            }
         }
     }
 
@@ -419,16 +447,18 @@ public class TournamentExecutionController implements TournamentUser {
                     .getController();
             controller.loadTournament((Tournament) this.loadedTournament
                     .clone());
+
+            Stage stage = new Stage();
+            stage.setTitle(this.loadedTournament.getName());
+            stage.setScene(new Scene(executionWindow, 700, 450));
+            stage.centerOnScreen();
+            stage.show();
+
+            controller.setStage(stage);
             this.projectorWindowControllers.add(controller);
             this.roundTimer
                     .setProjectionControllers(this.projectorWindowControllers);
             this.roundTimer.updateTimerString();
-
-            Stage stage = new Stage();
-            stage.setTitle(this.loadedTournament.getName());
-            stage.setScene(new Scene(executionWindow, 600, 450));
-            stage.centerOnScreen();
-            stage.show();
         } catch (IOException exc) {
             exc.printStackTrace();
         }

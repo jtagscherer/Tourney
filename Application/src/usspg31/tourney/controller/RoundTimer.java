@@ -80,6 +80,11 @@ public class RoundTimer {
         this.updateTimerString();
     }
 
+    public void setTime(int time) {
+        this.timerDuration.set(time);
+        this.updateTimerString();
+    }
+
     public void updateTimerString() {
         String formattedTime = String.format("%d:%02d",
                 this.timerDuration.get() / 60, this.timerDuration.get() % 60);

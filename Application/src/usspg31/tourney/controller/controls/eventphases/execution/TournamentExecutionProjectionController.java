@@ -1,18 +1,19 @@
 package usspg31.tourney.controller.controls.eventphases.execution;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import usspg31.tourney.controller.MainWindow;
-import usspg31.tourney.controller.RoundTimer;
 import usspg31.tourney.controller.controls.PairingView;
 import usspg31.tourney.controller.controls.PairingView.OverviewMode;
 import usspg31.tourney.controller.controls.TournamentUser;
 import usspg31.tourney.controller.dialogs.VictoryConfiguration;
 import usspg31.tourney.controller.dialogs.VictoryDialog;
+import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.undo.UndoManager;
@@ -25,23 +26,22 @@ public class TournamentExecutionProjectionController implements TournamentUser {
     @FXML private Label labelHeader;
     @FXML private Label labelTime;
     @FXML private PairingView pairingView;
-
-    private RoundTimer roundTimer;
+    @FXML private StackPane contentRoot;
 
     private Tournament loadedTournament;
 
     private final ModalDialog<VictoryConfiguration, Object> victoryDialog;
 
-    private boolean tournamentFinished = false;
-    private boolean displayVictoryMessage = false;
-
-    private ArrayList<TournamentExecutionProjectionController> projectorWindowControllers;
     private OverviewMode currentOverviewMode;
+    private Stage stage;
 
     public TournamentExecutionProjectionController() {
         this.victoryDialog = new VictoryDialog().modalDialog();
-        this.projectorWindowControllers = new ArrayList<TournamentExecutionProjectionController>();
         this.currentOverviewMode = OverviewMode.PAIRING_OVERVIEW;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @Override
@@ -59,6 +59,12 @@ public class TournamentExecutionProjectionController implements TournamentUser {
 
     public void setTimeString(String value) {
         this.labelTime.setText(value);
+    }
+
+    public void showVictoryDialog(VictoryConfiguration config) {
+        this.victoryDialog.dialogButtons(DialogButtons.NONE);
+        this.victoryDialog.properties(config)
+                .show(this.stage, this.contentRoot);
     }
 
     @Override

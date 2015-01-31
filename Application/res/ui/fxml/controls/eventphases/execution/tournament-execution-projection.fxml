@@ -18,6 +18,7 @@
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
+		<StackPane fx:id="contentRoot" />
 		<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
 			<Label fx:id="labelHeader" styleClass="big-heading" text="%tournamentexecutionphase.tournamentexecution" />
 			<Pane HBox.hgrow="ALWAYS" />
