@@ -313,6 +313,8 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbTournamentExecution.setDisable(true);
 
             this.registrationPhaseController.chooseRegistratorNumber(this);
+
+            this.buttonExport.setDisable(true);
         } else if (event.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
             this.loadedEvent = event;
             this.tournamentExecutionPhaseController.loadEvent(event);
@@ -328,6 +330,8 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbEventSetup.setDisable(true);
             this.breadcrumbPreRegistration.setDisable(true);
             this.breadcrumbRegistration.setDisable(true);
+
+            this.buttonExport.setDisable(true);
         }
 
         // register undo properties
@@ -351,6 +355,7 @@ public class EventPhaseViewController implements EventUser {
         this.breadcrumbTournamentExecution.getStyleClass().remove(
                 "selected-button");
         this.breadcrumbTournamentExecution.setDisable(false);
+        this.buttonExport.setDisable(false);
 
         /* clear the undo manager's history */
         this.undoManager.clearHistory();

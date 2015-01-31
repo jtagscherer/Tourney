@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.eventphases.execution.TournamentExecutionController;
@@ -27,6 +28,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
+import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.Tournament.ExecutionState;
@@ -139,6 +141,9 @@ public class TournamentExecutionPhaseController implements EventUser {
             }
         }
 
+        this.executionController.disableCancelButton(this.loadedEvent
+                .getUserFlag() == UserFlag.TOURNAMENT_EXECUTION);
+
         switch (tournament.getExecutionState()) {
         case NOT_EXECUTED:
             /* Open an attendance dialog with the collected players as the input */
@@ -177,7 +182,16 @@ public class TournamentExecutionPhaseController implements EventUser {
                                     tournament.getReceivedByePlayers().clear();
                                     tournament
                                             .setExecutionState(ExecutionState.NOT_EXECUTED);
+                                    MainWindow.getInstance()
+                                            .getEventPhaseViewController()
+                                            .saveEvent();
                                 }
+
+                                MainWindow.getInstance()
+                                        .getEventPhaseViewController()
+                                        .unloadEvent();
+                                MainWindow.getInstance().slideDown(
+                                        MainWindow.getInstance().getMainMenu());
                             }).show();
             break;
         }

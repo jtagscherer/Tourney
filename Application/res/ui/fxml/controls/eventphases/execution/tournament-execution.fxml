@@ -58,7 +58,7 @@
 						</Button>
 					</VBox>
 					<VBox spacing="5.0" styleClass="table-edit-button-container" alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
-						<Button fx:id="cancelExecution" onAction="#onButtonCancelExecutionClicked" styleClass="table-edit-button">
+						<Button fx:id="buttonCancelExecution" onAction="#onButtonCancelExecutionClicked" styleClass="table-edit-button">
 							<graphic>
 								<IconPane styleClass="icon-cancel, half" />
 							</graphic>

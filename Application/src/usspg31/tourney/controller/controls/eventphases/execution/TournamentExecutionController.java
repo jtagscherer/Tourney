@@ -49,6 +49,8 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML private Button buttonResetTime;
     @FXML private Button buttonSubtractTime;
 
+    @FXML private Button buttonCancelExecution;
+
     @FXML private IconPane iconPaneStartRound;
 
     private RoundTimer roundTimer;
@@ -113,6 +115,10 @@ public class TournamentExecutionController implements TournamentUser {
         undo.registerUndoProperty(this.loadedTournament.getRounds());
 
         // this.updateRoundTimer();
+    }
+
+    public void disableCancelButton(boolean disable) {
+        this.buttonCancelExecution.setDisable(disable);
     }
 
     private void updateRoundTimer() {
