@@ -436,11 +436,6 @@ public class TournamentExecutionController implements TournamentUser {
                 controller.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
                 break;
             }
-
-            controller.getPairingView().setSelectedPhase(
-                    this.pairingView.getSelectedPhase());
-            controller.getPairingView().setSelectedRound(
-                    this.pairingView.getSelectedRound());
         }
     }
 

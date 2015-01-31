@@ -185,8 +185,6 @@ public final class ModalDialog<P, R> extends StackPane {
     public void show(Stage stage, Pane parent) {
         long time = System.currentTimeMillis();
 
-        System.out.println("Stage " + stage + ", Pane " + parent);
-
         Parent mainWindowRoot = stage.getScene().getRoot();
         mainWindowRoot.setDisable(true);
 

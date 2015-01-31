@@ -81,6 +81,14 @@ public class PairingView extends VBox implements TournamentUser {
     public double lastMouseX = -1.0;
     public double lastMouseY = -1.0;
 
+    private double pairingScale = 1.0;
+    private double pairingX = 0.0;
+    private double pairingY = 0.0;
+
+    private double phaseScale = 1.0;
+    private double phaseX = 0.0;
+    private double phaseY = 0.0;
+
     public PairingView() {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
@@ -162,7 +170,6 @@ public class PairingView extends VBox implements TournamentUser {
                                 + (event.getY() - lastMouseY)
                                 * PairingView.moveDelta);
                     }
-
                     lastMouseX = event.getX();
                     lastMouseY = event.getY();
                 }
@@ -684,9 +691,47 @@ public class PairingView extends VBox implements TournamentUser {
      *            the overview mdoe to set
      */
     public void setOverviewMode(OverviewMode value) {
-        this.overviewModeProperty().set(value);
-        this.setSelectedPhase(this.getSelectedPhase());
-        this.setSelectedRound(this.getSelectedRound());
+        switch (value) {
+        case PAIRING_OVERVIEW:
+            this.phaseScale = this.pairingContainer.getScaleX();
+            if (this.pairingContainer.getChildren().size() > 0) {
+                this.phaseX = this.pairingContainer.getChildren().get(0)
+                        .getTranslateX();
+                this.phaseY = this.pairingContainer.getChildren().get(0)
+                        .getTranslateY();
+            }
+
+            this.overviewModeProperty().set(value);
+            this.setSelectedRound(this.getSelectedRound());
+
+            this.pairingContainer.setScaleX(this.pairingScale);
+            this.pairingContainer.setScaleY(this.pairingScale);
+            for (Node child : pairingContainer.getChildren()) {
+                child.setTranslateX(child.getTranslateX() + this.pairingX);
+                child.setTranslateY(child.getTranslateY() + this.pairingY);
+            }
+            break;
+        case PHASE_OVERVIEW:
+            this.pairingScale = this.pairingContainer.getScaleX();
+            if (this.pairingContainer.getChildren().size() > 0) {
+                this.pairingX = this.pairingContainer.getChildren().get(0)
+                        .getTranslateX();
+                this.pairingY = this.pairingContainer.getChildren().get(0)
+                        .getTranslateY();
+            }
+
+            this.overviewModeProperty().set(value);
+            this.setSelectedPhase(this.getSelectedPhase());
+
+            this.pairingContainer.setScaleX(this.phaseScale);
+            this.pairingContainer.setScaleY(this.phaseScale);
+            for (Node child : pairingContainer.getChildren()) {
+                child.setTranslateX(child.getTranslateX() + this.phaseX);
+                child.setTranslateY(child.getTranslateY() + this.phaseY);
+
+            }
+            break;
+        }
     }
 
     /**
