@@ -217,20 +217,20 @@ public class PairingView extends VBox implements TournamentUser {
     private void onOverviewModeChanged(
             ObservableValue<? extends OverviewMode> observableValue,
             OverviewMode oldValue, OverviewMode newValue) {
+        this.refreshBreadcrumbs();
         if (newValue == OverviewMode.PHASE_OVERVIEW) {
             if (this.getSelectedPhase() < 0) {
                 this.setSelectedPhase(0);
             }
         }
-        this.refreshBreadcrumbs();
         this.updateOverview();
     }
 
     private void onTournamentRoundListChanged(
             Change<? extends TournamentRound> change) {
         if (change.next()) {
-            this.setSelectedRound(this.loadedTournament.getRounds().size() - 1);
             this.refreshBreadcrumbs();
+            this.setSelectedRound(this.loadedTournament.getRounds().size() - 1);
         }
     }
 
@@ -610,7 +610,6 @@ public class PairingView extends VBox implements TournamentUser {
             // make the button select the correct phase
             breadcrumb.setOnAction(event -> {
                 this.setSelectedPhase(selectedPhase);
-                breadcrumb.getStyleClass().add("selected-button");
             });
 
             // assign the correct style classes to our breadcrumb button
@@ -644,7 +643,6 @@ public class PairingView extends VBox implements TournamentUser {
             // make the button select the correct round
             breadcrumb.setOnAction(event -> {
                 this.setSelectedRound(selectRound);
-                breadcrumb.getStyleClass().add("selected-button");
             });
 
             // assign the correct style classes to our breadcrumb button
@@ -687,6 +685,8 @@ public class PairingView extends VBox implements TournamentUser {
      */
     public void setOverviewMode(OverviewMode value) {
         this.overviewModeProperty().set(value);
+        this.setSelectedPhase(this.getSelectedPhase());
+        this.setSelectedRound(this.getSelectedRound());
     }
 
     /**
@@ -711,13 +711,25 @@ public class PairingView extends VBox implements TournamentUser {
      *            sets the new value for the SelectedRound property
      */
     public void setSelectedRound(int value) {
+        int nodeCount = 0;
+        Node selectedBreadcrumb = null;
         for (Node breadcrumbNode : this.breadcrumbContainer.getChildren()) {
             Button breadcrumbButton = (Button) breadcrumbNode;
             if (breadcrumbButton.getText().startsWith(
                     PreferencesManager.getInstance().localizeString(
                             "pairingview.round"))) {
                 breadcrumbButton.getStyleClass().remove("selected-button");
+
+                if (nodeCount == value) {
+                    selectedBreadcrumb = breadcrumbNode;
+                }
             }
+
+            nodeCount++;
+        }
+        if (selectedBreadcrumb != null) {
+            ((Button) selectedBreadcrumb).getStyleClass()
+                    .add("selected-button");
         }
 
         this.SelectedRoundProperty().set(value);
@@ -745,14 +757,27 @@ public class PairingView extends VBox implements TournamentUser {
      *            sets the new value for the SelectedRound property
      */
     public void setSelectedPhase(int value) {
+        int nodeCount = 0;
+        Node selectedBreadcrumb = null;
         for (Node breadcrumbNode : this.breadcrumbContainer.getChildren()) {
             Button breadcrumbButton = (Button) breadcrumbNode;
             if (breadcrumbButton.getText().startsWith(
                     PreferencesManager.getInstance().localizeString(
                             "pairingview.phase"))) {
+                if (nodeCount == value) {
+                    selectedBreadcrumb = breadcrumbNode;
+                }
+
                 breadcrumbButton.getStyleClass().remove("selected-button");
             }
+
+            nodeCount++;
         }
+        if (selectedBreadcrumb != null) {
+            ((Button) selectedBreadcrumb).getStyleClass()
+                    .add("selected-button");
+        }
+
         this.SelectedPhaseProperty().set(value);
     }
 

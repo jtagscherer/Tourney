@@ -299,27 +299,36 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonPairingOverviewClicked(ActionEvent event) {
         log.info("Pairing Overview Button was clicked");
         this.buttonPhaseOverview.getStyleClass().remove("selected-button");
-        if (!this.buttonPairingOverview.getStyleClass().contains(
-                "selected-button")) {
-            this.buttonPairingOverview.getStyleClass().add("selected-button");
-        }
         this.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
     }
 
     @FXML
     private void onButtonPhaseOverviewClicked(ActionEvent event) {
         log.info("Phase Overview Button was clicked");
-        this.buttonPairingOverview.getStyleClass().remove("selected-button");
-        if (!this.buttonPhaseOverview.getStyleClass().contains(
-                "selected-button")) {
-            this.buttonPhaseOverview.getStyleClass().add("selected-button");
-        }
         this.setOverviewMode(OverviewMode.PHASE_OVERVIEW);
     }
 
     public void setOverviewMode(OverviewMode mode) {
         this.currentOverviewMode = mode;
         this.pairingView.setOverviewMode(mode);
+
+        switch (mode) {
+        case PHASE_OVERVIEW:
+            this.buttonPairingOverview.getStyleClass()
+                    .remove("selected-button");
+            if (!this.buttonPhaseOverview.getStyleClass().contains(
+                    "selected-button")) {
+                this.buttonPhaseOverview.getStyleClass().add("selected-button");
+            }
+            break;
+        case PAIRING_OVERVIEW:
+            if (!this.buttonPairingOverview.getStyleClass().contains(
+                    "selected-button")) {
+                this.buttonPairingOverview.getStyleClass().add(
+                        "selected-button");
+            }
+            break;
+        }
     }
 
     public OverviewMode getOverviewMode() {
@@ -427,6 +436,11 @@ public class TournamentExecutionController implements TournamentUser {
                 controller.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
                 break;
             }
+
+            controller.getPairingView().setSelectedPhase(
+                    this.pairingView.getSelectedPhase());
+            controller.getPairingView().setSelectedRound(
+                    this.pairingView.getSelectedRound());
         }
     }
 
@@ -449,7 +463,7 @@ public class TournamentExecutionController implements TournamentUser {
                     .clone());
 
             Stage stage = new Stage();
-            stage.setTitle(this.loadedTournament.getName());
+            stage.setTitle(this.loadedTournament.getName() + " \u2014 Tourney");
             stage.setScene(new Scene(executionWindow, 700, 450));
             stage.centerOnScreen();
             stage.show();

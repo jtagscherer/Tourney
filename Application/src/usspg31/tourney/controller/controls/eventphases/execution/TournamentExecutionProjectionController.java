@@ -4,10 +4,10 @@ import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.controls.PairingView;
 import usspg31.tourney.controller.controls.PairingView.OverviewMode;
 import usspg31.tourney.controller.controls.TournamentUser;
@@ -16,7 +16,6 @@ import usspg31.tourney.controller.dialogs.VictoryDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.model.Tournament;
-import usspg31.tourney.model.undo.UndoManager;
 
 public class TournamentExecutionProjectionController implements TournamentUser {
 
@@ -28,6 +27,9 @@ public class TournamentExecutionProjectionController implements TournamentUser {
     @FXML private PairingView pairingView;
     @FXML private StackPane contentRoot;
 
+    @FXML private Button buttonPairingOverview;
+    @FXML private Button buttonPhaseOverview;
+
     private Tournament loadedTournament;
 
     private final ModalDialog<VictoryConfiguration, Object> victoryDialog;
@@ -37,16 +39,19 @@ public class TournamentExecutionProjectionController implements TournamentUser {
 
     public TournamentExecutionProjectionController() {
         this.victoryDialog = new VictoryDialog().modalDialog();
-        this.currentOverviewMode = OverviewMode.PAIRING_OVERVIEW;
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
+        this.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
+    }
+
+    public PairingView getPairingView() {
+        return this.pairingView;
     }
 
     @Override
     public void loadTournament(Tournament tournament) {
-        log.info("Loading Tournament");
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(
                 this.loadedTournament.getAttendingPlayers());
@@ -71,11 +76,6 @@ public class TournamentExecutionProjectionController implements TournamentUser {
     public void unloadTournament() {
         log.info("Unloading Tournament");
         this.pairingView.unloadTournament();
-
-        // unregister undo properties
-        UndoManager undo = MainWindow.getInstance()
-                .getEventPhaseViewController().getUndoManager();
-        undo.unregisterUndoProperty(this.loadedTournament.getRounds());
     }
 
     @FXML
@@ -93,6 +93,25 @@ public class TournamentExecutionProjectionController implements TournamentUser {
     public void setOverviewMode(OverviewMode mode) {
         this.currentOverviewMode = mode;
         this.pairingView.setOverviewMode(mode);
+
+        switch (mode) {
+        case PHASE_OVERVIEW:
+            this.buttonPairingOverview.getStyleClass()
+                    .remove("selected-button");
+            if (!this.buttonPhaseOverview.getStyleClass().contains(
+                    "selected-button")) {
+                this.buttonPhaseOverview.getStyleClass().add("selected-button");
+            }
+            break;
+        case PAIRING_OVERVIEW:
+            this.buttonPhaseOverview.getStyleClass().remove("selected-button");
+            if (!this.buttonPairingOverview.getStyleClass().contains(
+                    "selected-button")) {
+                this.buttonPairingOverview.getStyleClass().add(
+                        "selected-button");
+            }
+            break;
+        }
     }
 
     public OverviewMode getOverviewMode() {
