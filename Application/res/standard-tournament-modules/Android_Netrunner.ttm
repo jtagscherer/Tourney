@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <rule-template>
     <meta>
-        <name>Android_Netrunner</name>
-        <description>Normal, keine Meisterschaft</description>
+        <name>Android: Netrunner</name>
+        <description>Normal Mode</description>
     </meta>
     <possible-scores>
         <scoring priority="0">
