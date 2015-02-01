@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.MaterialPasswordField;
+import usspg31.tourney.controller.controls.MaterialTextField.ValidationResult;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
@@ -54,6 +55,40 @@ public class PasswordSelectionDialog extends VBox implements
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
+
+            this.passwordFieldCurrent
+                    .setInputValidationCallback(input -> {
+                        if (input.isEmpty()) {
+                            return ValidationResult.ok();
+                        } else if (!input.isEmpty()
+                                && PreferencesManager.getInstance()
+                                        .isPasswordCorrect(input)) {
+                            return ValidationResult.success();
+                        } else {
+                            return ValidationResult
+                                    .error(PreferencesManager
+                                            .getInstance()
+                                            .localizeString(
+                                                    "dialogs.passwordselection.wrongpassword"));
+                        }
+                    });
+
+            this.passwordFieldNewRepeat
+                    .setInputValidationCallback(input -> {
+                        if (input.isEmpty()) {
+                            return ValidationResult.ok();
+                        } else if (!input.isEmpty()
+                                && this.passwordFieldNew.getText().equals(
+                                        this.passwordFieldNewRepeat.getText())) {
+                            return ValidationResult.success();
+                        } else {
+                            return ValidationResult
+                                    .error(PreferencesManager
+                                            .getInstance()
+                                            .localizeString(
+                                                    "dialogs.passwordselection.passwordsdifferent"));
+                        }
+                    });
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
