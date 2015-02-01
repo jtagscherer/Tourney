@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import usspg31.tourney.controller.layout.*?>
+<?import usspg31.tourney.controller.controls.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -18,13 +19,13 @@
 	</stylesheets>
 	<children>
 		<HBox spacing="5.0">
-			<TextField fx:id="textFieldFirstName" promptText="%dialogs.playerpreregistration.firstname"
-				HBox.hgrow="ALWAYS" />
-			<TextField fx:id="textFieldLastName" promptText="%dialogs.playerpreregistration.lastname"
-				HBox.hgrow="ALWAYS" />
+			<MaterialTextField fx:id="textFieldFirstName" promptText="%dialogs.playerpreregistration.firstname"
+				HBox.hgrow="ALWAYS" floatingPrompt="true" />
+			<MaterialTextField fx:id="textFieldLastName" promptText="%dialogs.playerpreregistration.lastname"
+				HBox.hgrow="ALWAYS" floatingPrompt="true" />
 		</HBox>
-		<TextField fx:id="textFieldEmail" promptText="%dialogs.playerpreregistration.email" />
-		<TextField fx:id="textFieldNickname" promptText="%dialogs.playerpreregistration.nickname" />
+		<MaterialTextField fx:id="textFieldEmail" promptText="%dialogs.playerpreregistration.email" floatingPrompt="true" />
+		<MaterialTextField fx:id="textFieldNickname" promptText="%dialogs.playerpreregistration.nickname" floatingPrompt="true" />
 		<Label styleClass="sub-heading" text="%dialogs.playerpreregistration.registeredto" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />

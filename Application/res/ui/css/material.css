@@ -9,7 +9,7 @@
 
 .material-text-field .prompt-label {
 	-fx-font-size: 14pt;
-	-fx-text-fill: #999;
+	-fx-text-fill: #777;
 }
 
 .material-text-field .text-field {
@@ -33,5 +33,5 @@
 .material-text-field .highlighted-underline {
 	-fx-min-height: 2px;
 	-fx-max-height: 2px;
-	-fx-background-color: #17f;
+	-fx-background-color: #039ed3;
 }
