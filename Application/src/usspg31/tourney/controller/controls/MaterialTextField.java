@@ -227,13 +227,12 @@ public class MaterialTextField extends AnchorPane {
     @FXML
     private void initialize() {
         this.textField.focusedProperty().addListener(this::onFocusChanged);
-        this.textField.textProperty().addListener((ov, o, n) -> this.validateInput());
+        this.textField.textProperty().addListener((ov, o, n) -> {
+            this.validateInput();
+            this.updatePrompt();
+        });
 
         this.updateSize();
-
-        this.widthProperty().addListener((ov, o, n) -> {
-            this.updateSize();
-        });
     }
 
     private void validateInput() {
