@@ -90,8 +90,7 @@ public class PreferencesManager {
         }
     }
 
-    private static final String languageFilePath = File.separator + "ui"
-            + File.separator + "language" + File.separator;
+    private static final String languageFilePath = "/ui/language/";
     private static final String languageFilePrefix = "language_";
     private static final String languageFileSuffix = ".properties";
     private static final String availableLanguagesFile = "available_languages";
@@ -101,16 +100,12 @@ public class PreferencesManager {
 
     private static final String defaultPreferencesFile = "defaultPreferences.properties";
     private static final String preferencesFolder = System
-            .getProperty("user.dir")
-            + File.separator
-            + "Tourney"
-            + File.separator + "preferences";
+            .getProperty("user.dir") + "/Tourney/preferences";
     private static final String preferencesFile = "preferences.properties";
 
     private static final String tournamentModuleFolder = PreferencesManager.preferencesFolder
-            + File.separator + "tournament-modules" + File.separator;
-    private static final String standardTournamentModuleFolder = File.separator
-            + "standard-tournament-modules" + File.separator;
+            + "/tournament-modules/";
+    private static final String standardTournamentModuleFolder = "/standard-tournament-modules/";
 
     private static PreferencesManager instance;
 

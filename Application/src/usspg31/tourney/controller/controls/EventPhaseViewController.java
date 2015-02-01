@@ -730,8 +730,8 @@ public class EventPhaseViewController implements EventUser {
                     .setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
 
             String tempDir = System.getProperty("java.io.tmpdir");
-            if (!tempDir.endsWith(File.separator)) {
-                tempDir += File.separator;
+            if (!tempDir.endsWith("/")) {
+                tempDir += "/";
             }
             File tempEvent = new File(tempDir + "tmp"
                     + this.loadedEvent.getName().hashCode() + ".tef");
