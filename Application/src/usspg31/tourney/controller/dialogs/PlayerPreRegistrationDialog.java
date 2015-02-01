@@ -13,10 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.controller.controls.MaterialTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -33,10 +33,10 @@ public class PlayerPreRegistrationDialog extends VBox implements
     private static final Logger log = Logger
             .getLogger(PlayerPreRegistrationDialog.class.getName());
 
-    @FXML private TextField textFieldFirstName;
-    @FXML private TextField textFieldLastName;
-    @FXML private TextField textFieldEmail;
-    @FXML private TextField textFieldNickname;
+    @FXML private MaterialTextField textFieldFirstName;
+    @FXML private MaterialTextField textFieldLastName;
+    @FXML private MaterialTextField textFieldEmail;
+    @FXML private MaterialTextField textFieldNickname;
     @FXML private TableView<Tournament> tableTournaments;
     @FXML private Button buttonAddTournament;
     @FXML private Button buttonRemoveTournament;
@@ -80,6 +80,9 @@ public class PlayerPreRegistrationDialog extends VBox implements
         this.tableColumnTournamentName.setCellValueFactory(cellData -> cellData
                 .getValue().nameProperty());
         this.tableTournaments.getColumns().add(this.tableColumnTournamentName);
+
+        this.tableColumnTournamentName.prefWidthProperty().bind(
+                this.tableTournaments.widthProperty());
 
         this.tableTournaments
                 .setPlaceholder(new Text(PreferencesManager.getInstance()
