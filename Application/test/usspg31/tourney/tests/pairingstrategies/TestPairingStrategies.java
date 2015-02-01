@@ -19,7 +19,7 @@ import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.pairingstrategies.FreeForAll;
 import usspg31.tourney.model.pairingstrategies.ModifiedSwissSystem;
 import usspg31.tourney.model.pairingstrategies.SingleElimination;
-import usspg31.tourney.model.pairingstrategies.SpecialSwissSystem;
+import usspg31.tourney.model.pairingstrategies.SpecialModifiedSwissSystem;
 import usspg31.tourney.model.pairingstrategies.SwissSystem;
 
 public class TestPairingStrategies {
@@ -305,7 +305,7 @@ public class TestPairingStrategies {
         testGamePhase.setNumberOfOpponents(2);
         testGamePhase.setPhaseNumber(0);
         testGamePhase.setRoundCount(2);
-        testGamePhase.setPairingMethod(new SpecialSwissSystem());
+        testGamePhase.setPairingMethod(new SpecialModifiedSwissSystem());
         testTournamentModule.getPhaseList().add(testGamePhase);
 
         testTournament.setRuleSet(testTournamentModule);

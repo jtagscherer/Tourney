@@ -14,7 +14,7 @@ import usspg31.tourney.model.PlayerScoreComperator;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
-public class SpecialSwissSystem implements PairingStrategy {
+public class SpecialModifiedSwissSystem implements PairingStrategy {
 
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
