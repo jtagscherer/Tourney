@@ -56,23 +56,6 @@ public class PasswordSelectionDialog extends VBox implements
             loader.setRoot(this);
             loader.load();
 
-            this.passwordFieldCurrent
-                    .setInputValidationCallback(input -> {
-                        if (input.isEmpty()) {
-                            return ValidationResult.ok();
-                        } else if (!input.isEmpty()
-                                && PreferencesManager.getInstance()
-                                        .isPasswordCorrect(input)) {
-                            return ValidationResult.success();
-                        } else {
-                            return ValidationResult
-                                    .error(PreferencesManager
-                                            .getInstance()
-                                            .localizeString(
-                                                    "dialogs.passwordselection.wrongpassword"));
-                        }
-                    });
-
             this.passwordFieldNewRepeat
                     .setInputValidationCallback(input -> {
                         if (input.isEmpty()) {
