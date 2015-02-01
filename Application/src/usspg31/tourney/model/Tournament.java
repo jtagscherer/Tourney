@@ -268,7 +268,7 @@ public class Tournament implements Cloneable {
             }
         } else {
             log.info("Added score after first round");
-            this.scoreTable.add(score);
+            this.scoreTable.add((PlayerScore) score.clone());
         }
     }
 
