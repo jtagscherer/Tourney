@@ -69,7 +69,7 @@ public class MaterialTextField extends AnchorPane {
             this.iconStyleClasses = iconStyleClass;
         }
         public static ValidationResult ok() {
-            return new ValidationResult("", "#17f", Color.TRANSPARENT);
+            return new ValidationResult("", "#039ed3", Color.TRANSPARENT);
         }
         public static ValidationResult success() {
             return success("");
@@ -78,7 +78,7 @@ public class MaterialTextField extends AnchorPane {
             return new ValidationResult(text, "#3a0", "#3a0", "icon-success", "third");
         }
         public static ValidationResult info(String text) {
-            return new ValidationResult(text, "#17f", "#17f", "icon-info", "third");
+            return new ValidationResult(text, "#039ed3", "#039ed3", "icon-info", "third");
         }
         public static ValidationResult warning(String text) {
             return new ValidationResult(text, "#f80", "#f80", "icon-warning", "third");
@@ -463,15 +463,14 @@ public class MaterialTextField extends AnchorPane {
         this.inputValidationCallbackProperty().set(value);
     }
 
+
     public StringProperty textProperty() {
         return this.textField.textProperty();
     }
 
-
     public String getText() {
         return this.textProperty().get();
     }
-
 
     public void setText(String value) {
         this.textProperty().set(value);
@@ -488,6 +487,19 @@ public class MaterialTextField extends AnchorPane {
 
     public void setPromptText(String value) {
         this.promptTextProperty().set(value);
+    }
+
+
+    public BooleanProperty showPromptProperty() {
+        return this.promptLabel.visibleProperty();
+    }
+
+    public boolean isShowPrompt() {
+        return this.showPromptProperty().get();
+    }
+
+    public void setShowPrompt(boolean value) {
+        this.showPromptProperty().set(value);
     }
 
 
