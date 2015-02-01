@@ -5,9 +5,11 @@ import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -19,6 +21,10 @@ public class EntryPoint extends Application {
             .getName());
 
     private static Stage primaryStage;
+    private static StackPane root;
+    private static Pane mainWindow;
+    private static StackPane modalOverlay;
+
     private static boolean applicationLocked;
 
     private boolean closeRequested;
@@ -55,7 +61,19 @@ public class EntryPoint extends Application {
     public void start(Stage primaryStage) throws Exception {
         EntryPoint.primaryStage = primaryStage;
         try {
-            Pane root = MainWindow.getInstance();
+            root = new StackPane();
+            mainWindow = MainWindow.getInstance();
+            root.getChildren().add(mainWindow);
+            modalOverlay = new StackPane();
+            root.getChildren().add(modalOverlay);
+
+            // disable the main window as long as there are modal dialogs opened
+            mainWindow.disableProperty().bind(
+                    Bindings.size(modalOverlay.getChildren()).greaterThan(0));
+
+            // hide the modalOverlay as long it is empty
+            modalOverlay.visibleProperty().bind(Bindings.size(modalOverlay.getChildren()).greaterThan(0));
+
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
 
@@ -69,8 +87,8 @@ public class EntryPoint extends Application {
                                 "/ui/icon/icon-" + iconSize + ".png")));
             }
 
-            primaryStage.minWidthProperty().bind(root.minWidthProperty());
-            primaryStage.minHeightProperty().bind(root.minHeightProperty());
+            primaryStage.minWidthProperty().bind(mainWindow.minWidthProperty());
+            primaryStage.minHeightProperty().bind(mainWindow.minHeightProperty());
 
             /*
              * Catch the close event and display a warning if there is unsaved
@@ -144,5 +162,9 @@ public class EntryPoint extends Application {
             primaryStage.close();
             Platform.exit();
         }
+    }
+
+    public static StackPane getModalOverlay() {
+        return modalOverlay;
     }
 }

@@ -566,9 +566,15 @@ public class PDFDocument {
                 /* Add the pairings in the third hierarchy level */
                 List pairingList = new List(true, false, 15);
                 for (Pairing pairing : tournamentRound.getPairings()) {
-                    Chunk pairingChunk = new Chunk(PreferencesManager
-                            .getInstance().localizeString(
-                                    "pdfoutput.tournament.history.pairing"),
+                    String pairingTypeName = PreferencesManager.getInstance()
+                            .localizeString(
+                                    "pdfoutput.tournament.history.pairing");
+                    if (pairing.getOpponents().size() == 1) {
+                        pairingTypeName = PreferencesManager.getInstance()
+                                .localizeString(
+                                        "pdfoutput.tournament.history.bye");
+                    }
+                    Chunk pairingChunk = new Chunk(pairingTypeName,
                             PDFExporter.SMALL_BOLD);
                     ListItem pairingListItem = new ListItem(pairingChunk);
                     pairingListItem.setFont(PDFExporter.SMALL_BOLD);
@@ -599,8 +605,10 @@ public class PDFDocument {
                             if (!data.equals("")) {
                                 opponentParagraph.add(new Chunk(data,
                                         PDFExporter.TEXT_FONT));
+                            }
 
-                                if (i < playerData.length - 1) {
+                            if (i < playerData.length - 1) {
+                                if (!playerData[i + 1].equals("")) {
                                     opponentParagraph.add(new Chunk(", ",
                                             PDFExporter.TEXT_FONT));
                                 }
@@ -715,13 +723,14 @@ public class PDFDocument {
         PdfPTable outerTable = new PdfPTable(1);
         outerTable.setWidthPercentage(100f);
 
-        for (int scoreNumber = 0; scoreNumber < scoreList.size(); scoreNumber++) {
+        for (int scoreNumber = scoreList.size() - 1; scoreNumber >= 0; scoreNumber--) {
             PlayerScore score = scoreList.get(scoreNumber);
 
             PdfPCell numberCell = new PdfPCell(new Phrase(PreferencesManager
                     .getInstance().localizeString(
                             "pdfoutput.tournament.table.position")
-                    + " " + (scoreNumber + 1), PDFExporter.SMALL_BOLD));
+                    + " " + (scoreList.size() - scoreNumber),
+                    PDFExporter.SMALL_BOLD));
             numberCell.setIndent(3);
             numberCell.setPaddingTop(4);
             numberCell.setPaddingBottom(7);

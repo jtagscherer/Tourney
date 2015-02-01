@@ -68,7 +68,7 @@ public class MaterialTextField extends AnchorPane {
             this.iconStyleClasses = iconStyleClass;
         }
         public static ValidationResult ok() {
-            return new ValidationResult("", "#17f" ,Color.TRANSPARENT);
+            return new ValidationResult("", "#17f", Color.TRANSPARENT);
         }
         public static ValidationResult success() {
             return success("");
@@ -131,6 +131,7 @@ public class MaterialTextField extends AnchorPane {
     @FXML private IconPane hintIcon;
 
     private BooleanProperty floatingPrompt;
+    private BooleanProperty hasHint;
     private ObjectProperty<Callback<String, ValidationResult>> inputValidationCallback;
 
     private static final Duration promptAnimationDuration = Duration.millis(250);
@@ -165,6 +166,8 @@ public class MaterialTextField extends AnchorPane {
         }
 
         this.initializeAnimations();
+
+        this.validateInput();
     }
 
     private void initializeAnimations() {
@@ -223,6 +226,8 @@ public class MaterialTextField extends AnchorPane {
     private void initialize() {
         this.textField.focusedProperty().addListener(this::onFocusChanged);
         this.textField.textProperty().addListener((ov, o, n) -> this.validateInput());
+
+        this.updateSize();
     }
 
     private void validateInput() {
@@ -236,8 +241,6 @@ public class MaterialTextField extends AnchorPane {
         this.hintIcon.getStyleClass().addAll("icon-pane", "message-icon");
         if (validation.getIconStyleClasses().length > 0) {
             this.hintIcon.getStyleClass().addAll(validation.getIconStyleClasses());
-        } else {
-            this.hintIcon.setVisible(false);
         }
         this.hintIcon.setOpacity(validation.getIconStyleClasses().length > 0 ? 1 : 0);
         this.hintIcon.setStyle(String.format("-fx-background-color: #%02x%02x%02x%02x;",
@@ -245,8 +248,6 @@ public class MaterialTextField extends AnchorPane {
                 (int)(validation.getMessageColor().getGreen() * 255),
                 (int)(validation.getMessageColor().getBlue() * 255),
                 (int)(validation.getMessageColor().getOpacity() * 255)));
-        System.out.println(this.hintIcon.getStyle());
-        System.out.println(this.hintIcon.getStyleClass());
 
         this.hintLabel.setTextFill(validation.messageColor);
 
@@ -381,22 +382,60 @@ public class MaterialTextField extends AnchorPane {
         this.underlineAnimation.play();
     }
 
+
+
     public BooleanProperty floatingPromptProperty() {
         if (this.floatingPrompt == null) {
             this.floatingPrompt = new SimpleBooleanProperty(false);
+            this.floatingPrompt.addListener((ov, o, n) -> {
+                this.updateSize();
+            });
         }
         return this.floatingPrompt;
     }
-
 
     public boolean isFloatingPrompt() {
         return this.floatingPromptProperty().get();
     }
 
-
     public void setFloatingPrompt(boolean value) {
         this.floatingPromptProperty().set(value);
     }
+
+
+    public BooleanProperty hasHintProperty() {
+        if (this.hasHint == null) {
+            this.hasHint = new SimpleBooleanProperty(false);
+            this.hasHint.addListener((ov, o, n) -> {
+                this.updateSize();
+            });
+        }
+        return this.hasHint;
+    }
+
+    private void updateSize() {
+        double translateY = this.isFloatingPrompt() ? 0 : -AnchorPane.getTopAnchor(this.textField);
+        double prefHeight = this.prefHeight(-1);
+
+        if (!this.isFloatingPrompt()) {
+            prefHeight -= AnchorPane.getTopAnchor(this.textField);
+        }
+        if (!this.hasHint()) {
+            prefHeight -= this.hintContainer.getHeight();
+        }
+
+        this.setTranslateY(translateY);
+        this.setPrefHeight(prefHeight);
+    }
+
+    public boolean hasHint() {
+        return this.hasHintProperty().get();
+    }
+
+    public void setHasHint(boolean value) {
+        this.hasHintProperty().set(value);
+    }
+
 
     public ObjectProperty<Callback<String, ValidationResult>> inputValidationCallbackProperty() {
         if (this.inputValidationCallback == null) {

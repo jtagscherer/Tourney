@@ -18,8 +18,8 @@ import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
+import usspg31.tourney.controller.controls.MaterialTextField;
 import usspg31.tourney.controller.controls.UndoTextArea;
-import usspg31.tourney.controller.controls.UndoTextField;
 import usspg31.tourney.controller.dialogs.EventAdministratorListDialog;
 import usspg31.tourney.controller.dialogs.TournamentDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
@@ -36,7 +36,7 @@ public class EventSetupPhaseController implements EventUser {
     private final static Logger log = Logger
             .getLogger(EventSetupPhaseController.class.getName());
 
-    @FXML private UndoTextField textFieldEventTitle;
+    @FXML private MaterialTextField textFieldEventTitle;
     @FXML private DatePicker datePickerStartDate;
     @FXML private DatePicker datePickerEndDate;
     @FXML private UndoTextArea textAreaEventLocation;
@@ -154,7 +154,7 @@ public class EventSetupPhaseController implements EventUser {
         this.loadedEvent = event;
 
         // bind all basic control's values
-        this.textFieldEventTitle.undoTextProperty().bindBidirectional(
+        this.textFieldEventTitle.textProperty().bindBidirectional(
                 event.nameProperty());
         this.datePickerStartDate.valueProperty().bindBidirectional(
                 event.startDateProperty());
@@ -201,7 +201,7 @@ public class EventSetupPhaseController implements EventUser {
 
         // unbind all basic control's values
         event.nameProperty().unbindBidirectional(
-                this.textFieldEventTitle.undoTextProperty());
+                this.textFieldEventTitle.textProperty());
         this.textFieldEventTitle.setText("");
         event.locationProperty().unbindBidirectional(
                 this.textAreaEventLocation.textProperty());
