@@ -20,8 +20,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener.Change;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -31,7 +29,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -123,11 +120,7 @@ public class PairingView extends VBox implements TournamentUser {
         final ContextMenu contextMenu = new ContextMenu();
         MenuItem resetView = new MenuItem(PreferencesManager.getInstance()
                 .localizeString("tournamentexecutionphase.resetview"));
-        resetView.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                resetPairingView();
-            }
-        });
+        resetView.setOnAction(e -> PairingView.this.resetPairingView());
         contextMenu.getItems().addAll(resetView);
 
         this.pairingScrollPane.setContextMenu(contextMenu);
@@ -141,66 +134,57 @@ public class PairingView extends VBox implements TournamentUser {
         this.overviewModeProperty().addListener(this::onOverviewModeChanged);
 
         /* Enable zooming */
-        this.pairingContainer.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                event.consume();
+        this.pairingContainer.setOnScroll(event -> {
+            event.consume();
 
-                double scaleFactor = 0;
-                if (event.getDeltaY() > 0) {
-                    scaleFactor = 1 + PairingView.scaleDelta;
-                } else if (event.getDeltaY() < 0) {
-                    scaleFactor = 1 - PairingView.scaleDelta;
-                }
+            double scaleFactor = 0;
+            if (event.getDeltaY() > 0) {
+                scaleFactor = 1 + PairingView.scaleDelta;
+            } else if (event.getDeltaY() < 0) {
+                scaleFactor = 1 - PairingView.scaleDelta;
+            }
 
-                if (scaleFactor > 1 && pairingContainer.getScaleX() < 5) {
-                    pairingContainer.setScaleX(pairingContainer.getScaleX()
-                            * scaleFactor);
-                    pairingContainer.setScaleY(pairingContainer.getScaleY()
-                            * scaleFactor);
-                }
-                if (scaleFactor < 1 && pairingContainer.getScaleX() > 0.2) {
-                    pairingContainer.setScaleX(pairingContainer.getScaleX()
-                            * scaleFactor);
-                    pairingContainer.setScaleY(pairingContainer.getScaleY()
-                            * scaleFactor);
-                }
+            if (scaleFactor > 1 && PairingView.this.pairingContainer.getScaleX() < 5) {
+                PairingView.this.pairingContainer.setScaleX(PairingView.this.pairingContainer.getScaleX()
+                        * scaleFactor);
+                PairingView.this.pairingContainer.setScaleY(PairingView.this.pairingContainer.getScaleY()
+                        * scaleFactor);
+            }
+            if (scaleFactor < 1 && PairingView.this.pairingContainer.getScaleX() > 0.2) {
+                PairingView.this.pairingContainer.setScaleX(PairingView.this.pairingContainer.getScaleX()
+                        * scaleFactor);
+                PairingView.this.pairingContainer.setScaleY(PairingView.this.pairingContainer.getScaleY()
+                        * scaleFactor);
             }
         });
 
         /* Enable moving the view */
-        this.pairingContainer.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                event.consume();
+        this.pairingContainer.setOnMouseDragged(event -> {
+            event.consume();
 
-                if (lastMouseX == -1.0 || lastMouseY == -1.0) {
-                    lastMouseX = event.getX();
-                    lastMouseY = event.getY();
-                } else {
-                    for (Node child : pairingContainer.getChildren()) {
-                        child.setTranslateX(child.getTranslateX()
-                                + (event.getX() - lastMouseX)
-                                * PairingView.moveDelta);
-                        child.setTranslateY(child.getTranslateY()
-                                + (event.getY() - lastMouseY)
-                                * PairingView.moveDelta);
-                    }
-                    lastMouseX = event.getX();
-                    lastMouseY = event.getY();
+            if (PairingView.this.lastMouseX == -1.0 || PairingView.this.lastMouseY == -1.0) {
+                PairingView.this.lastMouseX = event.getX();
+                PairingView.this.lastMouseY = event.getY();
+            } else {
+                for (Node child : PairingView.this.pairingContainer.getChildren()) {
+                    child.setTranslateX(child.getTranslateX()
+                            + (event.getX() - PairingView.this.lastMouseX)
+                            * PairingView.moveDelta);
+                    child.setTranslateY(child.getTranslateY()
+                            + (event.getY() - PairingView.this.lastMouseY)
+                            * PairingView.moveDelta);
                 }
+                PairingView.this.lastMouseX = event.getX();
+                PairingView.this.lastMouseY = event.getY();
             }
         });
 
         this.pairingContainer
-                .setOnMouseReleased(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        event.consume();
+                .setOnMouseReleased(event -> {
+                    event.consume();
 
-                        lastMouseX = -1.0;
-                        lastMouseY = -1.0;
-                    }
+                    PairingView.this.lastMouseX = -1.0;
+                    PairingView.this.lastMouseY = -1.0;
                 });
     }
 
@@ -344,6 +328,9 @@ public class PairingView extends VBox implements TournamentUser {
         NumberExpression maxY = yMin;
 
         for (List<Pairing> round : pairings) {
+            if (round.size() == 0) {
+                continue;
+            }
             NumberExpression currentMaxX = maxX;
 
             nextNodes = new ArrayList<>();
@@ -722,7 +709,7 @@ public class PairingView extends VBox implements TournamentUser {
 
             this.pairingContainer.setScaleX(this.pairingScale);
             this.pairingContainer.setScaleY(this.pairingScale);
-            for (Node child : pairingContainer.getChildren()) {
+            for (Node child : this.pairingContainer.getChildren()) {
                 child.setTranslateX(child.getTranslateX() + this.pairingX);
                 child.setTranslateY(child.getTranslateY() + this.pairingY);
             }
@@ -741,7 +728,7 @@ public class PairingView extends VBox implements TournamentUser {
 
             this.pairingContainer.setScaleX(this.phaseScale);
             this.pairingContainer.setScaleY(this.phaseScale);
-            for (Node child : pairingContainer.getChildren()) {
+            for (Node child : this.pairingContainer.getChildren()) {
                 child.setTranslateX(child.getTranslateX() + this.phaseX);
                 child.setTranslateY(child.getTranslateY() + this.phaseY);
 
@@ -753,7 +740,7 @@ public class PairingView extends VBox implements TournamentUser {
     private void resetPairingView() {
         this.pairingContainer.setScaleX(1.0);
         this.pairingContainer.setScaleY(1.0);
-        for (Node child : pairingContainer.getChildren()) {
+        for (Node child : this.pairingContainer.getChildren()) {
             child.setTranslateX(0.0);
             child.setTranslateY(0.0);
 
