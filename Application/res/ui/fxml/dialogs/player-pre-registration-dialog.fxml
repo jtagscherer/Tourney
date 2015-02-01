@@ -26,6 +26,7 @@
 		</HBox>
 		<MaterialTextField fx:id="textFieldEmail" promptText="%dialogs.playerpreregistration.email" floatingPrompt="true" />
 		<MaterialTextField fx:id="textFieldNickname" promptText="%dialogs.playerpreregistration.nickname" floatingPrompt="true" />
+		<Pane minHeight="30.0" />
 		<Label styleClass="sub-heading" text="%dialogs.playerpreregistration.registeredto" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />
