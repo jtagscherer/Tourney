@@ -514,4 +514,9 @@ public class MaterialTextField extends AnchorPane {
         return this.alignmentProperty().get();
     }
 
+    @Override
+    public double getBaselineOffset() {
+        return this.textField.getBaselineOffset() + AnchorPane.getTopAnchor(this.textField) + this.getTranslateY();
+    }
+
 }
