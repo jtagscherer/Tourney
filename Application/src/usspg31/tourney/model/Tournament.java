@@ -3,6 +3,7 @@ package usspg31.tourney.model;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -21,6 +22,9 @@ public class Tournament implements Cloneable {
         CURRENTLY_EXECUTED,
         FINISHED
     }
+
+    private static final Logger log = Logger.getLogger(Tournament.class
+            .getName());
 
     private final ObservableList<Player> registeredPlayers;
     private final ObservableList<Player> attendingPlayers;
@@ -245,15 +249,26 @@ public class Tournament implements Cloneable {
      *            score table for the earlier mentioned player
      */
     public void addAScore(PlayerScore score) {
-        for (PlayerScore eachPlayerScore : this.scoreTable) {
-            if (eachPlayerScore.getPlayer() == score.getPlayer()) {
-                for (int i = 0; i < eachPlayerScore.getScore().size(); i++) {
-                    eachPlayerScore.getScore().set(
-                            i,
-                            eachPlayerScore.getScore().get(i)
-                                    + score.getScore().get(i));
+        if (this.rounds.size() != 1) {
+
+            for (PlayerScore eachPlayerScore : this.scoreTable) {
+                if (eachPlayerScore.getPlayer().getId() == score.getPlayer()
+                        .getId()) {
+                    for (int i = 0; i < eachPlayerScore.getScore().size(); i++) {
+                        log.finer("The score "
+                                + score.getScore().get(i)
+                                + " was added to the score table in the tournament");
+
+                        eachPlayerScore.getScore().set(
+                                i,
+                                eachPlayerScore.getScore().get(i)
+                                        + score.getScore().get(i));
+                    }
                 }
             }
+        } else {
+            log.info("Added score after first round");
+            this.scoreTable.add((PlayerScore) score.clone());
         }
     }
 
