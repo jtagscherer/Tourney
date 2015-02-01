@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <rule-template>
     <meta>
-        <name>Star Wars: Das Kartenspiel</name>
-        <description/>
+        <name>Star Wars: The Card Game</name>
+        <description>A Card Game of Galactic Conflict</description>
     </meta>
     <possible-scores>
         <scoring priority="0">

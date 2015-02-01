@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <rule-template>
     <meta>
-        <name>X-Wing</name>
-        <description/>
+        <name>Star Wars: X-Wing</name>
+        <description>A Miniatures Game of Ship to Ship Combat for Two Players</description>
     </meta>
     <possible-scores>
         <scoring priority="0">

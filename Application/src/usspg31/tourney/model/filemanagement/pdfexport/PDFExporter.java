@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import usspg31.tourney.controller.dialogs.PdfOutputConfiguration;
 import usspg31.tourney.model.Event;
 
 import com.lowagie.text.DocumentException;
@@ -50,7 +51,8 @@ public class PDFExporter {
      * @throws DocumentException
      *             If the document could not be written
      */
-    public static void exportEventAsPdf(Event event, String filePath)
+    public static void exportEventAsPdf(Event event, String filePath,
+            PdfOutputConfiguration configuration)
             throws FileNotFoundException, DocumentException {
         PDFDocument document = new PDFDocument(event);
         PdfWriter writer = PdfWriter.getInstance(document.getDocument(),
@@ -62,8 +64,12 @@ public class PDFExporter {
         document.addTitlePage();
         document.addWatermark(writer);
         document.newPage();
-        document.addRegisteredPlayers();
-        document.addTournaments();
+        if (configuration.exportPlayerList()) {
+            document.addRegisteredPlayers();
+        }
+        if (configuration.exportTournaments()) {
+            document.addTournaments(configuration);
+        }
         document.close();
     }
 

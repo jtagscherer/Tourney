@@ -16,6 +16,11 @@ import usspg31.tourney.model.PossibleScoring.ScoringType;
  * Represents a tournament that can be carried out in an event
  */
 public class Tournament implements Cloneable {
+    public enum ExecutionState {
+        NOT_EXECUTED,
+        CURRENTLY_EXECUTED,
+        FINISHED
+    }
 
     private final ObservableList<Player> registeredPlayers;
     private final ObservableList<Player> attendingPlayers;
@@ -28,10 +33,10 @@ public class Tournament implements Cloneable {
     private final ObservableList<TournamentAdministrator> administrators;
     private final StringProperty id;
     private final ObjectProperty<TournamentModule> ruleSet;
+    private final ObjectProperty<ExecutionState> executionState;
 
     /**
-     * new TournamentModule() Create a new tournament and initialize all its
-     * properties
+     * Create a new tournament and initialize all its properties
      */
     public Tournament() {
         this.registeredPlayers = FXCollections.observableArrayList();
@@ -45,6 +50,8 @@ public class Tournament implements Cloneable {
         this.id = new SimpleStringProperty("");
         this.ruleSet = new SimpleObjectProperty<TournamentModule>(
                 new TournamentModule());
+        this.executionState = new SimpleObjectProperty<Tournament.ExecutionState>();
+        this.setExecutionState(ExecutionState.NOT_EXECUTED);
     }
 
     /**
@@ -119,6 +126,34 @@ public class Tournament implements Cloneable {
      */
     public StringProperty nameProperty() {
         return this.name;
+    }
+
+    /**
+     * Get the execution state of this tournament
+     * 
+     * @return Current execution state of this tournament
+     */
+    public ExecutionState getExecutionState() {
+        return this.executionState.get();
+    }
+
+    /**
+     * Set the execution state of this tournament
+     * 
+     * @param executionState
+     *            New execution state of this tournament
+     */
+    public void setExecutionState(ExecutionState executionState) {
+        this.executionState.set(executionState);
+    }
+
+    /**
+     * Get the execution state property of this tournament
+     * 
+     * @return execution state property of this tournament
+     */
+    public ObjectProperty<ExecutionState> executionStateProperty() {
+        return this.executionState;
     }
 
     /**

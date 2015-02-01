@@ -141,7 +141,7 @@ public class TournamentDialog extends VBox implements
         // tournament phase number
         this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
         this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().phaseNumberProperty()
+                cellData -> cellData.getValue().phaseNumberProperty().add(1)
                         .asString());
         this.tableTournamentPhases.getColumns().add(
                 this.tableColumnPhasesPhaseNumber);
@@ -269,7 +269,8 @@ public class TournamentDialog extends VBox implements
         this.tableColumnPossibleScoresPriority = new TableColumn<>(
                 preferences.localizeString("dialogs.tournament.priority"));
         this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().priorityProperty().asString());
+                cellData -> cellData.getValue().priorityProperty().add(1)
+                        .asString());
         this.tablePossibleScores.getColumns().add(
                 this.tableColumnPossibleScoresPriority);
 

@@ -55,3 +55,19 @@
 	-fx-background-color: #888, #ddd, #ccc;
 	-fx-background-insets: 0, 1px, 2px;
 }
+
+.time {
+	-fx-font-family: "Roboto Light";
+	-fx-font-size: 42;
+}
+
+.time-big {
+	-fx-font-family: "Roboto Light";
+	-fx-font-size: 62;
+}
+
+.timer-button {
+	-fx-padding: 10px 10px 10px 10px;
+	-fx-pref-width: 20;
+	-fx-pref-height: 20;
+}

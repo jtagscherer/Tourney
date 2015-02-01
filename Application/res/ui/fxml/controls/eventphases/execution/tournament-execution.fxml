@@ -18,47 +18,19 @@
 		<URL value="@/ui/css/event-phase.css" />
 	</stylesheets>
 	<children>
-		<Label styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
-		<HBox>
-			<Button fx:id="buttonPairingOverview" text="%tournamentexecutionphase.pairingoverview"
-				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, left"
-				onAction="#onButtonPairingOverviewClicked" />
-			<Button fx:id="buttonPhaseOverview" text="%tournamentexecutionphase.phaseoverview"
-				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, right"
-				onAction="#onButtonPhaseOverviewClicked" />
-		</HBox>
-		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
-			<children>
-				<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
-				<VBox spacing="5.0" styleClass="table-edit-button-container">
-					<children>
-						<Button fx:id="buttonStartRound" disable="true" onAction="#onButtonStartRoundClicked" styleClass="table-edit-button">
-							<graphic>
-								<IconPane styleClass="icon-add, half" />
-							</graphic>
-						</Button>
-						<Button fx:id="buttonEnterResult" disable="true" onAction="#onButtonEnterResultClicked" styleClass="table-edit-button">
-							<graphic>
-								<IconPane styleClass="icon-edit, half" />
-							</graphic>
-						</Button>
-						<Button fx:id="buttonSwapPlayers" disable="true" onAction="#onButtonSwapPlayersClicked" styleClass="table-edit-button">
-							<graphic>
-								<IconPane styleClass="icon-swap-horizontal, half" />
-							</graphic>
-						</Button>
-					</children>
-				</VBox>
-            <!-- <VBox styleClass="round-timer">
+		<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+			<Label fx:id="labelHeader" styleClass="heading" text="%tournamentexecutionphase.tournamentexecution" />
+			<Pane HBox.hgrow="ALWAYS" />
+			<VBox styleClass="round-timer">
                <children>
-                  <HBox>
+                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label fx:id="labelTime" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="time" text="Label" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="labelTime" styleClass="time" text="Label" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Button fx:id="buttonAddTime" mnemonicParsing="false">
+                        <Button fx:id="buttonAddTime" styleClass="multi-button, left" mnemonicParsing="false">
                            <graphic>
                               <IconPane>
                                  <styleClass>
@@ -68,27 +40,12 @@
                               </IconPane>
                            </graphic>
                         </Button>
-                        <Button fx:id="buttonPauseTime" mnemonicParsing="false">
+                        <Button fx:id="buttonPauseResumeTime" styleClass="multi-button, middle" mnemonicParsing="false">
                            <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-pause" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
+                              <IconPane fx:id="iconPanePauseResume" styleClass="icon-play, half" />
                            </graphic>
                         </Button>
-                        <Button fx:id="buttonResumeTime" mnemonicParsing="false">
-                           <graphic>
-                              <IconPane>
-                                 <styleClass>
-                                    <String fx:value="icon-play" />
-                                    <String fx:value="half" />
-                                 </styleClass>
-                              </IconPane>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="buttonResetTime" mnemonicParsing="false">
+                        <Button fx:id="buttonResetTime" styleClass="multi-button, middle" mnemonicParsing="false">
                            <graphic>
                               <IconPane>
                                  <styleClass>
@@ -98,7 +55,7 @@
                               </IconPane>
                            </graphic>
                         </Button>
-                        <Button fx:id="buttonSubtractTime" mnemonicParsing="false">
+                        <Button fx:id="buttonSubtractTime" styleClass="multi-button, right" mnemonicParsing="false">
                            <graphic>
                               <IconPane>
                                  <styleClass>
@@ -111,7 +68,65 @@
                      </children>
                   </HBox>
                </children>
-            </VBox> -->
+            </VBox>
+		</HBox>
+		<HBox>
+			<Button fx:id="buttonPairingOverview" text="%tournamentexecutionphase.pairingoverview"
+				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, left"
+				onAction="#onButtonPairingOverviewClicked" />
+			<Button fx:id="buttonPhaseOverview" text="%tournamentexecutionphase.phaseoverview"
+				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, right"
+				onAction="#onButtonPhaseOverviewClicked" />
+		</HBox>
+		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+			<children>
+				<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
+				<VBox spacing="5.0">
+					<VBox spacing="5.0" styleClass="table-edit-button-container">
+						<Button fx:id="buttonStartRound" disable="true" onAction="#onButtonStartRoundClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane fx:id="iconPaneStartRound" styleClass="icon-add, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.startround" />
+							</tooltip>
+						</Button>
+						<Button fx:id="buttonEnterResult" disable="true" onAction="#onButtonEnterResultClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-edit, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.enterresult" />
+							</tooltip>
+						</Button>
+						<Button fx:id="buttonSwapPlayers" disable="true" onAction="#onButtonSwapPlayersClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-swap-horizontal, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.swapplayers" />
+							</tooltip>
+						</Button>
+					</VBox>
+					<VBox spacing="5.0" styleClass="table-edit-button-container" alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
+						<Button fx:id="buttonOpenProjectorWindow" onAction="#onButtonOpenProjectorWindowClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-projection, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.projection" />
+							</tooltip>
+						</Button>
+						<Button fx:id="buttonCancelExecution" onAction="#onButtonCancelExecutionClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-cancel, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.cancel" />
+							</tooltip>
+						</Button>
+					</VBox>
+				</VBox>
 			</children>
 		</HBox>
 	</children>

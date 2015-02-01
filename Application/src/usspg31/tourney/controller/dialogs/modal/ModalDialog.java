@@ -15,8 +15,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.PreferencesManager;
@@ -172,6 +174,24 @@ public final class ModalDialog<P, R> extends StackPane {
 
         EntryPoint.getPrimaryStage().getScene().setRoot(this);
         this.mainWindowRootContainer.getChildren().add(mainWindowRoot);
+
+        log.finer("Showing dialog for "
+                + this.dialogContent.getClass().getSimpleName() + " ("
+                + (System.currentTimeMillis() - time) + "ms)");
+
+        this.fadeInTransition.play();
+    }
+
+    public void show(Stage stage, Pane parent) {
+        long time = System.currentTimeMillis();
+
+        Parent mainWindowRoot = stage.getScene().getRoot();
+        mainWindowRoot.setDisable(true);
+
+        stage.getScene().setRoot(this);
+        try {
+            parent.getChildren().add(mainWindowRoot);
+        } catch (IllegalArgumentException e) {}
 
         log.finer("Showing dialog for "
                 + this.dialogContent.getClass().getSimpleName() + " ("

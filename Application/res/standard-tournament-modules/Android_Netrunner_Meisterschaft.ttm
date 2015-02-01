@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <rule-template>
     <meta>
-        <name>Android_Netrunner_Meisterschaft</name>
-        <description>Meisterschaftsmodus</description>
+        <name>Android: Netrunner (Championship)</name>
+        <description>Championship Mode</description>
     </meta>
     <possible-scores>
         <scoring priority="0">

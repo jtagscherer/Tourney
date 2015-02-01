@@ -36,13 +36,13 @@ public class EntryPoint extends Application {
             log.log(Level.SEVERE, t.getMessage(), t);
         }
 
-
         applicationLocked = false;
     }
 
     public static void lockApplication() {
         applicationLocked = true;
     }
+
     public static void unlockApplication() {
         applicationLocked = false;
     }
@@ -80,19 +80,23 @@ public class EntryPoint extends Application {
             primaryStage.setOnCloseRequest(event -> {
                 event.consume();
                 // surpress the close request when the application is locked
-                if (applicationLocked) {
-                    return;
-                }
-                UndoManager undoManager = MainWindow.getInstance()
-                        .getEventPhaseViewController().getUndoManager();
-                if (undoManager != null && !EntryPoint.this.closeRequested) {
-                    this.requestSaveBeforeClose();
-                } else {
-                    EntryPoint.this.closeRequested = false;
-                    primaryStage.close();
-                    Platform.exit();
-                }
-            });
+                    if (applicationLocked) {
+                        return;
+                    }
+                    UndoManager undoManager = MainWindow.getInstance()
+                            .getEventPhaseViewController().getUndoManager();
+                    if (undoManager != null
+                            && !EntryPoint.this.closeRequested
+                            && MainWindow.getInstance()
+                                    .getEventPhaseViewController()
+                                    .hasLoadedEvent()) {
+                        this.requestSaveBeforeClose();
+                    } else {
+                        EntryPoint.this.closeRequested = false;
+                        primaryStage.close();
+                        Platform.exit();
+                    }
+                });
 
             primaryStage.show();
         } catch (Exception e) {
@@ -102,7 +106,8 @@ public class EntryPoint extends Application {
     }
 
     private void requestSaveBeforeClose() {
-        if (MainWindow.getInstance().getEventPhaseViewController().saveAvailable()) {
+        if (MainWindow.getInstance().getEventPhaseViewController()
+                .saveAvailable()) {
             EntryPoint.this.closeRequested = true;
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "dialogs.messages.unsavedchanges"))

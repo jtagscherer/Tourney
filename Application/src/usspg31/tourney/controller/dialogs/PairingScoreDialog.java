@@ -29,8 +29,9 @@ import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
-public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScoreEntry>
-        implements IModalDialogProvider<PairingEntry, Pairing> {
+public class PairingScoreDialog extends
+        TableView<PairingScoreDialog.PlayerScoreEntry> implements
+        IModalDialogProvider<PairingEntry, Pairing> {
 
     public static class PairingEntry {
         private final Tournament tournament;
@@ -52,7 +53,8 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
         }
     }
 
-    private static class ScoreCell extends TableCell<PlayerScoreEntry, ObjectProperty<Integer>> {
+    private static class ScoreCell extends
+            TableCell<PlayerScoreEntry, ObjectProperty<Integer>> {
         private ObjectProperty<Integer> score;
 
         final HBox container;
@@ -72,25 +74,31 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
 
             if (possibleScores.getScores().size() > 0) {
                 ContextMenu possibleScoreDropDown = new ContextMenu();
-                for (Entry<String, Integer> possibleScore : possibleScores.getScores().entrySet()) {
-                    MenuItem scoreItem = new MenuItem(possibleScore.getKey() + ": " + possibleScore.getValue());
+                for (Entry<String, Integer> possibleScore : possibleScores
+                        .getScores().entrySet()) {
+                    MenuItem scoreItem = new MenuItem(possibleScore.getKey()
+                            + ": " + possibleScore.getValue());
                     scoreItem.setOnAction(event -> {
-                        this.numberFieldScore.setText(possibleScore.getValue().toString());
+                        this.numberFieldScore.setText(possibleScore.getValue()
+                                .toString());
                     });
                     possibleScoreDropDown.getItems().add(scoreItem);
                 }
                 this.dropDownButton.setOnAction(event -> {
-                    possibleScoreDropDown.show(this.dropDownButton, Side.BOTTOM, 0, 0);
+                    possibleScoreDropDown.show(this.dropDownButton,
+                            Side.BOTTOM, 0, 0);
                 });
             } else {
                 this.dropDownButton.setDisable(true);
             }
 
-            this.numberFieldScore.numberValueProperty().addListener((ov, o, n) -> {
-                this.score.set(n.intValue());
-            });
+            this.numberFieldScore.numberValueProperty().addListener(
+                    (ov, o, n) -> {
+                        this.score.set(n.intValue());
+                    });
 
-            this.container.getChildren().addAll(this.numberFieldScore, this.dropDownButton);
+            this.container.getChildren().addAll(this.numberFieldScore,
+                    this.dropDownButton);
         }
 
         @Override
@@ -99,7 +107,8 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
             if (!empty && item != null) {
                 this.score = item;
                 if (this.score.get() != null) {
-                    this.numberFieldScore.setText(this.score.getValue().toString());
+                    this.numberFieldScore.setText(this.score.getValue()
+                            .toString());
                 }
                 this.setGraphic(this.container);
             }
@@ -124,14 +133,17 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
     }
 
     private void updateTable() {
-        ObservableList<Player> opponents = this.pairingEntry.pairing.getOpponents();
-        ObservableList<PossibleScoring> possibleScores = this.pairingEntry.tournament.getRuleSet().getPossibleScores();
+        ObservableList<Player> opponents = this.pairingEntry.pairing
+                .getOpponents();
+        ObservableList<PossibleScoring> possibleScores = this.pairingEntry.tournament
+                .getRuleSet().getPossibleScores();
         int scoreCount = possibleScores.size();
 
         // initialize score list with empty scores
         this.scoreList.clear();
         for (int i = 0; i < opponents.size(); i++) {
-            PlayerScoreEntry playerScore = new PlayerScoreEntry(opponents.get(i));
+            PlayerScoreEntry playerScore = new PlayerScoreEntry(
+                    opponents.get(i));
             for (int j = 0; j < scoreCount; j++) {
                 playerScore.scores.add(new SimpleObjectProperty<Integer>(null));
             }
@@ -141,11 +153,12 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
         // create columns for every score
         this.getColumns().clear();
         TableColumn<PlayerScoreEntry, String> nameColumn = new TableColumn<>(
-                PreferencesManager.getInstance().localizeString("dialog.pairingscore.name"));
+                PreferencesManager.getInstance().localizeString(
+                        "dialog.pairingscore.name"));
         nameColumn.setCellValueFactory(value -> {
             Player p = value.getValue().player;
-            return new SimpleStringProperty(
-                    p.getLastName() + " (" + p.getStartingNumber() + ")");
+            return new SimpleStringProperty(p.getFirstName() + " "
+                    + p.getLastName() + " (" + p.getStartingNumber() + ")");
         });
         this.getColumns().add(nameColumn);
 
@@ -153,9 +166,11 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
             TableColumn<PlayerScoreEntry, ObjectProperty<Integer>> scoreColumn = new TableColumn<>(
                     Integer.toString(scoreNumber + 1));
             final int scoreID = scoreNumber;
-            scoreColumn.setCellFactory(cell -> new ScoreCell(possibleScores.get(scoreID)));
-            scoreColumn.setCellValueFactory(value ->
-            new SimpleObjectProperty<ObjectProperty<Integer>>(value.getValue().scores.get(scoreID)));
+            scoreColumn.setCellFactory(cell -> new ScoreCell(possibleScores
+                    .get(scoreID)));
+            scoreColumn
+                    .setCellValueFactory(value -> new SimpleObjectProperty<ObjectProperty<Integer>>(
+                            value.getValue().scores.get(scoreID)));
             this.getColumns().add(scoreColumn);
         }
 
@@ -163,10 +178,11 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
         for (int i = 0; i < opponents.size(); i++) {
             PlayerScoreEntry playerScore = this.scoreList.get(i);
             for (int j = 0; j < scoreCount; j++) {
-                if (j < this.pairingEntry.pairing.getScoreTable().get(i).getScore().size()) {
+                if (j < this.pairingEntry.pairing.getScoreTable().get(i)
+                        .getScore().size()) {
                     playerScore.scores.get(j).set(
                             this.pairingEntry.pairing.getScoreTable().get(i)
-                            .getScore().get(j));
+                                    .getScore().get(j));
                 }
             }
             this.getItems().add(playerScore);
@@ -191,9 +207,8 @@ public class PairingScoreDialog extends TableView<PairingScoreDialog.PlayerScore
 
     @Override
     public void initModalDialog(ModalDialog<PairingEntry, Pairing> modalDialog) {
-        modalDialog
-        .title("dialogs.pairingscore")
-        .dialogButtons(DialogButtons.OK_CANCEL);
+        modalDialog.title("dialogs.pairingscore").dialogButtons(
+                DialogButtons.OK_CANCEL);
     }
 
 }

@@ -22,6 +22,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
+
+import org.xml.sax.SAXException;
+
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainMenuController;
 import usspg31.tourney.controller.MainWindow;
@@ -31,6 +34,8 @@ import usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseContr
 import usspg31.tourney.controller.controls.eventphases.RegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
 import usspg31.tourney.controller.dialogs.PasswordDialog;
+import usspg31.tourney.controller.dialogs.PdfOutputConfiguration;
+import usspg31.tourney.controller.dialogs.PdfOutputSelectionDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
@@ -38,6 +43,7 @@ import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.EventPhase;
 import usspg31.tourney.model.Event.UserFlag;
+import usspg31.tourney.model.filemanagement.FileLoader;
 import usspg31.tourney.model.filemanagement.FileSaver;
 import usspg31.tourney.model.filemanagement.pdfexport.PDFExporter;
 import usspg31.tourney.model.undo.UndoManager;
@@ -91,10 +97,6 @@ public class EventPhaseViewController implements EventUser {
     private static Interpolator transitionInterpolator = Interpolator.SPLINE(
             .4, 0, 0, 1);
 
-    // Bread crumb effects
-    private static final String breadCrumbInactive = "-fx-background-color: #888, -t-button-color;";
-    private static final String breadCrumbActive = "-fx-background-color: #888, derive(-t-button-color, -7%);";
-
     // Event
     private Event loadedEvent;
 
@@ -103,6 +105,9 @@ public class EventPhaseViewController implements EventUser {
 
     // PasswordDialog
     private ModalDialog<Object, Object> passwordDialog;
+
+    // PdfOutputDialog
+    private ModalDialog<PdfOutputConfiguration, PdfOutputConfiguration> pdfOutputDialog;
 
     @FXML
     private void initialize() throws IOException {
@@ -118,8 +123,10 @@ public class EventPhaseViewController implements EventUser {
         this.eventPhaseContainer.getChildren().addAll(this.eventSetupPhase,
                 this.preRegistrationPhase, this.registrationPhase,
                 this.tournamentExecutionPhase);
+        this.eventPhaseContainer.toBack();
 
         this.passwordDialog = new PasswordDialog().modalDialog();
+        this.pdfOutputDialog = new PdfOutputSelectionDialog().modalDialog();
 
         this.undoManager = new UndoManager();
 
@@ -133,8 +140,10 @@ public class EventPhaseViewController implements EventUser {
                 this.buttonSave.setDisable(false);
             }
         };
-        this.undoManager.undoAvailableProperty().addListener(saveAvailableListener);
-        this.undoManager.redoAvailableProperty().addListener(saveAvailableListener);
+        this.undoManager.undoAvailableProperty().addListener(
+                saveAvailableListener);
+        this.undoManager.redoAvailableProperty().addListener(
+                saveAvailableListener);
     }
 
     private void loadSubViews() throws IOException {
@@ -260,31 +269,43 @@ public class EventPhaseViewController implements EventUser {
             this.loadedEvent = event;
             switch (this.loadedEvent.getEventPhase()) {
             case EVENT_SETUP:
-                this.breadcrumbEventSetup
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbEventSetup.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbEventSetup.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(0);
                 break;
             case PRE_REGISTRATION:
-                this.breadcrumbPreRegistration
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbPreRegistration.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbPreRegistration.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(1);
                 break;
             case REGISTRATION:
-                this.breadcrumbRegistration
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbRegistration.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbRegistration.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(2);
                 break;
             case TOURNAMENT_EXECUTION:
-                this.breadcrumbTournamentExecution
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbTournamentExecution.getStyleClass()
+                        .contains("selected-button")) {
+                    this.breadcrumbTournamentExecution.getStyleClass().add(
+                            "selected-button");
+                }
                 this.phasePosition.set(3);
                 break;
             }
         } else if (event.getUserFlag() == UserFlag.REGISTRATION) {
             this.loadedEvent = event;
             this.registrationPhaseController.loadEvent(event);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
 
             this.phasePosition.set(2);
             this.breadcrumbEventSetup.setDisable(true);
@@ -292,11 +313,13 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbTournamentExecution.setDisable(true);
 
             this.registrationPhaseController.chooseRegistratorNumber(this);
+
+            this.buttonExport.setDisable(true);
         } else if (event.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
             this.loadedEvent = event;
             this.tournamentExecutionPhaseController.loadEvent(event);
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
 
             this.phasePosition.set(3);
 
@@ -307,6 +330,8 @@ public class EventPhaseViewController implements EventUser {
             this.breadcrumbEventSetup.setDisable(true);
             this.breadcrumbPreRegistration.setDisable(true);
             this.breadcrumbRegistration.setDisable(true);
+
+            this.buttonExport.setDisable(true);
         }
 
         // register undo properties
@@ -320,18 +345,17 @@ public class EventPhaseViewController implements EventUser {
         /*
          * Clean up if some values are still set from a previously opened event
          */
-        this.breadcrumbEventSetup
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
         this.breadcrumbEventSetup.setDisable(false);
-        this.breadcrumbPreRegistration
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbPreRegistration.getStyleClass()
+                .remove("selected-button");
         this.breadcrumbPreRegistration.setDisable(false);
-        this.breadcrumbRegistration
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbRegistration.getStyleClass().remove("selected-button");
         this.breadcrumbRegistration.setDisable(false);
-        this.breadcrumbTournamentExecution
-                .setStyle(EventPhaseViewController.breadCrumbInactive);
+        this.breadcrumbTournamentExecution.getStyleClass().remove(
+                "selected-button");
         this.breadcrumbTournamentExecution.setDisable(false);
+        this.buttonExport.setDisable(false);
 
         /* clear the undo manager's history */
         this.undoManager.clearHistory();
@@ -443,6 +467,10 @@ public class EventPhaseViewController implements EventUser {
         return !this.buttonSave.isDisabled();
     }
 
+    public boolean hasLoadedEvent() {
+        return this.loadedEvent != null;
+    }
+
     @FXML
     private void onButtonSaveClicked(ActionEvent event) {
         log.fine("Save Button was clicked");
@@ -454,34 +482,62 @@ public class EventPhaseViewController implements EventUser {
     private void onButtonExportClicked(ActionEvent event) {
         log.fine("Export Button was clicked");
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(PreferencesManager.getInstance().localizeString(
-                "eventphaseview.savepdf.title"));
-        fileChooser
-                .getExtensionFilters()
-                .add(new ExtensionFilter(PreferencesManager.getInstance()
-                        .localizeString("dialogs.extensions.pdffile"), "*.pdf"));
-        File selectedFile = fileChooser.showSaveDialog(EntryPoint
-                .getPrimaryStage());
-        if (selectedFile == null) {
-            return;
-        }
-        if (!selectedFile.getName().endsWith(".pdf")) {
-            selectedFile = new File(selectedFile.getAbsolutePath() + ".pdf");
-        }
+        PdfOutputConfiguration configuration = new PdfOutputConfiguration();
+        configuration.exportPlayerList(true);
+        configuration.exportTournaments(true);
+        configuration.setTournaments(this.loadedEvent.getTournaments());
+        this.pdfOutputDialog
+                .properties(configuration)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK) {
+                                FileChooser fileChooser = new FileChooser();
+                                fileChooser
+                                        .setTitle(PreferencesManager
+                                                .getInstance()
+                                                .localizeString(
+                                                        "eventphaseview.savepdf.title"));
+                                fileChooser
+                                        .getExtensionFilters()
+                                        .add(new ExtensionFilter(
+                                                PreferencesManager
+                                                        .getInstance()
+                                                        .localizeString(
+                                                                "dialogs.extensions.pdffile"),
+                                                "*.pdf"));
+                                File selectedFile = fileChooser
+                                        .showSaveDialog(EntryPoint
+                                                .getPrimaryStage());
+                                if (selectedFile == null) {
+                                    return;
+                                }
+                                if (!selectedFile.getName().endsWith(".pdf")) {
+                                    selectedFile = new File(selectedFile
+                                            .getAbsolutePath() + ".pdf");
+                                }
 
-        try {
-            PDFExporter.exportEventAsPdf(this.loadedEvent,
-                    selectedFile.getAbsolutePath());
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Could not export the event.", e);
+                                try {
+                                    PDFExporter.exportEventAsPdf(
+                                            this.loadedEvent,
+                                            selectedFile.getAbsolutePath(),
+                                            returnValue);
+                                } catch (Exception e) {
+                                    log.log(Level.SEVERE,
+                                            "Could not export the event.", e);
 
-            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
-                    "dialogs.messages.couldnotsave")).modalDialog()
-                    .title("dialogs.titles.error")
-                    .dialogButtons(DialogButtons.OK).show();
-            return;
-        }
+                                    new SimpleDialog<>(
+                                            PreferencesManager
+                                                    .getInstance()
+                                                    .localizeString(
+                                                            "dialogs.messages.couldnotsave"))
+                                            .modalDialog()
+                                            .title("dialogs.titles.error")
+                                            .dialogButtons(DialogButtons.OK)
+                                            .show();
+                                    return;
+                                }
+                            }
+                        }).show();
     }
 
     @FXML
@@ -489,8 +545,7 @@ public class EventPhaseViewController implements EventUser {
         log.fine("Lock Button was clicked");
 
         EntryPoint.lockApplication();
-        this.passwordDialog
-        .onResult((result, value) -> {
+        this.passwordDialog.onResult((result, value) -> {
             EntryPoint.unlockApplication();
         }).show();
     }
@@ -625,60 +680,82 @@ public class EventPhaseViewController implements EventUser {
             this.slideToPhase(0);
             this.loadedEvent.setEventPhase(Event.EventPhase.EVENT_SETUP);
 
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbActive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            if (!this.breadcrumbEventSetup.getStyleClass().contains(
+                    "selected-button")) {
+                this.breadcrumbEventSetup.getStyleClass()
+                        .add("selected-button");
+            }
+            this.breadcrumbPreRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
             break;
         case PRE_REGISTRATION:
             this.slideToPhase(1);
             this.loadedEvent.setEventPhase(Event.EventPhase.PRE_REGISTRATION);
 
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbActive);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
+            if (!this.breadcrumbPreRegistration.getStyleClass().contains(
+                    "selected-button")) {
+                this.breadcrumbPreRegistration.getStyleClass().add(
+                        "selected-button");
+            }
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
             break;
         case REGISTRATION:
             this.slideToPhase(2);
             this.loadedEvent.setEventPhase(Event.EventPhase.REGISTRATION);
 
-            this.breadcrumbRegistration
-                    .setStyle("-fx-background-color: #888, derive(-t-button-color, -20%);");
-
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
+            this.breadcrumbPreRegistration.getStyleClass().remove(
+                    "selected-button");
             if (this.loadedEvent.getUserFlag() != UserFlag.REGISTRATION) {
-                this.breadcrumbRegistration
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbRegistration.getStyleClass().contains(
+                        "selected-button")) {
+                    this.breadcrumbRegistration.getStyleClass().add(
+                            "selected-button");
+                }
             }
-            this.breadcrumbTournamentExecution
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            this.breadcrumbTournamentExecution.getStyleClass().remove(
+                    "selected-button");
             break;
         case TOURNAMENT_EXECUTION:
             this.slideToPhase(3);
             this.loadedEvent
                     .setEventPhase(Event.EventPhase.TOURNAMENT_EXECUTION);
 
-            this.breadcrumbEventSetup
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbPreRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
-            this.breadcrumbRegistration
-                    .setStyle(EventPhaseViewController.breadCrumbInactive);
+            String tempDir = System.getProperty("java.io.tmpdir");
+            if (!tempDir.endsWith(File.separator)) {
+                tempDir += File.separator;
+            }
+            File tempEvent = new File(tempDir + "tmp"
+                    + this.loadedEvent.getName().hashCode() + ".tef");
+            FileSaver.saveEventToFile(this.loadedEvent,
+                    tempEvent.getAbsolutePath());
+            try {
+                this.loadEvent(FileLoader.loadEventFromFile(tempEvent
+                        .getAbsolutePath()));
+            } catch (IOException | SAXException e) {
+                log.log(Level.SEVERE, "Could not save the event.", e);
+            }
+            tempEvent.delete();
+
+            this.breadcrumbEventSetup.getStyleClass().remove("selected-button");
+            this.breadcrumbPreRegistration.getStyleClass().remove(
+                    "selected-button");
+            this.breadcrumbRegistration.getStyleClass().remove(
+                    "selected-button");
             if (this.loadedEvent.getUserFlag() != UserFlag.TOURNAMENT_EXECUTION) {
-                this.breadcrumbTournamentExecution
-                        .setStyle(EventPhaseViewController.breadCrumbActive);
+                if (!this.breadcrumbTournamentExecution.getStyleClass()
+                        .contains("selected-button")) {
+                    this.breadcrumbTournamentExecution.getStyleClass().add(
+                            "selected-button");
+                }
             }
             break;
         }

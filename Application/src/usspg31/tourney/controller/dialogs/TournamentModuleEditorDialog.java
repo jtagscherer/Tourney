@@ -119,7 +119,7 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         // setup all table columns
         this.tableColumnPhasesPhaseNumber = new TableColumn<>("#");
         this.tableColumnPhasesPhaseNumber.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().phaseNumberProperty()
+                cellData -> cellData.getValue().phaseNumberProperty().add(1)
                         .asString());
         this.tableTournamentPhases.getColumns().add(
                 this.tableColumnPhasesPhaseNumber);
@@ -204,7 +204,8 @@ public class TournamentModuleEditorDialog extends SplitPane implements
         this.tableColumnPossibleScoresPriority = new TableColumn<>(
                 preferences.localizeString("dialogs.tournamentmodule.priority"));
         this.tableColumnPossibleScoresPriority.cellValueFactoryProperty().set(
-                cellData -> cellData.getValue().priorityProperty().asString());
+                cellData -> cellData.getValue().priorityProperty().add(1)
+                        .asString());
         this.tablePossibleScores.getColumns().add(
                 this.tableColumnPossibleScoresPriority);
 

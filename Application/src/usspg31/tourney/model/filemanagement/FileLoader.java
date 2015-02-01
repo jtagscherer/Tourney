@@ -140,6 +140,8 @@ public class FileLoader {
             Tournament newTournament = new Tournament();
             newTournament.setId(tournamentDocument.getId());
             newTournament.setName(tournamentDocument.getTournamentName());
+            newTournament.setExecutionState(tournamentDocument
+                    .getExecutionState());
             newTournament.getAdministrators().setAll(
                     tournamentDocument.getTournamentAdministrators());
 

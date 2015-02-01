@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import usspg31.tourney.controller.controls.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox spacing="5.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="usspg31.tourney.controller.controls.eventphases.execution.TournamentExecutionProjectionController">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
+		<URL value="@/ui/css/event-phase.css" />
+	</stylesheets>
+	<children>
+		<StackPane fx:id="contentRoot" />
+		<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+			<Label fx:id="labelHeader" styleClass="big-heading" text="%tournamentexecutionphase.tournamentexecution" />
+			<Pane HBox.hgrow="ALWAYS" />
+			<VBox styleClass="round-timer">
+               <children>
+                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="labelTime" styleClass="time-big" text="Time" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+		</HBox>
+		<HBox>
+			<Button fx:id="buttonPairingOverview" text="%tournamentexecutionphase.pairingoverview"
+				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, left"
+				onAction="#onButtonPairingOverviewClicked" />
+			<Button fx:id="buttonPhaseOverview" text="%tournamentexecutionphase.phaseoverview"
+				HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="multi-button, right"
+				onAction="#onButtonPhaseOverviewClicked" />
+		</HBox>
+		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
+			<children>
+				<PairingView fx:id="pairingView" HBox.hgrow="ALWAYS" />
+			</children>
+		</HBox>
+	</children>
+	<padding>
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
+</VBox>

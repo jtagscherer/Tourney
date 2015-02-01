@@ -102,10 +102,6 @@ public class TournamentScoringDialog extends VBox implements
 
     private final ModalDialog<Object, ScoringEntry> predefinedScoreDialog;
 
-    // Scoring button effects
-    private static final String scoringButtonInactive = "-fx-background-color: #888, -t-button-color;";
-    private static final String scoringButtonActive = "-fx-background-color: #888, derive(-t-button-color, -7%);";
-
     private PossibleScoring loadedScoring;
 
     public TournamentScoringDialog() {
@@ -321,17 +317,23 @@ public class TournamentScoringDialog extends VBox implements
     private void updateDisplayedScoringType() {
         switch (this.loadedScoring.getScoreType()) {
         case NORMAL:
-            this.buttonScoringTypeNormal
-                    .setStyle(TournamentScoringDialog.scoringButtonActive);
-            this.buttonScoringTypeTableStrength
-                    .setStyle(TournamentScoringDialog.scoringButtonInactive);
+            if (!this.buttonScoringTypeNormal.getStyleClass().contains(
+                    "selected-button")) {
+                this.buttonScoringTypeNormal.getStyleClass().add(
+                        "selected-button");
+            }
+            this.buttonScoringTypeTableStrength.getStyleClass().remove(
+                    "selected-button");
             this.normalScoringBox.setDisable(false);
             break;
         case TABLE_STRENGTH:
-            this.buttonScoringTypeTableStrength
-                    .setStyle(TournamentScoringDialog.scoringButtonActive);
-            this.buttonScoringTypeNormal
-                    .setStyle(TournamentScoringDialog.scoringButtonInactive);
+            if (!this.buttonScoringTypeTableStrength.getStyleClass().contains(
+                    "selected-button")) {
+                this.buttonScoringTypeTableStrength.getStyleClass().add(
+                        "selected-button");
+            }
+            this.buttonScoringTypeNormal.getStyleClass().remove(
+                    "selected-button");
             this.normalScoringBox.setDisable(true);
             break;
         }
