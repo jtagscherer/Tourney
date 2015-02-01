@@ -1,10 +1,9 @@
 package usspg31.tourney.controller.dialogs;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.controller.controls.MaterialTextField;
 import usspg31.tourney.controller.controls.NumberTextField;
 import usspg31.tourney.controller.dialogs.TournamentScoringDialog.ScoringEntry;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
@@ -14,7 +13,7 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 public class PredefinedScoreDialog extends VBox implements
         IModalDialogProvider<Object, ScoringEntry> {
 
-    private final TextField textFieldScoreTitle;
+    private final MaterialTextField textFieldScoreTitle;
     private final NumberTextField numberTextFieldScore;
 
     private ObservableList<ScoringEntry> entryList;
@@ -25,18 +24,19 @@ public class PredefinedScoreDialog extends VBox implements
 
         PreferencesManager preferences = PreferencesManager.getInstance();
 
-        Label labelScoreTitle = new Label(
-                preferences
-                        .localizeString("dialogs.predefinedscore.scoretitle"));
-        this.textFieldScoreTitle = new TextField();
+        this.textFieldScoreTitle = new MaterialTextField();
+        this.textFieldScoreTitle.setPromptText(preferences
+                .localizeString("dialogs.predefinedscore.scoretitle"));
+        this.textFieldScoreTitle.setFloatingPrompt(true);
         this.textFieldScoreTitle.textProperty().addListener((ov, o, n) -> {
             if (this.entry != null) {
                 this.entry.setName(n);
             }
         });
-        Label labelScore = new Label(
-                preferences.localizeString("dialogs.predefinedscore.score"));
         this.numberTextFieldScore = new NumberTextField();
+        this.numberTextFieldScore.setPromptText(preferences
+                .localizeString("dialogs.predefinedscore.score"));
+        this.numberTextFieldScore.setFloatingPrompt(true);
         this.numberTextFieldScore.numberValueProperty().addListener(
                 (ov, o, n) -> {
                     if (this.entry != null) {
@@ -44,8 +44,8 @@ public class PredefinedScoreDialog extends VBox implements
                     }
                 });
 
-        this.getChildren().addAll(labelScoreTitle, this.textFieldScoreTitle,
-                labelScore, this.numberTextFieldScore);
+        this.getChildren().addAll(this.textFieldScoreTitle,
+                this.numberTextFieldScore);
     }
 
     @SuppressWarnings("unchecked")
