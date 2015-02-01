@@ -20,8 +20,6 @@
 		<URL value="@/ui/css/dialogs.css" />
 	</stylesheets>
 	<children>
-		<StackPane fx:id="mainWindowRootContainer" mouseTransparent="true"
-			styleClass="modal-dialog-root-container" />
 		<RelativityPane fx:id="dialogBackground" styleClass="modal-dialog-background">
 			<VBox fx:id="dialogRoot" maxHeight="-Infinity" maxWidth="-Infinity"
 				styleClass="modal-dialog-container" RelativityPane.relBottom="5% 5px"

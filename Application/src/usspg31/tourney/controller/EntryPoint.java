@@ -3,14 +3,20 @@ package usspg31.tourney.controller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
@@ -24,6 +30,9 @@ public class EntryPoint extends Application {
     private static StackPane root;
     private static Pane mainWindow;
     private static StackPane modalOverlay;
+
+    private static Animation blurTransition;
+    private static GaussianBlur backgroundBlur;
 
     private static boolean applicationLocked;
 
@@ -116,6 +125,16 @@ public class EntryPoint extends Application {
                     }
                 });
 
+            backgroundBlur = new GaussianBlur(0);
+
+            blurTransition = new Timeline(
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(backgroundBlur.radiusProperty(), 0)),
+                    new KeyFrame(Duration.millis(300),
+                            new KeyValue(backgroundBlur.radiusProperty(), 10)));
+
+            mainWindow.setEffect(backgroundBlur);
+
             primaryStage.show();
         } catch (Exception e) {
             log.log(Level.SEVERE, e.getMessage(), e);
@@ -166,5 +185,23 @@ public class EntryPoint extends Application {
 
     public static StackPane getModalOverlay() {
         return modalOverlay;
+    }
+
+    public static void blurMainWindow() {
+        if (modalOverlay.getChildren().size() > 1) {
+            return;
+        }
+        blurTransition.playFromStart();
+    }
+
+    public static void unblurMainWindow() {
+        if (modalOverlay.getChildren().size() != 1) {
+            return;
+        }
+        // play the blur transition in reverse
+        blurTransition.stop();
+        blurTransition.setRate(-1);
+        blurTransition.jumpTo(blurTransition.getTotalDuration());
+        blurTransition.play();
     }
 }
