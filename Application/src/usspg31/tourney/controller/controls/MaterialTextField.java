@@ -248,8 +248,6 @@ public class MaterialTextField extends AnchorPane {
                 (int)(validation.getMessageColor().getGreen() * 255),
                 (int)(validation.getMessageColor().getBlue() * 255),
                 (int)(validation.getMessageColor().getOpacity() * 255)));
-        System.out.println(this.hintIcon.getStyle());
-        System.out.println(this.hintIcon.getStyleClass());
 
         this.hintLabel.setTextFill(validation.messageColor);
 
@@ -389,6 +387,9 @@ public class MaterialTextField extends AnchorPane {
     public BooleanProperty floatingPromptProperty() {
         if (this.floatingPrompt == null) {
             this.floatingPrompt = new SimpleBooleanProperty(false);
+            this.floatingPrompt.addListener((ov, o, n) -> {
+                this.updateSize();
+            });
         }
         return this.floatingPrompt;
     }
@@ -425,8 +426,6 @@ public class MaterialTextField extends AnchorPane {
 
         this.setTranslateY(translateY);
         this.setPrefHeight(prefHeight);
-
-        log.info("ty:" + this.getTranslateY() + ", ph:" + this.getPrefHeight());
     }
 
     public boolean hasHint() {
