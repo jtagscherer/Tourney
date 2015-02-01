@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import usspg31.tourney.controller.controls.*?>
 <?import usspg31.tourney.controller.layout.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -17,13 +18,13 @@
 	</stylesheets>
 	<children>
 		<HBox spacing="5.0">
-			<TextField fx:id="textFieldFirstName" promptText="%dialogs.administratoreditor.administrator.firstname"
-				HBox.hgrow="ALWAYS" />
-			<TextField fx:id="textFieldLastName" promptText="%dialogs.administratoreditor.administrator.lastname"
-				HBox.hgrow="ALWAYS" />
+			<MaterialTextField fx:id="textFieldFirstName" promptText="%dialogs.administratoreditor.administrator.firstname"
+				HBox.hgrow="ALWAYS" floatingPrompt="true" />
+			<MaterialTextField fx:id="textFieldLastName" promptText="%dialogs.administratoreditor.administrator.lastname"
+				HBox.hgrow="ALWAYS" floatingPrompt="true" />
 		</HBox>
-		<TextField fx:id="textFieldEmail" promptText="%dialogs.administratoreditor.administrator.mailaddress" />
-		<TextField fx:id="textFieldPhoneNumber" promptText="%dialogs.administratoreditor.administrator.phonenumber" />
+		<MaterialTextField fx:id="textFieldEmail" promptText="%dialogs.administratoreditor.administrator.mailaddress" floatingPrompt="true" />
+		<MaterialTextField fx:id="textFieldPhoneNumber" promptText="%dialogs.administratoreditor.administrator.phonenumber" floatingPrompt="true" />
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

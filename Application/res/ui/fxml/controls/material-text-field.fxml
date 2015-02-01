@@ -9,7 +9,7 @@
 <?import java.net.URL?>
 
 
-<fx:root maxHeight="-Infinity" maxWidth="Infinity" minHeight="-Infinity"
+<fx:root maxHeight="-Infinity" maxWidth="Infinity"
 	minWidth="-Infinity" styleClass="material-text-field" type="AnchorPane"
 	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<stylesheets>
@@ -33,7 +33,7 @@
 			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" alignment="CENTER">
 			<Label fx:id="hintLabel" styleClass="error-label" />
 			<Pane HBox.hgrow="ALWAYS" />
-			<IconPane fx:id="hintIcon" styleClass="message-icon" />
+			<IconPane fx:id="hintIcon" styleClass="message-icon" visible="false" />
 		</HBox>
 	</children>
 </fx:root>

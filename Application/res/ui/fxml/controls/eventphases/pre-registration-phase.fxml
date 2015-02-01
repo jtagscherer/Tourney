@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import java.net.*?>
+<?import usspg31.tourney.controller.controls.*?>
 <?import usspg31.tourney.controller.layout.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -19,7 +20,7 @@
 	</stylesheets>
 	<children>
 		<Label styleClass="heading" text="%preregistrationphase.preregistration" />
-		<TextField fx:id="textFieldPlayerSearch" maxHeight="1.7976931348623157E308"
+		<MaterialTextField fx:id="textFieldPlayerSearch" maxHeight="1.7976931348623157E308"
 			promptText="%preregistrationphase.searchattendee" HBox.hgrow="ALWAYS" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tablePreRegisteredPlayers" HBox.hgrow="ALWAYS" />
