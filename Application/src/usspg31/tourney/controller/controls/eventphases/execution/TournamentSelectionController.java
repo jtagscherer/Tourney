@@ -13,13 +13,13 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.controls.MaterialTextField;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
@@ -36,7 +36,7 @@ public class TournamentSelectionController implements EventUser {
     private static final Logger log = Logger
             .getLogger(TournamentSelectionController.class.getName());
 
-    @FXML private MaterialTextField textFieldTournamentSearch;
+    @FXML private TextField textFieldTournamentSearch;
     @FXML private TableView<Tournament> tableTournaments;
 
     @FXML private Button buttonExecuteTournament;

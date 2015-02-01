@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.*?>
-<?import usspg31.tourney.controller.controls.*?>
 <?import usspg31.tourney.controller.layout.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -22,18 +21,18 @@
 		<AnchorPane>
 			<Label styleClass="heading" text="%eventsetupphase.event" AnchorPane.leftAnchor="5.0"
 				AnchorPane.topAnchor="5.0" />
-			<MaterialTextField fx:id="textFieldEventTitle" promptText="%eventsetupphase.title"
+			<TextField fx:id="textFieldEventTitle" promptText="%eventsetupphase.title"
 				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-				AnchorPane.topAnchor="50.0" floatingPrompt="true" />
+				AnchorPane.topAnchor="50.0" />
 			<DatePicker fx:id="datePickerStartDate" promptText="%eventsetupphase.startdate"
 				showWeekNumbers="true" AnchorPane.leftAnchor="5.0"
-				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="106.0" />
+				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
 			<DatePicker fx:id="datePickerEndDate" promptText="%eventsetupphase.enddate"
 				AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-				AnchorPane.topAnchor="136.0" showWeekNumbers="true" />
-			<UndoTextArea fx:id="textAreaEventLocation" promptText="%eventsetupphase.location"
+				AnchorPane.topAnchor="110.0" showWeekNumbers="true" />
+			<TextArea fx:id="textAreaEventLocation" promptText="%eventsetupphase.location"
 				AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0"
-				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="167.0" />
+				AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="140.0" />
 			<Button fx:id="buttonEventAdministrators" styleClass="table-edit-button"
 				onAction="#onButtonEventAdministratorsClicked"
 				AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"

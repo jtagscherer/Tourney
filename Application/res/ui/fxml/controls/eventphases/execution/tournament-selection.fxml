@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.*?>
 <?import java.net.*?>
-<?import usspg31.tourney.controller.controls.*?>
 <?import usspg31.tourney.controller.layout.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -21,7 +20,7 @@
 	</stylesheets>
 	<children>
 		<Label styleClass="heading" text="%tournamentselection.title" />
-		<MaterialTextField fx:id="textFieldTournamentSearch" maxHeight="1.7976931348623157E308"
+		<TextField fx:id="textFieldTournamentSearch" maxHeight="1.7976931348623157E308"
 			promptText="%tournamentselection.searchtournament" HBox.hgrow="ALWAYS" />
 		<HBox spacing="5.0" VBox.vgrow="ALWAYS">
 			<TableView fx:id="tableTournaments" HBox.hgrow="ALWAYS" />

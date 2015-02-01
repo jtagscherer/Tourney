@@ -13,13 +13,13 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import usspg31.tourney.controller.EntryPoint;
 import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.controls.MaterialTextField;
-import usspg31.tourney.controller.controls.UndoTextArea;
 import usspg31.tourney.controller.dialogs.EventAdministratorListDialog;
 import usspg31.tourney.controller.dialogs.TournamentDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
@@ -36,10 +36,10 @@ public class EventSetupPhaseController implements EventUser {
     private final static Logger log = Logger
             .getLogger(EventSetupPhaseController.class.getName());
 
-    @FXML private MaterialTextField textFieldEventTitle;
+    @FXML private TextField textFieldEventTitle;
     @FXML private DatePicker datePickerStartDate;
     @FXML private DatePicker datePickerEndDate;
-    @FXML private UndoTextArea textAreaEventLocation;
+    @FXML private TextArea textAreaEventLocation;
 
     @FXML private TableView<Tournament> tableTournaments;
     @FXML private Button buttonAddTournament;
@@ -160,7 +160,7 @@ public class EventSetupPhaseController implements EventUser {
                 event.startDateProperty());
         this.datePickerEndDate.valueProperty().bindBidirectional(
                 event.endDateProperty());
-        this.textAreaEventLocation.undoTextProperty().bindBidirectional(
+        this.textAreaEventLocation.textProperty().bindBidirectional(
                 event.locationProperty());
 
         // bind the button disable property

@@ -10,11 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.controls.MaterialTextField;
 import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -31,7 +31,7 @@ public class PreRegistrationPhaseController implements EventUser {
     private static final Logger log = Logger
             .getLogger(PreRegistrationPhaseController.class.getName());
 
-    @FXML private MaterialTextField textFieldPlayerSearch;
+    @FXML private TextField textFieldPlayerSearch;
     @FXML private TableView<Player> tablePreRegisteredPlayers;
     @FXML private Button buttonAddPlayer;
     @FXML private Button buttonRemovePlayer;
