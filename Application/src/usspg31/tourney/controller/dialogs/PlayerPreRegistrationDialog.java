@@ -3,6 +3,7 @@ package usspg31.tourney.controller.dialogs;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.MaterialTextField;
+import usspg31.tourney.controller.controls.MaterialTextField.ValidationResult;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
@@ -59,6 +61,26 @@ public class PlayerPreRegistrationDialog extends VBox implements
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
+
+            Pattern emailPattern = Pattern.compile(
+                    "^[0-9a-z._%+-]+@[0-9a-z.-]+\\.[a-z]{2,}$",
+                    Pattern.CASE_INSENSITIVE);
+
+            this.textFieldEmail
+                    .setInputValidationCallback(input -> {
+                        if (input.isEmpty()) {
+                            return ValidationResult.ok();
+                        } else if (!input.isEmpty()
+                                && emailPattern.matcher(input).matches()) {
+                            return ValidationResult.success();
+                        } else {
+                            return ValidationResult
+                                    .error(PreferencesManager
+                                            .getInstance()
+                                            .localizeString(
+                                                    "dialogs.personediting.errors.invalidmail"));
+                        }
+                    });
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
