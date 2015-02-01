@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -41,7 +42,6 @@ public final class ModalDialog<P, R> extends StackPane {
     private Timeline fadeInTransition;
     private Timeline fadeOutTransition;
 
-    private static final double backgroundBlurAmount = 10;
     private static final double scaleInFrom = .7;
     private static final double scaleOutTo = .7;
     private static final Interpolator fadeInterpolator = Interpolator.SPLINE(
@@ -55,6 +55,10 @@ public final class ModalDialog<P, R> extends StackPane {
         this.loadDialog();
 
         this.contentContainer.getChildren().add(this.dialogContent.getRoot());
+
+        if (this.dialogContent.getRoot() instanceof Region) {
+            ((Region) this.dialogContent.getRoot()).minWidthProperty().bind(this.labelTitle.prefWidthProperty());
+        }
     }
 
     private void loadDialog() {

@@ -30,8 +30,8 @@
 						<Insets left="5.0" />
 					</VBox.margin>
 				</Label>
-				<StackPane fx:id="contentContainer" maxHeight="-Infinity"
-					maxWidth="-Infinity" VBox.vgrow="ALWAYS" />
+				<StackPane fx:id="contentContainer" maxHeight="Infinity"
+					maxWidth="Infinity" VBox.vgrow="ALWAYS" />
 				<HBox fx:id="dialogButtonContainer" alignment="BOTTOM_RIGHT"
 					spacing="5.0" />
 			</VBox>
