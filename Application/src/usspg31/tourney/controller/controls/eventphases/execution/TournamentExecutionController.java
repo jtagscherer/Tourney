@@ -171,6 +171,8 @@ public class TournamentExecutionController implements TournamentUser {
         undo.registerUndoProperty(this.loadedTournament.getRounds());
 
         this.updateRoundTimer();
+
+        this.checkRoundFinished();
     }
 
     public void disableCancelButton(boolean disable) {
