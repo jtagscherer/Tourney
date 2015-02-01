@@ -8,6 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 
 <fx:root spacing="5.0" type="VBox" xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1">
@@ -25,6 +26,9 @@
 					prefWidth="40.0" text="16" />
 				<Label text="%dialogs.tournamentphase.cutoff.after" />
 			</children>
+			<VBox.margin>
+				<Insets bottom="-50" />
+			</VBox.margin>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
@@ -38,6 +42,9 @@
 				<NumberTextField fx:id="textFieldRoundCount" alignment="CENTER_RIGHT"
 					prefWidth="40.0" text="8" />
 			</children>
+			<VBox.margin>
+				<Insets bottom="-50" />
+			</VBox.margin>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
@@ -49,6 +56,9 @@
 					alignment="CENTER_RIGHT" prefWidth="40.0" text="00" />
 				<Label text="%dialogs.tournamentphase.playtime.after" />
 			</children>
+			<VBox.margin>
+				<Insets bottom="-50" />
+			</VBox.margin>
 		</HBox>
 		<HBox alignment="BASELINE_LEFT" spacing="5.0">
 			<children>
@@ -56,6 +66,9 @@
 				<NumberTextField fx:id="textFieldPlayersPerPairing"
 					alignment="CENTER_RIGHT" prefWidth="40.0" text="2" />
 			</children>
+			<VBox.margin>
+				<Insets bottom="-50" />
+			</VBox.margin>
 		</HBox>
 	</children>
 	<padding>
