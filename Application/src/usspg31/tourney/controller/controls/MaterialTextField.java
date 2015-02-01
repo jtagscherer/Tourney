@@ -21,6 +21,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -481,14 +482,25 @@ public class MaterialTextField extends AnchorPane {
         return this.promptLabel.textProperty();
     }
 
-
     public String getPromptText() {
         return this.promptTextProperty().get();
     }
 
-
     public void setPromptText(String value) {
         this.promptTextProperty().set(value);
+    }
+
+
+    public ObjectProperty<Pos> alignmentProperty() {
+        return this.textField.alignmentProperty();
+    }
+
+    public void setAlignment(Pos value) {
+        this.alignmentProperty().set(value);
+    }
+
+    public Pos getAlignment() {
+        return this.alignmentProperty().get();
     }
 
 }

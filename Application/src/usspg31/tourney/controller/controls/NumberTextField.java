@@ -2,10 +2,9 @@ package usspg31.tourney.controller.controls;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-public class NumberTextField extends TextField {
+public class NumberTextField extends MaterialTextField {
 
     private IntegerProperty numberValue;
 
