@@ -19,276 +19,327 @@ import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.pairingstrategies.FreeForAll;
 import usspg31.tourney.model.pairingstrategies.ModifiedSwissSystem;
 import usspg31.tourney.model.pairingstrategies.SingleElimination;
+import usspg31.tourney.model.pairingstrategies.SpecialModifiedSwissSystem;
 import usspg31.tourney.model.pairingstrategies.SwissSystem;
 
 public class TestPairingStrategies {
 
-    @Test
     public void testSingleElimination() {
-	Tournament testTournament = new Tournament();
-	TournamentModule testTournamentModule = new TournamentModule();
-	GamePhase testGamePhase = new GamePhase();
-	PossibleScoring testPossibleScoring = new PossibleScoring();
+        Tournament testTournament = new Tournament();
+        TournamentModule testTournamentModule = new TournamentModule();
+        GamePhase testGamePhase = new GamePhase();
+        PossibleScoring testPossibleScoring = new PossibleScoring();
 
-	for (int i = 0; i < 2; i++) {
-	    testPossibleScoring.getScores().put(i + " Test", 10);
-	}
+        for (int i = 0; i < 2; i++) {
+            testPossibleScoring.getScores().put(i + " Test", 10);
+        }
 
-	testGamePhase.setNumberOfOpponents(2);
-	testGamePhase.setPhaseNumber(0);
-	testGamePhase.setRoundCount(4);
-	testGamePhase.setPairingMethod(new SingleElimination());
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(0);
+        testGamePhase.setRoundCount(4);
+        testGamePhase.setPairingMethod(new SingleElimination());
 
-	testTournamentModule.getPossibleScores().add(testPossibleScoring);
-	testTournamentModule.getPhaseList().add(testGamePhase);
-	testTournament.setRuleSet(testTournamentModule);
+        testTournamentModule.getPossibleScores().add(testPossibleScoring);
+        testTournamentModule.getPhaseList().add(testGamePhase);
+        testTournament.setRuleSet(testTournamentModule);
 
-	ArrayList<Player> testRemainingPlayer = new ArrayList<>();
-	Player testPlayer;
-	for (int i = 0; i < 8; i++) {
-	    testPlayer = new Player();
-	    testPlayer.setId(Integer.toString(i));
+        ArrayList<Player> testRemainingPlayer = new ArrayList<>();
+        Player testPlayer;
+        for (int i = 0; i < 8; i++) {
+            testPlayer = new Player();
+            testPlayer.setId(Integer.toString(i));
 
-	    testRemainingPlayer.add(testPlayer);
-	}
-	testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
+            testRemainingPlayer.add(testPlayer);
+        }
+        testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
 
-	RoundGeneratorFactory testRoundGenerator = new RoundGeneratorFactory();
-	testTournament.getRounds().add(
-		testRoundGenerator.generateRound(testTournament));
+        RoundGeneratorFactory testRoundGenerator = new RoundGeneratorFactory();
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
 
-	// the second player in each pairing wins
+        // the second player in each pairing wins
 
-	for (Pairing testPairing : testTournament.getRounds().get(0)
-		.getPairings()) {
-	    for (PlayerScore testPlayerScore : testPairing.getScoreTable()) {
-		if (testPairing.getScoreTable().indexOf(testPlayerScore) == 0) {
+        for (Pairing testPairing : testTournament.getRounds().get(0)
+                .getPairings()) {
+            for (PlayerScore testPlayerScore : testPairing.getScoreTable()) {
+                if (testPairing.getScoreTable().indexOf(testPlayerScore) == 0) {
 
-		    for (int i = 0; i < 2; i++) {
-			testPlayerScore.getScore().add(i, 0);
-		    }
-		} else {
-		    for (int i = 0; i < 2; i++) {
-			testPlayerScore.getScore().add(i, 10);
-		    }
-		}
-	    }
-	}
+                    for (int i = 0; i < 2; i++) {
+                        testPlayerScore.getScore().add(i, 0);
+                    }
+                } else {
+                    for (int i = 0; i < 2; i++) {
+                        testPlayerScore.getScore().add(i, 10);
+                    }
+                }
+            }
+        }
 
-	testTournament.getRounds().add(
-		testRoundGenerator.generateRound(testTournament));
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
 
-	assertEquals(testTournament.getRounds().get(0).getPairings().size(), 4);
+        assertEquals(testTournament.getRounds().get(0).getPairings().size(), 4);
 
     }
 
-    @Test
     public void testSwissSystem() {
-	Tournament testTournament = new Tournament();
-	TournamentModule testTournamentModule = new TournamentModule();
-	GamePhase testGamePhase = new GamePhase();
+        Tournament testTournament = new Tournament();
+        TournamentModule testTournamentModule = new TournamentModule();
+        GamePhase testGamePhase = new GamePhase();
 
-	PossibleScoring testPossibleScoring = new PossibleScoring();
+        PossibleScoring testPossibleScoring = new PossibleScoring();
 
-	for (int i = 0; i < 2; i++) {
-	    testPossibleScoring.getScores().put(i + " Test", 10);
+        for (int i = 0; i < 2; i++) {
+            testPossibleScoring.getScores().put(i + " Test", 10);
 
-	}
+        }
 
-	testGamePhase.setNumberOfOpponents(2);
-	testGamePhase.setPhaseNumber(0);
-	testGamePhase.setRoundCount(10);
-	testGamePhase.setPairingMethod(new SwissSystem());
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(0);
+        testGamePhase.setRoundCount(10);
+        testGamePhase.setPairingMethod(new SwissSystem());
 
-	testTournamentModule.getPossibleScores().add(testPossibleScoring);
-	testTournamentModule.getPhaseList().add(testGamePhase);
-	testTournament.setRuleSet(testTournamentModule);
+        testTournamentModule.getPossibleScores().add(testPossibleScoring);
+        testTournamentModule.getPhaseList().add(testGamePhase);
+        testTournament.setRuleSet(testTournamentModule);
 
-	ArrayList<Player> testRemainingPlayer = new ArrayList<>();
-	Player testPlayer;
-	for (int i = 0; i < 8; i++) {
-	    testPlayer = new Player();
-	    testPlayer.setId(Integer.toString(i));
+        ArrayList<Player> testRemainingPlayer = new ArrayList<>();
+        Player testPlayer;
+        for (int i = 0; i < 8; i++) {
+            testPlayer = new Player();
+            testPlayer.setId(Integer.toString(i));
 
-	    testRemainingPlayer.add(testPlayer);
-	}
-	testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
+            testRemainingPlayer.add(testPlayer);
+        }
+        testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
 
-	RoundGeneratorFactory testRoundGenerator = new RoundGeneratorFactory();
-	testTournament.getRounds().add(
-		testRoundGenerator.generateRound(testTournament));
-	PlayerScore playerScore;
+        RoundGeneratorFactory testRoundGenerator = new RoundGeneratorFactory();
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
+        PlayerScore playerScore;
 
-	for (Player playlerForScore : testTournament.getRemainingPlayers()) {
-	    playerScore = new PlayerScore();
-	    playerScore.setPlayer(playlerForScore);
-	    playerScore.getScore().add(
-		    Integer.parseInt(playlerForScore.getId()) * 10);
+        for (Player playlerForScore : testTournament.getRemainingPlayers()) {
+            playerScore = new PlayerScore();
+            playerScore.setPlayer(playlerForScore);
+            playerScore.getScore().add(
+                    Integer.parseInt(playlerForScore.getId()) * 10);
 
-	    testTournament.getScoreTable().add(playerScore);
-	}
-	PlayerScore stuffDogePlayerScore;
-	for (Pairing stuffDogePairing : testTournament.getRounds().get(0)
-		.getPairings()) {
-	    for (Player stuffDogePlayer : stuffDogePairing.getOpponents()) {
-		stuffDogePlayerScore = new PlayerScore();
-		stuffDogePlayerScore.setPlayer(stuffDogePlayer);
-		stuffDogePlayerScore.getScore().add(0,
-			Integer.valueOf((stuffDogePlayer.getId())) * 10);
-		stuffDogePlayerScore.getScore().add(1, 10);
+            testTournament.getScoreTable().add(playerScore);
+        }
+        PlayerScore stuffDogePlayerScore;
+        for (Pairing stuffDogePairing : testTournament.getRounds().get(0)
+                .getPairings()) {
+            for (Player stuffDogePlayer : stuffDogePairing.getOpponents()) {
+                stuffDogePlayerScore = new PlayerScore();
+                stuffDogePlayerScore.setPlayer(stuffDogePlayer);
+                stuffDogePlayerScore.getScore().add(0,
+                        Integer.valueOf((stuffDogePlayer.getId())) * 10);
+                stuffDogePlayerScore.getScore().add(1, 10);
 
-		stuffDogePairing.getScoreTable().add(stuffDogePlayerScore);
-	    }
-	}
+                stuffDogePairing.getScoreTable().add(stuffDogePlayerScore);
+            }
+        }
 
-	testTournament.getRounds().add(
-		testRoundGenerator.generateRound(testTournament));
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
 
-	for (TournamentRound testOutputRound : testTournament.getRounds()) {
-	    System.out.println(testOutputRound.getRoundNumber() + ": "
-		    + testOutputRound.getPairings().size());
-	}
-	// Player with the highest id is first player added to the second round
-	assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
-		.getOpponents().get(0), testTournament.getRemainingPlayers()
-		.get(testTournament.getRemainingPlayers().size() - 1));
+        for (TournamentRound testOutputRound : testTournament.getRounds()) {
+            System.out.println(testOutputRound.getRoundNumber() + ": "
+                    + testOutputRound.getPairings().size());
+        }
+        // Player with the highest id is first player added to the second round
+        assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
+                .getOpponents().get(0), testTournament.getRemainingPlayers()
+                .get(testTournament.getRemainingPlayers().size() - 1));
 
-	// Player at second position have to play against him
-	assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
-		.getOpponents().get(1), testTournament.getRemainingPlayers()
-		.get(testTournament.getRemainingPlayers().size() - 2));
+        // Player at second position have to play against him
+        assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
+                .getOpponents().get(1), testTournament.getRemainingPlayers()
+                .get(testTournament.getRemainingPlayers().size() - 2));
 
     }
 
-    @Test
     public void testFreeForAllComplete() {
-	Tournament testTournament = new Tournament();
-	TournamentModule testTournamentModule = new TournamentModule();
-	GamePhase testGamePhase = new GamePhase();
+        Tournament testTournament = new Tournament();
+        TournamentModule testTournamentModule = new TournamentModule();
+        GamePhase testGamePhase = new GamePhase();
 
-	PossibleScoring testPossibleScoring = new PossibleScoring();
+        PossibleScoring testPossibleScoring = new PossibleScoring();
 
-	for (int i = 0; i < 2; i++) {
-	    testPossibleScoring.getScores().put(i + " Test", 10);
+        for (int i = 0; i < 2; i++) {
+            testPossibleScoring.getScores().put(i + " Test", 10);
 
-	}
-	testTournamentModule.getPossibleScores().add(testPossibleScoring);
+        }
+        testTournamentModule.getPossibleScores().add(testPossibleScoring);
 
-	testGamePhase.setNumberOfOpponents(2);
-	testGamePhase.setPhaseNumber(0);
-	testGamePhase.setRoundCount(1);
-	testGamePhase.setPairingMethod(new FreeForAll());
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(0);
+        testGamePhase.setRoundCount(1);
+        testGamePhase.setPairingMethod(new FreeForAll());
 
-	testTournamentModule.getPhaseList().add(testGamePhase);
+        testTournamentModule.getPhaseList().add(testGamePhase);
 
-	testGamePhase = new GamePhase();
+        testGamePhase = new GamePhase();
 
-	testGamePhase.setNumberOfOpponents(2);
-	testGamePhase.setPhaseNumber(1);
-	testGamePhase.setRoundCount(1);
-	testGamePhase.setPairingMethod(new FreeForAll());
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(1);
+        testGamePhase.setRoundCount(1);
+        testGamePhase.setPairingMethod(new FreeForAll());
 
-	testTournamentModule.getPhaseList().add(testGamePhase);
+        testTournamentModule.getPhaseList().add(testGamePhase);
 
-	testGamePhase = new GamePhase();
+        testGamePhase = new GamePhase();
 
-	testGamePhase.setNumberOfOpponents(2);
-	testGamePhase.setPhaseNumber(2);
-	testGamePhase.setRoundCount(1);
-	testGamePhase.setPairingMethod(new FreeForAll());
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(2);
+        testGamePhase.setRoundCount(1);
+        testGamePhase.setPairingMethod(new FreeForAll());
 
-	testTournamentModule.getPhaseList().add(testGamePhase);
+        testTournamentModule.getPhaseList().add(testGamePhase);
 
-	testTournament.setRuleSet(testTournamentModule);
+        testTournament.setRuleSet(testTournamentModule);
 
-	ArrayList<Player> testRemainingPlayer = new ArrayList<>();
-	Player testPlayer;
-	for (int i = 0; i < 8; i++) {
-	    testPlayer = new Player();
-	    testPlayer.setId(Integer.toString(i));
+        ArrayList<Player> testRemainingPlayer = new ArrayList<>();
+        Player testPlayer;
+        for (int i = 0; i < 8; i++) {
+            testPlayer = new Player();
+            testPlayer.setId(Integer.toString(i));
 
-	    testRemainingPlayer.add(testPlayer);
-	}
-	testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
+            testRemainingPlayer.add(testPlayer);
+        }
+        testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
 
-	RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
+        RoundGeneratorFactory roundGenerator = new RoundGeneratorFactory();
 
-	testTournament.getRounds().add(
-		roundGenerator.generateRound(testTournament));
-	testTournament.getRounds().add(
-		roundGenerator.generateRound(testTournament));
-	testTournament.getRounds().add(
-		roundGenerator.generateRound(testTournament));
+        testTournament.getRounds().add(
+                roundGenerator.generateRound(testTournament));
+        testTournament.getRounds().add(
+                roundGenerator.generateRound(testTournament));
+        testTournament.getRounds().add(
+                roundGenerator.generateRound(testTournament));
 
-	assertTrue(testTournament.getRounds().get(0).getPairings().size() * 2 == 8);
-	assertTrue(testTournament.getRounds().get(0).getPairings().size() == testTournament
-		.getRounds().get(2).getPairings().size());
+        assertTrue(testTournament.getRounds().get(0).getPairings().size() * 2 == 8);
+        assertTrue(testTournament.getRounds().get(0).getPairings().size() == testTournament
+                .getRounds().get(2).getPairings().size());
+
+    }
+
+    public void testModifiedSwissSystem() {
+        Tournament testTournament = new Tournament();
+        TournamentModule testTournamentModule = new TournamentModule();
+        GamePhase testGamePhase = new GamePhase();
+
+        PossibleScoring testPossibleScoring = new PossibleScoring();
+
+        for (int i = 0; i < 2; i++) {
+            testPossibleScoring.getScores().put(i + " Test", 10);
+
+        }
+
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(0);
+        testGamePhase.setRoundCount(0);
+        testGamePhase.setPairingMethod(new ModifiedSwissSystem());
+        testTournamentModule.getPhaseList().add(testGamePhase);
+
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(1);
+        testGamePhase.setRoundCount(2);
+        testGamePhase.setPairingMethod(new ModifiedSwissSystem());
+        testTournamentModule.getPhaseList().add(testGamePhase);
+
+        testTournamentModule.getPossibleScores().add(testPossibleScoring);
+        testTournament.setRuleSet(testTournamentModule);
+
+        ArrayList<Player> testRemainingPlayer = new ArrayList<>();
+        Player testPlayer;
+        for (int i = 0; i < 8; i++) {
+            testPlayer = new Player();
+            testPlayer.setId(Integer.toString(i));
+
+            testRemainingPlayer.add(testPlayer);
+        }
+        testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
+
+        RoundGeneratorFactory testRoundGenerator = new RoundGeneratorFactory();
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
+        PlayerScore playerScore;
+
+        for (Player playlerForScore : testTournament.getRemainingPlayers()) {
+            playerScore = new PlayerScore();
+            playerScore.setPlayer(playlerForScore);
+            playerScore.getScore().add(
+                    Integer.parseInt(playlerForScore.getId()) * 10);
+
+            testTournament.getScoreTable().add(playerScore);
+        }
+
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
+        // Player with the highest id is first player added to the second round
+        assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
+                .getOpponents().get(0), testTournament.getRemainingPlayers()
+                .get(testTournament.getRemainingPlayers().size() - 1));
+
+        // Player at second position have to play against him
+        assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
+                .getOpponents().get(1), testTournament.getRemainingPlayers()
+                .get(testTournament.getRemainingPlayers().size() - 2));
 
     }
 
     @Test
-    public void testModifiedSwissSystem() {
-	Tournament testTournament = new Tournament();
-	TournamentModule testTournamentModule = new TournamentModule();
-	GamePhase testGamePhase = new GamePhase();
+    public void testSpecialSwissSystem() {
+        Tournament testTournament = new Tournament();
+        TournamentModule testTournamentModule = new TournamentModule();
+        GamePhase testGamePhase = new GamePhase();
 
-	PossibleScoring testPossibleScoring = new PossibleScoring();
+        PossibleScoring testPossibleScoring = new PossibleScoring();
 
-	for (int i = 0; i < 2; i++) {
-	    testPossibleScoring.getScores().put(i + " Test", 10);
+        for (int i = 0; i < 2; i++) {
+            testPossibleScoring.getScores().put(i + " Test", 10);
 
-	}
+        }
 
-	testGamePhase.setNumberOfOpponents(2);
-	testGamePhase.setPhaseNumber(0);
-	testGamePhase.setRoundCount(0);
-	testGamePhase.setPairingMethod(new ModifiedSwissSystem());
-	testTournamentModule.getPhaseList().add(testGamePhase);
+        testGamePhase.setNumberOfOpponents(2);
+        testGamePhase.setPhaseNumber(0);
+        testGamePhase.setRoundCount(2);
+        testGamePhase.setPairingMethod(new SpecialModifiedSwissSystem());
+        testTournamentModule.getPhaseList().add(testGamePhase);
 
-	testGamePhase.setNumberOfOpponents(2);
-	testGamePhase.setPhaseNumber(1);
-	testGamePhase.setRoundCount(2);
-	testGamePhase.setPairingMethod(new ModifiedSwissSystem());
-	testTournamentModule.getPhaseList().add(testGamePhase);
+        testTournament.setRuleSet(testTournamentModule);
 
-	testTournamentModule.getPossibleScores().add(testPossibleScoring);
-	testTournament.setRuleSet(testTournamentModule);
+        ArrayList<Player> testRemainingPlayer = new ArrayList<>();
+        Player testPlayer;
+        for (int i = 0; i < 4; i++) {
+            testPlayer = new Player();
+            testPlayer.setId(Integer.toString(i));
+            testPlayer.setStartingNumber(Integer.toString(i));
 
-	ArrayList<Player> testRemainingPlayer = new ArrayList<>();
-	Player testPlayer;
-	for (int i = 0; i < 8; i++) {
-	    testPlayer = new Player();
-	    testPlayer.setId(Integer.toString(i));
+            testRemainingPlayer.add(testPlayer);
+        }
+        testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
 
-	    testRemainingPlayer.add(testPlayer);
-	}
-	testTournament.getRemainingPlayers().addAll(testRemainingPlayer);
+        RoundGeneratorFactory testRoundGenerator = new RoundGeneratorFactory();
 
-	RoundGeneratorFactory testRoundGenerator = new RoundGeneratorFactory();
-	testTournament.getRounds().add(
-		testRoundGenerator.generateRound(testTournament));
-	PlayerScore playerScore;
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
+        PlayerScore playerScore;
 
-	for (Player playlerForScore : testTournament.getRemainingPlayers()) {
-	    playerScore = new PlayerScore();
-	    playerScore.setPlayer(playlerForScore);
-	    playerScore.getScore().add(
-		    Integer.parseInt(playlerForScore.getId()) * 10);
+        for (Player playlerForScore : testTournament.getRemainingPlayers()) {
+            playerScore = new PlayerScore();
+            playerScore.setPlayer(playlerForScore);
+            playerScore.getScore().add(
+                    Integer.parseInt(playlerForScore.getId()) * 10);
 
-	    testTournament.getScoreTable().add(playerScore);
-	}
+            testTournament.getScoreTable().add(playerScore);
+        }
 
-	testTournament.getRounds().add(
-		testRoundGenerator.generateRound(testTournament));
-	// Player with the highest id is first player added to the second round
-	assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
-		.getOpponents().get(0), testTournament.getRemainingPlayers()
-		.get(testTournament.getRemainingPlayers().size() - 1));
+        testTournament.getRounds().add(
+                testRoundGenerator.generateRound(testTournament));
 
-	// Player at second position have to play against him
-	assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
-		.getOpponents().get(1), testTournament.getRemainingPlayers()
-		.get(testTournament.getRemainingPlayers().size() - 2));
-
+        assertEquals(testTournament.getRounds().get(0).getPairings().size(),
+                testTournament.getRounds().get(1).getPairings().size());
     }
 }
