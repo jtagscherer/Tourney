@@ -72,19 +72,4 @@ public class PlayerScore implements Comparable<PlayerScore>, Cloneable {
         return clone;
     }
 
-    // public class PlayerScoreComparator implements Comparator<PlayerScore> {
-    //
-    // @Override
-    // public int compare(PlayerScore o1, PlayerScore o2) {
-    // // TODO Auto-generated method stub
-    // if (o1.getScore().get(0) > o2.getScore().get(0)) {
-    // return 1;
-    // } else if (o1.getScore().get(0) == o2.getScore().get(0)) {
-    // return 0;
-    // } else {
-    // return -1;
-    // }
-    // }
-    // }
-
 }
