@@ -144,53 +144,77 @@ public class DoubleElimination implements PairingStrategy {
                                 .identifyWinner(pairing));
                     }
                 }
-
-                while (winnerBracket.size() > PairingHelper.findPhase(
-                        tournament.getRounds().size(), tournament)
-                        .getNumberOfOpponents() - 1) {
+                if (winnerBracket.size() + loserBracket.size() == PairingHelper
+                        .findPhase(tournament.getRounds().size(), tournament)
+                        .getNumberOfOpponents()) {
                     partResult = new Pairing();
                     partResult.setFlag(PairingFlag.WINNER_BRACKET);
-                    for (int i = 0; i < PairingHelper.findPhase(
-                            tournament.getRounds().size(), tournament)
-                            .getNumberOfOpponents(); i++) {
-
+                    partResult.getOpponents().addAll(winnerBracket);
+                    partResult.getOpponents().addAll(loserBracket);
+                    for (Player participantFinalRound : winnerBracket) {
                         partResult.getScoreTable().add(
                                 PairingHelper.generateEmptyScore(
-                                        winnerBracket.get(0), tournament
+                                        participantFinalRound, tournament
                                                 .getRuleSet()
                                                 .getPossibleScores().size()));
-
-                        partResult.getOpponents().add(winnerBracket.get(0));
-
-                        winnerBracket.remove(0);
                     }
-
-                    result.add(partResult);
-
-                }
-
-                while (loserBracket.size() > PairingHelper.findPhase(
-                        tournament.getRounds().size(), tournament)
-                        .getNumberOfOpponents() - 1) {
-                    partResult = new Pairing();
-                    partResult.setFlag(PairingFlag.LOSER_BRACKET);
-                    for (int i = 0; i < PairingHelper.findPhase(
-                            tournament.getRounds().size(), tournament)
-                            .getNumberOfOpponents(); i++) {
-
+                    for (Player participantFinalRound : loserBracket) {
                         partResult.getScoreTable().add(
                                 PairingHelper.generateEmptyScore(
-                                        loserBracket.get(0), tournament
+                                        participantFinalRound, tournament
                                                 .getRuleSet()
                                                 .getPossibleScores().size()));
+                    }
+                } else {
+                    while (winnerBracket.size() > PairingHelper.findPhase(
+                            tournament.getRounds().size(), tournament)
+                            .getNumberOfOpponents() - 1) {
+                        partResult = new Pairing();
+                        partResult.setFlag(PairingFlag.WINNER_BRACKET);
+                        for (int i = 0; i < PairingHelper.findPhase(
+                                tournament.getRounds().size(), tournament)
+                                .getNumberOfOpponents(); i++) {
 
-                        partResult.getOpponents().add(loserBracket.get(0));
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper.generateEmptyScore(
+                                            winnerBracket.get(0), tournament
+                                                    .getRuleSet()
+                                                    .getPossibleScores().size()));
 
-                        loserBracket.remove(0);
+                            partResult.getOpponents().add(winnerBracket.get(0));
+
+                            winnerBracket.remove(0);
+                        }
+
+                        result.add(partResult);
+
                     }
 
-                    result.add(partResult);
+                    while (loserBracket.size() > PairingHelper.findPhase(
+                            tournament.getRounds().size(), tournament)
+                            .getNumberOfOpponents() - 1) {
+                        partResult = new Pairing();
+                        partResult.setFlag(PairingFlag.LOSER_BRACKET);
+                        for (int i = 0; i < PairingHelper.findPhase(
+                                tournament.getRounds().size(), tournament)
+                                .getNumberOfOpponents(); i++) {
 
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper.generateEmptyScore(
+                                            loserBracket.get(0), tournament
+                                                    .getRuleSet()
+                                                    .getPossibleScores().size()));
+
+                            partResult.getOpponents().add(loserBracket.get(0));
+
+                            loserBracket.remove(0);
+                        }
+
+                        result.add(partResult);
+
+                    }
                 }
                 break;
             case INTER_ROUND:
