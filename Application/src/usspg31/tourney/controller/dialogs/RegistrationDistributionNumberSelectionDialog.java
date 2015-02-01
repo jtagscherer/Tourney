@@ -45,6 +45,8 @@ public class RegistrationDistributionNumberSelectionDialog extends VBox
     @FXML
     private void initialize() {
         this.maximumRegistratorNumber = Integer.MAX_VALUE;
+        this.textFieldNumberOfRegistrator.setFloatingPrompt(true);
+        this.textFieldNumberOfRegistrator.setShowPrompt(true);
     }
 
     @Override
