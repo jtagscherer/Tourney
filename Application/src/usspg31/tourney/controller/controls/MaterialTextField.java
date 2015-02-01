@@ -233,7 +233,7 @@ public class MaterialTextField extends AnchorPane {
         this.updateSize();
     }
 
-    private void validateInput() {
+    public void validateInput() {
         ValidationResult validation = this.getInputValidationCallback().call(this.getText());
         if (this.previousResult != null && this.previousResult.equals(validation)) {
             return;
