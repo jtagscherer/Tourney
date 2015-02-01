@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
+import usspg31.tourney.controller.dialogs.PlayerEditorDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
@@ -48,7 +48,7 @@ public class PreRegistrationPhaseController implements EventUser {
 
     @FXML
     private void initialize() {
-        this.preRegistrationDialog = new PlayerPreRegistrationDialog()
+        this.preRegistrationDialog = new PlayerEditorDialog()
                 .modalDialog();
 
         this.initPlayerTable();

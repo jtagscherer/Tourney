@@ -28,7 +28,7 @@ import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventPhaseViewController;
 import usspg31.tourney.controller.controls.EventUser;
-import usspg31.tourney.controller.dialogs.PlayerPreRegistrationDialog;
+import usspg31.tourney.controller.dialogs.PlayerEditorDialog;
 import usspg31.tourney.controller.dialogs.RegistrationDistributionDialog;
 import usspg31.tourney.controller.dialogs.RegistrationDistributionNumberSelectionDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
@@ -78,7 +78,7 @@ public class RegistrationPhaseController implements EventUser {
 
     @FXML
     private void initialize() {
-        this.registrationDialog = new PlayerPreRegistrationDialog()
+        this.registrationDialog = new PlayerEditorDialog()
                 .modalDialog().title(
                         "dialogs.playerpreregistration.registration");
         this.distributionDialog = new RegistrationDistributionDialog()

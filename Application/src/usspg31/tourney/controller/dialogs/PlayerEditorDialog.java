@@ -29,11 +29,11 @@ import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
 
-public class PlayerPreRegistrationDialog extends VBox implements
+public class PlayerEditorDialog extends VBox implements
         IModalDialogProvider<Object, Player> {
 
     private static final Logger log = Logger
-            .getLogger(PlayerPreRegistrationDialog.class.getName());
+            .getLogger(PlayerEditorDialog.class.getName());
 
     @FXML private MaterialTextField textFieldFirstName;
     @FXML private MaterialTextField textFieldLastName;
@@ -52,7 +52,7 @@ public class PlayerPreRegistrationDialog extends VBox implements
     private Player loadedPlayer;
     private Event loadedEvent;
 
-    public PlayerPreRegistrationDialog() {
+    public PlayerEditorDialog() {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
                     "/ui/fxml/dialogs/player-pre-registration-dialog.fxml"),
