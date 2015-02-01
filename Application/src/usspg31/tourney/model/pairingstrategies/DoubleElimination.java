@@ -165,6 +165,9 @@ public class DoubleElimination implements PairingStrategy {
                                                 .getRuleSet()
                                                 .getPossibleScores().size()));
                     }
+                    winnerBracket.clear();
+                    loserBracket.clear();
+                    result.add(partResult);
                 } else {
                     while (winnerBracket.size() > PairingHelper.findPhase(
                             tournament.getRounds().size(), tournament)
@@ -274,6 +277,7 @@ public class DoubleElimination implements PairingStrategy {
                     }
 
                     result.add(partResult);
+
                 }
                 break;
             case SECOND_ROUND:
