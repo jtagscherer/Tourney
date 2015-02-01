@@ -110,62 +110,94 @@ public class SpecialSwissSystem implements PairingStrategy {
 
                         if (i == 0) {
                             partResult.getOpponents().add(
-                                    subScoreList.get(subScoreList.size() - 1)
-                                            .getPlayer());
+                                    topList.get(topList.size() - 1));
 
                             partResult
                                     .getScoreTable()
                                     .add(PairingHelper.generateEmptyScore(
-                                            subScoreList.get(
-                                                    subScoreList.size() - 1)
-                                                    .getPlayer(), tournament
-                                                    .getRuleSet()
+                                            topList.get(topList.size() - 1),
+                                            tournament.getRuleSet()
                                                     .getPossibleScores().size()));
-                            subScoreList.remove(subScoreList.size() - 1);
+                            topList.remove(topList.size() - 1);
+                            subScoreList.remove(topList.size() - 1);
                         } else {
-                            partResult.getOpponents().add(
-                                    subScoreList.get(subScoreList.size() - i)
-                                            .getPlayer());
-                            if (i == PairingHelper.findPhase(
-                                    tournament.getRounds().size(), tournament)
-                                    .getNumberOfOpponents() - 1) {
 
-                                while (PairingHelper.isThereASimilarPairings(
-                                        partResult, tournament)) {
-                                    partResult.getOpponents().remove(
-                                            subScoreList.get(
-                                                    subScoreList.size() - 1
-                                                            - count)
-                                                    .getPlayer());
-                                    if (count + 1 == subScoreList.size()) {
-                                        count = 0;
+                            if (i % 2 == 0) {
+                                partResult.getOpponents().add(
+                                        topList.get(topList.size() - i));
+                                if (i == PairingHelper.findPhase(
+                                        tournament.getRounds().size(),
+                                        tournament).getNumberOfOpponents() - 1) {
+
+                                    while (PairingHelper
+                                            .isThereASimilarPairings(
+                                                    partResult, tournament)) {
+                                        partResult.getOpponents().remove(
+                                                topList.get(topList.size() - 1
+                                                        - count));
+                                        if (count + 1 == subScoreList.size()) {
+                                            count = 0;
+                                            partResult.getOpponents().add(
+                                                    topList.get(topList.size()
+                                                            - 1 - count));
+                                            doublePairing = true;
+                                            break;
+                                        } else {
+                                            count++;
+                                        }
                                         partResult.getOpponents().add(
-                                                subScoreList.get(
-                                                        subScoreList.size() - 1
-                                                                - count)
-                                                        .getPlayer());
-                                        doublePairing = true;
-                                        break;
-                                    } else {
-                                        count++;
+                                                topList.get(topList.size() - 1
+                                                        - count));
                                     }
-                                    partResult.getOpponents().add(
-                                            subScoreList.get(
-                                                    subScoreList.size() - 1
-                                                            - count)
-                                                    .getPlayer());
+                                    partResult
+                                            .getScoreTable()
+                                            .add(PairingHelper.generateEmptyScore(
+                                                    topList.get(topList.size() - 1),
+                                                    tournament
+                                                            .getRuleSet()
+                                                            .getPossibleScores()
+                                                            .size()));
+                                    topList.remove(topList.size() - 1 - count);
+                                    subScoreList.remove(topList.size() - 1
+                                            - count);
                                 }
-                                partResult.getScoreTable().add(
-                                        PairingHelper.generateEmptyScore(
-                                                subScoreList
-                                                        .get(subScoreList
-                                                                .size() - 1)
-                                                        .getPlayer(),
-                                                tournament.getRuleSet()
-                                                        .getPossibleScores()
-                                                        .size()));
-                                subScoreList.remove(subScoreList.size() - 1
-                                        - count);
+
+                            } else {
+                                partResult.getOpponents()
+                                        .add(bottomList.get(0));
+                                if (i == PairingHelper.findPhase(
+                                        tournament.getRounds().size(),
+                                        tournament).getNumberOfOpponents() - 1) {
+
+                                    while (PairingHelper
+                                            .isThereASimilarPairings(
+                                                    partResult, tournament)) {
+                                        partResult.getOpponents().remove(
+                                                bottomList.get(count));
+                                        if (count + 1 == subScoreList.size()) {
+                                            count = 0;
+                                            partResult.getOpponents().add(
+                                                    bottomList.get(count));
+                                            doublePairing = true;
+                                            break;
+                                        } else {
+                                            count++;
+                                        }
+                                        partResult.getOpponents().add(
+                                                bottomList.get(count));
+                                    }
+                                    partResult
+                                            .getScoreTable()
+                                            .add(PairingHelper.generateEmptyScore(
+                                                    bottomList.get(count),
+                                                    tournament
+                                                            .getRuleSet()
+                                                            .getPossibleScores()
+                                                            .size()));
+                                    bottomList.remove(count);
+                                    subScoreList.remove(count);
+
+                                }
                             }
                         }
 
