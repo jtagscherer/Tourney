@@ -7,6 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 
 <fx:root type="javafx.scene.layout.VBox" spacing="5.0"
 	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -24,7 +25,11 @@
 			<MaterialTextField fx:id="textFieldLastName" promptText="%dialogs.playerpreregistration.lastname"
 				HBox.hgrow="ALWAYS" floatingPrompt="true" />
 		</HBox>
-		<MaterialTextField fx:id="textFieldEmail" promptText="%dialogs.playerpreregistration.email" floatingPrompt="true" />
+		<MaterialTextField fx:id="textFieldEmail" promptText="%dialogs.playerpreregistration.email" floatingPrompt="true">
+			<VBox.margin>
+				<Insets bottom="10" />
+			</VBox.margin>
+		</MaterialTextField>
 		<MaterialTextField fx:id="textFieldNickname" promptText="%dialogs.playerpreregistration.nickname" floatingPrompt="true" />
 		<Pane minHeight="30.0" />
 		<Label styleClass="sub-heading" text="%dialogs.playerpreregistration.registeredto" />
