@@ -168,12 +168,15 @@ public final class ModalDialog<P, R> extends StackPane {
     public void show() {
         long time = System.currentTimeMillis();
 
-        Parent mainWindowRoot = EntryPoint.getPrimaryStage().getScene()
+        StackPane modalOverlayPane = EntryPoint.getModalOverlay();
+        modalOverlayPane.getChildren().add(this);
+
+        /*Parent mainWindowRoot = EntryPoint.getPrimaryStage().getScene()
                 .getRoot();
         mainWindowRoot.setDisable(true);
 
         EntryPoint.getPrimaryStage().getScene().setRoot(this);
-        this.mainWindowRootContainer.getChildren().add(mainWindowRoot);
+        this.mainWindowRootContainer.getChildren().add(mainWindowRoot);*/
 
         log.finer("Showing dialog for "
                 + this.dialogContent.getClass().getSimpleName() + " ("
@@ -216,7 +219,11 @@ public final class ModalDialog<P, R> extends StackPane {
     }
 
     private void hide() {
-        ((Parent) this.mainWindowRootContainer.getChildren().get(0))
+        this.fadeOutTransition.setOnFinished(event -> {
+            EntryPoint.getModalOverlay().getChildren().remove(this);
+        });
+
+        /*((Parent) this.mainWindowRootContainer.getChildren().get(0))
                 .setDisable(false);
 
         this.fadeOutTransition.setOnFinished(event -> {
@@ -226,6 +233,8 @@ public final class ModalDialog<P, R> extends StackPane {
             this.mainWindowRootContainer.getChildren().clear();
             EntryPoint.getPrimaryStage().getScene().setRoot(mainWindowRoot);
         });
+        */
+
         this.fadeOutTransition.play();
     }
 }
