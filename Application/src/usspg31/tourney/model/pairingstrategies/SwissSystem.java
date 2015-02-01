@@ -27,7 +27,6 @@ public class SwissSystem implements PairingStrategy {
         Collections.sort(mergedScoreTable);
 
         if (tournament.getRounds().size() == 0) {
-            System.out.println("Round 0");
             // random pairings in the first round of the tournament
             Random randomGenerator = new Random();
             ArrayList<Player> randomList = new ArrayList<>();
