@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import usspg31.tourney.controller.layout.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<fx:root type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<stylesheets>
+		<URL value="@/ui/css/main.css" />
+		<URL value="@/ui/css/icons.css" />
+		<URL value="@/ui/css/buttons.css" />
+		<URL value="@/ui/css/fonts.css" />
+	</stylesheets>
+	<VBox spacing="10.0">
+		<HBox spacing="5.0">
+			<VBox spacing="5.0">
+				<ComboBox fx:id="comboBoxFirstPairing" maxWidth="Infinity" VBox.vgrow="ALWAYS" />
+				<TableView fx:id="tableFirstPairing" maxHeight="1.7976931348623157E308"
+					maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+			</VBox>
+			<VBox spacing="5.0">
+				<Pane VBox.vgrow="ALWAYS" />
+				<Button fx:id="buttonSwapPlayer" styleClass="table-edit-button"
+				onAction="#onButtonSwapPlayerClicked">
+					<graphic>
+						<IconPane styleClass="icon-swap-horizontal, half" />
+					</graphic>
+				</Button>
+				<Pane VBox.vgrow="ALWAYS" />
+			</VBox>
+			<VBox spacing="5.0">
+				<ComboBox fx:id="comboBoxSecondPairing" maxWidth="Infinity" VBox.vgrow="ALWAYS" />
+				<TableView fx:id="tableSecondPairing" maxHeight="1.7976931348623157E308"
+					maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+			</VBox>
+		</HBox>
+	</VBox>
+	<padding>
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+	</padding>
+</fx:root>

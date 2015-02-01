@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 /**
  * Represents a pairing in a tournament game phase
  */
-public class Pairing {
+public class Pairing implements Cloneable {
 
     public enum PairingFlag {
         WINNER_BRACKET,
@@ -72,5 +72,20 @@ public class Pairing {
 
     public ObjectProperty<PairingFlag> flagProperty() {
         return this.flag;
+    }
+
+    @Override
+    public Object clone() {
+        Pairing clone = new Pairing();
+
+        clone.setFlag(this.getFlag());
+        for (PlayerScore score : this.getScoreTable()) {
+            clone.getScoreTable().add((PlayerScore) score.clone());
+        }
+        for (Player opponent : this.getOpponents()) {
+            clone.getOpponents().add((Player) opponent.clone());
+        }
+
+        return clone;
     }
 }

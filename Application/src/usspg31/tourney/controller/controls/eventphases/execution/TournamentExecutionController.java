@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ import usspg31.tourney.controller.controls.TournamentUser;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog.PairingEntry;
+import usspg31.tourney.controller.dialogs.PairingSwapDialog;
 import usspg31.tourney.controller.dialogs.VictoryConfiguration;
 import usspg31.tourney.controller.dialogs.VictoryDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -70,6 +72,7 @@ public class TournamentExecutionController implements TournamentUser {
 
     private final ModalDialog<PairingEntry, Pairing> pairingScoreDialog;
     private final ModalDialog<VictoryConfiguration, Object> victoryDialog;
+    private final ModalDialog<ObservableList<Pairing>, ObservableList<Pairing>> swapDialog;
 
     private TournamentExecutionPhaseController superController;
     private boolean tournamentFinished = false;
@@ -81,6 +84,7 @@ public class TournamentExecutionController implements TournamentUser {
     public TournamentExecutionController() {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
         this.victoryDialog = new VictoryDialog().modalDialog();
+        this.swapDialog = new PairingSwapDialog().modalDialog();
         this.projectorWindowControllers = new ArrayList<TournamentExecutionProjectionController>();
         this.currentOverviewMode = OverviewMode.PAIRING_OVERVIEW;
     }
@@ -135,6 +139,9 @@ public class TournamentExecutionController implements TournamentUser {
                                     this.roundTimer.setTime(roundDuration);
                                 }
                             }
+
+                            this.buttonSwapPlayers.setDisable(n.intValue() < this.loadedTournament
+                                    .getRounds().size() - 1);
                         });
 
         this.pairingView.setOnNodeDoubleClicked(() -> {
@@ -300,7 +307,6 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML
     private void onButtonPairingOverviewClicked(ActionEvent event) {
         log.info("Pairing Overview Button was clicked");
-        this.buttonPhaseOverview.getStyleClass().remove("selected-button");
         this.setOverviewMode(OverviewMode.PAIRING_OVERVIEW);
     }
 
@@ -324,6 +330,7 @@ public class TournamentExecutionController implements TournamentUser {
             }
             break;
         case PAIRING_OVERVIEW:
+            this.buttonPhaseOverview.getStyleClass().remove("selected-button");
             if (!this.buttonPairingOverview.getStyleClass().contains(
                     "selected-button")) {
                 this.buttonPairingOverview.getStyleClass().add(
@@ -415,7 +422,25 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML
     private void onButtonSwapPlayersClicked(ActionEvent e) {
         log.info("Swap Players Button clicked");
-        this.updateProjectorWindows();
+        this.swapDialog
+                .properties(
+                        this.loadedTournament
+                                .getRounds()
+                                .get(this.loadedTournament.getRounds().size() - 1)
+                                .getPairings())
+                .onResult(
+                        (result, value) -> {
+                            if (result == DialogResult.OK) {
+                                this.loadedTournament
+                                        .getRounds()
+                                        .get(this.loadedTournament.getRounds()
+                                                .size() - 1).getPairings()
+                                        .setAll(value);
+                            }
+
+                            this.pairingView.updateOverview();
+                            this.updateProjectorWindows();
+                        }).show();
     }
 
     @FXML
