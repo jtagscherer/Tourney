@@ -15,7 +15,7 @@ public class PairingStrategies {
 
         pairingStrategies.addAll(new DoubleElimination(),
                 new ModifiedSwissSystem(), new SingleElimination(),
-                new FreeForAll(), new SwissSystem());
+                new FreeForAll(), new SwissSystem(), new SpecialSwissSystem());
 
         return pairingStrategies;
     }
