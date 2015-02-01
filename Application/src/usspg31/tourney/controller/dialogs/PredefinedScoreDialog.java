@@ -37,6 +37,7 @@ public class PredefinedScoreDialog extends VBox implements
         this.numberTextFieldScore.setPromptText(preferences
                 .localizeString("dialogs.predefinedscore.score"));
         this.numberTextFieldScore.setFloatingPrompt(true);
+        this.numberTextFieldScore.setShowPrompt(true);
         this.numberTextFieldScore.numberValueProperty().addListener(
                 (ov, o, n) -> {
                     if (this.entry != null) {

@@ -22,7 +22,7 @@
 	<VBox spacing="10.0">
 		<Label text="%dialogs.registrationdistribution.description" />
 		<usspg31.tourney.controller.controls.NumberTextField
-			fx:id="textFieldNumberOfRegistrators" promptText="%dialogs.registrationdistribution.count" />
+			fx:id="textFieldNumberOfRegistrators" promptText="%dialogs.registrationdistribution.count" floatingPrompt="true" />
 		<HBox alignment="BOTTOM_RIGHT">
 			<Button fx:id="buttonDistributionHelp" styleClass="table-edit-button"
 				onAction="#onButtonDistributionHelpClicked" text="%dialogs.registrationdistribution.help" />

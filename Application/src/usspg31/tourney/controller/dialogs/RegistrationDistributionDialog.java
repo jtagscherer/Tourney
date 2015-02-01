@@ -37,6 +37,11 @@ public class RegistrationDistributionDialog extends VBox implements
         }
     }
 
+    @FXML
+    public void initialize() {
+        this.textFieldNumberOfRegistrators.setShowPrompt(true);
+    }
+
     @Override
     public Integer getReturnValue() {
         if (this.textFieldNumberOfRegistrators.getText().length() == 0) {
