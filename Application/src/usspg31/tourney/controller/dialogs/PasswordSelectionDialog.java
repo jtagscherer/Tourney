@@ -13,11 +13,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.controller.controls.MaterialPasswordField;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
@@ -33,9 +33,9 @@ public class PasswordSelectionDialog extends VBox implements
     private final IntegerProperty retryIn;
     private final Timeline retryTimer;
 
-    @FXML private PasswordField passwordFieldCurrent;
-    @FXML private PasswordField passwordFieldNew;
-    @FXML private PasswordField passwordFieldNewRepeat;
+    @FXML private MaterialPasswordField passwordFieldCurrent;
+    @FXML private MaterialPasswordField passwordFieldNew;
+    @FXML private MaterialPasswordField passwordFieldNewRepeat;
 
     @FXML private Button buttonConfirm;
     @FXML private Button buttonCancel;
