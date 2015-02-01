@@ -32,6 +32,8 @@ public class NumberTextField extends MaterialTextField {
                 }
             }
         });
+
+        this.setShowPrompt(false);
     }
 
     /**
