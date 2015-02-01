@@ -20,12 +20,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener.Change;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -115,6 +118,19 @@ public class PairingView extends VBox implements TournamentUser {
                 this.setSelectedPairing(null);
             }
         });
+
+        /* Add a context menu to the pairing view */
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem resetView = new MenuItem(PreferencesManager.getInstance()
+                .localizeString("tournamentexecutionphase.resetview"));
+        resetView.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                resetPairingView();
+            }
+        });
+        contextMenu.getItems().addAll(resetView);
+
+        this.pairingScrollPane.setContextMenu(contextMenu);
     }
 
     @FXML
@@ -731,6 +747,16 @@ public class PairingView extends VBox implements TournamentUser {
 
             }
             break;
+        }
+    }
+
+    private void resetPairingView() {
+        this.pairingContainer.setScaleX(1.0);
+        this.pairingContainer.setScaleY(1.0);
+        for (Node child : pairingContainer.getChildren()) {
+            child.setTranslateX(0.0);
+            child.setTranslateY(0.0);
+
         }
     }
 
