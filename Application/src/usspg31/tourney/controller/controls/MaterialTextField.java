@@ -168,6 +168,7 @@ public class MaterialTextField extends AnchorPane {
         this.initializeAnimations();
 
         this.validateInput();
+        this.updateSize();
     }
 
     private void initializeAnimations() {
@@ -231,6 +232,10 @@ public class MaterialTextField extends AnchorPane {
     }
 
     private void validateInput() {
+        if (!this.hasHint()) {
+            return;
+        }
+
         ValidationResult validation = this.getInputValidationCallback().call(this.getText());
         if (this.previousResult != null && this.previousResult.equals(validation)) {
             return;
@@ -407,7 +412,8 @@ public class MaterialTextField extends AnchorPane {
         if (this.hasHint == null) {
             this.hasHint = new SimpleBooleanProperty(false);
             this.hasHint.addListener((ov, o, n) -> {
-                this.updateSize();
+                this.hintIcon.setVisible(n);
+                this.validateInput();
             });
         }
         return this.hasHint;
@@ -415,17 +421,18 @@ public class MaterialTextField extends AnchorPane {
 
     private void updateSize() {
         double translateY = this.isFloatingPrompt() ? 0 : -AnchorPane.getTopAnchor(this.textField);
-        double prefHeight = this.prefHeight(-1);
+        double minHeight = 67;//AnchorPane.getTopAnchor(this.hintContainer) + this.hintContainer.getHeight();
 
         if (!this.isFloatingPrompt()) {
-            prefHeight -= AnchorPane.getTopAnchor(this.textField);
+            minHeight -= AnchorPane.getTopAnchor(this.textField);
         }
         if (!this.hasHint()) {
-            prefHeight -= this.hintContainer.getHeight();
+            minHeight -= 16; //this.hintContainer.getHeight();
         }
 
         this.setTranslateY(translateY);
-        this.setPrefHeight(prefHeight);
+        this.setMinHeight(minHeight);
+        this.setMaxHeight(minHeight);
     }
 
     public boolean hasHint() {

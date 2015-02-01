@@ -6,9 +6,9 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import usspg31.tourney.controller.PreferencesManager;
+import usspg31.tourney.controller.controls.MaterialTextField;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.IModalDialogProvider;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
@@ -20,10 +20,10 @@ public class AdministratorEditorDialog extends VBox implements
     private static final Logger log = Logger
             .getLogger(AdministratorEditorDialog.class.getName());
 
-    @FXML private TextField textFieldFirstName;
-    @FXML private TextField textFieldLastName;
-    @FXML private TextField textFieldEmail;
-    @FXML private TextField textFieldPhoneNumber;
+    @FXML private MaterialTextField textFieldFirstName;
+    @FXML private MaterialTextField textFieldLastName;
+    @FXML private MaterialTextField textFieldEmail;
+    @FXML private MaterialTextField textFieldPhoneNumber;
 
     private Administrator loadedAdministrator;
 
