@@ -229,6 +229,10 @@ public class MaterialTextField extends AnchorPane {
         this.textField.textProperty().addListener((ov, o, n) -> this.validateInput());
 
         this.updateSize();
+
+        this.widthProperty().addListener((ov, o, n) -> {
+            this.updateSize();
+        });
     }
 
     private void validateInput() {
@@ -421,13 +425,13 @@ public class MaterialTextField extends AnchorPane {
 
     private void updateSize() {
         double translateY = this.isFloatingPrompt() ? 0 : -AnchorPane.getTopAnchor(this.textField);
-        double minHeight = 67;//AnchorPane.getTopAnchor(this.hintContainer) + this.hintContainer.getHeight();
+        double minHeight = 67;
 
         if (!this.isFloatingPrompt()) {
             minHeight -= AnchorPane.getTopAnchor(this.textField);
         }
         if (!this.hasHint()) {
-            minHeight -= 16; //this.hintContainer.getHeight();
+            minHeight -= 16;
         }
 
         this.setTranslateY(translateY);
