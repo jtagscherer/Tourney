@@ -249,7 +249,7 @@ public class Tournament implements Cloneable {
      *            score table for the earlier mentioned player
      */
     public void addAScore(PlayerScore score) {
-        if (this.rounds.size() > 1) {
+        if (this.rounds.size() != 1) {
 
             for (PlayerScore eachPlayerScore : this.scoreTable) {
                 if (eachPlayerScore.getPlayer().getId() == score.getPlayer()
