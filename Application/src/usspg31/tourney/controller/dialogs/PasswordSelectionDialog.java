@@ -119,8 +119,8 @@ public class PasswordSelectionDialog extends VBox implements
                         this.passwordFieldNewRepeat.textProperty()));
 
         // disable the current password field if none is set
-        this.passwordFieldCurrent.setDisable(!PreferencesManager.getInstance()
-                .isPasswordSet());
+        this.passwordFieldCurrent.disableProperty().bind(
+                PreferencesManager.getInstance().passwordSetProperty().not());
 
         this.retryMultiplicator = 1;
     }

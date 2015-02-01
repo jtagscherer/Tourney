@@ -553,6 +553,10 @@ public class PreferencesManager {
         return this.passwordSet.get();
     }
 
+    public ReadOnlyBooleanWrapper passwordSetProperty() {
+        return this.passwordSet;
+    }
+
     /**
      * @return a read-only property indicating if a password is set for the
      *         application
