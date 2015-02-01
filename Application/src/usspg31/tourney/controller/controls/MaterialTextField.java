@@ -236,10 +236,6 @@ public class MaterialTextField extends AnchorPane {
     }
 
     private void validateInput() {
-        if (!this.hasHint()) {
-            return;
-        }
-
         ValidationResult validation = this.getInputValidationCallback().call(this.getText());
         if (this.previousResult != null && this.previousResult.equals(validation)) {
             return;
@@ -430,7 +426,7 @@ public class MaterialTextField extends AnchorPane {
         if (!this.isFloatingPrompt()) {
             minHeight -= AnchorPane.getTopAnchor(this.textField);
         }
-        if (!this.hasHint()) {
+        if (!this.isHasHint()) {
             minHeight -= 16;
         }
 
@@ -439,7 +435,7 @@ public class MaterialTextField extends AnchorPane {
         this.setMaxHeight(minHeight);
     }
 
-    public boolean hasHint() {
+    public boolean isHasHint() {
         return this.hasHintProperty().get();
     }
 
