@@ -153,11 +153,12 @@ public class MaterialTextField extends AnchorPane {
     private ValidationResult previousResult;
 
     public MaterialTextField() {
-        super();
-
+        this("/ui/fxml/controls/material-text-field.fxml");
+    }
+    protected MaterialTextField(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
-                    "/ui/fxml/controls/material-text-field.fxml"));
+                    fxmlPath));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
@@ -165,11 +166,6 @@ public class MaterialTextField extends AnchorPane {
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new Error(e);
         }
-
-        this.initializeAnimations();
-
-        this.validateInput();
-        this.updateSize();
     }
 
     private void initializeAnimations() {
@@ -232,6 +228,8 @@ public class MaterialTextField extends AnchorPane {
             this.updatePrompt();
         });
 
+        this.initializeAnimations();
+        this.validateInput();
         this.updateSize();
     }
 
