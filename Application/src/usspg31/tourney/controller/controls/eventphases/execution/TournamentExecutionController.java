@@ -352,38 +352,33 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonEnterResultClicked(ActionEvent event) {
         log.info("Enter Result Button was clicked");
         this.pairingScoreDialog
-                .properties(
-                        new PairingEntry(this.loadedTournament,
-                                this.pairingView.getSelectedPairing()))
-                .onResult(
-                        (result, value) -> {
-                            if (result == DialogResult.OK) {
-                                for (int i = 0; i < value.getScoreTable()
-                                        .size(); i++) {
-                                    PlayerScore score = value.getScoreTable()
-                                            .get(i);
-                                    PlayerScore selectedScore = this.pairingView
-                                            .getSelectedPairing()
-                                            .getScoreTable().get(i);
-                                    selectedScore.getScore().clear();
-                                    for (int j = 0; j < score.getScore().size(); j++) {
-                                        Integer newScore = score.getScore()
-                                                .get(j);
-                                        if (newScore == null) {
-                                            newScore = 0;
-                                        }
-                                        selectedScore.getScore().add(newScore);
-                                    }
-                                }
-                                this.pairingView.updateOverview();
-                                this.checkRoundFinished();
-
-                                this.updateProjectorWindows();
-                                MainWindow.getInstance()
-                                        .getEventPhaseViewController()
-                                        .activateSaveButton();
+        .properties(new PairingEntry(this.loadedTournament,
+                this.pairingView.getSelectedPairing()))
+        .onResult((result, value) -> {
+                if (result == DialogResult.OK) {
+                    for (int i = 0; i < value.getScoreTable().size(); i++) {
+                        PlayerScore score = value.getScoreTable().get(i);
+                        PlayerScore selectedScore = this.pairingView
+                                .getSelectedPairing()
+                                .getScoreTable().get(i);
+                        selectedScore.getScore().clear();
+                        for (int j = 0; j < score.getScore().size(); j++) {
+                            Integer newScore = score.getScore().get(j);
+                            if (newScore == null) {
+                                newScore = 0;
                             }
-                        }).show();
+                            selectedScore.getScore().add(newScore);
+                        }
+                    }
+                    this.pairingView.updateOverview();
+                    this.checkRoundFinished();
+
+                    this.updateProjectorWindows();
+                    MainWindow.getInstance()
+                            .getEventPhaseViewController()
+                            .activateSaveButton();
+                }
+        }).show();
     }
 
     private void checkRoundFinished() {

@@ -16,6 +16,7 @@ import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
+import usspg31.tourney.model.PossibleScoring.ScoringType;
 import usspg31.tourney.model.Tournament;
 
 /**
@@ -117,6 +118,10 @@ public class PairingNode extends VBox {
 
         for (PossibleScoring scoring : this.tournament.getRuleSet()
                 .getPossibleScores()) {
+            // don't display the table strength in the score table
+            if (scoring.getScoreType() == ScoringType.TABLE_STRENGTH) {
+                continue;
+            }
             TableColumn<PlayerScore, String> scoreColumn = new TableColumn<>(
                     Integer.toString(scoring.getPriority() + 1));
             scoreColumn

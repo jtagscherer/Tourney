@@ -27,6 +27,7 @@ import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
+import usspg31.tourney.model.PossibleScoring.ScoringType;
 import usspg31.tourney.model.Tournament;
 
 public class PairingScoreDialog extends
@@ -163,6 +164,9 @@ public class PairingScoreDialog extends
         this.getColumns().add(nameColumn);
 
         for (int scoreNumber = 0; scoreNumber < scoreCount; scoreNumber++) {
+            if (possibleScores.get(scoreNumber).getScoreType() == ScoringType.TABLE_STRENGTH) {
+                continue;
+            }
             TableColumn<PlayerScoreEntry, ObjectProperty<Integer>> scoreColumn = new TableColumn<>(
                     Integer.toString(scoreNumber + 1));
             final int scoreID = scoreNumber;
