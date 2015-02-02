@@ -250,6 +250,15 @@ public class TournamentExecutionController implements TournamentUser {
             this.updateProjectorWindows();
         } else {
             this.buttonStartRound.setDisable(true);
+            this.buttonSwapPlayers.setDisable(true);
+            this.buttonDisqualifyPlayer.setDisable(true);
+            this.buttonAddTime.setDisable(true);
+            this.buttonSubtractTime.setDisable(true);
+            this.buttonPauseResumeTime.setDisable(true);
+            this.buttonResetTime.setDisable(true);
+            this.roundTimer.pause();
+            this.iconPanePauseResume.getStyleClass().remove("icon-pause");
+            this.iconPanePauseResume.getStyleClass().add("icon-play");
             this.loadedTournament.setExecutionState(ExecutionState.FINISHED);
             VictoryConfiguration configuration = new VictoryConfiguration();
             configuration.setWinningPlayer(this.loadedTournament.getRounds()
