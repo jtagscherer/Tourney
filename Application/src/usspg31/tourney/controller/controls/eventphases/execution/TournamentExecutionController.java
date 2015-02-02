@@ -100,6 +100,9 @@ public class TournamentExecutionController implements TournamentUser {
     @Override
     public void loadTournament(Tournament tournament) {
         log.info("Loading Tournament");
+        if (this.loadedTournament != null) {
+            this.unloadTournament();
+        }
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(
                 this.loadedTournament.getAttendingPlayers());
@@ -335,13 +338,14 @@ public class TournamentExecutionController implements TournamentUser {
                                     PlayerScore selectedScore = this.pairingView
                                             .getSelectedPairing()
                                             .getScoreTable().get(i);
+                                    selectedScore.getScore().clear();
+
                                     for (int j = 0; j < score.getScore().size(); j++) {
                                         Integer newScore = score.getScore()
                                                 .get(j);
                                         if (newScore == null) {
                                             newScore = 0;
                                         }
-                                        selectedScore.getScore().clear();
                                         selectedScore.getScore().add(newScore);
                                     }
                                 }
@@ -391,6 +395,10 @@ public class TournamentExecutionController implements TournamentUser {
             }
         }
         this.buttonStartRound.setDisable(!roundFinished);
+    }
+
+    public void updatePairingView() {
+        this.pairingView.updateOverview();
     }
 
     @FXML
