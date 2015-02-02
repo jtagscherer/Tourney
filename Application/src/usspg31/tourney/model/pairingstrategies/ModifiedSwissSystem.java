@@ -3,6 +3,7 @@ package usspg31.tourney.model.pairingstrategies;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
@@ -14,6 +15,8 @@ import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
 public class ModifiedSwissSystem implements PairingStrategy {
+    private static Logger log = Logger.getLogger(ModifiedSwissSystem.class
+            .getName());
 
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
@@ -52,6 +55,28 @@ public class ModifiedSwissSystem implements PairingStrategy {
                 }
                 result.add(partResult);
             }
+            log.info("List size: " + randomList.size());
+            for (int i = 0; i < randomList.size(); i++) {
+                partResult = new Pairing();
+                partResult.setFlag(PairingFlag.IGNORE);
+                partResult.getOpponents().add(randomList.get(i));
+                partResult.getScoreTable().add(
+                        PairingHelper.generateEmptyScore(randomList.get(i),
+                                tournament.getRuleSet().getPossibleScores()
+                                        .size()));
+                for (PossibleScoring byeScore : tournament.getRuleSet()
+                        .getPossibleScores()) {
+                    partResult
+                            .getScoreTable()
+                            .get(0)
+                            .getScore()
+                            .add(byeScore.getPriority(),
+                                    byeScore.getByeValue(tournament,
+                                            randomList.get(i)));
+                }
+
+                result.add(partResult);
+            }
         } else {
             // splitting the score table for each bracket of points
             ArrayList<PlayerScore> tmp = new ArrayList<>();
@@ -68,7 +93,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                     if (test.getScore().get(0) == subTmp.get(0).getScore()
                             .get(0)) {
                         subTmp.add(test);
-                        tmp.remove(tmp);
+                        tmp.remove(test);
                     } else {
                         break;
                     }

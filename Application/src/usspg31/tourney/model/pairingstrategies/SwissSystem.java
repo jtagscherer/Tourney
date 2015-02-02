@@ -3,6 +3,7 @@ package usspg31.tourney.model.pairingstrategies;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
@@ -14,6 +15,8 @@ import usspg31.tourney.model.PossibleScoring;
 import usspg31.tourney.model.Tournament;
 
 public class SwissSystem implements PairingStrategy {
+    private static final Logger log = Logger.getLogger(SwissSystem.class
+            .getName());
 
     @Override
     public ArrayList<Pairing> generatePairing(Tournament tournament) {
@@ -56,7 +59,8 @@ public class SwissSystem implements PairingStrategy {
 
                 result.add(partResult);
             }
-
+            log.info("Pairings: " + result.size());
+            log.info("List size: " + randomList.size());
             for (int i = 0; i < randomList.size(); i++) {
                 partResult = new Pairing();
                 partResult.setFlag(PairingFlag.IGNORE);
@@ -88,7 +92,7 @@ public class SwissSystem implements PairingStrategy {
                 for (int i = 0; i < PairingHelper.findPhase(
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents(); i++) {
-                    count = 0;
+                    count = i;
 
                     if (i == 0) {
                         partResult.getOpponents().add(
@@ -106,7 +110,7 @@ public class SwissSystem implements PairingStrategy {
                     } else {
                         partResult.getOpponents().add(
                                 mergedScoreTable.get(
-                                        mergedScoreTable.size() - 1 - count)
+                                        mergedScoreTable.size() - i)
                                         .getPlayer());
                         if (i == PairingHelper.findPhase(
                                 tournament.getRounds().size(), tournament)
@@ -115,14 +119,14 @@ public class SwissSystem implements PairingStrategy {
                             while (PairingHelper.isThereASimilarPairings(
                                     partResult, tournament, result)) {
                                 partResult.getOpponents().remove(
-                                        mergedScoreTable.get(
-                                                mergedScoreTable.size() - 1
+                                        mergedScoreTable
+                                                .get(mergedScoreTable.size()
                                                         - count).getPlayer());
                                 if (count + 1 == mergedScoreTable.size()) {
                                     count = 0;
                                     partResult.getOpponents().add(
                                             mergedScoreTable.get(
-                                                    mergedScoreTable.size() - 1
+                                                    mergedScoreTable.size()
                                                             - count)
                                                     .getPlayer());
                                     break;
@@ -130,22 +134,39 @@ public class SwissSystem implements PairingStrategy {
                                     count++;
                                 }
                                 partResult.getOpponents().add(
-                                        mergedScoreTable.get(
-                                                mergedScoreTable.size() - 1
+                                        mergedScoreTable
+                                                .get(mergedScoreTable.size()
                                                         - count).getPlayer());
                             }
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper
+                                            .generateEmptyScore(
+                                                    mergedScoreTable.get(
+                                                            mergedScoreTable
+                                                                    .size()
+
+                                                            - count)
+                                                            .getPlayer(),
+                                                    tournament
+                                                            .getRuleSet()
+                                                            .getPossibleScores()
+                                                            .size()));
+                            mergedScoreTable.remove(mergedScoreTable.size()
+                                    - count);
+
+                        } else {
                             partResult
                                     .getScoreTable()
                                     .add(PairingHelper.generateEmptyScore(
                                             mergedScoreTable
                                                     .get(mergedScoreTable
-                                                            .size() - 1)
+                                                            .size() - i)
                                                     .getPlayer(), tournament
                                                     .getRuleSet()
                                                     .getPossibleScores().size()));
-                            mergedScoreTable.remove(mergedScoreTable.size() - 1
-                                    - count);
-
+                            mergedScoreTable
+                                    .remove(mergedScoreTable.size() - i);
                         }
                     }
 

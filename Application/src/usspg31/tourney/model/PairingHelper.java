@@ -46,7 +46,8 @@ public class PairingHelper {
      */
     public static boolean isFirstInPhase(int roundcount, Tournament value,
             GamePhase chkPhase) {
-        if (findPhase(roundcount - 1, value) != chkPhase) {
+        if (findPhase(roundcount - 1, value).getPhaseNumber() != chkPhase
+                .getPhaseNumber()) {
             return true;
         } else {
             return false;
@@ -65,7 +66,7 @@ public class PairingHelper {
         ArrayList<PlayerScore> remainingPlayerScore = new ArrayList<>();
         for (Player player : tournament.getRemainingPlayers()) {
             for (PlayerScore chkScore : tournament.getScoreTable()) {
-                if (player == chkScore.getPlayer()) {
+                if (player.getId() == chkScore.getPlayer().getId()) {
                     remainingPlayerScore.add(chkScore);
                 }
             }
