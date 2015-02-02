@@ -162,8 +162,6 @@ public class PreRegistrationPhaseController implements EventUser {
                 this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
         this.tableColumnPlayerNickName.prefWidthProperty().set(
                 this.tablePreRegisteredPlayers.widthProperty().get() * 0.25);
-        this.tableColumnTournaments.prefWidthProperty().set(
-                this.tablePreRegisteredPlayers.widthProperty().get() * 2);
 
         /* Bind the button's availability to the list selection */
         this.buttonRemovePlayer.disableProperty().bind(
