@@ -2,6 +2,7 @@ package usspg31.tourney.controller.controls.eventphases.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -459,7 +460,7 @@ public class TournamentExecutionController implements TournamentUser {
                                         .getRounds()
                                         .get(this.loadedTournament.getRounds()
                                                 .size() - 2).getPairings()) {
-                                    if (pairing.getOpponents().contains(value)) {
+                                    if (this.collectionContainsPlayer(pairing.getOpponents(), value)) {
                                         for (PlayerScore score : pairing
                                                 .getScoreTable()) {
                                             if (score.getPlayer().getId()
@@ -485,13 +486,23 @@ public class TournamentExecutionController implements TournamentUser {
                                 this.generateRound(false);
 
                                 usedPairing.getScoreTable().add(removedScore);
-                                disqualifiedInRound = true;
+                                this.disqualifiedInRound = true;
                                 this.buttonDisqualifyPlayer.setDisable(true);
                             }
 
                             this.pairingView.updateOverview();
                             this.updateProjectorWindows();
                         }).show();
+    }
+
+    private boolean collectionContainsPlayer(Collection<Player> list, Player player) {
+        for (Player p : list) {
+            if (p.getId().equals(player.getId())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @FXML
