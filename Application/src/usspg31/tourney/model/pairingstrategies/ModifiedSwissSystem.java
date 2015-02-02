@@ -155,11 +155,9 @@ public class ModifiedSwissSystem implements PairingStrategy {
                         }
 
                     }
-                    if (doublePairing) {
 
-                    } else {
-                        result.add(partResult);
-                    }
+                    result.add(partResult);
+
                 }
                 // put the remaining players in the next bracket or using the
                 // bye

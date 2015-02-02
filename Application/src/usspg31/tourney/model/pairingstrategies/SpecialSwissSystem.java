@@ -116,7 +116,7 @@ public class SpecialSwissSystem implements PairingStrategy {
 
                         } else {
 
-                            if (i % 2 == 0) {
+                            if (i % 2 == 1) {
                                 partResult.getOpponents().add(
                                         subScoreList.get(
                                                 subScoreList.size() - i)
@@ -157,7 +157,9 @@ public class SpecialSwissSystem implements PairingStrategy {
                                                     .generateEmptyScore(
                                                             subScoreList
                                                                     .get(subScoreList
-                                                                            .size() - 1)
+                                                                            .size()
+                                                                            - 1
+                                                                            - count)
                                                                     .getPlayer(),
                                                             tournament
                                                                     .getRuleSet()
@@ -212,11 +214,11 @@ public class SpecialSwissSystem implements PairingStrategy {
                         }
 
                     }
-                    if (doublePairing) {
+                    // if (doublePairing) {
 
-                    } else {
-                        result.add(partResult);
-                    }
+                    // } else {
+                    result.add(partResult);
+                    // }
                 }
                 // put the remaining players in the next bracket or using the
                 // bye
