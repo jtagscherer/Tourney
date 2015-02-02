@@ -109,9 +109,9 @@ public class PairingSwapDialog extends VBox implements
         });
 
         firstPairingPlayerColumn.prefWidthProperty().bind(
-                this.tableFirstPairing.widthProperty());
+                this.tableFirstPairing.widthProperty().subtract(1));
         secondPairingPlayerColumn.prefWidthProperty().bind(
-                this.tableSecondPairing.widthProperty());
+                this.tableSecondPairing.widthProperty().subtract(1));
 
         this.tableFirstPairing.getColumns().add(firstPairingPlayerColumn);
         this.tableSecondPairing.getColumns().add(secondPairingPlayerColumn);
