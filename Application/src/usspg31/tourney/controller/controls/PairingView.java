@@ -129,27 +129,39 @@ public class PairingView extends VBox implements TournamentUser {
 
         this.pairingScrollPane.setContextMenu(contextMenu);
 
-        Timeline scrollLeft = new Timeline(new KeyFrame(Duration.millis(10), event -> {
-            this.breadcrumbScrollPane.setHvalue(this.breadcrumbScrollPane.getHvalue() - 0.01);
-        }));
+        Timeline scrollLeft = new Timeline(
+                new KeyFrame(Duration.millis(10),
+                        event -> {
+                            this.breadcrumbScrollPane
+                                    .setHvalue(this.breadcrumbScrollPane
+                                            .getHvalue() - 0.01);
+                        }));
         scrollLeft.setCycleCount(Timeline.INDEFINITE);
-        this.buttonScrollBreadcrumbsLeft.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            scrollLeft.play();
-        });
-        this.buttonScrollBreadcrumbsLeft.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-            scrollLeft.stop();
-        });
+        this.buttonScrollBreadcrumbsLeft.addEventHandler(
+                MouseEvent.MOUSE_PRESSED, event -> {
+                    scrollLeft.play();
+                });
+        this.buttonScrollBreadcrumbsLeft.addEventHandler(
+                MouseEvent.MOUSE_RELEASED, event -> {
+                    scrollLeft.stop();
+                });
 
-        Timeline scrollRight = new Timeline(new KeyFrame(Duration.millis(10), event -> {
-            this.breadcrumbScrollPane.setHvalue(this.breadcrumbScrollPane.getHvalue() + 0.01);
-        }));
+        Timeline scrollRight = new Timeline(
+                new KeyFrame(Duration.millis(10),
+                        event -> {
+                            this.breadcrumbScrollPane
+                                    .setHvalue(this.breadcrumbScrollPane
+                                            .getHvalue() + 0.01);
+                        }));
         scrollRight.setCycleCount(Timeline.INDEFINITE);
-        this.buttonScrollBreadcrumbsRight.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            scrollRight.play();
-        });
-        this.buttonScrollBreadcrumbsRight.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-            scrollRight.stop();
-        });
+        this.buttonScrollBreadcrumbsRight.addEventHandler(
+                MouseEvent.MOUSE_PRESSED, event -> {
+                    scrollRight.play();
+                });
+        this.buttonScrollBreadcrumbsRight.addEventHandler(
+                MouseEvent.MOUSE_RELEASED, event -> {
+                    scrollRight.stop();
+                });
     }
 
     @FXML
@@ -170,17 +182,23 @@ public class PairingView extends VBox implements TournamentUser {
                 scaleFactor = 1 - PairingView.scaleDelta;
             }
 
-            if (scaleFactor > 1 && PairingView.this.pairingContainer.getScaleX() < 5) {
-                PairingView.this.pairingContainer.setScaleX(PairingView.this.pairingContainer.getScaleX()
-                        * scaleFactor);
-                PairingView.this.pairingContainer.setScaleY(PairingView.this.pairingContainer.getScaleY()
-                        * scaleFactor);
+            if (scaleFactor > 1
+                    && PairingView.this.pairingContainer.getScaleX() < 5) {
+                PairingView.this.pairingContainer
+                        .setScaleX(PairingView.this.pairingContainer
+                                .getScaleX() * scaleFactor);
+                PairingView.this.pairingContainer
+                        .setScaleY(PairingView.this.pairingContainer
+                                .getScaleY() * scaleFactor);
             }
-            if (scaleFactor < 1 && PairingView.this.pairingContainer.getScaleX() > 0.2) {
-                PairingView.this.pairingContainer.setScaleX(PairingView.this.pairingContainer.getScaleX()
-                        * scaleFactor);
-                PairingView.this.pairingContainer.setScaleY(PairingView.this.pairingContainer.getScaleY()
-                        * scaleFactor);
+            if (scaleFactor < 1
+                    && PairingView.this.pairingContainer.getScaleX() > 0.2) {
+                PairingView.this.pairingContainer
+                        .setScaleX(PairingView.this.pairingContainer
+                                .getScaleX() * scaleFactor);
+                PairingView.this.pairingContainer
+                        .setScaleY(PairingView.this.pairingContainer
+                                .getScaleY() * scaleFactor);
             }
         });
 
@@ -188,11 +206,13 @@ public class PairingView extends VBox implements TournamentUser {
         this.pairingContainer.setOnMouseDragged(event -> {
             event.consume();
 
-            if (PairingView.this.lastMouseX == -1.0 || PairingView.this.lastMouseY == -1.0) {
+            if (PairingView.this.lastMouseX == -1.0
+                    || PairingView.this.lastMouseY == -1.0) {
                 PairingView.this.lastMouseX = event.getX();
                 PairingView.this.lastMouseY = event.getY();
             } else {
-                for (Node child : PairingView.this.pairingContainer.getChildren()) {
+                for (Node child : PairingView.this.pairingContainer
+                        .getChildren()) {
                     child.setTranslateX(child.getTranslateX()
                             + (event.getX() - PairingView.this.lastMouseX)
                             * PairingView.moveDelta);
@@ -205,13 +225,12 @@ public class PairingView extends VBox implements TournamentUser {
             }
         });
 
-        this.pairingContainer
-                .setOnMouseReleased(event -> {
-                    event.consume();
+        this.pairingContainer.setOnMouseReleased(event -> {
+            event.consume();
 
-                    PairingView.this.lastMouseX = -1.0;
-                    PairingView.this.lastMouseY = -1.0;
-                });
+            PairingView.this.lastMouseX = -1.0;
+            PairingView.this.lastMouseY = -1.0;
+        });
     }
 
     @Override
@@ -227,8 +246,10 @@ public class PairingView extends VBox implements TournamentUser {
 
     @Override
     public void unloadTournament() {
-        this.loadedTournament.getRounds().removeListener(
-                this::onTournamentRoundListChanged);
+        if (this.loadedTournament != null) {
+            this.loadedTournament.getRounds().removeListener(
+                    this::onTournamentRoundListChanged);
+        }
         this.loadedTournament = null;
     }
 

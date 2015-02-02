@@ -29,6 +29,7 @@ import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.EventAdministrator;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.Tournament.ExecutionState;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class EventSetupPhaseController implements EventUser {
@@ -50,7 +51,7 @@ public class EventSetupPhaseController implements EventUser {
 
     private Event loadedEvent;
 
-    private ModalDialog<Tournament, Tournament> tournamentDialog;
+    private ModalDialog<Object, Tournament> tournamentDialog;
     private ModalDialog<ObservableList<EventAdministrator>, Object> eventAdministratorListDialog;
 
     @FXML
@@ -68,8 +69,9 @@ public class EventSetupPhaseController implements EventUser {
                         .when(this.textFieldEventTitle.textProperty().isEmpty())
                         .then(Bindings.concat("Tourney"))
                         .otherwise(
-                                Bindings.concat("Tourney \u2014 ").concat(
-                                        this.textFieldEventTitle.textProperty())));
+                                Bindings.concat("Tourney \u2014 ")
+                                        .concat(this.textFieldEventTitle
+                                                .textProperty())));
 
         // restrict the maximum start date to be at most the end date
         this.datePickerStartDate.setDayCellFactory(value -> {
@@ -178,7 +180,8 @@ public class EventSetupPhaseController implements EventUser {
         UndoManager undo = MainWindow.getInstance()
                 .getEventPhaseViewController().getUndoManager();
         undo.registerUndoProperty(this.textFieldEventTitle.textProperty(), true);
-        undo.registerUndoProperty(this.textAreaEventLocation.textProperty(), true);
+        undo.registerUndoProperty(this.textAreaEventLocation.textProperty(),
+                true);
         undo.registerUndoProperty(this.datePickerStartDate.valueProperty());
         undo.registerUndoProperty(this.datePickerEndDate.valueProperty());
         undo.registerUndoProperty(this.tableTournaments.getItems());
@@ -304,18 +307,23 @@ public class EventSetupPhaseController implements EventUser {
     private void editTournament(Tournament tournament) {
         this.tournamentDialog
                 .properties(tournament)
-                .onResult((result, returnValue) -> {
-                    // TODO: well, this obviously won't work like that.
-                        if (result == DialogResult.OK && returnValue != null) {
-                            UndoManager undo = MainWindow.getInstance()
-                                    .getEventPhaseViewController().getUndoManager();
-                            undo.beginUndoBatch();
-                            this.loadedEvent.getTournaments()
-                                    .remove(tournament);
-                            this.loadedEvent.getTournaments().add(returnValue);
-                            undo.endUndoBatch();
-                        }
-                    }).show();
+                .properties(
+                        tournament.getExecutionState() != ExecutionState.NOT_EXECUTED)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                UndoManager undo = MainWindow.getInstance()
+                                        .getEventPhaseViewController()
+                                        .getUndoManager();
+                                undo.beginUndoBatch();
+                                this.loadedEvent.getTournaments().remove(
+                                        tournament);
+                                this.loadedEvent.getTournaments().add(
+                                        returnValue);
+                                undo.endUndoBatch();
+                            }
+                        }).show();
     }
 
     private Tournament getSelectedTournament() {

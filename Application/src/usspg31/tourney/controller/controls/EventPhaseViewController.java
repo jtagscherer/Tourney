@@ -33,6 +33,7 @@ import usspg31.tourney.controller.controls.eventphases.EventSetupPhaseController
 import usspg31.tourney.controller.controls.eventphases.PreRegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.RegistrationPhaseController;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
+import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController.ExecutionPhase;
 import usspg31.tourney.controller.dialogs.PasswordDialog;
 import usspg31.tourney.controller.dialogs.PdfOutputConfiguration;
 import usspg31.tourney.controller.dialogs.PdfOutputSelectionDialog;
@@ -567,18 +568,42 @@ public class EventPhaseViewController implements EventUser {
     private void onBreadcrumbEventSetupClicked(ActionEvent event) {
         log.fine("Event Setup Breadcrumb was clicked");
         if (this.loadedEvent.getEventPhase() == EventPhase.TOURNAMENT_EXECUTION) {
-            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
-                    "eventphaseview.warnings.tournamentexecution")
-                    + "\n\n"
-                    + PreferencesManager.getInstance().localizeString(
-                            "eventphaseview.warnings.confirm.message"))
-                    .modalDialog().title("dialogs.titles.warning")
-                    .dialogButtons(DialogButtons.YES_NO)
-                    .onResult((result, returnValue) -> {
-                        if (result == DialogResult.YES) {
-                            this.switchToEventPhase(EventPhase.EVENT_SETUP);
-                        }
-                    }).show();
+            if (this.tournamentExecutionPhaseController
+                    .getCurrentExecutionPhase() == ExecutionPhase.TOURNAMENT_EXECUTION) {
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "eventphaseview.warnings.openedtournament")
+                        + "\n\n"
+                        + PreferencesManager.getInstance().localizeString(
+                                "eventphaseview.warnings.confirm.message"))
+                        .modalDialog()
+                        .title("dialogs.titles.warning")
+                        .dialogButtons(DialogButtons.YES_NO)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        this.switchToEventPhase(EventPhase.EVENT_SETUP);
+                                        this.tournamentExecutionPhaseController
+                                                .cancelExecution();
+                                    }
+                                }).show();
+            } else {
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "eventphaseview.warnings.tournamentexecution")
+                        + "\n\n"
+                        + PreferencesManager.getInstance().localizeString(
+                                "eventphaseview.warnings.confirm.message"))
+                        .modalDialog()
+                        .title("dialogs.titles.warning")
+                        .dialogButtons(DialogButtons.YES_NO)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        this.switchToEventPhase(EventPhase.EVENT_SETUP);
+                                    }
+                                }).show();
+            }
         } else if (this.loadedEvent.getEventPhase() != EventPhase.EVENT_SETUP) {
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "eventphaseview.warnings.eventsetup")
@@ -617,20 +642,42 @@ public class EventPhaseViewController implements EventUser {
                                 }
                             }).show();
         } else if (this.loadedEvent.getEventPhase() == EventPhase.TOURNAMENT_EXECUTION) {
-            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
-                    "eventphaseview.warnings.tournamentexecution")
-                    + "\n\n"
-                    + PreferencesManager.getInstance().localizeString(
-                            "eventphaseview.warnings.confirm.message"))
-                    .modalDialog()
-                    .title("dialogs.titles.warning")
-                    .dialogButtons(DialogButtons.YES_NO)
-                    .onResult(
-                            (result, returnValue) -> {
-                                if (result == DialogResult.YES) {
-                                    this.switchToEventPhase(EventPhase.PRE_REGISTRATION);
-                                }
-                            }).show();
+            if (this.tournamentExecutionPhaseController
+                    .getCurrentExecutionPhase() == ExecutionPhase.TOURNAMENT_EXECUTION) {
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "eventphaseview.warnings.openedtournament")
+                        + "\n\n"
+                        + PreferencesManager.getInstance().localizeString(
+                                "eventphaseview.warnings.confirm.message"))
+                        .modalDialog()
+                        .title("dialogs.titles.warning")
+                        .dialogButtons(DialogButtons.YES_NO)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        this.switchToEventPhase(EventPhase.PRE_REGISTRATION);
+                                        this.tournamentExecutionPhaseController
+                                                .cancelExecution();
+                                    }
+                                }).show();
+            } else {
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "eventphaseview.warnings.tournamentexecution")
+                        + "\n\n"
+                        + PreferencesManager.getInstance().localizeString(
+                                "eventphaseview.warnings.confirm.message"))
+                        .modalDialog()
+                        .title("dialogs.titles.warning")
+                        .dialogButtons(DialogButtons.YES_NO)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        this.switchToEventPhase(EventPhase.PRE_REGISTRATION);
+                                    }
+                                }).show();
+            }
         } else {
             this.switchToEventPhase(EventPhase.PRE_REGISTRATION);
         }
@@ -641,18 +688,42 @@ public class EventPhaseViewController implements EventUser {
         log.fine("Registration Breadcrumb was clicked");
 
         if (this.loadedEvent.getEventPhase() == EventPhase.TOURNAMENT_EXECUTION) {
-            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
-                    "eventphaseview.warnings.tournamentexecution")
-                    + "\n\n"
-                    + PreferencesManager.getInstance().localizeString(
-                            "eventphaseview.warnings.confirm.message"))
-                    .modalDialog().title("dialogs.titles.warning")
-                    .dialogButtons(DialogButtons.YES_NO)
-                    .onResult((result, returnValue) -> {
-                        if (result == DialogResult.YES) {
-                            this.switchToEventPhase(EventPhase.REGISTRATION);
-                        }
-                    }).show();
+            if (this.tournamentExecutionPhaseController
+                    .getCurrentExecutionPhase() == ExecutionPhase.TOURNAMENT_EXECUTION) {
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "eventphaseview.warnings.openedtournament")
+                        + "\n\n"
+                        + PreferencesManager.getInstance().localizeString(
+                                "eventphaseview.warnings.confirm.message"))
+                        .modalDialog()
+                        .title("dialogs.titles.warning")
+                        .dialogButtons(DialogButtons.YES_NO)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        this.switchToEventPhase(EventPhase.REGISTRATION);
+                                        this.tournamentExecutionPhaseController
+                                                .cancelExecution();
+                                    }
+                                }).show();
+            } else {
+                new SimpleDialog<>(PreferencesManager.getInstance()
+                        .localizeString(
+                                "eventphaseview.warnings.tournamentexecution")
+                        + "\n\n"
+                        + PreferencesManager.getInstance().localizeString(
+                                "eventphaseview.warnings.confirm.message"))
+                        .modalDialog()
+                        .title("dialogs.titles.warning")
+                        .dialogButtons(DialogButtons.YES_NO)
+                        .onResult(
+                                (result, returnValue) -> {
+                                    if (result == DialogResult.YES) {
+                                        this.switchToEventPhase(EventPhase.REGISTRATION);
+                                    }
+                                }).show();
+            }
         } else {
             this.switchToEventPhase(EventPhase.REGISTRATION);
         }

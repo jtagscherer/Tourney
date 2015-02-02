@@ -28,12 +28,13 @@ import usspg31.tourney.model.Event;
 import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.Tournament.ExecutionState;
 
 public class PlayerEditorDialog extends VBox implements
         IModalDialogProvider<Object, Player> {
 
-    private static final Logger log = Logger
-            .getLogger(PlayerEditorDialog.class.getName());
+    private static final Logger log = Logger.getLogger(PlayerEditorDialog.class
+            .getName());
 
     @FXML private MaterialTextField textFieldFirstName;
     @FXML private MaterialTextField textFieldLastName;
@@ -257,55 +258,70 @@ public class PlayerEditorDialog extends VBox implements
 
     @FXML
     private void onButtonRemoveTournamentClicked(ActionEvent event) {
-        // TODO: it should be impossible to remove a player from a tournament he
-        // already played in
-
         Tournament selectedTournament = this.tableTournaments
                 .getSelectionModel().getSelectedItem();
 
-        new SimpleDialog<>(
-                PreferencesManager
-                        .getInstance()
-                        .localizeString(
-                                "registrationphase.dialogs.removetournament.message.before")
-                        + " \""
-                        + this.loadedPlayer.getFirstName()
-                        + " "
-                        + this.loadedPlayer.getLastName()
-                        + "\" "
-                        + PreferencesManager
-                                .getInstance()
-                                .localizeString(
-                                        "registrationphase.dialogs.removetournament.message.middle")
-                        + " \""
-                        + selectedTournament.getName()
-                        + "\" "
-                        + PreferencesManager
-                                .getInstance()
-                                .localizeString(
-                                        "registrationphase.dialogs.removetournament.message.after"))
-                .modalDialog()
-                .title("registrationphase.dialogs.removetournament.title")
-                .dialogButtons(DialogButtons.YES_NO)
-                .onResult(
-                        (result, returnValue) -> {
-                            if (result == DialogResult.YES) {
-                                Player playerToRemove = null;
-                                for (Player player : selectedTournament
-                                        .getRegisteredPlayers()) {
-                                    if (player.getId().equals(
-                                            this.loadedPlayer.getId())) {
-                                        playerToRemove = player;
-                                        break;
+        if (selectedTournament.getExecutionState() == ExecutionState.CURRENTLY_EXECUTED) {
+            new SimpleDialog<>(
+                    PreferencesManager
+                            .getInstance()
+                            .localizeString(
+                                    "registrationphase.dialogs.removetournament.errors.tournamentcurrentlyexecuted"))
+                    .modalDialog().title("dialogs.titles.error")
+                    .dialogButtons(DialogButtons.OK).show();
+        } else if (selectedTournament.getExecutionState() == ExecutionState.CURRENTLY_EXECUTED) {
+            new SimpleDialog<>(
+                    PreferencesManager
+                            .getInstance()
+                            .localizeString(
+                                    "registrationphase.dialogs.removetournament.errors.tournamentexecuted"))
+                    .modalDialog().title("dialogs.titles.error")
+                    .dialogButtons(DialogButtons.OK).show();
+        } else {
+            new SimpleDialog<>(
+                    PreferencesManager
+                            .getInstance()
+                            .localizeString(
+                                    "registrationphase.dialogs.removetournament.message.before")
+                            + " \""
+                            + this.loadedPlayer.getFirstName()
+                            + " "
+                            + this.loadedPlayer.getLastName()
+                            + "\" "
+                            + PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "registrationphase.dialogs.removetournament.message.middle")
+                            + " \""
+                            + selectedTournament.getName()
+                            + "\" "
+                            + PreferencesManager
+                                    .getInstance()
+                                    .localizeString(
+                                            "registrationphase.dialogs.removetournament.message.after"))
+                    .modalDialog()
+                    .title("registrationphase.dialogs.removetournament.title")
+                    .dialogButtons(DialogButtons.YES_NO)
+                    .onResult(
+                            (result, returnValue) -> {
+                                if (result == DialogResult.YES) {
+                                    Player playerToRemove = null;
+                                    for (Player player : selectedTournament
+                                            .getRegisteredPlayers()) {
+                                        if (player.getId().equals(
+                                                this.loadedPlayer.getId())) {
+                                            playerToRemove = player;
+                                            break;
+                                        }
                                     }
+
+                                    selectedTournament.getRegisteredPlayers()
+                                            .remove(playerToRemove);
+                                    this.updateTournamentList();
                                 }
+                            }).show();
 
-                                selectedTournament.getRegisteredPlayers()
-                                        .remove(playerToRemove);
-                                this.updateTournamentList();
-                            }
-                        }).show();
-
-        this.updateTournamentList();
+            this.updateTournamentList();
+        }
     }
 }

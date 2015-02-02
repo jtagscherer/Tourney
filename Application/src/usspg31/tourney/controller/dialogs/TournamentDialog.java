@@ -39,7 +39,7 @@ import usspg31.tourney.model.TournamentAdministrator;
 import usspg31.tourney.model.TournamentModule;
 
 public class TournamentDialog extends VBox implements
-        IModalDialogProvider<Tournament, Tournament> {
+        IModalDialogProvider<Object, Tournament> {
 
     private static final Logger log = Logger.getLogger(TournamentDialog.class
             .getName());
@@ -94,6 +94,8 @@ public class TournamentDialog extends VBox implements
     private boolean scoreTableSorting = false;
     private boolean phaseTableSorting = false;
 
+    private boolean disabled = false;
+
     private Tournament loadedTournament;
 
     public TournamentDialog() {
@@ -131,6 +133,40 @@ public class TournamentDialog extends VBox implements
     private void initialize() {
         this.initTournamentPhaseTable();
         this.initPossibleScoresTable();
+    }
+
+    public void disableControls(boolean value) {
+        this.disabled = value;
+
+        this.textFieldTournamentTitle.setDisable(value);
+        this.buttonEditAdministrators.setDisable(value);
+        this.buttonLoadTournamentModule.setDisable(value);
+
+        this.tableTournamentPhases.setDisable(value);
+        this.buttonMoveTournamentPhaseUp.disableProperty().unbind();
+        this.buttonMoveTournamentPhaseUp.setDisable(value);
+        this.buttonMoveTournamentPhaseDown.disableProperty().unbind();
+        this.buttonMoveTournamentPhaseDown.setDisable(value);
+        this.buttonAddTournamentPhase.setDisable(value);
+        this.buttonRemoveTournamentPhase.disableProperty().unbind();
+        this.buttonRemoveTournamentPhase.setDisable(value);
+        this.buttonEditTournamentPhase.disableProperty().unbind();
+        this.buttonEditTournamentPhase.setDisable(value);
+
+        this.tablePossibleScores.setDisable(value);
+        this.buttonMovePossibleScoreUp.disableProperty().unbind();
+        this.buttonMovePossibleScoreUp.setDisable(value);
+        this.buttonMovePossibleScoreDown.disableProperty().unbind();
+        this.buttonMovePossibleScoreDown.setDisable(value);
+        this.buttonAddPossibleScore.setDisable(value);
+        this.buttonRemovePossibleScore.disableProperty().unbind();
+        this.buttonRemovePossibleScore.setDisable(value);
+        this.buttonEditPossibleScore.disableProperty().unbind();
+        this.buttonEditPossibleScore.setDisable(value);
+    }
+
+    public boolean areControlsDisabled() {
+        return this.disabled;
     }
 
     private void initTournamentPhaseTable() {
@@ -338,8 +374,14 @@ public class TournamentDialog extends VBox implements
     }
 
     @Override
-    public void setProperties(Tournament properties) {
-        this.loadTournament((Tournament) properties.clone());
+    public void setProperties(Object properties) {
+        if (properties instanceof Tournament) {
+            this.loadTournament((Tournament) ((Tournament) properties).clone());
+        } else if (properties instanceof Boolean) {
+            if ((boolean) properties) {
+                this.disableControls((boolean) properties);
+            }
+        }
     }
 
     @Override
@@ -349,6 +391,10 @@ public class TournamentDialog extends VBox implements
 
     @Override
     public String getInputErrorString() {
+        if (this.areControlsDisabled()) {
+            return PreferencesManager.getInstance().localizeString(
+                    "dialogs.tournament.errors.uneditable");
+        }
         if (this.loadedTournament.getName().equals("")) {
             return PreferencesManager.getInstance().localizeString(
                     "dialogs.tournament.errors.emptydata");
@@ -366,7 +412,7 @@ public class TournamentDialog extends VBox implements
     }
 
     @Override
-    public void initModalDialog(ModalDialog<Tournament, Tournament> modalDialog) {
+    public void initModalDialog(ModalDialog<Object, Tournament> modalDialog) {
         modalDialog.title("dialogs.tournament").dialogButtons(
                 DialogButtons.OK_CANCEL);
     }
