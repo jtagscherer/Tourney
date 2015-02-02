@@ -245,6 +245,8 @@ public class FileSaver {
                 TournamentDocument.PlayerListType.REMAINING_PLAYERS);
         document.appendPlayerList(tournament.getReceivedByePlayers(),
                 TournamentDocument.PlayerListType.RECEIVED_BYE_PLAYERS);
+        document.appendPlayerList(tournament.getDisqualifiedPlayers(),
+                TournamentDocument.PlayerListType.DISQUALIFIED_PLAYERS);
 
         document.appendTournamentRounds(tournament.getRounds());
 

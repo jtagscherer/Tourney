@@ -169,6 +169,12 @@ public class FileLoader {
                             .getPlayerList(
                                     TournamentDocument.PlayerListType.RECEIVED_BYE_PLAYERS,
                                     playerList));
+            newTournament
+                    .getDisqualifiedPlayers()
+                    .setAll(tournamentDocument
+                            .getPlayerList(
+                                    TournamentDocument.PlayerListType.DISQUALIFIED_PLAYERS,
+                                    playerList));
 
             newTournament.getRounds().setAll(
                     tournamentDocument.getTournamentRounds(playerList));

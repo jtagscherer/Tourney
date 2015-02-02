@@ -300,6 +300,10 @@ public class PairingView extends VBox implements TournamentUser {
     }
 
     private void addPairingOverviewNodes() {
+        if (this.getSelectedRound() == -1) {
+            return;
+        }
+
         // add pairing nodes for every pairing there is in the selected round
         TournamentRound round = this.loadedTournament.getRounds().get(
                 this.getSelectedRound());
@@ -518,28 +522,45 @@ public class PairingView extends VBox implements TournamentUser {
         horizontal2.setStrokeWidth(2);
 
         NumberExpression left = new DoubleBinding() {
-            { super.bind(previousNode.layoutXProperty(), previousNode.widthProperty()); }
+            {
+                super.bind(previousNode.layoutXProperty(),
+                        previousNode.widthProperty());
+            }
+
             @Override
             protected double computeValue() {
                 return previousNode.getLayoutX() + previousNode.getWidth();
             }
         };
         NumberExpression top = new DoubleBinding() {
-            { super.bind(previousNode.layoutYProperty(), previousNode.heightProperty()); }
+            {
+                super.bind(previousNode.layoutYProperty(),
+                        previousNode.heightProperty());
+            }
+
             @Override
             protected double computeValue() {
-                return Math.floor(previousNode.getLayoutY() + previousNode.getHeight() / 2d);
+                return Math.floor(previousNode.getLayoutY()
+                        + previousNode.getHeight() / 2d);
             }
         };
         NumberExpression bottom = new DoubleBinding() {
-            { super.bind(nextNode.layoutYProperty(), nextNode.heightProperty()); }
+            {
+                super.bind(nextNode.layoutYProperty(),
+                        nextNode.heightProperty());
+            }
+
             @Override
             protected double computeValue() {
-                return Math.floor(nextNode.getLayoutY() + nextNode.getHeight() / 2d);
+                return Math.floor(nextNode.getLayoutY() + nextNode.getHeight()
+                        / 2d);
             }
         };
         NumberExpression center = new DoubleBinding() {
-            { super.bind(nextNode.layoutXProperty()); }
+            {
+                super.bind(nextNode.layoutXProperty());
+            }
+
             @Override
             protected double computeValue() {
                 return Math.floor(nextNode.getLayoutX() - 25);
