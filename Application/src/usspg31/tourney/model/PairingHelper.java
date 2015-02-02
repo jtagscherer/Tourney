@@ -11,10 +11,10 @@ public class PairingHelper {
 
     /**
      * identify the phase in which the round takes place
-     * 
+     *
      * if this method return a null object then their are no more rounds left in
      * the tournament
-     * 
+     *
      * @param roundcount
      *            identify the round
      * @param value
@@ -35,7 +35,7 @@ public class PairingHelper {
 
     /**
      * checks if the round is the first in the phase
-     * 
+     *
      * @param roundcount
      *            which round is getting checked
      * @param value
@@ -55,7 +55,7 @@ public class PairingHelper {
 
     /**
      * produce the scores for the remaining players in the tournament
-     * 
+     *
      * @param tournament
      *            source of the players and scores
      * @return the unsorted scores for the remaining players in the tournament
@@ -65,7 +65,7 @@ public class PairingHelper {
         ArrayList<PlayerScore> remainingPlayerScore = new ArrayList<>();
         for (Player player : tournament.getRemainingPlayers()) {
             for (PlayerScore chkScore : tournament.getScoreTable()) {
-                if (player == chkScore.getPlayer()) {
+                if (player.getId().equals(chkScore.getPlayer().getId())) {
                     remainingPlayerScore.add(chkScore);
                 }
             }
@@ -75,7 +75,7 @@ public class PairingHelper {
 
     /**
      * identifies the winner of a pairing
-     * 
+     *
      * @param pairing
      *            the pairing for whom the winnier will be identified
      * @return the winner of the pairing
@@ -126,7 +126,7 @@ public class PairingHelper {
 
     /**
      * checks the pairing if there were a similar one in a previous round
-     * 
+     *
      * @param value
      * @param tournament
      * @return if there this pairing already take place in the tournament
@@ -152,7 +152,7 @@ public class PairingHelper {
 
     /**
      * generate an empty player score
-     * 
+     *
      * @param opponent
      *            for which player the score is generated
      * @param numberOfScores
@@ -167,8 +167,8 @@ public class PairingHelper {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param pairing
      * @return
      */
