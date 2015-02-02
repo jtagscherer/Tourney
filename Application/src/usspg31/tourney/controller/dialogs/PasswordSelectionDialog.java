@@ -72,6 +72,9 @@ public class PasswordSelectionDialog extends VBox implements
                                                     "dialogs.passwordselection.passwordsdifferent"));
                         }
                     });
+            this.passwordFieldNew.textProperty().addListener((ov, o, n) -> {
+                this.passwordFieldNewRepeat.validateInput();
+            });
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
