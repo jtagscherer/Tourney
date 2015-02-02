@@ -99,7 +99,7 @@ public class PreferencesManager {
 
     private static final String defaultPreferencesFile = "defaultPreferences.properties";
     private static final String preferencesFolder = System
-            .getProperty("user.dir") + "/Tourney/preferences";
+            .getProperty("user.home") + "/Tourney/preferences";
     private static final String preferencesFile = "preferences.properties";
 
     private static final String tournamentModuleFolder = PreferencesManager.preferencesFolder
