@@ -49,7 +49,6 @@ public class PlayerScore implements Comparable<PlayerScore>, Cloneable {
 
     @Override
     public int compareTo(PlayerScore o) {
-        // TODO Auto-generated method stub
 
         for (int i = 0; i < o.getScore().size(); i++) {
             if (this.getScore().get(i) > o.getScore().get(i)) {
