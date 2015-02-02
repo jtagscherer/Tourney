@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberExpression;
 import javafx.beans.property.IntegerProperty;
@@ -35,6 +37,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurve;
+import javafx.util.Duration;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
@@ -60,6 +63,7 @@ public class PairingView extends VBox implements TournamentUser {
 
     @FXML private Button buttonScrollBreadcrumbsLeft;
     @FXML private Button buttonScrollBreadcrumbsRight;
+    @FXML private ScrollPane breadcrumbScrollPane;
     @FXML private HBox breadcrumbContainer;
     @FXML private ScrollPane pairingScrollPane;
     @FXML private FlowPane pairingContainer;
@@ -124,6 +128,28 @@ public class PairingView extends VBox implements TournamentUser {
         contextMenu.getItems().addAll(resetView);
 
         this.pairingScrollPane.setContextMenu(contextMenu);
+
+        Timeline scrollLeft = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+            this.breadcrumbScrollPane.setHvalue(this.breadcrumbScrollPane.getHvalue() - 0.01);
+        }));
+        scrollLeft.setCycleCount(Timeline.INDEFINITE);
+        this.buttonScrollBreadcrumbsLeft.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            scrollLeft.play();
+        });
+        this.buttonScrollBreadcrumbsLeft.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+            scrollLeft.stop();
+        });
+
+        Timeline scrollRight = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+            this.breadcrumbScrollPane.setHvalue(this.breadcrumbScrollPane.getHvalue() + 0.01);
+        }));
+        scrollRight.setCycleCount(Timeline.INDEFINITE);
+        this.buttonScrollBreadcrumbsRight.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            scrollRight.play();
+        });
+        this.buttonScrollBreadcrumbsRight.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+            scrollRight.stop();
+        });
     }
 
     @FXML
@@ -196,7 +222,7 @@ public class PairingView extends VBox implements TournamentUser {
         tournament.getRounds().addListener(this::onTournamentRoundListChanged);
 
         this.refreshBreadcrumbs();
-        // this.setSelectedRound(tournament.getRounds().size());
+        this.setSelectedRound(tournament.getRounds().size() - 1);
     }
 
     @Override
