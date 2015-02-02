@@ -12,10 +12,12 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.PossibleScoring;
+import usspg31.tourney.model.PossibleScoring.ScoringType;
 import usspg31.tourney.model.Tournament;
 
 /**
@@ -79,10 +81,36 @@ public class PairingNode extends VBox {
         TableColumn<PlayerScore, String> playerNameColumn = new TableColumn<>(
                 PreferencesManager.getInstance().localizeString(
                         "pairingnode.name"));
-        playerNameColumn.setCellValueFactory(score -> {
-            return score.getValue().getPlayer().firstNameProperty().concat(" ")
-                    .concat(score.getValue().getPlayer().lastNameProperty());
-        });
+        playerNameColumn
+                .setCellValueFactory(score -> {
+                    return Bindings
+                            .when(score.getValue().getPlayer()
+                                    .disqualifiedProperty())
+                            .then(score
+                                    .getValue()
+                                    .getPlayer()
+                                    .firstNameProperty()
+                                    .concat(" ")
+                                    .concat(score
+                                            .getValue()
+                                            .getPlayer()
+                                            .lastNameProperty()
+                                            .concat(" ")
+                                            .concat("(")
+                                            .concat(PreferencesManager
+                                                    .getInstance()
+                                                    .localizeString(
+                                                            "pairingnode.disqualified"))
+                                            .concat(")")))
+                            .otherwise(
+                                    score.getValue()
+                                            .getPlayer()
+                                            .firstNameProperty()
+                                            .concat(" ")
+                                            .concat(score.getValue()
+                                                    .getPlayer()
+                                                    .lastNameProperty()));
+                });
 
         TableColumn<PlayerScore, String> playerStartingNumberColumn = new TableColumn<>(
                 PreferencesManager.getInstance().localizeString(
@@ -113,10 +141,38 @@ public class PairingNode extends VBox {
                 .add(playerStartingNumberColumn.widthProperty()).add(2);
 
         this.opponentTable.getColumns().add(playerStartingNumberColumn);
+
+        playerNameColumn.setCellFactory(column -> {
+            return new TableCell<PlayerScore, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        this.setText(null);
+                        this.setGraphic(null);
+                        this.setStyle("");
+                    } else {
+                        if (item.endsWith("("
+                                + PreferencesManager.getInstance()
+                                        .localizeString(
+                                                "pairingnode.disqualified")
+                                + ")")) {
+                            this.setTextFill(Color.LIGHTCORAL);
+                        }
+                        this.setText(item);
+                    }
+                }
+            };
+        });
         this.opponentTable.getColumns().add(playerNameColumn);
 
         for (PossibleScoring scoring : this.tournament.getRuleSet()
                 .getPossibleScores()) {
+            // don't display the table strength in the score table
+            if (scoring.getScoreType() == ScoringType.TABLE_STRENGTH) {
+                continue;
+            }
             TableColumn<PlayerScore, String> scoreColumn = new TableColumn<>(
                     Integer.toString(scoring.getPriority() + 1));
             scoreColumn

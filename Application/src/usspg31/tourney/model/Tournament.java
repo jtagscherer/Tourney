@@ -30,6 +30,7 @@ public class Tournament implements Cloneable {
     private final ObservableList<Player> registeredPlayers;
     private final ObservableList<Player> attendingPlayers;
     private final ObservableList<Player> remainingPlayers;
+    private final ObservableList<Player> disqualifiedPlayers;
     // currently not considered when choosing the player who received a bye
     private final ObservableList<Player> receivedByePlayers;
     private final ObservableList<TournamentRound> rounds;
@@ -47,6 +48,7 @@ public class Tournament implements Cloneable {
         this.registeredPlayers = FXCollections.observableArrayList();
         this.attendingPlayers = FXCollections.observableArrayList();
         this.remainingPlayers = FXCollections.observableArrayList();
+        this.disqualifiedPlayers = FXCollections.observableArrayList();
         this.receivedByePlayers = FXCollections.observableArrayList();
         this.rounds = FXCollections.observableArrayList();
         this.name = new SimpleStringProperty("");
@@ -103,6 +105,15 @@ public class Tournament implements Cloneable {
      */
     public ObservableList<Player> getReceivedByePlayers() {
         return this.receivedByePlayers;
+    }
+
+    /**
+     * Get the list of all player which were disqualified in the tournament
+     * 
+     * @return List of all player who where disqualified
+     */
+    public ObservableList<Player> getDisqualifiedPlayers() {
+        return this.disqualifiedPlayers;
     }
 
     /**

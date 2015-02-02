@@ -2,6 +2,7 @@ package usspg31.tourney.controller.controls.eventphases.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -35,6 +36,7 @@ import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.Tournament.ExecutionState;
+import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class TournamentExecutionController implements TournamentUser {
@@ -103,6 +105,7 @@ public class TournamentExecutionController implements TournamentUser {
         if (this.loadedTournament != null) {
             this.unloadTournament();
         }
+
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(
                 this.loadedTournament.getAttendingPlayers());
@@ -255,6 +258,30 @@ public class TournamentExecutionController implements TournamentUser {
 
     private void generateRound() {
         log.info("Generating next round");
+        if (this.loadedTournament.getRounds().size() > 0) {
+            TournamentRound currentRound = this.loadedTournament.getRounds()
+                    .get(this.loadedTournament.getRounds().size() - 1);
+            for (Pairing pairing : currentRound.getPairings()) {
+                for (PlayerScore score : pairing.getScoreTable()) {
+                    this.loadedTournament.addAScore(score);
+                }
+            }
+        }
+
+        if (PairingHelper.cutOffAfterRound(this.loadedTournament.getRounds()
+                .size(), this.loadedTournament)) {
+            ArrayList<PlayerScore> cloneScoreTable = new ArrayList<>();
+            cloneScoreTable.addAll(this.loadedTournament.getScoreTable());
+            Collections.sort(cloneScoreTable);
+            this.loadedTournament.getRemainingPlayers().clear();
+            for (int i = 0; i < PairingHelper.findPhase(
+                    this.loadedTournament.getRounds().size() - 1,
+                    this.loadedTournament).getCutoff(); i++) {
+                this.loadedTournament.getRemainingPlayers().add(
+                        cloneScoreTable.get(cloneScoreTable.size() - 1 - i)
+                                .getPlayer());
+            }
+        }
 
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
@@ -325,39 +352,33 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonEnterResultClicked(ActionEvent event) {
         log.info("Enter Result Button was clicked");
         this.pairingScoreDialog
-                .properties(
-                        new PairingEntry(this.loadedTournament,
-                                this.pairingView.getSelectedPairing()))
-                .onResult(
-                        (result, value) -> {
-                            if (result == DialogResult.OK) {
-                                for (int i = 0; i < value.getScoreTable()
-                                        .size(); i++) {
-                                    PlayerScore score = value.getScoreTable()
-                                            .get(i);
-                                    PlayerScore selectedScore = this.pairingView
-                                            .getSelectedPairing()
-                                            .getScoreTable().get(i);
-                                    selectedScore.getScore().clear();
-
-                                    for (int j = 0; j < score.getScore().size(); j++) {
-                                        Integer newScore = score.getScore()
-                                                .get(j);
-                                        if (newScore == null) {
-                                            newScore = 0;
-                                        }
-                                        selectedScore.getScore().add(newScore);
-                                    }
-                                }
-                                this.pairingView.updateOverview();
-                                this.checkRoundFinished();
-
-                                this.updateProjectorWindows();
-                                MainWindow.getInstance()
-                                        .getEventPhaseViewController()
-                                        .activateSaveButton();
+        .properties(new PairingEntry(this.loadedTournament,
+                this.pairingView.getSelectedPairing()))
+        .onResult((result, value) -> {
+                if (result == DialogResult.OK) {
+                    for (int i = 0; i < value.getScoreTable().size(); i++) {
+                        PlayerScore score = value.getScoreTable().get(i);
+                        PlayerScore selectedScore = this.pairingView
+                                .getSelectedPairing()
+                                .getScoreTable().get(i);
+                        selectedScore.getScore().clear();
+                        for (int j = 0; j < score.getScore().size(); j++) {
+                            Integer newScore = score.getScore().get(j);
+                            if (newScore == null) {
+                                newScore = 0;
                             }
-                        }).show();
+                            selectedScore.getScore().add(newScore);
+                        }
+                    }
+                    this.pairingView.updateOverview();
+                    this.checkRoundFinished();
+
+                    this.updateProjectorWindows();
+                    MainWindow.getInstance()
+                            .getEventPhaseViewController()
+                            .activateSaveButton();
+                }
+        }).show();
     }
 
     private void checkRoundFinished() {
