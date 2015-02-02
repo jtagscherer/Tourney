@@ -50,7 +50,8 @@ public class PlayerScore implements Comparable<PlayerScore>, Cloneable {
     @Override
     public int compareTo(PlayerScore o) {
 
-        for (int i = 0; i < o.getScore().size(); i++) {
+        for (int i = 0; i < Math.min(this.getScore().size(), o.getScore()
+                .size()); i++) {
             if (this.getScore().get(i) > o.getScore().get(i)) {
                 return 1;
             } else if (this.getScore().get(i) < o.getScore().get(i)) {
