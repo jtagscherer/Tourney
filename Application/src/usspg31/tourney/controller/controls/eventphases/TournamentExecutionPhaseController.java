@@ -50,6 +50,8 @@ public class TournamentExecutionPhaseController implements EventUser {
 
     private Event loadedEvent;
 
+    private ExecutionPhase currentPhase;
+
     // Animations
     private DoubleProperty phasePosition;
     private Timeline currentAnimation;
@@ -57,11 +59,17 @@ public class TournamentExecutionPhaseController implements EventUser {
     private static Interpolator transitionInterpolator = Interpolator.SPLINE(
             .4, 0, 0, 1);
 
+    public enum ExecutionPhase {
+        TOURNAMENT_SELECTION,
+        TOURNAMENT_EXECUTION
+    }
+
     @FXML
     public void initialize() {
         this.attendanceDialog = new AttendanceDialog().modalDialog();
         this.phasePosition = new SimpleDoubleProperty();
         this.phasePosition.set(0);
+        this.currentPhase = ExecutionPhase.TOURNAMENT_SELECTION;
 
         try {
             /* Load the selection view */
@@ -171,6 +179,7 @@ public class TournamentExecutionPhaseController implements EventUser {
             break;
         case CURRENTLY_EXECUTED:
             this.executionController.loadTournament(tournament);
+            this.executionController.updatePairingView();
             this.slideToPhase(1);
             break;
         case FINISHED:
@@ -209,7 +218,20 @@ public class TournamentExecutionPhaseController implements EventUser {
         this.executionController.unloadTournament();
     }
 
+    public ExecutionPhase getCurrentExecutionPhase() {
+        return this.currentPhase;
+    }
+
     private void slideToPhase(int phase) {
+        switch (phase) {
+        case 0:
+            this.currentPhase = ExecutionPhase.TOURNAMENT_SELECTION;
+            break;
+        case 1:
+            this.currentPhase = ExecutionPhase.TOURNAMENT_EXECUTION;
+            break;
+        }
+
         if (this.currentAnimation != null) {
             this.currentAnimation.stop();
         }

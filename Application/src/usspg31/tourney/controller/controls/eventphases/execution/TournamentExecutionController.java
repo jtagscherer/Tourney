@@ -102,6 +102,10 @@ public class TournamentExecutionController implements TournamentUser {
     @Override
     public void loadTournament(Tournament tournament) {
         log.info("Loading Tournament");
+        if (this.loadedTournament != null) {
+            this.unloadTournament();
+        }
+
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(
                 this.loadedTournament.getAttendingPlayers());
@@ -417,6 +421,10 @@ public class TournamentExecutionController implements TournamentUser {
             }
         }
         this.buttonStartRound.setDisable(!roundFinished);
+    }
+
+    public void updatePairingView() {
+        this.pairingView.updateOverview();
     }
 
     @FXML

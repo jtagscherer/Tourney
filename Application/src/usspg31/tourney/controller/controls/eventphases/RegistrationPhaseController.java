@@ -40,6 +40,8 @@ import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
 import usspg31.tourney.model.IdentificationManager;
 import usspg31.tourney.model.Player;
+import usspg31.tourney.model.Tournament;
+import usspg31.tourney.model.Tournament.ExecutionState;
 import usspg31.tourney.model.filemanagement.FileLoader;
 import usspg31.tourney.model.filemanagement.FileSaver;
 import usspg31.tourney.model.undo.UndoManager;
@@ -341,11 +343,29 @@ public class RegistrationPhaseController implements EventUser {
 
         Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
                 .getSelectedItem();
+
+        boolean doNotDelete = false;
+        outer_loop: for (Tournament tournament : this.loadedEvent
+                .getTournaments()) {
+            for (Player player : tournament.getAttendingPlayers()) {
+                if (player.getId().equals(selectedPlayer.getId())
+                        && tournament.getExecutionState() != ExecutionState.NOT_EXECUTED) {
+                    doNotDelete = true;
+                    break outer_loop;
+                }
+            }
+        }
+
         if (selectedPlayer == null) {
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "dialogs.messages.noplayerchosen")).modalDialog()
                     .dialogButtons(DialogButtons.OK)
                     .title("dialogs.titles.error").show();
+        } else if (doNotDelete) {
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "preregistrationphase.dialogs.delete.error")).modalDialog()
+                    .title("dialogs.titles.error")
+                    .dialogButtons(DialogButtons.OK).show();
         } else {
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "preregistrationphase.dialogs.delete.before")
@@ -647,11 +667,28 @@ public class RegistrationPhaseController implements EventUser {
 
         Player selectedPlayer = this.tableRegisteredPlayers.getSelectionModel()
                 .getSelectedItem();
+        boolean doNotDelete = false;
+        outer_loop: for (Tournament tournament : this.loadedEvent
+                .getTournaments()) {
+            for (Player player : tournament.getAttendingPlayers()) {
+                if (player.getId().equals(selectedPlayer.getId())
+                        && tournament.getExecutionState() != ExecutionState.NOT_EXECUTED) {
+                    doNotDelete = true;
+                    break outer_loop;
+                }
+            }
+        }
+
         if (selectedPlayer == null) {
             new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
                     "dialogs.messages.noplayerchosen")).modalDialog()
                     .dialogButtons(DialogButtons.OK)
                     .title("dialogs.titles.error").show();
+        } else if (doNotDelete) {
+            new SimpleDialog<>(PreferencesManager.getInstance().localizeString(
+                    "preregistrationphase.unregister.error")).modalDialog()
+                    .title("dialogs.titles.error")
+                    .dialogButtons(DialogButtons.OK).show();
         } else {
             if (selectedPlayer.getStartingNumber().equals("")) {
                 new SimpleDialog<>(PreferencesManager.getInstance()
