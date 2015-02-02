@@ -2,7 +2,6 @@ package usspg31.tourney.controller.controls.eventphases.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -24,6 +23,7 @@ import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseC
 import usspg31.tourney.controller.dialogs.PairingScoreDialog;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog.PairingEntry;
 import usspg31.tourney.controller.dialogs.PairingSwapDialog;
+import usspg31.tourney.controller.dialogs.PlayerSelectionDialog;
 import usspg31.tourney.controller.dialogs.VictoryConfiguration;
 import usspg31.tourney.controller.dialogs.VictoryDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -32,11 +32,11 @@ import usspg31.tourney.controller.layout.IconPane;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PairingHelper;
+import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.Tournament.ExecutionState;
-import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class TournamentExecutionController implements TournamentUser {
@@ -50,6 +50,7 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML private Button buttonStartRound;
     @FXML private Button buttonEnterResult;
     @FXML private Button buttonSwapPlayers;
+    @FXML private Button buttonDisqualifyPlayer;
     @FXML private Button buttonOpenProjectorWindow;
 
     @FXML private Label labelTime;
@@ -73,10 +74,12 @@ public class TournamentExecutionController implements TournamentUser {
     private final ModalDialog<PairingEntry, Pairing> pairingScoreDialog;
     private final ModalDialog<VictoryConfiguration, Object> victoryDialog;
     private final ModalDialog<ObservableList<Pairing>, ObservableList<Pairing>> swapDialog;
+    private final ModalDialog<ObservableList<Player>, Player> disqualificationDialog;
 
     private TournamentExecutionPhaseController superController;
     private boolean tournamentFinished = false;
     private boolean displayVictoryMessage = false;
+    private boolean disqualifiedInRound = false;
 
     private ArrayList<TournamentExecutionProjectionController> projectorWindowControllers;
     private OverviewMode currentOverviewMode;
@@ -85,6 +88,7 @@ public class TournamentExecutionController implements TournamentUser {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
         this.victoryDialog = new VictoryDialog().modalDialog();
         this.swapDialog = new PairingSwapDialog().modalDialog();
+        this.disqualificationDialog = new PlayerSelectionDialog().modalDialog();
         this.projectorWindowControllers = new ArrayList<TournamentExecutionProjectionController>();
         this.currentOverviewMode = OverviewMode.PAIRING_OVERVIEW;
     }
@@ -105,7 +109,6 @@ public class TournamentExecutionController implements TournamentUser {
         if (this.loadedTournament != null) {
             this.unloadTournament();
         }
-
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(
                 this.loadedTournament.getAttendingPlayers());
@@ -146,6 +149,10 @@ public class TournamentExecutionController implements TournamentUser {
 
                             this.buttonSwapPlayers.setDisable(n.intValue() < this.loadedTournament
                                     .getRounds().size() - 1);
+                            this.buttonDisqualifyPlayer.setDisable(n.intValue() < this.loadedTournament
+                                    .getRounds().size() - 1
+                                    || n.intValue() == 0
+                                    || this.disqualifiedInRound);
                         });
 
         this.pairingView.setOnNodeDoubleClicked(() -> {
@@ -158,7 +165,7 @@ public class TournamentExecutionController implements TournamentUser {
                 this.pairingView.selectedPairingProperty().isNull());
 
         if (tournament.getRounds().size() == 0) {
-            this.generateRound();
+            this.generateRound(false);
             if (this.tournamentFinished) {
                 this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                         "icon-finish", "half");
@@ -238,7 +245,7 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonStartRoundClicked(ActionEvent event) {
         log.finer("Start Round Button was clicked");
         if (!this.displayVictoryMessage) {
-            this.generateRound();
+            this.generateRound(true);
             this.checkForTournamentFinish();
             this.updateProjectorWindows();
         } else {
@@ -256,38 +263,16 @@ public class TournamentExecutionController implements TournamentUser {
         }
     }
 
-    private void generateRound() {
+    private void generateRound(boolean newRound) {
         log.info("Generating next round");
-        if (this.loadedTournament.getRounds().size() > 0) {
-            TournamentRound currentRound = this.loadedTournament.getRounds()
-                    .get(this.loadedTournament.getRounds().size() - 1);
-            for (Pairing pairing : currentRound.getPairings()) {
-                for (PlayerScore score : pairing.getScoreTable()) {
-                    this.loadedTournament.addAScore(score);
-                }
-            }
-        }
 
-        if (PairingHelper.cutOffAfterRound(this.loadedTournament.getRounds()
-                .size(), this.loadedTournament)) {
-            ArrayList<PlayerScore> cloneScoreTable = new ArrayList<>();
-            cloneScoreTable.addAll(this.loadedTournament.getScoreTable());
-            Collections.sort(cloneScoreTable);
-            this.loadedTournament.getRemainingPlayers().clear();
-            for (int i = 0; i < PairingHelper.findPhase(
-                    this.loadedTournament.getRounds().size() - 1,
-                    this.loadedTournament).getCutoff(); i++) {
-                this.loadedTournament.getRemainingPlayers().add(
-                        cloneScoreTable.get(cloneScoreTable.size() - 1 - i)
-                                .getPlayer());
-            }
-        }
+        this.disqualifiedInRound = false;
 
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
 
-        if (this.tournamentFinished) {
+        if (this.tournamentFinished && newRound) {
             this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                     "icon-finish", "half");
             this.buttonStartRound.setDisable(false);
@@ -352,38 +337,42 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonEnterResultClicked(ActionEvent event) {
         log.info("Enter Result Button was clicked");
         this.pairingScoreDialog
-        .properties(new PairingEntry(this.loadedTournament,
-                this.pairingView.getSelectedPairing()))
-        .onResult((result, value) -> {
-                if (result == DialogResult.OK) {
-                    for (int i = 0; i < value.getScoreTable().size(); i++) {
-                        PlayerScore score = value.getScoreTable().get(i);
-                        PlayerScore selectedScore = this.pairingView
-                                .getSelectedPairing()
-                                .getScoreTable().get(i);
-                        selectedScore.getScore().clear();
-                        for (int j = 0; j < score.getScore().size(); j++) {
-                            Integer newScore = score.getScore().get(j);
-                            if (newScore == null) {
-                                newScore = 0;
-                            }
-                            selectedScore.getScore().add(newScore);
-                        }
-                    }
-                    this.pairingView.updateOverview();
-                    this.checkRoundFinished();
+                .properties(
+                        new PairingEntry(this.loadedTournament,
+                                this.pairingView.getSelectedPairing()))
+                .onResult(
+                        (result, value) -> {
+                            if (result == DialogResult.OK) {
+                                for (int i = 0; i < value.getScoreTable()
+                                        .size(); i++) {
+                                    PlayerScore score = value.getScoreTable()
+                                            .get(i);
+                                    PlayerScore selectedScore = this.pairingView
+                                            .getSelectedPairing()
+                                            .getScoreTable().get(i);
+                                    selectedScore.getScore().clear();
 
-                    this.updateProjectorWindows();
-                    MainWindow.getInstance()
-                            .getEventPhaseViewController()
-                            .activateSaveButton();
-                }
-        }).show();
+                                    for (int j = 0; j < score.getScore().size(); j++) {
+                                        Integer newScore = score.getScore()
+                                                .get(j);
+                                        if (newScore == null) {
+                                            newScore = 0;
+                                        }
+                                        selectedScore.getScore().add(newScore);
+                                    }
+                                }
+                                this.pairingView.updateOverview();
+                                this.checkRoundFinished();
+
+                                this.updateProjectorWindows();
+                                MainWindow.getInstance()
+                                        .getEventPhaseViewController()
+                                        .activateSaveButton();
+                            }
+                        }).show();
     }
 
     private void checkRoundFinished() {
-        // FIXME: this method does return true even though we didn't fill out
-        // all pairings
         // check, if all pairings have a score
         int totalRoundCount = 0;
         for (GamePhase phase : this.loadedTournament.getRuleSet()
@@ -439,6 +428,55 @@ public class TournamentExecutionController implements TournamentUser {
                                         .get(this.loadedTournament.getRounds()
                                                 .size() - 1).getPairings()
                                         .setAll(value);
+                            }
+
+                            this.pairingView.updateOverview();
+                            this.updateProjectorWindows();
+                        }).show();
+    }
+
+    @FXML
+    private void onButtonDisqualifyPlayerClicked(ActionEvent e) {
+        log.info("Disqualify Player Button clicked");
+        this.disqualificationDialog
+                .properties(this.loadedTournament.getRemainingPlayers())
+                .onResult(
+                        (result, value) -> {
+                            if (result == DialogResult.OK && value != null) {
+                                value.setDisqualified(true);
+                                PlayerScore removedScore = null;
+                                Pairing usedPairing = null;
+                                for (Pairing pairing : this.loadedTournament
+                                        .getRounds()
+                                        .get(this.loadedTournament.getRounds()
+                                                .size() - 2).getPairings()) {
+                                    if (pairing.getOpponents().contains(value)) {
+                                        for (PlayerScore score : pairing
+                                                .getScoreTable()) {
+                                            if (score.getPlayer() == value) {
+                                                removedScore = score;
+                                                usedPairing = pairing;
+                                                pairing.getScoreTable().remove(
+                                                        score);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                this.loadedTournament.getDisqualifiedPlayers()
+                                        .add(value);
+                                this.loadedTournament.getRemainingPlayers()
+                                        .remove(value);
+
+                                this.loadedTournament.getRounds().remove(
+                                        this.loadedTournament.getRounds()
+                                                .size() - 1);
+                                this.generateRound(false);
+
+                                usedPairing.getScoreTable().add(removedScore);
+                                disqualifiedInRound = true;
+                                this.buttonDisqualifyPlayer.setDisable(true);
                             }
 
                             this.pairingView.updateOverview();
