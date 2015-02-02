@@ -244,6 +244,29 @@ public class FileLoader {
         return module;
     }
 
+    public static TournamentModule loadTournamentModuleFromFile(String path,
+            boolean file) throws SAXException, IOException {
+        if (!FileLoader.initialized) {
+            FileLoader.initialize();
+        }
+
+        /* Initialize a new tournament module to apply all data to */
+        TournamentModule module = new TournamentModule();
+
+        /* Load module information from a new file */
+        TournamentModuleDocument moduleDocument = new TournamentModuleDocument(
+                FileLoader.documentBuilder.parse(path));
+
+        /* Apply all data from the document to the module */
+        module.setName(moduleDocument.getName());
+        module.setDescription(moduleDocument.getDescription());
+
+        module.getPossibleScores().setAll(moduleDocument.getPossibleScores());
+        module.getPhaseList().setAll(moduleDocument.getTournamentPhases());
+
+        return module;
+    }
+
     /**
      * Get all direct child nodes by tag
      * 
