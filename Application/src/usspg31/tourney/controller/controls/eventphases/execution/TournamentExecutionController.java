@@ -463,7 +463,8 @@ public class TournamentExecutionController implements TournamentUser {
                                     if (this.collectionContainsPlayer(pairing.getOpponents(), value)) {
                                         for (PlayerScore score : pairing
                                                 .getScoreTable()) {
-                                            if (score.getPlayer() == value) {
+                                            if (score.getPlayer().getId()
+                                                    .equals(value.getId())) {
                                                 removedScore = score;
                                                 usedPairing = pairing;
                                                 pairing.getScoreTable().remove(
