@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import usspg31.tourney.controller.EntryPoint;
+import usspg31.tourney.controller.MainWindow;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.controller.controls.EventUser;
 import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseController;
@@ -140,8 +141,12 @@ public class TournamentSelectionController implements EventUser {
 
         this.textFieldTournamentSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    MainWindow.getInstance().getEventPhaseViewController()
+                            .getUndoManager().setSleeping(true);
                     FXCollections.sort(this.tableTournaments.getItems(),
                             comparator);
+                    MainWindow.getInstance().getEventPhaseViewController()
+                            .getUndoManager().setSleeping(false);
                 });
 
         this.tableTournaments.setItems(this.loadedEvent.getTournaments());
