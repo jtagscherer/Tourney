@@ -208,7 +208,8 @@ public class PreferencesManager {
         for (TournamentModule module : modules) {
             File moduleFile = new File(
                     PreferencesManager.tournamentModuleFolder
-                            + module.getName() + ".ttm");
+                            + module.getName().replaceAll("[:\\\\/*\"?|<>]",
+                                    "_") + ".ttm");
             if (moduleFile.exists()) {
                 moduleFile.delete();
             }
