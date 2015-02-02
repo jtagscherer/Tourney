@@ -78,9 +78,8 @@ public class RegistrationPhaseController implements EventUser {
 
     @FXML
     private void initialize() {
-        this.registrationDialog = new PlayerEditorDialog()
-                .modalDialog().title(
-                        "dialogs.playerpreregistration.registration");
+        this.registrationDialog = new PlayerEditorDialog().modalDialog().title(
+                "dialogs.playerpreregistration.registration");
         this.distributionDialog = new RegistrationDistributionDialog()
                 .modalDialog();
         this.distributionNumberSelectionDialog = new RegistrationDistributionNumberSelectionDialog()
@@ -116,8 +115,12 @@ public class RegistrationPhaseController implements EventUser {
 
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    MainWindow.getInstance().getEventPhaseViewController()
+                            .getUndoManager().setSleeping(true);
                     FXCollections.sort(this.tableRegisteredPlayers.getItems(),
                             comparator);
+                    MainWindow.getInstance().getEventPhaseViewController()
+                            .getUndoManager().setSleeping(false);
                 });
 
         this.tableRegisteredPlayers.setItems(this.loadedEvent

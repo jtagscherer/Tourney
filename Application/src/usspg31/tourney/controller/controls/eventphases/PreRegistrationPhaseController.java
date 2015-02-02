@@ -48,8 +48,7 @@ public class PreRegistrationPhaseController implements EventUser {
 
     @FXML
     private void initialize() {
-        this.preRegistrationDialog = new PlayerEditorDialog()
-                .modalDialog();
+        this.preRegistrationDialog = new PlayerEditorDialog().modalDialog();
 
         this.initPlayerTable();
     }
@@ -117,16 +116,25 @@ public class PreRegistrationPhaseController implements EventUser {
         this.loadedEvent = event;
 
         /* Add all registered players to the table view and enable searching */
-        Comparator<Player> comparator = (firstPlayer, lastPlayer) -> (int) (SearchUtilities.getSearchRelevance(firstPlayer,
-                PreRegistrationPhaseController.this.textFieldPlayerSearch.getText()) - SearchUtilities
-                .getSearchRelevance(lastPlayer,
-                        PreRegistrationPhaseController.this.textFieldPlayerSearch.getText()));
+        Comparator<Player> comparator = (firstPlayer, lastPlayer) -> (int) (SearchUtilities
+                .getSearchRelevance(
+                        firstPlayer,
+                        PreRegistrationPhaseController.this.textFieldPlayerSearch
+                                .getText()) - SearchUtilities
+                .getSearchRelevance(
+                        lastPlayer,
+                        PreRegistrationPhaseController.this.textFieldPlayerSearch
+                                .getText()));
 
         this.textFieldPlayerSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    MainWindow.getInstance().getEventPhaseViewController()
+                            .getUndoManager().setSleeping(true);
                     FXCollections.sort(
                             this.tablePreRegisteredPlayers.getItems(),
                             comparator);
+                    MainWindow.getInstance().getEventPhaseViewController()
+                            .getUndoManager().setSleeping(false);
                 });
 
         this.tablePreRegisteredPlayers.setItems(this.loadedEvent
@@ -174,14 +182,18 @@ public class PreRegistrationPhaseController implements EventUser {
         log.fine("Add Player Button clicked");
         this.checkEventLoaded();
         this.preRegistrationDialog
-        .properties(new Player())
-        .properties(this.loadedEvent)
-        .onResult((result, returnValue) -> {
-            if (result == DialogResult.OK && returnValue != null) {
-                returnValue.setId(IdentificationManager.generateId(returnValue));
-                this.loadedEvent.getRegisteredPlayers().add(returnValue);
-            }
-        }).show();
+                .properties(new Player())
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                returnValue.setId(IdentificationManager
+                                        .generateId(returnValue));
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                            }
+                        }).show();
     }
 
     @FXML
@@ -247,18 +259,23 @@ public class PreRegistrationPhaseController implements EventUser {
      */
     public void editPlayer(Player player) {
         this.preRegistrationDialog
-        .properties(player)
-        .properties(this.loadedEvent)
-        .onResult((result, returnValue) -> {
-            if (result == DialogResult.OK  && returnValue != null) {
-                UndoManager undo = MainWindow.getInstance()
-                        .getEventPhaseViewController().getUndoManager();
-                undo.beginUndoBatch();
-                this.loadedEvent.getRegisteredPlayers().remove(player);
-                this.loadedEvent.getRegisteredPlayers().add(returnValue);
-                undo.endUndoBatch();
-            }
-        }).show();
+                .properties(player)
+                .properties(this.loadedEvent)
+                .onResult(
+                        (result, returnValue) -> {
+                            if (result == DialogResult.OK
+                                    && returnValue != null) {
+                                UndoManager undo = MainWindow.getInstance()
+                                        .getEventPhaseViewController()
+                                        .getUndoManager();
+                                undo.beginUndoBatch();
+                                this.loadedEvent.getRegisteredPlayers().remove(
+                                        player);
+                                this.loadedEvent.getRegisteredPlayers().add(
+                                        returnValue);
+                                undo.endUndoBatch();
+                            }
+                        }).show();
     }
 
     private void checkEventLoaded() {
