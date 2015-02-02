@@ -81,7 +81,7 @@ public class FreeForAll implements PairingStrategy {
                         // submitted no matter if it�s a similar pairing
 
                         while (PairingHelper.isThereASimilarPairings(
-                                partResult, tournament)) {
+                                partResult, tournament, result)) {
                             partResult.getOpponents().remove(
                                     randomList.get(randomNumber));
                             if (count + 1 == randomList.size()) {

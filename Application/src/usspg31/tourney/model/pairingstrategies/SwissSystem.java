@@ -111,7 +111,7 @@ public class SwissSystem implements PairingStrategy {
                                 .getNumberOfOpponents() - 1) {
 
                             while (PairingHelper.isThereASimilarPairings(
-                                    partResult, tournament)) {
+                                    partResult, tournament, result)) {
                                 partResult.getOpponents().remove(
                                         mergedScoreTable.get(
                                                 mergedScoreTable.size() - 1

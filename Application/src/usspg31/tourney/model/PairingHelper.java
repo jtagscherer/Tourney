@@ -132,12 +132,18 @@ public class PairingHelper {
      * @return if there this pairing already take place in the tournament
      */
     public static boolean isThereASimilarPairings(Pairing value,
-            Tournament tournament) {
+            Tournament tournament, ArrayList<Pairing> currentRound) {
         for (TournamentRound tRound : tournament.getRounds()) {
             for (Pairing tPairing : tRound.getPairings()) {
                 if (tPairing.getOpponents().containsAll(value.getOpponents())) {
                     return true;
                 }
+            }
+        }
+
+        for (Pairing tPairing : currentRound) {
+            if (tPairing.getOpponents().containsAll(value.getOpponents())) {
+                return true;
             }
         }
 

@@ -127,7 +127,8 @@ public class SpecialModifiedSwissSystem implements PairingStrategy {
 
                                     while (PairingHelper
                                             .isThereASimilarPairings(
-                                                    partResult, tournament)) {
+                                                    partResult, tournament,
+                                                    result)) {
                                         partResult.getOpponents().remove(
                                                 subScoreList.get(subScoreList
                                                         .size() - 1 - count));
@@ -177,7 +178,8 @@ public class SpecialModifiedSwissSystem implements PairingStrategy {
 
                                     while (PairingHelper
                                             .isThereASimilarPairings(
-                                                    partResult, tournament)) {
+                                                    partResult, tournament,
+                                                    result)) {
                                         partResult.getOpponents().remove(
                                                 subScoreList.get(count));
                                         if (count + 1 == subScoreList.size()) {
@@ -212,11 +214,11 @@ public class SpecialModifiedSwissSystem implements PairingStrategy {
                         }
 
                     }
-                    if (doublePairing) {
+                    // if (doublePairing) {
 
-                    } else {
-                        result.add(partResult);
-                    }
+                    // } else {
+                    result.add(partResult);
+                    // }
                 }
                 // put the remaining players in the next bracket or using the
                 // bye

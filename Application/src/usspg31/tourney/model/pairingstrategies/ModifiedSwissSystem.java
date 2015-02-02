@@ -116,7 +116,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                                     .getNumberOfOpponents() - 1) {
 
                                 while (PairingHelper.isThereASimilarPairings(
-                                        partResult, tournament)) {
+                                        partResult, tournament, result)) {
                                     partResult.getOpponents().remove(
                                             subScoreList.get(
                                                     subScoreList.size() - 1

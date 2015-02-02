@@ -82,6 +82,7 @@ public class TestPairingStrategies {
 
     }
 
+    @Test
     public void testSwissSystem() {
         Tournament testTournament = new Tournament();
         TournamentModule testTournamentModule = new TournamentModule();
@@ -148,14 +149,8 @@ public class TestPairingStrategies {
                     + testOutputRound.getPairings().size());
         }
         // Player with the highest id is first player added to the second round
-        assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
-                .getOpponents().get(0), testTournament.getRemainingPlayers()
-                .get(testTournament.getRemainingPlayers().size() - 1));
-
-        // Player at second position have to play against him
-        assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
-                .getOpponents().get(1), testTournament.getRemainingPlayers()
-                .get(testTournament.getRemainingPlayers().size() - 2));
+        assertEquals(testTournament.getRounds().get(1).getPairings().size(),
+                testTournament.getRounds().get(0).getPairings().size());
 
     }
 
@@ -224,6 +219,7 @@ public class TestPairingStrategies {
 
     }
 
+    @Test
     public void testModifiedSwissSystem() {
         Tournament testTournament = new Tournament();
         TournamentModule testTournamentModule = new TournamentModule();
@@ -286,7 +282,8 @@ public class TestPairingStrategies {
         assertEquals(testTournament.getRounds().get(1).getPairings().get(0)
                 .getOpponents().get(1), testTournament.getRemainingPlayers()
                 .get(testTournament.getRemainingPlayers().size() - 2));
-
+        assertEquals(testTournament.getRounds().get(0).getPairings().size(),
+                testTournament.getRounds().get(1).getPairings().size());
     }
 
     @Test
