@@ -35,6 +35,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
+import usspg31.tourney.controller.util.PlayerTournamentsToStringBinding;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.Event.UserFlag;
@@ -69,6 +70,7 @@ public class RegistrationPhaseController implements EventUser {
     private TableColumn<Player, String> tableColumnPlayerMailAddress;
     private TableColumn<Player, Boolean> tableColumnPlayerPayed;
     private TableColumn<Player, String> tableColumnPlayerStartNumber;
+    private TableColumn<Player, String> tableColumnTournaments;
 
     private ModalDialog<Object, Player> registrationDialog;
     private ModalDialog<String, Integer> distributionDialog;
@@ -138,9 +140,9 @@ public class RegistrationPhaseController implements EventUser {
         this.tableColumnPlayerNickName.prefWidthProperty().set(
                 this.tableRegisteredPlayers.widthProperty().get() * 0.2);
         this.tableColumnPlayerPayed.prefWidthProperty().set(
-                this.tableRegisteredPlayers.widthProperty().get() * 0.1);
+                this.tableRegisteredPlayers.widthProperty().get() * 0.15);
         this.tableColumnPlayerStartNumber.prefWidthProperty().set(
-                this.tableRegisteredPlayers.widthProperty().get() * 0.1);
+                this.tableRegisteredPlayers.widthProperty().get() * 0.15);
 
         /* Bind the button's availability to the list selection */
         this.buttonRemovePlayer.disableProperty().bind(
@@ -314,6 +316,16 @@ public class RegistrationPhaseController implements EventUser {
         this.tableRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerStartNumber);
 
+        this.tableColumnTournaments = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "preregistrationphase.player.tournaments"));
+        this.tableColumnTournaments
+                .setCellValueFactory(cellData -> new PlayerTournamentsToStringBinding(
+                        cellData.getValue(), this.loadedEvent.getTournaments()));
+        this.tableColumnTournaments.setEditable(false);
+        this.tableRegisteredPlayers.getColumns().add(
+                this.tableColumnTournaments);
+
         this.tableRegisteredPlayers.setEditable(true);
     }
 
@@ -433,7 +445,6 @@ public class RegistrationPhaseController implements EventUser {
                         }).show();
     }
 
-    // TODO: fix the dialogs
     @FXML
     private void onButtonRegisterPlayerClicked(ActionEvent event) {
         log.fine("Register Player Button clicked");

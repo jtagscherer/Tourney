@@ -20,6 +20,7 @@ import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
+import usspg31.tourney.controller.util.PlayerTournamentsToStringBinding;
 import usspg31.tourney.controller.util.SearchUtilities;
 import usspg31.tourney.model.Event;
 import usspg31.tourney.model.IdentificationManager;
@@ -43,6 +44,7 @@ public class PreRegistrationPhaseController implements EventUser {
     private TableColumn<Player, String> tableColumnPlayerLastName;
     private TableColumn<Player, String> tableColumnPlayerNickName;
     private TableColumn<Player, String> tableColumnPlayerMailAddress;
+    private TableColumn<Player, String> tableColumnTournaments;
 
     private Event loadedEvent;
 
@@ -89,6 +91,15 @@ public class PreRegistrationPhaseController implements EventUser {
                         .mailAdressProperty());
         this.tablePreRegisteredPlayers.getColumns().add(
                 this.tableColumnPlayerMailAddress);
+
+        this.tableColumnTournaments = new TableColumn<>(PreferencesManager
+                .getInstance().localizeString(
+                        "preregistrationphase.player.tournaments"));
+        this.tableColumnTournaments
+                .setCellValueFactory(cellData -> new PlayerTournamentsToStringBinding(
+                        cellData.getValue(), this.loadedEvent.getTournaments()));
+        this.tablePreRegisteredPlayers.getColumns().add(
+                this.tableColumnTournaments);
 
         this.tablePreRegisteredPlayers.setPlaceholder(new Text(
                 PreferencesManager.getInstance().localizeString(

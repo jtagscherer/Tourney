@@ -2,6 +2,7 @@ package usspg31.tourney.controller.controls;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -285,7 +286,9 @@ public class PairingView extends VBox implements TournamentUser {
             Change<? extends TournamentRound> change) {
         if (change.next()) {
             this.refreshBreadcrumbs();
-            this.setSelectedRound(this.loadedTournament.getRounds().size() - 1);
+            if (this.loadedTournament != null) {
+                this.setSelectedRound(this.loadedTournament.getRounds().size() - 1);
+            }
         }
     }
 
@@ -345,8 +348,6 @@ public class PairingView extends VBox implements TournamentUser {
     }
 
     private void addSingleEliminationNodes() {
-        // Pane container = new Pane();
-
         List<List<Pairing>> pairings = new ArrayList<>();
 
         List<TournamentRound> rounds = this.getAffectedTournamentRounds(
@@ -366,6 +367,17 @@ public class PairingView extends VBox implements TournamentUser {
                         new SimpleDoubleProperty(0),
                         new SimpleDoubleProperty(0)));
 
+        int i = 0;
+        for (Node n : container.getChildren()) {
+            if (n instanceof PairingNode) {
+                PairingNode pn = (PairingNode) n;
+                System.out.println("Pairing " + i++ + ": x" + pn.getLayoutX() + " y: " + pn.getLayoutY());
+                for (Player o : pn.getPairing().getOpponents()) {
+                    System.out.println("\t" + o.getFirstName());
+                }
+            }
+        }
+
         this.pairingContainer.getChildren().add(container);
     }
 
@@ -379,7 +391,9 @@ public class PairingView extends VBox implements TournamentUser {
         NumberExpression maxX = xMin;
         NumberExpression maxY = yMin;
 
+        int r = 0;
         for (List<Pairing> round : pairings) {
+            System.out.println("generating nodes for round " + r++);
             if (round.size() == 0) {
                 continue;
             }
@@ -440,10 +454,13 @@ public class PairingView extends VBox implements TournamentUser {
                 for (Pairing previousPairing : pairingsInPreviousRound) {
                     for (Player player : previousPairing.getOpponents()) {
                         Pairing found = null;
+                        pairingsearch:
                         for (Pairing p : unorderedPairings) {
-                            if (p.getOpponents().contains(player)) {
-                                found = p;
-                                break;
+                            for (Player opponent : p.getOpponents()) {
+                                if (opponent.getId().equals(player.getId())) {
+                                    found = p;
+                                    break pairingsearch;
+                                }
                             }
                         }
                         if (found != null) {
@@ -463,6 +480,16 @@ public class PairingView extends VBox implements TournamentUser {
         return sortedPairings;
     }
 
+    private boolean collectionContainsPlayer(Collection<Player> list, Player player) {
+        for (Player p : list) {
+            if (p.getId().equals(player.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void createConnections(List<PairingNode> previousPairings,
             List<PairingNode> nextPairings, List<Node> nodes) {
         Map<PairingNode, List<PairingNode>> precedingNodes = new HashMap<>();
@@ -477,7 +504,7 @@ public class PairingView extends VBox implements TournamentUser {
                         precedingNodes.put(next, predecessors);
                     }
                     Pairing nextPairing = next.getPairing();
-                    if (nextPairing.getOpponents().contains(prevPlayer)) {
+                    if (this.collectionContainsPlayer(nextPairing.getOpponents(), prevPlayer)) {
                         predecessors.add(prev);
                         this.createConnection(prev, prevPlayer, next, nodes);
                         break;
@@ -611,7 +638,7 @@ public class PairingView extends VBox implements TournamentUser {
             for (Pairing pairing : rounds.get(i).getPairings()) {
                 boolean isWinnerBracket = true;
                 for (Player player : pairing.getOpponents()) {
-                    if (previousLosers.contains(player)) {
+                    if (this.collectionContainsPlayer(previousLosers, player)) {
                         isWinnerBracket = false;
                     }
                 }
@@ -623,7 +650,7 @@ public class PairingView extends VBox implements TournamentUser {
                 previousLosers.addAll(PairingHelper.identifyLoser(pairing));
             }
             // remove all people that previously lost from the winner set
-            previousWinners.removeIf(player -> previousLosers.contains(player));
+            previousWinners.removeIf(player -> this.collectionContainsPlayer(previousLosers, player));
 
             winnerBracket.add(winnerPairings);
             loserBracket.add(loserPairings);
@@ -739,6 +766,10 @@ public class PairingView extends VBox implements TournamentUser {
     }
 
     private void addRoundBreadcrumbs() {
+        if (this.loadedTournament == null) {
+            return;
+        }
+
         int roundCount = this.loadedTournament.getRounds().size();
         for (int roundNumber = 0; roundNumber < roundCount; roundNumber++) {
             // Users don't like zero-based indices

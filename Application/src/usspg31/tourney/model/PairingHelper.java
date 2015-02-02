@@ -56,7 +56,7 @@ public class PairingHelper {
 
     /**
      * produce the scores for the remaining players in the tournament
-     * 
+     *
      * @param tournament
      *            source of the players and scores
      * @return the unsorted scores for the remaining players in the tournament
@@ -66,7 +66,7 @@ public class PairingHelper {
         ArrayList<PlayerScore> remainingPlayerScore = new ArrayList<>();
         for (Player player : tournament.getRemainingPlayers()) {
             for (PlayerScore chkScore : tournament.getScoreTable()) {
-                if (player.getId() == chkScore.getPlayer().getId()) {
+                if (player.getId().equals(chkScore.getPlayer().getId())) {
                     remainingPlayerScore.add(chkScore);
                 }
             }

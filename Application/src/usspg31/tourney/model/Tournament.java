@@ -63,7 +63,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get a list of all registered players in this tournament
-     * 
+     *
      * @return List of all registered players in this tournament
      */
     public ObservableList<Player> getRegisteredPlayers() {
@@ -72,7 +72,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get a list of all attending players in this tournament
-     * 
+     *
      * @return List of all attending players in this tournament
      */
     public ObservableList<Player> getAttendingPlayers() {
@@ -82,7 +82,7 @@ public class Tournament implements Cloneable {
     /**
      * Get a list of all players that have not been knocked out of this
      * tournament yet
-     * 
+     *
      * @return List of all remaining players in this tournament
      */
     public ObservableList<Player> getRemainingPlayers() {
@@ -91,7 +91,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get a list of all tournament rounds in this tournament
-     * 
+     *
      * @return List of all tournament rounds in this tournament
      */
     public ObservableList<TournamentRound> getRounds() {
@@ -100,7 +100,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the list of all player which received a bye in the tournament
-     * 
+     *
      * @return List of all player who received a bye
      */
     public ObservableList<Player> getReceivedByePlayers() {
@@ -109,7 +109,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the list of all player which were disqualified in the tournament
-     * 
+     *
      * @return List of all player who where disqualified
      */
     public ObservableList<Player> getDisqualifiedPlayers() {
@@ -118,7 +118,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the name of this tournament
-     * 
+     *
      * @return Current name of this tournament
      */
     public String getName() {
@@ -127,7 +127,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Set the name of this tournament
-     * 
+     *
      * @param value
      *            New name of this tournament
      */
@@ -137,7 +137,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the name property of this tournament
-     * 
+     *
      * @return Name property of this tournament
      */
     public StringProperty nameProperty() {
@@ -146,7 +146,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the execution state of this tournament
-     * 
+     *
      * @return Current execution state of this tournament
      */
     public ExecutionState getExecutionState() {
@@ -155,7 +155,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Set the execution state of this tournament
-     * 
+     *
      * @param executionState
      *            New execution state of this tournament
      */
@@ -165,7 +165,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the execution state property of this tournament
-     * 
+     *
      * @return execution state property of this tournament
      */
     public ObjectProperty<ExecutionState> executionStateProperty() {
@@ -174,7 +174,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get all player scores in this tournament
-     * 
+     *
      * @return A list of all player scores in this tournament
      */
     public ObservableList<PlayerScore> getScoreTable() {
@@ -183,7 +183,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get all tournament administrators in this event
-     * 
+     *
      * @return A list of all tournament administrators in this event
      */
     public ObservableList<TournamentAdministrator> getAdministrators() {
@@ -192,7 +192,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the ID of this event
-     * 
+     *
      * @return Current ID of this event
      */
     public String getId() {
@@ -201,7 +201,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Set the ID of this event
-     * 
+     *
      * @param id
      *            New ID of this event
      */
@@ -211,7 +211,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the tournament module that describes the rules of this tournament
-     * 
+     *
      * @return The current rule set of this tournament
      */
     public TournamentModule getRuleSet() {
@@ -220,7 +220,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Set the tournament module that describes the rules of this tournament
-     * 
+     *
      * @param value
      *            The new rule set of this tournament
      */
@@ -230,7 +230,7 @@ public class Tournament implements Cloneable {
 
     /**
      * Get the rule set property of this event
-     * 
+     *
      * @return Rule set property of this event
      */
     public ObjectProperty<TournamentModule> ruleSetProperty() {
@@ -255,7 +255,7 @@ public class Tournament implements Cloneable {
 
     /**
      * adds a score to the tournament score table
-     * 
+     *
      * @param score
      *            consist of the player and the score which gets added to the
      *            score table for the earlier mentioned player
@@ -264,8 +264,8 @@ public class Tournament implements Cloneable {
         if (this.rounds.size() != 1) {
 
             for (PlayerScore eachPlayerScore : this.scoreTable) {
-                if (eachPlayerScore.getPlayer().getId() == score.getPlayer()
-                        .getId()) {
+                if (eachPlayerScore.getPlayer().getId().equals(score.getPlayer()
+                        .getId())) {
                     for (int i = 0; i < eachPlayerScore.getScore().size(); i++) {
                         log.finer("The score "
                                 + score.getScore().get(i)
@@ -286,7 +286,7 @@ public class Tournament implements Cloneable {
 
     /**
      * calculates the table strength for each player
-     * 
+     *
      */
     public void calculateTableStrength() {
         for (Player player : this.attendingPlayers) {
@@ -296,14 +296,14 @@ public class Tournament implements Cloneable {
 
     public int calculateBestTableStrength(Player player) {
         ArrayList<PlayerScore> clonePlayerScore = new ArrayList<>();
-        clonePlayerScore.addAll(scoreTable);
+        clonePlayerScore.addAll(this.scoreTable);
         Collections.sort(clonePlayerScore);
         int strength = 0;
         int i = 0;
         while (i < this.getRounds().size()) {
 
-            if (player != clonePlayerScore.get(clonePlayerScore.size() - i - 1)
-                    .getPlayer()) {
+            if (!player.getId().equals(clonePlayerScore.get(clonePlayerScore.size() - i - 1)
+                    .getPlayer().getId())) {
                 strength += clonePlayerScore
                         .get(clonePlayerScore.size() - 1 - i).getScore().get(0);
                 i++;
@@ -336,7 +336,7 @@ public class Tournament implements Cloneable {
 
         for (Player opponent : opponentPlayers) {
             for (PlayerScore scoreTable : this.scoreTable) {
-                if (opponent == scoreTable.getPlayer()) {
+                if (opponent.getId().equals(scoreTable.getPlayer().getId())) {
                     strength += scoreTable.getScore().get(0);
                 }
             }
@@ -354,7 +354,7 @@ public class Tournament implements Cloneable {
         }
 
         for (PlayerScore scoreTableEntry : this.scoreTable) {
-            if (scoreTableEntry.getPlayer() == player) {
+            if (scoreTableEntry.getPlayer().getId().equals(player.getId())) {
                 this.scoreTable.set(insertPosition, tableStrengthScore);
             }
         }

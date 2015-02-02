@@ -168,12 +168,14 @@ public class TournamentExecutionPhaseController implements EventUser {
                                             .loadTournament(tournament);
                                     this.slideToPhase(1);
                                 } else {
-                                    MainWindow.getInstance()
-                                            .getEventPhaseViewController()
-                                            .unloadEvent();
-                                    MainWindow.getInstance().slideDown(
-                                            MainWindow.getInstance()
-                                                    .getMainMenu());
+                                    if (this.loadedEvent.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
+                                        MainWindow.getInstance()
+                                                .getEventPhaseViewController()
+                                                .unloadEvent();
+                                        MainWindow.getInstance().slideDown(
+                                                MainWindow.getInstance()
+                                                        .getMainMenu());
+                                    }
                                 }
                             }).show();
             break;
@@ -191,6 +193,7 @@ public class TournamentExecutionPhaseController implements EventUser {
                     .onResult(
                             (result, returnValue) -> {
                                 if (result == DialogResult.YES) {
+                                    this.executionController.unloadTournament();
                                     tournament.getRounds().clear();
                                     tournament.getScoreTable().clear();
                                     tournament.getAttendingPlayers().clear();
@@ -203,11 +206,14 @@ public class TournamentExecutionPhaseController implements EventUser {
                                             .saveEvent();
                                 }
 
-                                MainWindow.getInstance()
-                                        .getEventPhaseViewController()
-                                        .unloadEvent();
-                                MainWindow.getInstance().slideDown(
-                                        MainWindow.getInstance().getMainMenu());
+                                if (this.loadedEvent.getUserFlag() == UserFlag.TOURNAMENT_EXECUTION) {
+                                    MainWindow.getInstance()
+                                            .getEventPhaseViewController()
+                                            .unloadEvent();
+                                    MainWindow.getInstance().slideDown(
+                                            MainWindow.getInstance()
+                                                    .getMainMenu());
+                                }
                             }).show();
             break;
         }

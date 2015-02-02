@@ -2,6 +2,7 @@ package usspg31.tourney.controller.controls.eventphases.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -250,6 +251,15 @@ public class TournamentExecutionController implements TournamentUser {
             this.updateProjectorWindows();
         } else {
             this.buttonStartRound.setDisable(true);
+            this.buttonSwapPlayers.setDisable(true);
+            this.buttonDisqualifyPlayer.setDisable(true);
+            this.buttonAddTime.setDisable(true);
+            this.buttonSubtractTime.setDisable(true);
+            this.buttonPauseResumeTime.setDisable(true);
+            this.buttonResetTime.setDisable(true);
+            this.roundTimer.pause();
+            this.iconPanePauseResume.getStyleClass().remove("icon-pause");
+            this.iconPanePauseResume.getStyleClass().add("icon-play");
             this.loadedTournament.setExecutionState(ExecutionState.FINISHED);
             VictoryConfiguration configuration = new VictoryConfiguration();
             configuration.setWinningPlayer(this.loadedTournament.getRounds()
@@ -450,10 +460,11 @@ public class TournamentExecutionController implements TournamentUser {
                                         .getRounds()
                                         .get(this.loadedTournament.getRounds()
                                                 .size() - 2).getPairings()) {
-                                    if (pairing.getOpponents().contains(value)) {
+                                    if (this.collectionContainsPlayer(pairing.getOpponents(), value)) {
                                         for (PlayerScore score : pairing
                                                 .getScoreTable()) {
-                                            if (score.getPlayer() == value) {
+                                            if (score.getPlayer().getId()
+                                                    .equals(value.getId())) {
                                                 removedScore = score;
                                                 usedPairing = pairing;
                                                 pairing.getScoreTable().remove(
@@ -475,13 +486,23 @@ public class TournamentExecutionController implements TournamentUser {
                                 this.generateRound(false);
 
                                 usedPairing.getScoreTable().add(removedScore);
-                                disqualifiedInRound = true;
+                                this.disqualifiedInRound = true;
                                 this.buttonDisqualifyPlayer.setDisable(true);
                             }
 
                             this.pairingView.updateOverview();
                             this.updateProjectorWindows();
                         }).show();
+    }
+
+    private boolean collectionContainsPlayer(Collection<Player> list, Player player) {
+        for (Player p : list) {
+            if (p.getId().equals(player.getId())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @FXML
