@@ -60,6 +60,8 @@ public class UndoManager {
      */
     private Timeline autoBatchingCancelTimer;
 
+    private boolean sleeping = false;
+
     /**
      * Initializes a new UndoManager.
      */
@@ -76,9 +78,10 @@ public class UndoManager {
 
         this.autoBatchingProperties = new HashSet<>();
 
-        this.autoBatchingCancelTimer = new Timeline(
-                new KeyFrame(Duration.millis(1000), event -> {
-                    if (this.undoBatch != null && this.undoBatch instanceof AutoUndoBatch) {
+        this.autoBatchingCancelTimer = new Timeline(new KeyFrame(
+                Duration.millis(1000), event -> {
+                    if (this.undoBatch != null
+                            && this.undoBatch instanceof AutoUndoBatch) {
                         this.endUndoBatch();
                     }
                 }));
@@ -224,7 +227,8 @@ public class UndoManager {
      * @param property
      * @param isAutoBatching
      */
-    public <T> void registerUndoProperty(Property<T> property, boolean isAutoBatching) {
+    public <T> void registerUndoProperty(Property<T> property,
+            boolean isAutoBatching) {
         property.addListener(this::propertyChangeListener);
         if (isAutoBatching) {
             this.autoBatchingProperties.add(property);
@@ -256,13 +260,13 @@ public class UndoManager {
      * Registers a list to watch for changes. Adds a listener to the list that
      * automatically stores changes to the list in in the undo history. If
      * autoBatching is set to true, the UndoManager will automatically batch
-     * changes on the property to combine them to a single
-     * undo action.
+     * changes on the property to combine them to a single undo action.
      *
      * @param property
      * @param isAutoBatching
      */
-    public <T> void registerUndoProperty(ObservableList<T> list, boolean isAutoBatching) {
+    public <T> void registerUndoProperty(ObservableList<T> list,
+            boolean isAutoBatching) {
         list.addListener(this::listChangeListener);
         if (isAutoBatching) {
             this.autoBatchingProperties.add(list);
@@ -311,18 +315,21 @@ public class UndoManager {
             }
         } else {
             // is the property that was changed auto-undoable?
-            if (this.autoBatchingProperties.contains(undoAction.getObservable())) {
+            if (this.autoBatchingProperties
+                    .contains(undoAction.getObservable())) {
                 // create a new autoUndoBatch for the given observable
-                AutoUndoBatch autoUndo = new AutoUndoBatch(undoAction.getObservable());
+                AutoUndoBatch autoUndo = new AutoUndoBatch(
+                        undoAction.getObservable());
                 autoUndo.addUndoAction(undoAction);
                 this.undoBatch = autoUndo;
-                this.currentNode.setNext(new UndoNode(this.currentNode, autoUndo));
+                this.currentNode.setNext(new UndoNode(this.currentNode,
+                        autoUndo));
                 this.currentNode = this.currentNode.getNext();
                 this.autoBatchingCancelTimer.playFromStart();
             } else {
                 // we don't have an auto undo observable here
-                this.currentNode
-                        .setNext(new UndoNode(this.currentNode, undoAction));
+                this.currentNode.setNext(new UndoNode(this.currentNode,
+                        undoAction));
                 this.currentNode = this.currentNode.getNext();
             }
         }
@@ -344,7 +351,7 @@ public class UndoManager {
     @SuppressWarnings("unchecked")
     private <T> void propertyChangeListener(
             ObservableValue<? extends T> observable, T oldValue, T newValue) {
-        if (!this.isPerformingAction) {
+        if (!this.isPerformingAction && !this.sleeping) {
             this.addUndoAction(new PropertyUndoAction<T>(
                     (Property<T>) observable, oldValue, newValue));
         }
@@ -358,9 +365,13 @@ public class UndoManager {
      */
     @SuppressWarnings("unchecked")
     private <T> void listChangeListener(Change<? extends T> change) {
-        if (!this.isPerformingAction) {
+        if (!this.isPerformingAction && !this.sleeping) {
             this.addUndoAction(new ListUndoAction<>((Change<T>) change));
         }
+    }
+
+    public void setSleeping(boolean sleep) {
+        this.sleeping = sleep;
     }
 
     public String getNodeInformation() {
