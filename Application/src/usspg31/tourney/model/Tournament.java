@@ -336,7 +336,7 @@ public class Tournament implements Cloneable {
 
         for (Player opponent : opponentPlayers) {
             for (PlayerScore scoreTable : this.scoreTable) {
-                if (opponent.getId().equals(scoreTable.getPlayer())) {
+                if (opponent.getId().equals(scoreTable.getPlayer().getId())) {
                     strength += scoreTable.getScore().get(0);
                 }
             }
