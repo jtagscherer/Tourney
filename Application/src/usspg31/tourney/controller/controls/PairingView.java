@@ -285,7 +285,9 @@ public class PairingView extends VBox implements TournamentUser {
             Change<? extends TournamentRound> change) {
         if (change.next()) {
             this.refreshBreadcrumbs();
-            this.setSelectedRound(this.loadedTournament.getRounds().size() - 1);
+            if (this.loadedTournament != null) {
+                this.setSelectedRound(this.loadedTournament.getRounds().size() - 1);
+            }
         }
     }
 
@@ -739,6 +741,10 @@ public class PairingView extends VBox implements TournamentUser {
     }
 
     private void addRoundBreadcrumbs() {
+        if (this.loadedTournament == null) {
+            return;
+        }
+
         int roundCount = this.loadedTournament.getRounds().size();
         for (int roundNumber = 0; roundNumber < roundCount; roundNumber++) {
             // Users don't like zero-based indices
