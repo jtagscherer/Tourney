@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -233,14 +232,7 @@ public class PreferencesManager {
         if (standardModuleUrl == null) {
             return standardModules;
         } else {
-            File dir = null;
-            try {
-                dir = new File(standardModuleUrl.toURI());
-            } catch (URISyntaxException e) {
-                log.log(Level.SEVERE,
-                        "Could not load the folder of standard modules.", e);
-                e.printStackTrace();
-            }
+            File dir = new File(standardModuleUrl.getPath());
             for (File nextFile : dir.listFiles()) {
                 try {
                     TournamentModule standardModule = FileLoader
