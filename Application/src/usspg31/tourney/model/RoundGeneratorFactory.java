@@ -42,7 +42,7 @@ public class RoundGeneratorFactory {
             }
         }
 
-        if (PairingHelper.cutOffAfterRound(value.getRounds().size(), value)) {
+        if (PairingHelper.cutOffAfterRound(value.getRounds().size() - 1, value)) {
             ArrayList<PlayerScore> cloneScoreTable = new ArrayList<>();
             cloneScoreTable.addAll(value.getScoreTable());
             Collections.sort(cloneScoreTable);
