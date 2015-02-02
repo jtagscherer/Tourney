@@ -246,7 +246,10 @@ public class SpecialModifiedSwissSystem implements PairingStrategy {
                                         .get(0)
                                         .getScore()
                                         .add(byeScore.getPriority(),
-                                                byeScore.getByeValue());
+                                                byeScore.getByeValue(
+                                                        tournament,
+                                                        subScoreList.get(i)
+                                                                .getPlayer()));
                             }
 
                             result.add(partResult);

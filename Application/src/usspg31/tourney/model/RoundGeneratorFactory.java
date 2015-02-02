@@ -3,6 +3,10 @@ package usspg31.tourney.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import usspg31.tourney.model.Pairing.PairingFlag;
+import usspg31.tourney.model.pairingstrategies.DoubleElimination;
+import usspg31.tourney.model.pairingstrategies.SingleElimination;
+
 public class RoundGeneratorFactory {
 
     public TournamentRound generateRound(Tournament value) {
@@ -17,7 +21,25 @@ public class RoundGeneratorFactory {
             }
 
             value.calculateTableStrength();
-
+            if (PairingHelper.findPhase(value.getRounds().size() - 1, value)
+                    .getPairingMethod().getClass() == DoubleElimination.class) {
+                for (Pairing previousRoundPairing : value.getRounds()
+                        .get(value.getRounds().size() - 1).getPairings()) {
+                    if (previousRoundPairing.getFlag() == PairingFlag.LOSER_BRACKET) {
+                        value.getRemainingPlayers().removeAll(
+                                PairingHelper
+                                        .identifyLoser(previousRoundPairing));
+                    }
+                }
+            } else if (PairingHelper
+                    .findPhase(value.getRounds().size() - 1, value)
+                    .getPairingMethod().getClass() == SingleElimination.class) {
+                for (Pairing previousRoundPairing : value.getRounds()
+                        .get(value.getRounds().size() - 1).getPairings()) {
+                    value.getRemainingPlayers().removeAll(
+                            PairingHelper.identifyLoser(previousRoundPairing));
+                }
+            }
         }
 
         if (PairingHelper.cutOffAfterRound(value.getRounds().size(), value)) {

@@ -71,7 +71,9 @@ public class SwissSystem implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .add(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(),
+                                    byeScore.getByeValue(tournament,
+                                            randomList.get(i)));
                 }
 
                 result.add(partResult);
@@ -166,7 +168,9 @@ public class SwissSystem implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .add(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(),
+                                    byeScore.getByeValue(tournament,
+                                            mergedScoreTable.get(i).getPlayer()));
                 }
 
                 result.add(partResult);

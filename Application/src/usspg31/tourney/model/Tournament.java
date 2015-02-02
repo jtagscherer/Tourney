@@ -1,6 +1,7 @@
 package usspg31.tourney.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -280,6 +281,28 @@ public class Tournament implements Cloneable {
         for (Player player : this.attendingPlayers) {
             this.calculateSinglePlayerTableStrength(player);
         }
+    }
+
+    public int calculateBestTableStrength(Player player) {
+        ArrayList<PlayerScore> clonePlayerScore = new ArrayList<>();
+        clonePlayerScore.addAll(scoreTable);
+        Collections.sort(clonePlayerScore);
+        int strength = 0;
+        int i = 0;
+        while (i < this.getRounds().size()) {
+
+            if (player != clonePlayerScore.get(clonePlayerScore.size() - i - 1)
+                    .getPlayer()) {
+                strength += clonePlayerScore
+                        .get(clonePlayerScore.size() - 1 - i).getScore().get(0);
+                i++;
+            }
+
+            if (i == this.getRounds().size() - 1) {
+                break;
+            }
+        }
+        return strength;
     }
 
     private void calculateSinglePlayerTableStrength(Player player) {

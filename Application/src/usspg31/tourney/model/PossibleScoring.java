@@ -91,6 +91,13 @@ public class PossibleScoring implements Cloneable {
         return this.byeValue.get();
     }
 
+    public int getByeValue(Tournament tournament, Player player) {
+        if (this.scoreType == ScoringType.TABLE_STRENGTH) {
+            this.byeValue.set(tournament.calculateBestTableStrength(player));
+        }
+        return this.byeValue.get();
+    }
+
     /**
      * Set the bye value of this scoring
      * 

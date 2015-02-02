@@ -79,7 +79,9 @@ public class DoubleElimination implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .set(byeScore.getPriority(), byeScore.getByeValue());
+                            .set(byeScore.getPriority(),
+                                    byeScore.getByeValue(tournament,
+                                            randomList.get(i)));
                 }
 
                 result.add(partResult);
@@ -364,7 +366,9 @@ public class DoubleElimination implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .add(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(),
+                                    byeScore.getByeValue(tournament,
+                                            winnerBracket.get(i)));
                 }
 
                 result.add(partResult);
@@ -383,7 +387,9 @@ public class DoubleElimination implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .add(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(),
+                                    byeScore.getByeValue(tournament,
+                                            loserBracket.get(i)));
                 }
 
                 result.add(partResult);
@@ -404,7 +410,9 @@ public class DoubleElimination implements PairingStrategy {
                             .getScoreTable()
                             .get(0)
                             .getScore()
-                            .add(byeScore.getPriority(), byeScore.getByeValue());
+                            .add(byeScore.getPriority(),
+                                    byeScore.getByeValue(tournament,
+                                            winnerLoserBracket.get(i)));
                 }
 
                 result.add(partResult);

@@ -130,8 +130,13 @@ public class FreeForAll implements PairingStrategy {
                             tournament.getRuleSet().getPossibleScores().size()));
             for (PossibleScoring byeScore : tournament.getRuleSet()
                     .getPossibleScores()) {
-                partResult.getScoreTable().get(0).getScore()
-                        .add(byeScore.getPriority(), byeScore.getByeValue());
+                partResult
+                        .getScoreTable()
+                        .get(0)
+                        .getScore()
+                        .add(byeScore.getPriority(),
+                                byeScore.getByeValue(tournament,
+                                        randomList.get(i)));
             }
 
             result.add(partResult);
