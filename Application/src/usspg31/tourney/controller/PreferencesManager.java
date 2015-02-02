@@ -105,6 +105,7 @@ public class PreferencesManager {
     private static final String tournamentModuleFolder = PreferencesManager.preferencesFolder
             + "/tournament-modules/";
     private static final String standardTournamentModuleFolder = "/standard-tournament-modules/";
+    private static final String availableTournamentModulesFile = "available-tournament-modules";
 
     private static PreferencesManager instance;
 
@@ -226,18 +227,53 @@ public class PreferencesManager {
         ObservableList<TournamentModule> standardModules = FXCollections
                 .observableArrayList();
 
+        // get the path to the avaliableLanguagesFile
+        String moduleFile = standardTournamentModuleFolder
+                + availableTournamentModulesFile;
+        URL availableModulesFile = this.getClass().getResource(moduleFile);
+
+        if (availableModulesFile == null) {
+            throw new Error("AvailableTournamentModuleFile not found! ("
+                    + moduleFile + ")");
+        }
+
+        List<String> availableModules = new ArrayList<>();
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    availableModulesFile.openStream()));
+
+            String input = null;
+            while ((input = reader.readLine()) != null) {
+                availableModules.add(input);
+            }
+
+            if (availableModules.size() == 0) {
+                // must never happen, hence, throw an error
+                throw new Error(
+                        "AvailableTournamentModuleFile does not contain any "
+                                + "valid languages!");
+            }
+        } catch (IOException e) {
+            // must never happen, hence, throw an error
+            throw new Error(e);
+        }
+
         URL standardModuleUrl = this.getClass().getResource(
                 PreferencesManager.standardTournamentModuleFolder);
 
         if (standardModuleUrl == null) {
             return standardModules;
         } else {
-            File dir = new File(standardModuleUrl.getPath());
-            for (File nextFile : dir.listFiles()) {
+            for (String nextFile : availableModules) {
                 try {
+                    String path = this
+                            .getClass()
+                            .getResource(
+                                    standardTournamentModuleFolder + nextFile)
+                            .toExternalForm();
                     TournamentModule standardModule = FileLoader
-                            .loadTournamentModuleFromFile(nextFile
-                                    .getAbsolutePath());
+                            .loadTournamentModuleFromFile(path, true);
                     standardModules.add(standardModule);
                 } catch (SAXException | IOException e) {
                     log.log(Level.SEVERE,
