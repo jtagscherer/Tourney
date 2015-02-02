@@ -46,7 +46,8 @@ public class TournamentDocument {
         REGISTERED_PLAYERS,
         ATTENDANT_PLAYERS,
         REMAINING_PLAYERS,
-        RECEIVED_BYE_PLAYERS
+        RECEIVED_BYE_PLAYERS,
+        DISQUALIFIED_PLAYERS
     }
 
     /**
@@ -242,6 +243,10 @@ public class TournamentDocument {
             playersElement = this.document
                     .createElement("received-bye-players");
             break;
+        case DISQUALIFIED_PLAYERS:
+            playersElement = this.document
+                    .createElement("disqualified-players");
+            break;
         }
 
         this.rootElement.appendChild(playersElement);
@@ -294,6 +299,14 @@ public class TournamentDocument {
             playerNode = this.document.getElementsByTagName(
                     "received-bye-players").item(0);
             break;
+        case DISQUALIFIED_PLAYERS:
+            playerNode = this.document.getElementsByTagName(
+                    "disqualified-players").item(0);
+            break;
+        }
+
+        if (playerNode == null) {
+            return attachedPlayers;
         }
 
         /* Load all players and their ids from the file */

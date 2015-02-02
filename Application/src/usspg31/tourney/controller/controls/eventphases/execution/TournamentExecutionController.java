@@ -79,6 +79,7 @@ public class TournamentExecutionController implements TournamentUser {
     private TournamentExecutionPhaseController superController;
     private boolean tournamentFinished = false;
     private boolean displayVictoryMessage = false;
+    private boolean disqualifiedInRound = false;
 
     private ArrayList<TournamentExecutionProjectionController> projectorWindowControllers;
     private OverviewMode currentOverviewMode;
@@ -149,7 +150,9 @@ public class TournamentExecutionController implements TournamentUser {
                             this.buttonSwapPlayers.setDisable(n.intValue() < this.loadedTournament
                                     .getRounds().size() - 1);
                             this.buttonDisqualifyPlayer.setDisable(n.intValue() < this.loadedTournament
-                                    .getRounds().size() - 1);
+                                    .getRounds().size() - 1
+                                    || n.intValue() == 0
+                                    || this.disqualifiedInRound);
                         });
 
         this.pairingView.setOnNodeDoubleClicked(() -> {
@@ -162,7 +165,7 @@ public class TournamentExecutionController implements TournamentUser {
                 this.pairingView.selectedPairingProperty().isNull());
 
         if (tournament.getRounds().size() == 0) {
-            this.generateRound();
+            this.generateRound(false);
             if (this.tournamentFinished) {
                 this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                         "icon-finish", "half");
@@ -242,7 +245,7 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonStartRoundClicked(ActionEvent event) {
         log.finer("Start Round Button was clicked");
         if (!this.displayVictoryMessage) {
-            this.generateRound();
+            this.generateRound(true);
             this.checkForTournamentFinish();
             this.updateProjectorWindows();
         } else {
@@ -260,14 +263,16 @@ public class TournamentExecutionController implements TournamentUser {
         }
     }
 
-    private void generateRound() {
+    private void generateRound(boolean newRound) {
         log.info("Generating next round");
+
+        this.disqualifiedInRound = false;
 
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
 
-        if (this.tournamentFinished) {
+        if (this.tournamentFinished && newRound) {
             this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                     "icon-finish", "half");
             this.buttonStartRound.setDisable(false);
@@ -435,14 +440,48 @@ public class TournamentExecutionController implements TournamentUser {
         log.info("Disqualify Player Button clicked");
         this.disqualificationDialog
                 .properties(this.loadedTournament.getRemainingPlayers())
-                .onResult((result, value) -> {
-                    if (result == DialogResult.OK) {
-                        // TODO: Disqualify the player
-                    }
+                .onResult(
+                        (result, value) -> {
+                            if (result == DialogResult.OK && value != null) {
+                                value.setDisqualified(true);
+                                PlayerScore removedScore = null;
+                                Pairing usedPairing = null;
+                                for (Pairing pairing : this.loadedTournament
+                                        .getRounds()
+                                        .get(this.loadedTournament.getRounds()
+                                                .size() - 2).getPairings()) {
+                                    if (pairing.getOpponents().contains(value)) {
+                                        for (PlayerScore score : pairing
+                                                .getScoreTable()) {
+                                            if (score.getPlayer() == value) {
+                                                removedScore = score;
+                                                usedPairing = pairing;
+                                                pairing.getScoreTable().remove(
+                                                        score);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                this.loadedTournament.getDisqualifiedPlayers()
+                                        .add(value);
+                                this.loadedTournament.getRemainingPlayers()
+                                        .remove(value);
 
-                    this.pairingView.updateOverview();
-                    this.updateProjectorWindows();
-                }).show();
+                                this.loadedTournament.getRounds().remove(
+                                        this.loadedTournament.getRounds()
+                                                .size() - 1);
+                                this.generateRound(false);
+
+                                usedPairing.getScoreTable().add(removedScore);
+                                disqualifiedInRound = true;
+                                this.buttonDisqualifyPlayer.setDisable(true);
+                            }
+
+                            this.pairingView.updateOverview();
+                            this.updateProjectorWindows();
+                        }).show();
     }
 
     @FXML
