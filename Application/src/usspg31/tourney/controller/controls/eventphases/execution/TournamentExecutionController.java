@@ -365,13 +365,13 @@ public class TournamentExecutionController implements TournamentUser {
                                     PlayerScore selectedScore = this.pairingView
                                             .getSelectedPairing()
                                             .getScoreTable().get(i);
+                                    selectedScore.getScore().clear();
                                     for (int j = 0; j < score.getScore().size(); j++) {
                                         Integer newScore = score.getScore()
                                                 .get(j);
                                         if (newScore == null) {
                                             newScore = 0;
                                         }
-                                        selectedScore.getScore().clear();
                                         selectedScore.getScore().add(newScore);
                                     }
                                 }
