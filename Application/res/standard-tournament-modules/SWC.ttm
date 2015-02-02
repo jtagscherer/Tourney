@@ -30,7 +30,7 @@
         <game-phase>
             <phase-number>0</phase-number>
             <number-of-rounds>5</number-of-rounds>
-            <pairing-strategy>usspg31.tourney.model.pairingstrategies.ModifiedSwissSystem</pairing-strategy>
+            <pairing-strategy>usspg31.tourney.model.pairingstrategies.SpecialModifiedSwissSystem</pairing-strategy>
             <opponents-in-pairing>2</opponents-in-pairing>
             <cutoff-number>0</cutoff-number>
             <round-duration>PT1H10M</round-duration>
