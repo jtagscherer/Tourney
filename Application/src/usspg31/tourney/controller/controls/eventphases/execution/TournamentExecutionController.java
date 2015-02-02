@@ -24,6 +24,7 @@ import usspg31.tourney.controller.controls.eventphases.TournamentExecutionPhaseC
 import usspg31.tourney.controller.dialogs.PairingScoreDialog;
 import usspg31.tourney.controller.dialogs.PairingScoreDialog.PairingEntry;
 import usspg31.tourney.controller.dialogs.PairingSwapDialog;
+import usspg31.tourney.controller.dialogs.PlayerSelectionDialog;
 import usspg31.tourney.controller.dialogs.VictoryConfiguration;
 import usspg31.tourney.controller.dialogs.VictoryDialog;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
@@ -32,6 +33,7 @@ import usspg31.tourney.controller.layout.IconPane;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
 import usspg31.tourney.model.PairingHelper;
+import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
@@ -50,6 +52,7 @@ public class TournamentExecutionController implements TournamentUser {
     @FXML private Button buttonStartRound;
     @FXML private Button buttonEnterResult;
     @FXML private Button buttonSwapPlayers;
+    @FXML private Button buttonDisqualifyPlayer;
     @FXML private Button buttonOpenProjectorWindow;
 
     @FXML private Label labelTime;
@@ -73,6 +76,7 @@ public class TournamentExecutionController implements TournamentUser {
     private final ModalDialog<PairingEntry, Pairing> pairingScoreDialog;
     private final ModalDialog<VictoryConfiguration, Object> victoryDialog;
     private final ModalDialog<ObservableList<Pairing>, ObservableList<Pairing>> swapDialog;
+    private final ModalDialog<ObservableList<Player>, Player> disqualificationDialog;
 
     private TournamentExecutionPhaseController superController;
     private boolean tournamentFinished = false;
@@ -85,6 +89,7 @@ public class TournamentExecutionController implements TournamentUser {
         this.pairingScoreDialog = new PairingScoreDialog().modalDialog();
         this.victoryDialog = new VictoryDialog().modalDialog();
         this.swapDialog = new PairingSwapDialog().modalDialog();
+        this.disqualificationDialog = new PlayerSelectionDialog().modalDialog();
         this.projectorWindowControllers = new ArrayList<TournamentExecutionProjectionController>();
         this.currentOverviewMode = OverviewMode.PAIRING_OVERVIEW;
     }
@@ -145,6 +150,8 @@ public class TournamentExecutionController implements TournamentUser {
                             }
 
                             this.buttonSwapPlayers.setDisable(n.intValue() < this.loadedTournament
+                                    .getRounds().size() - 1);
+                            this.buttonDisqualifyPlayer.setDisable(n.intValue() < this.loadedTournament
                                     .getRounds().size() - 1);
                         });
 
@@ -387,8 +394,6 @@ public class TournamentExecutionController implements TournamentUser {
     }
 
     private void checkRoundFinished() {
-        // FIXME: this method does return true even though we didn't fill out
-        // all pairings
         // check, if all pairings have a score
         int totalRoundCount = 0;
         for (GamePhase phase : this.loadedTournament.getRuleSet()
@@ -449,6 +454,21 @@ public class TournamentExecutionController implements TournamentUser {
                             this.pairingView.updateOverview();
                             this.updateProjectorWindows();
                         }).show();
+    }
+
+    @FXML
+    private void onButtonDisqualifyPlayerClicked(ActionEvent e) {
+        log.info("Disqualify Player Button clicked");
+        this.disqualificationDialog
+                .properties(this.loadedTournament.getRemainingPlayers())
+                .onResult((result, value) -> {
+                    if (result == DialogResult.OK) {
+                        // TODO: Disqualify the player
+                    }
+
+                    this.pairingView.updateOverview();
+                    this.updateProjectorWindows();
+                }).show();
     }
 
     @FXML

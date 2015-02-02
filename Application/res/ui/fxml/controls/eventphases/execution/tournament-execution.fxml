@@ -107,6 +107,14 @@
 								<Tooltip text="%tournamentexecutionphase.tooltips.swapplayers" />
 							</tooltip>
 						</Button>
+						<Button fx:id="buttonDisqualifyPlayer" disable="true" onAction="#onButtonDisqualifyPlayerClicked" styleClass="table-edit-button">
+							<graphic>
+								<IconPane styleClass="icon-disqualify, half" />
+							</graphic>
+							<tooltip>
+								<Tooltip text="%tournamentexecutionphase.tooltips.disqualifyplayer" />
+							</tooltip>
+						</Button>
 					</VBox>
 					<VBox spacing="5.0" styleClass="table-edit-button-container" alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
 						<Button fx:id="buttonOpenProjectorWindow" onAction="#onButtonOpenProjectorWindowClicked" styleClass="table-edit-button">
