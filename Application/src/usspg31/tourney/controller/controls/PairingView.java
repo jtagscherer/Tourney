@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberExpression;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -36,7 +37,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurve;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import usspg31.tourney.controller.PreferencesManager;
 import usspg31.tourney.model.GamePhase;
@@ -481,38 +482,67 @@ public class PairingView extends VBox implements TournamentUser {
 
     private void createConnection(PairingNode previousNode,
             Player previousPlayer, PairingNode nextNode, List<Node> nodes) {
-        CubicCurve curve = new CubicCurve();
-        curve.setFill(Color.TRANSPARENT);
-        curve.setStroke(Color.BLACK);
-        curve.setStartX(0);
-        curve.setStartY(0);
-        curve.controlX1Property().bind(curve.endXProperty());
-        curve.setControlY1(0);
-        curve.setControlX2(0);
-        curve.controlY2Property().bind(curve.endYProperty());
-        curve.layoutXProperty().bind(
-                previousNode.layoutXProperty()
-                        .add(previousNode.widthProperty()));
-        curve.layoutYProperty()
-                .bind(previousNode.layoutYProperty().add(
-                        previousNode
-                                .heightProperty()
-                                .multiply(
-                                        previousNode.getPairing()
-                                                .getOpponents()
-                                                .indexOf(previousPlayer)
-                                                / previousNode.getPairing()
-                                                        .getOpponents().size())
-                                .divide(2d)
-                                .add(previousNode.heightProperty().divide(2d))));
-        curve.endXProperty().bind(
-                nextNode.layoutXProperty().subtract(curve.layoutXProperty()));
-        curve.endYProperty().bind(
-                nextNode.layoutYProperty()
-                        .add(nextNode.heightProperty().divide(2d))
-                        .subtract(curve.layoutYProperty()));
 
-        nodes.add(curve);
+        Line horizontal1 = new Line();
+        horizontal1.setFill(Color.TRANSPARENT);
+        horizontal1.setStroke(Color.BLACK);
+        horizontal1.setStrokeWidth(2);
+        Line vertical = new Line();
+        vertical.setFill(Color.TRANSPARENT);
+        vertical.setStroke(Color.BLACK);
+        vertical.setStrokeWidth(2);
+        Line horizontal2 = new Line();
+        horizontal2.setFill(Color.TRANSPARENT);
+        horizontal2.setStroke(Color.BLACK);
+        horizontal2.setStrokeWidth(2);
+
+        NumberExpression left = new DoubleBinding() {
+            { super.bind(previousNode.layoutXProperty(), previousNode.widthProperty()); }
+            @Override
+            protected double computeValue() {
+                return previousNode.getLayoutX() + previousNode.getWidth();
+            }
+        };
+        NumberExpression top = new DoubleBinding() {
+            { super.bind(previousNode.layoutYProperty(), previousNode.heightProperty()); }
+            @Override
+            protected double computeValue() {
+                return Math.floor(previousNode.getLayoutY() + previousNode.getHeight() / 2d);
+            }
+        };
+        NumberExpression bottom = new DoubleBinding() {
+            { super.bind(nextNode.layoutYProperty(), nextNode.heightProperty()); }
+            @Override
+            protected double computeValue() {
+                return Math.floor(nextNode.getLayoutY() + nextNode.getHeight() / 2d);
+            }
+        };
+        NumberExpression center = new DoubleBinding() {
+            { super.bind(nextNode.layoutXProperty()); }
+            @Override
+            protected double computeValue() {
+                return Math.floor(nextNode.getLayoutX() - 25);
+            }
+        };
+
+        horizontal1.startXProperty().bind(left);
+        horizontal1.endXProperty().bind(center);
+        horizontal1.startYProperty().bind(top);
+        horizontal1.endYProperty().bind(top);
+
+        vertical.startXProperty().bind(center);
+        vertical.endXProperty().bind(center);
+        vertical.startYProperty().bind(top);
+        vertical.endYProperty().bind(bottom);
+
+        horizontal2.startXProperty().bind(center);
+        horizontal2.endXProperty().bind(nextNode.layoutXProperty());
+        horizontal2.startYProperty().bind(bottom);
+        horizontal2.endYProperty().bind(bottom);
+
+        nodes.add(horizontal1);
+        nodes.add(vertical);
+        nodes.add(horizontal2);
     }
 
     private void addDoubleEliminationNodes() {
