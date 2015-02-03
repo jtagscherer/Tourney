@@ -19,8 +19,8 @@ public class RoundGeneratorFactory {
                     value.addAScore(score);
                 }
             }
+            // value.calculateTableStrength();
 
-            value.calculateTableStrength();
             if (PairingHelper.findPhase(value.getRounds().size() - 1, value)
                     .getPairingMethod().getClass() == DoubleElimination.class) {
                 for (Pairing previousRoundPairing : value.getRounds()
@@ -40,6 +40,7 @@ public class RoundGeneratorFactory {
                             PairingHelper.identifyLoser(previousRoundPairing));
                 }
             }
+
         }
 
         if (PairingHelper.cutOffAfterRound(value.getRounds().size() - 1, value)) {
