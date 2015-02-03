@@ -615,6 +615,26 @@ public class PDFDocument {
                             }
                         }
 
+                        boolean disqualified = false;
+                        for (Player player : tournament
+                                .getDisqualifiedPlayers()) {
+                            if (player.getId().equals(opponent.getId())) {
+                                disqualified = true;
+                                break;
+                            }
+                        }
+                        if (disqualified) {
+                            opponentParagraph
+                                    .add(new Chunk(
+                                            " ("
+                                                    + PreferencesManager
+                                                            .getInstance()
+                                                            .localizeString(
+                                                                    "pdfoutput.tournament.history.disqualified")
+                                                    + ")",
+                                            PDFExporter.RED_TEXT_FONT));
+                        }
+
                         ListItem opponentListItem = new ListItem(
                                 opponentParagraph);
                         opponentListItem.setFont(PDFExporter.SMALL_BOLD);

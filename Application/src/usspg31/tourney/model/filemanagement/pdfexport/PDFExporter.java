@@ -32,6 +32,8 @@ public class PDFExporter {
             Font.BOLD);
     public static final Font TEXT_FONT = new Font(Font.HELVETICA, 12,
             Font.NORMAL);
+    public static final Font RED_TEXT_FONT = new Font(Font.HELVETICA, 12,
+            Font.NORMAL, Color.RED);
     public static final Font SMALL_TEXT_FONT = new Font(Font.HELVETICA, 10,
             Font.NORMAL);
     public static final Font ITALIC_FONT = new Font(Font.HELVETICA, 12,
@@ -52,8 +54,8 @@ public class PDFExporter {
      *             If the document could not be written
      */
     public static void exportEventAsPdf(Event event, String filePath,
-            PdfOutputConfiguration configuration)
-            throws FileNotFoundException, DocumentException {
+            PdfOutputConfiguration configuration) throws FileNotFoundException,
+            DocumentException {
         PDFDocument document = new PDFDocument(event);
         PdfWriter writer = PdfWriter.getInstance(document.getDocument(),
                 new FileOutputStream(filePath));
