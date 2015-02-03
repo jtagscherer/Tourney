@@ -133,6 +133,8 @@ public class TournamentExecutionPhaseController implements EventUser {
 
     @Override
     public void unloadEvent() {
+        this.selectionController.unloadEvent();
+        this.executionController.unloadTournament();
         this.loadedEvent = null;
     }
 

@@ -365,6 +365,7 @@ public class EventPhaseViewController implements EventUser {
         this.eventSetupPhaseController.unloadEvent();
         this.preRegistrationPhaseController.unloadEvent();
         this.registrationPhaseController.unloadEvent();
+        this.tournamentExecutionPhaseController.unloadEvent();
 
         // unregister undo properties
         UndoManager undo = MainWindow.getInstance()
