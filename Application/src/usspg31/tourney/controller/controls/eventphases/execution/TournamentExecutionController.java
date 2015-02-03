@@ -156,7 +156,7 @@ public class TournamentExecutionController implements TournamentUser {
                         });
 
         this.buttonDisqualifyPlayer.disableProperty().bind(
-                Bindings.size(tournament.getRemainingPlayers()).lessThan(3));
+                Bindings.size(tournament.getRemainingPlayers()).lessThan(2));
 
         this.pairingView.setOnNodeDoubleClicked(() -> {
             this.onButtonEnterResultClicked(null);
@@ -290,7 +290,9 @@ public class TournamentExecutionController implements TournamentUser {
 
             this.buttonAddTime.setDisable(true);
             this.buttonCancelExecution.setDisable(true);
+            this.buttonDisqualifyPlayer.disableProperty().unbind();
             this.buttonDisqualifyPlayer.setDisable(true);
+            this.buttonEnterResult.disableProperty().unbind();
             this.buttonEnterResult.setDisable(true);
             this.buttonPauseResumeTime.setDisable(true);
             this.buttonResetTime.setDisable(true);
