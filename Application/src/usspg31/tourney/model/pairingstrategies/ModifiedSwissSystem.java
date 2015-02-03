@@ -84,7 +84,9 @@ public class ModifiedSwissSystem implements PairingStrategy {
             subList = new ArrayList<ArrayList<PlayerScore>>();
             tmp = PairingHelper.mergeScoreRemainingPlayer(tournament);
             Collections.sort(tmp);
+            ArrayList<PlayerScore> removeList;
             while (tmp.size() > 0) {
+                removeList = new ArrayList<>();
                 subTmp = new ArrayList<PlayerScore>();
                 subTmp.add(tmp.get(tmp.size() - 1));
                 tmp.remove(tmp.size() - 1);
@@ -93,12 +95,14 @@ public class ModifiedSwissSystem implements PairingStrategy {
                     if (test.getScore().get(0) == subTmp.get(0).getScore()
                             .get(0)) {
                         subTmp.add(test);
-                        tmp.remove(test);
+                        removeList.add(test);
                     } else {
                         break;
                     }
 
                 }
+
+                tmp.removeAll(removeList);
                 subList.add(subTmp);
 
             }
@@ -109,7 +113,6 @@ public class ModifiedSwissSystem implements PairingStrategy {
                         tournament.getRounds().size(), tournament)
                         .getNumberOfOpponents()) {
 
-                    boolean doublePairing = false;
                     partResult = new Pairing();
                     partResult.setFlag(Pairing.PairingFlag.IGNORE);
 
@@ -118,11 +121,49 @@ public class ModifiedSwissSystem implements PairingStrategy {
                             .getNumberOfOpponents(); i++) {
                         count = 0;
 
-                        if (i == 0) {
-                            partResult.getOpponents().add(
-                                    subScoreList.get(subScoreList.size() - 1)
-                                            .getPlayer());
+                        partResult.getOpponents().add(
+                                subScoreList.get(subScoreList.size() - 1)
+                                        .getPlayer());
+                        if (i == PairingHelper.findPhase(
+                                tournament.getRounds().size(), tournament)
+                                .getNumberOfOpponents() - 1) {
 
+                            while (PairingHelper.isThereASimilarPairings(
+                                    partResult, tournament, result)) {
+                                partResult.getOpponents().remove(
+                                        subScoreList
+                                                .get(subScoreList.size() - 1
+                                                        - count).getPlayer());
+                                if (count == subScoreList.size()) {
+                                    count = 0;
+                                    partResult.getOpponents().add(
+                                            subScoreList.get(
+                                                    subScoreList.size() - 1
+                                                            - count)
+                                                    .getPlayer());
+                                    break;
+                                } else {
+                                    count++;
+                                    partResult.getOpponents().add(
+                                            subScoreList.get(
+                                                    subScoreList.size() - 1
+                                                            - count)
+                                                    .getPlayer());
+                                }
+
+                            }
+                            partResult
+                                    .getScoreTable()
+                                    .add(PairingHelper.generateEmptyScore(
+                                            subScoreList.get(
+                                                    subScoreList.size() - 1
+                                                            - count)
+                                                    .getPlayer(), tournament
+                                                    .getRuleSet()
+                                                    .getPossibleScores().size()));
+                            subScoreList
+                                    .remove(subScoreList.size() - 1 - count);
+                        } else {
                             partResult
                                     .getScoreTable()
                                     .add(PairingHelper.generateEmptyScore(
@@ -132,53 +173,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                                                     .getRuleSet()
                                                     .getPossibleScores().size()));
                             subScoreList.remove(subScoreList.size() - 1);
-                        } else {
-                            partResult.getOpponents().add(
-                                    subScoreList.get(subScoreList.size() - i)
-                                            .getPlayer());
-                            if (i == PairingHelper.findPhase(
-                                    tournament.getRounds().size(), tournament)
-                                    .getNumberOfOpponents() - 1) {
-
-                                while (PairingHelper.isThereASimilarPairings(
-                                        partResult, tournament, result)) {
-                                    partResult.getOpponents().remove(
-                                            subScoreList.get(
-                                                    subScoreList.size() - 1
-                                                            - count)
-                                                    .getPlayer());
-                                    if (count + 1 == subScoreList.size()) {
-                                        count = 0;
-                                        partResult.getOpponents().add(
-                                                subScoreList.get(
-                                                        subScoreList.size() - 1
-                                                                - count)
-                                                        .getPlayer());
-                                        doublePairing = true;
-                                        break;
-                                    } else {
-                                        count++;
-                                    }
-                                    partResult.getOpponents().add(
-                                            subScoreList.get(
-                                                    subScoreList.size() - 1
-                                                            - count)
-                                                    .getPlayer());
-                                }
-                                partResult.getScoreTable().add(
-                                        PairingHelper.generateEmptyScore(
-                                                subScoreList
-                                                        .get(subScoreList
-                                                                .size() - 1)
-                                                        .getPlayer(),
-                                                tournament.getRuleSet()
-                                                        .getPossibleScores()
-                                                        .size()));
-                                subScoreList.remove(subScoreList.size() - 1
-                                        - count);
-                            }
                         }
-
                     }
 
                     result.add(partResult);
@@ -186,8 +181,12 @@ public class ModifiedSwissSystem implements PairingStrategy {
                 }
                 // put the remaining players in the next bracket or using the
                 // bye
+                log.info("subscorelist size: " + subScoreList.size());
                 if (subScoreList.size() > 0) {
-                    if (subList.indexOf(subScoreList) == subList.size() - 1) {
+                    log.info("There are remaining player after the point bracket");
+
+                    if (subList.indexOf(subScoreList) + 1 == subList.size()) {
+                        log.info("Generating byes");
                         for (int i = 0; i < subScoreList.size(); i++) {
                             partResult = new Pairing();
                             partResult.setFlag(PairingFlag.IGNORE);
@@ -219,6 +218,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                             result.add(partResult);
                         }
                     } else {
+                        log.info("Adding the remaing players to the next stage");
                         subList.get(subList.indexOf(subScoreList) + 1).addAll(
                                 subScoreList);
                         Collections.sort(subList.get(subList
@@ -226,8 +226,8 @@ public class ModifiedSwissSystem implements PairingStrategy {
 
                     }
                 }
-
             }
+
         }
         return result;
     }

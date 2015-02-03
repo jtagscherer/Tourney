@@ -63,10 +63,14 @@ public class PairingHelper {
      */
     public static ArrayList<PlayerScore> mergeScoreRemainingPlayer(
             Tournament tournament) {
+        for (Player player : tournament.getRemainingPlayers()) {
+            log.info("" + player.getId());
+        }
         ArrayList<PlayerScore> remainingPlayerScore = new ArrayList<>();
         for (Player player : tournament.getRemainingPlayers()) {
             for (PlayerScore chkScore : tournament.getScoreTable()) {
                 if (player.getId().equals(chkScore.getPlayer().getId())) {
+                    log.info("Added " + player.getId() + " Player");
                     remainingPlayerScore.add(chkScore);
                 }
             }
