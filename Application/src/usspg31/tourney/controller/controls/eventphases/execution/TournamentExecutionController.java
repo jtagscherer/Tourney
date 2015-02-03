@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -150,11 +151,13 @@ public class TournamentExecutionController implements TournamentUser {
 
                             this.buttonSwapPlayers.setDisable(n.intValue() < this.loadedTournament
                                     .getRounds().size() - 1);
-                            this.buttonDisqualifyPlayer.setDisable(n.intValue() < this.loadedTournament
-                                    .getRounds().size() - 1
-                                    || n.intValue() == 0
-                                    || this.disqualifiedInRound);
+//                            this.buttonDisqualifyPlayer.setDisable(n.intValue() < this.loadedTournament
+//                                    .getRounds().size() - 1
+//                                    || n.intValue() == 0
+//                                    || this.disqualifiedInRound);
                         });
+
+        this.buttonDisqualifyPlayer.disableProperty().bind(Bindings.size(tournament.getRemainingPlayers()).lessThan(2));
 
         this.pairingView.setOnNodeDoubleClicked(() -> {
             this.onButtonEnterResultClicked(null);
@@ -241,10 +244,14 @@ public class TournamentExecutionController implements TournamentUser {
 
         this.pairingView.unloadTournament();
 
+        this.buttonDisqualifyPlayer.disableProperty().unbind();
+
         // unregister undo properties
         UndoManager undo = MainWindow.getInstance()
                 .getEventPhaseViewController().getUndoManager();
         undo.unregisterUndoProperty(this.loadedTournament.getRounds());
+
+        this.tournamentFinished = false;
     }
 
     @FXML
@@ -257,7 +264,6 @@ public class TournamentExecutionController implements TournamentUser {
         } else {
             this.buttonStartRound.setDisable(true);
             this.buttonSwapPlayers.setDisable(true);
-            this.buttonDisqualifyPlayer.setDisable(true);
             this.buttonAddTime.setDisable(true);
             this.buttonSubtractTime.setDisable(true);
             this.buttonPauseResumeTime.setDisable(true);
@@ -454,50 +460,80 @@ public class TournamentExecutionController implements TournamentUser {
     private void onButtonDisqualifyPlayerClicked(ActionEvent e) {
         log.info("Disqualify Player Button clicked");
         this.disqualificationDialog
-                .properties(this.loadedTournament.getRemainingPlayers())
-                .onResult(
-                        (result, value) -> {
-                            if (result == DialogResult.OK && value != null) {
-                                value.setDisqualified(true);
-                                PlayerScore removedScore = null;
-                                Pairing usedPairing = null;
-                                for (Pairing pairing : this.loadedTournament
-                                        .getRounds()
-                                        .get(this.loadedTournament.getRounds()
-                                                .size() - 2).getPairings()) {
-                                    if (this.collectionContainsPlayer(pairing.getOpponents(), value)) {
-                                        for (PlayerScore score : pairing
-                                                .getScoreTable()) {
-                                            if (score.getPlayer().getId()
-                                                    .equals(value.getId())) {
-                                                removedScore = score;
-                                                usedPairing = pairing;
-                                                pairing.getScoreTable().remove(
-                                                        score);
-                                                break;
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                                this.loadedTournament.getDisqualifiedPlayers()
-                                        .add(value);
-                                this.loadedTournament.getRemainingPlayers()
-                                        .remove(value);
+        .properties(this.loadedTournament.getRemainingPlayers())
+        .onResult((result, value) -> {
+                if (result == DialogResult.OK && value != null) {
+                    this.disqualifyPlayer(value);
+                }
 
-                                this.loadedTournament.getRounds().remove(
-                                        this.loadedTournament.getRounds()
-                                                .size() - 1);
-                                this.generateRound(false);
+                this.pairingView.updateOverview();
+                this.updateProjectorWindows();
+        }).show();
+    }
 
-                                usedPairing.getScoreTable().add(removedScore);
-                                this.disqualifiedInRound = true;
-                                this.buttonDisqualifyPlayer.setDisable(true);
-                            }
+    private void disqualifyPlayer(Player player) {
+        player.setDisqualified(true);
+        this.loadedTournament.getDisqualifiedPlayers().add(player);
 
-                            this.pairingView.updateOverview();
-                            this.updateProjectorWindows();
-                        }).show();
+        if (this.loadedTournament.getRounds().size() <= 1) {
+            this.loadedTournament.getRemainingPlayers().clear();
+            this.loadedTournament.getAttendingPlayers().forEach(attendee -> {
+                boolean disqualified = false;
+                for (Player disq : this.loadedTournament.getDisqualifiedPlayers()) {
+                    if (disq.getId().equals(attendee.getId())) {
+                        disqualified = true;
+                        break;
+                    }
+                }
+                if (!disqualified) {
+                    this.loadedTournament.getRemainingPlayers().add(attendee);
+                }
+            });
+
+            this.loadedTournament.getRounds().clear();
+            this.generateRound(true);
+
+            return;
+        }
+
+        int currentRound = this.loadedTournament.getRounds().size() - 1;
+
+        // reset the remaining player list
+        this.loadedTournament.getRemainingPlayers().clear();
+        this.loadedTournament.getRounds().get(currentRound - 1).getPairings().forEach(pairing -> {
+            pairing.getOpponents().forEach(opponent -> {
+                boolean disqualified = false;
+                for (Player disq : this.loadedTournament.getDisqualifiedPlayers()) {
+                    if (opponent.getId().equals(disq.getId())) {
+                        disqualified = true;
+                        break;
+                    }
+                }
+                if (!disqualified) {
+                    this.loadedTournament.getRemainingPlayers().add(opponent);
+                }
+            });
+        });
+
+        // clear the scores added in the last round so we can later recalculate them
+        this.loadedTournament.getRounds().get(currentRound - 1).getPairings().forEach(pairing -> {
+            pairing.getScoreTable().forEach(score -> {
+                this.loadedTournament.removeAScore(score);
+            });
+        });
+
+        this.loadedTournament.getRounds().remove(currentRound);
+        for (Player p : this.loadedTournament.getRemainingPlayers()) {
+            System.out.println(p.getFirstName());
+        }
+        this.generateRound(true);
+        for (Pairing p : this.loadedTournament.getRounds().get(currentRound).getPairings()) {
+            System.out.println("pairing:");
+            for (Player o : p.getOpponents()) {
+                System.out.println("\t" + o.getFirstName());
+            }
+        }
+        this.updatePairingView();
     }
 
     private boolean collectionContainsPlayer(Collection<Player> list, Player player) {
