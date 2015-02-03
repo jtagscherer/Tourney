@@ -317,9 +317,14 @@ public class Tournament implements Cloneable {
      *
      */
     public void calculateTableStrength() {
+        for (PossibleScoring possibleScore : this.getRuleSet()
+                .getPossibleScores()) {
+            if (possibleScore.getScoreType() == ScoringType.TABLE_STRENGTH) {
 
-        for (Player player : this.attendingPlayers) {
-            this.calculateSinglePlayerTableStrength(player);
+                for (Player player : this.attendingPlayers) {
+                    this.calculateSinglePlayerTableStrength(player);
+                }
+            }
         }
     }
 
@@ -373,6 +378,7 @@ public class Tournament implements Cloneable {
                                     tmpPlayerStorage.get(i));
 
                         }
+                        break;
 
                     }
                 }
@@ -388,8 +394,7 @@ public class Tournament implements Cloneable {
                 }
             }
         }
-        tableStrengthScore.setPlayer(player);
-        tableStrengthScore.getScore().add(strength);
+
         int insertPosition = 0;
         for (PossibleScoring possibleScore : this.getRuleSet()
                 .getPossibleScores()) {
@@ -402,7 +407,7 @@ public class Tournament implements Cloneable {
 
         for (PlayerScore scoreTableEntry : this.scoreTable) {
             if (scoreTableEntry.getPlayer().getId().equals(player.getId())) {
-                this.scoreTable.set(insertPosition, tableStrengthScore);
+                scoreTableEntry.getScore().set(insertPosition, strength);
             }
         }
     }
