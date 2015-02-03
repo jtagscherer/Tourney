@@ -32,12 +32,12 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.layout.IconPane;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
-import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.Tournament.ExecutionState;
+import usspg31.tourney.model.TournamentRound;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class TournamentExecutionController implements TournamentUser {
@@ -78,7 +78,6 @@ public class TournamentExecutionController implements TournamentUser {
     private final ModalDialog<ObservableList<Player>, Player> disqualificationDialog;
 
     private TournamentExecutionPhaseController superController;
-    private boolean tournamentFinished = false;
     private boolean displayVictoryMessage = false;
 
     private ArrayList<TournamentExecutionProjectionController> projectorWindowControllers;
@@ -163,15 +162,7 @@ public class TournamentExecutionController implements TournamentUser {
                 this.pairingView.selectedPairingProperty().isNull());
 
         if (tournament.getRounds().size() == 0) {
-            this.generateRound(false);
-            if (this.tournamentFinished) {
-                this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
-                        "icon-finish", "half");
-                this.buttonStartRound.setDisable(false);
-                this.displayVictoryMessage = true;
-                this.roundTimer.reset();
-            }
-            this.checkForTournamentFinish();
+            this.generateRound();
         }
 
         // register undo properties
@@ -245,16 +236,14 @@ public class TournamentExecutionController implements TournamentUser {
         UndoManager undo = MainWindow.getInstance()
                 .getEventPhaseViewController().getUndoManager();
         undo.unregisterUndoProperty(this.loadedTournament.getRounds());
-
-        this.tournamentFinished = false;
     }
 
     @FXML
     private void onButtonStartRoundClicked(ActionEvent event) {
         log.finer("Start Round Button was clicked");
         if (!this.displayVictoryMessage) {
-            this.generateRound(true);
-            this.checkForTournamentFinish();
+            this.generateRound();
+            this.checkRoundFinished();
             this.updateProjectorWindows();
         } else {
             this.buttonStartRound.setDisable(true);
@@ -263,6 +252,16 @@ public class TournamentExecutionController implements TournamentUser {
             this.iconPanePauseResume.getStyleClass().remove("icon-pause");
             this.iconPanePauseResume.getStyleClass().add("icon-play");
             this.loadedTournament.setExecutionState(ExecutionState.FINISHED);
+
+            TournamentRound currentRound = this.loadedTournament.getRounds().get(
+                    this.loadedTournament.getRounds().size() - 1);
+            for (Pairing pairing : currentRound.getPairings()) {
+                for (PlayerScore score : pairing.getScoreTable()) {
+                    this.loadedTournament.addAScore(score);
+                }
+            }
+            this.loadedTournament.calculateTableStrength();
+
             VictoryConfiguration configuration = new VictoryConfiguration();
             configuration.setWinningPlayer(this.loadedTournament.getRounds()
                     .get(this.loadedTournament.getRounds().size() - 1)
@@ -287,33 +286,25 @@ public class TournamentExecutionController implements TournamentUser {
         }
     }
 
-    private void generateRound(boolean newRound) {
+    private void generateRound() {
         log.info("Generating next round");
 
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
         this.buttonStartRound.setDisable(true);
-
-        if (this.tournamentFinished && newRound) {
-            this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
-                    "icon-finish", "half");
-            this.buttonStartRound.setDisable(false);
-            this.displayVictoryMessage = true;
-            this.roundTimer.reset();
-        }
     }
 
-    private void checkForTournamentFinish() {
-        /* Check if this is the last game phase and there are no pairings left */
-        if (this.loadedTournament.getRounds()
-                .get(this.loadedTournament.getRounds().size() - 1)
-                .getPairings().size() == 1
-                && this.loadedTournament.getRuleSet().getPhaseList().size() - 1 == PairingHelper
-                        .findPhase(this.loadedTournament.getRounds().size(),
-                                this.loadedTournament).getPhaseNumber()) {
-            this.tournamentFinished = true;
-        }
-    }
+//    private void checkForTournamentFinish() {
+//        /* Check if this is the last game phase and there are no pairings left */
+//        if (this.loadedTournament.getRounds()
+//                .get(this.loadedTournament.getRounds().size() - 1)
+//                .getPairings().size() == 1
+//                && this.loadedTournament.getRuleSet().getPhaseList().size() - 1 == PairingHelper
+//                        .findPhase(this.loadedTournament.getRounds().size(),
+//                                this.loadedTournament).getPhaseNumber()) {
+//            this.tournamentFinished = true;
+//        }
+//    }
 
     @FXML
     private void onButtonPairingOverviewClicked(ActionEvent event) {
@@ -402,12 +393,6 @@ public class TournamentExecutionController implements TournamentUser {
             totalRoundCount += phase.getRoundCount();
         }
 
-        // have we reached the last available round?
-        if (this.pairingView.getSelectedRound() >= totalRoundCount - 1) {
-            this.buttonStartRound.setDisable(true);
-            return;
-        }
-
         boolean roundFinished = true;
         roundFinishCheck: for (Pairing pairing : this.loadedTournament
                 .getRounds().get(this.pairingView.getSelectedRound())
@@ -427,6 +412,14 @@ public class TournamentExecutionController implements TournamentUser {
             }
         }
         this.buttonStartRound.setDisable(!roundFinished);
+
+        // have we reached the last available round?
+        if (this.pairingView.getSelectedRound() >= totalRoundCount - 1 && roundFinished) {
+            this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
+                    "icon-finish", "half");
+            this.buttonStartRound.setDisable(false);
+            this.displayVictoryMessage = true;
+        }
     }
 
     public void updatePairingView() {
@@ -492,7 +485,7 @@ public class TournamentExecutionController implements TournamentUser {
             });
 
             this.loadedTournament.getRounds().clear();
-            this.generateRound(true);
+            this.generateRound();
 
             return;
         }
@@ -524,7 +517,7 @@ public class TournamentExecutionController implements TournamentUser {
         });
 
         this.loadedTournament.getRounds().remove(currentRound);
-        this.generateRound(true);
+        this.generateRound();
         this.updatePairingView();
     }
 
