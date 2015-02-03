@@ -81,7 +81,6 @@ public class TournamentExecutionController implements TournamentUser {
     private TournamentExecutionPhaseController superController;
     private boolean tournamentFinished = false;
     private boolean displayVictoryMessage = false;
-    private boolean disqualifiedInRound = false;
 
     private ArrayList<TournamentExecutionProjectionController> projectorWindowControllers;
     private OverviewMode currentOverviewMode;
@@ -151,13 +150,9 @@ public class TournamentExecutionController implements TournamentUser {
 
                             this.buttonSwapPlayers.setDisable(n.intValue() < this.loadedTournament
                                     .getRounds().size() - 1);
-//                            this.buttonDisqualifyPlayer.setDisable(n.intValue() < this.loadedTournament
-//                                    .getRounds().size() - 1
-//                                    || n.intValue() == 0
-//                                    || this.disqualifiedInRound);
                         });
 
-        this.buttonDisqualifyPlayer.disableProperty().bind(Bindings.size(tournament.getRemainingPlayers()).lessThan(2));
+        this.buttonDisqualifyPlayer.disableProperty().bind(Bindings.size(tournament.getRemainingPlayers()).lessThan(3));
 
         this.pairingView.setOnNodeDoubleClicked(() -> {
             this.onButtonEnterResultClicked(null);
@@ -185,6 +180,7 @@ public class TournamentExecutionController implements TournamentUser {
                 .getEventPhaseViewController().getUndoManager();
         undo.registerUndoProperty(this.loadedTournament.getRounds());
 
+        this.setRoundTimerAvailable(true);
         this.updateRoundTimer();
 
         this.checkRoundFinished();
@@ -264,11 +260,7 @@ public class TournamentExecutionController implements TournamentUser {
         } else {
             this.buttonStartRound.setDisable(true);
             this.buttonSwapPlayers.setDisable(true);
-            this.buttonAddTime.setDisable(true);
-            this.buttonSubtractTime.setDisable(true);
-            this.buttonPauseResumeTime.setDisable(true);
-            this.buttonResetTime.setDisable(true);
-            this.roundTimer.pause();
+            this.setRoundTimerAvailable(false);
             this.iconPanePauseResume.getStyleClass().remove("icon-pause");
             this.iconPanePauseResume.getStyleClass().add("icon-play");
             this.loadedTournament.setExecutionState(ExecutionState.FINISHED);
@@ -284,10 +276,20 @@ public class TournamentExecutionController implements TournamentUser {
         }
     }
 
+    private void setRoundTimerAvailable(boolean value) {
+        this.buttonAddTime.setDisable(!value);
+        this.buttonSubtractTime.setDisable(!value);
+        this.buttonPauseResumeTime.setDisable(!value);
+        this.buttonResetTime.setDisable(!value);
+
+        if (!value) {
+            this.roundTimer.pause();
+            this.roundTimer.reset();
+        }
+    }
+
     private void generateRound(boolean newRound) {
         log.info("Generating next round");
-
-        this.disqualifiedInRound = false;
 
         this.loadedTournament.getRounds().add(
                 this.roundGenerator.generateRound(this.loadedTournament));
