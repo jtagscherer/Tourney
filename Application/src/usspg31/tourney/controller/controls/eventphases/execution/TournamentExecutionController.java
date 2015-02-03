@@ -524,16 +524,7 @@ public class TournamentExecutionController implements TournamentUser {
         });
 
         this.loadedTournament.getRounds().remove(currentRound);
-        for (Player p : this.loadedTournament.getRemainingPlayers()) {
-            System.out.println(p.getFirstName());
-        }
         this.generateRound(true);
-        for (Pairing p : this.loadedTournament.getRounds().get(currentRound).getPairings()) {
-            System.out.println("pairing:");
-            for (Player o : p.getOpponents()) {
-                System.out.println("\t" + o.getFirstName());
-            }
-        }
         this.updatePairingView();
     }
 
