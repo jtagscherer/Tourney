@@ -240,16 +240,31 @@ public class Tournament implements Cloneable {
 
     @Override
     public Object clone() {
+        System.out.println("called");
         Tournament clone = new Tournament();
         clone.setName(this.getName());
         clone.setId(this.getId());
         clone.setRuleSet(this.getRuleSet());
 
-        clone.getRegisteredPlayers().addAll(this.getRegisteredPlayers());
-        clone.getAttendingPlayers().addAll(this.getAttendingPlayers());
-        clone.getRounds().addAll(this.getRounds());
-        clone.getScoreTable().addAll(this.getScoreTable());
-        clone.getAdministrators().addAll(this.getAdministrators());
+        for (Player player : this.getRegisteredPlayers()) {
+            clone.getRegisteredPlayers().add((Player) player.clone());
+        }
+        for (Player player : this.getAttendingPlayers()) {
+            clone.getAttendingPlayers().add((Player) player.clone());
+        }
+        for (Player player : this.getDisqualifiedPlayers()) {
+            clone.getDisqualifiedPlayers().add((Player) player.clone());
+        }
+        for (TournamentRound round : this.getRounds()) {
+            clone.getRounds().add((TournamentRound) round.clone());
+        }
+        for (PlayerScore score : this.getScoreTable()) {
+            clone.getScoreTable().add((PlayerScore) score.clone());
+        }
+        for (TournamentAdministrator admininstrator : this.getAdministrators()) {
+            clone.getAdministrators().add(
+                    (TournamentAdministrator) admininstrator.clone());
+        }
 
         return clone;
     }

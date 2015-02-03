@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 /**
  * Represents a single round in a game phase of a tournament
  */
-public class TournamentRound {
+public class TournamentRound implements Cloneable {
 
     private final ObservableList<Pairing> pairings;
     private int roundNumber;
@@ -48,5 +48,16 @@ public class TournamentRound {
      */
     public void setRoundNumber(int value) {
         this.roundNumber = value;
+    }
+
+    @Override
+    public Object clone() {
+        TournamentRound clone = new TournamentRound(this.getRoundNumber());
+
+        for (Pairing pairing : this.getPairings()) {
+            clone.getPairings().add((Pairing) pairing.clone());
+        }
+
+        return clone;
     }
 }
