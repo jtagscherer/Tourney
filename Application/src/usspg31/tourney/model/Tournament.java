@@ -264,8 +264,8 @@ public class Tournament implements Cloneable {
         if (this.rounds.size() != 1) {
 
             for (PlayerScore eachPlayerScore : this.scoreTable) {
-                if (eachPlayerScore.getPlayer().getId().equals(score.getPlayer()
-                        .getId())) {
+                if (eachPlayerScore.getPlayer().getId()
+                        .equals(score.getPlayer().getId())) {
                     for (int i = 0; i < eachPlayerScore.getScore().size(); i++) {
                         log.finer("The score "
                                 + score.getScore().get(i)
@@ -302,8 +302,9 @@ public class Tournament implements Cloneable {
         int i = 0;
         while (i < this.getRounds().size()) {
 
-            if (!player.getId().equals(clonePlayerScore.get(clonePlayerScore.size() - i - 1)
-                    .getPlayer().getId())) {
+            if (!player.getId().equals(
+                    clonePlayerScore.get(clonePlayerScore.size() - i - 1)
+                            .getPlayer().getId())) {
                 strength += clonePlayerScore
                         .get(clonePlayerScore.size() - 1 - i).getScore().get(0);
                 i++;
@@ -324,13 +325,16 @@ public class Tournament implements Cloneable {
 
         for (TournamentRound tRound : this.getRounds()) {
             for (Pairing tPairing : tRound.getPairings()) {
-                if (tPairing.getOpponents().contains(player)) {
-                    tmpPlayerStorage = new ArrayList<>();
-                    tmpPlayerStorage.addAll(tPairing.getOpponents());
-                    tmpPlayerStorage.remove(player);
+                for (Player opponent : tPairing.getOpponents()) {
+                    if (opponent.getId().equals(player.getId())) {
+                        tmpPlayerStorage = new ArrayList<>();
+                        tmpPlayerStorage.addAll(tPairing.getOpponents());
+                        tmpPlayerStorage.remove(player);
 
-                    opponentPlayers.addAll(tmpPlayerStorage);
+                        opponentPlayers.addAll(tmpPlayerStorage);
+                    }
                 }
+
             }
         }
 

@@ -183,5 +183,11 @@ public class Player extends Person implements Cloneable {
         clone.setId(this.getId());
 
         return clone;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
     }
 }
