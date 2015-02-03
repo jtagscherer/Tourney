@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,11 +39,11 @@ public class PairingSwapDialog extends VBox implements
         }
 
         public Pairing getPairing() {
-            return pairing;
+            return this.pairing;
         }
 
         public int getIndex() {
-            return index;
+            return this.index;
         }
     }
 
@@ -109,9 +108,9 @@ public class PairingSwapDialog extends VBox implements
         });
 
         firstPairingPlayerColumn.prefWidthProperty().bind(
-                this.tableFirstPairing.widthProperty().subtract(1));
+                this.tableFirstPairing.widthProperty().subtract(2));
         secondPairingPlayerColumn.prefWidthProperty().bind(
-                this.tableSecondPairing.widthProperty().subtract(1));
+                this.tableSecondPairing.widthProperty().subtract(2));
 
         this.tableFirstPairing.getColumns().add(firstPairingPlayerColumn);
         this.tableSecondPairing.getColumns().add(secondPairingPlayerColumn);
@@ -205,21 +204,9 @@ public class PairingSwapDialog extends VBox implements
             pairingCount++;
         }
 
-        this.firstComboBoxListener = new ChangeListener<PairingEntry>() {
-            @Override
-            public void changed(ObservableValue<? extends PairingEntry> ov,
-                    PairingEntry o, PairingEntry n) {
-                tableFirstPairing.setItems(n.getPairing().getOpponents());
-            }
-        };
+        this.firstComboBoxListener = (ov, o, n) -> PairingSwapDialog.this.tableFirstPairing.setItems(n.getPairing().getOpponents());
 
-        this.secondComboBoxListener = new ChangeListener<PairingEntry>() {
-            @Override
-            public void changed(ObservableValue<? extends PairingEntry> ov,
-                    PairingEntry o, PairingEntry n) {
-                tableSecondPairing.setItems(n.getPairing().getOpponents());
-            }
-        };
+        this.secondComboBoxListener = (ov, o, n) -> PairingSwapDialog.this.tableSecondPairing.setItems(n.getPairing().getOpponents());
 
         this.comboBoxFirstPairing.setItems(this.pairings);
         this.comboBoxSecondPairing.setItems(this.pairings);
