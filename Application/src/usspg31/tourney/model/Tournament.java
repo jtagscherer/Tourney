@@ -2,8 +2,9 @@ package usspg31.tourney.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javafx.beans.property.ObjectProperty;
@@ -294,8 +295,8 @@ public class Tournament implements Cloneable {
     public void removeAScore(PlayerScore score) {
         if (this.rounds.size() > 1) {
             for (PlayerScore eachPlayerScore : this.scoreTable) {
-                if (eachPlayerScore.getPlayer().getId().equals(score.getPlayer()
-                        .getId())) {
+                if (eachPlayerScore.getPlayer().getId()
+                        .equals(score.getPlayer().getId())) {
                     for (int i = 0; i < eachPlayerScore.getScore().size(); i++) {
                         log.finer("The score "
                                 + score.getScore().get(i)
@@ -316,6 +317,7 @@ public class Tournament implements Cloneable {
      *
      */
     public void calculateTableStrength() {
+
         for (Player player : this.attendingPlayers) {
             this.calculateSinglePlayerTableStrength(player);
         }
@@ -345,7 +347,7 @@ public class Tournament implements Cloneable {
     }
 
     private void calculateSinglePlayerTableStrength(Player player) {
-        Set<Player> opponentPlayers = new HashSet<Player>();
+        Map<String, Player> opponentPlayers = new HashMap<String, Player>();
         ArrayList<Player> tmpPlayerStorage = new ArrayList<>();
         PlayerScore tableStrengthScore = new PlayerScore();
         int strength = 0;
@@ -356,18 +358,32 @@ public class Tournament implements Cloneable {
                     if (opponent.getId().equals(player.getId())) {
                         tmpPlayerStorage = new ArrayList<>();
                         tmpPlayerStorage.addAll(tPairing.getOpponents());
-                        tmpPlayerStorage.remove(player);
+                        for (int i = 0; i < tmpPlayerStorage.size(); i++) {
+                            if (tmpPlayerStorage.get(i).getId()
+                                    .equals(player.getId())) {
+                                tmpPlayerStorage.remove(i);
+                                break;
+                            }
+                        }
+                        log.info("opponents size: " + opponentPlayers.size());
+                        log.info("tmp size: " + tmpPlayerStorage.size());
+                        for (int i = 0; i < tmpPlayerStorage.size(); i++) {
+                            opponentPlayers.put(
+                                    tmpPlayerStorage.get(i).getId(),
+                                    tmpPlayerStorage.get(i));
 
-                        opponentPlayers.addAll(tmpPlayerStorage);
+                        }
+
                     }
                 }
 
             }
         }
 
-        for (Player opponent : opponentPlayers) {
+        for (Entry<String, Player> opponent : opponentPlayers.entrySet()) {
             for (PlayerScore scoreTable : this.scoreTable) {
-                if (opponent.getId().equals(scoreTable.getPlayer().getId())) {
+                if (opponent.getValue().getId()
+                        .equals(scoreTable.getPlayer().getId())) {
                     strength += scoreTable.getScore().get(0);
                 }
             }
