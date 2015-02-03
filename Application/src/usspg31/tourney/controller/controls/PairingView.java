@@ -367,17 +367,6 @@ public class PairingView extends VBox implements TournamentUser {
                         new SimpleDoubleProperty(0),
                         new SimpleDoubleProperty(0)));
 
-        int i = 0;
-        for (Node n : container.getChildren()) {
-            if (n instanceof PairingNode) {
-                PairingNode pn = (PairingNode) n;
-                System.out.println("Pairing " + i++ + ": x" + pn.getLayoutX() + " y: " + pn.getLayoutY());
-                for (Player o : pn.getPairing().getOpponents()) {
-                    System.out.println("\t" + o.getFirstName());
-                }
-            }
-        }
-
         this.pairingContainer.getChildren().add(container);
     }
 
@@ -393,7 +382,6 @@ public class PairingView extends VBox implements TournamentUser {
 
         int r = 0;
         for (List<Pairing> round : pairings) {
-            System.out.println("generating nodes for round " + r++);
             if (round.size() == 0) {
                 continue;
             }
@@ -454,8 +442,7 @@ public class PairingView extends VBox implements TournamentUser {
                 for (Pairing previousPairing : pairingsInPreviousRound) {
                     for (Player player : previousPairing.getOpponents()) {
                         Pairing found = null;
-                        pairingsearch:
-                        for (Pairing p : unorderedPairings) {
+                        pairingsearch: for (Pairing p : unorderedPairings) {
                             for (Player opponent : p.getOpponents()) {
                                 if (opponent.getId().equals(player.getId())) {
                                     found = p;
@@ -480,7 +467,8 @@ public class PairingView extends VBox implements TournamentUser {
         return sortedPairings;
     }
 
-    private boolean collectionContainsPlayer(Collection<Player> list, Player player) {
+    private boolean collectionContainsPlayer(Collection<Player> list,
+            Player player) {
         for (Player p : list) {
             if (p.getId().equals(player.getId())) {
                 return true;
@@ -504,7 +492,8 @@ public class PairingView extends VBox implements TournamentUser {
                         precedingNodes.put(next, predecessors);
                     }
                     Pairing nextPairing = next.getPairing();
-                    if (this.collectionContainsPlayer(nextPairing.getOpponents(), prevPlayer)) {
+                    if (this.collectionContainsPlayer(
+                            nextPairing.getOpponents(), prevPlayer)) {
                         predecessors.add(prev);
                         this.createConnection(prev, prevPlayer, next, nodes);
                         break;
@@ -650,7 +639,8 @@ public class PairingView extends VBox implements TournamentUser {
                 previousLosers.addAll(PairingHelper.identifyLoser(pairing));
             }
             // remove all people that previously lost from the winner set
-            previousWinners.removeIf(player -> this.collectionContainsPlayer(previousLosers, player));
+            previousWinners.removeIf(player -> this.collectionContainsPlayer(
+                    previousLosers, player));
 
             winnerBracket.add(winnerPairings);
             loserBracket.add(loserPairings);
