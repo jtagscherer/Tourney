@@ -240,7 +240,6 @@ public class Tournament implements Cloneable {
 
     @Override
     public Object clone() {
-        System.out.println("called");
         Tournament clone = new Tournament();
         clone.setName(this.getName());
         clone.setId(this.getId());
