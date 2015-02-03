@@ -285,6 +285,33 @@ public class Tournament implements Cloneable {
     }
 
     /**
+     * removes a score from the tournament score table
+     *
+     * @param score
+     *            consist of the player and the score which gets added to the
+     *            score table for the earlier mentioned player
+     */
+    public void removeAScore(PlayerScore score) {
+        if (this.rounds.size() > 1) {
+            for (PlayerScore eachPlayerScore : this.scoreTable) {
+                if (eachPlayerScore.getPlayer().getId().equals(score.getPlayer()
+                        .getId())) {
+                    for (int i = 0; i < eachPlayerScore.getScore().size(); i++) {
+                        log.finer("The score "
+                                + score.getScore().get(i)
+                                + " was removed from the score table in the tournament");
+
+                        eachPlayerScore.getScore().set(
+                                i,
+                                eachPlayerScore.getScore().get(i)
+                                        - score.getScore().get(i));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * calculates the table strength for each player
      *
      */
