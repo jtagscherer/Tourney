@@ -75,9 +75,9 @@ public class AttendanceDialog extends VBox implements
                 .add(registeredPlayerNameColumn);
 
         attendingPlayerNameColumn.prefWidthProperty().bind(
-                this.tableAttendingPlayers.widthProperty().subtract(1));
+                this.tableAttendingPlayers.widthProperty().subtract(2));
         registeredPlayerNameColumn.prefWidthProperty().bind(
-                this.tableRegisteredPlayers.widthProperty().subtract(1));
+                this.tableRegisteredPlayers.widthProperty().subtract(2));
 
         this.tableAttendingPlayers.setPlaceholder(new Text(PreferencesManager
                 .getInstance().localizeString("tableplaceholder.noplayers")));
