@@ -107,7 +107,7 @@
 								<Tooltip text="%tournamentexecutionphase.tooltips.swapplayers" />
 							</tooltip>
 						</Button>
-						<Button fx:id="buttonDisqualifyPlayer" disable="true" onAction="#onButtonDisqualifyPlayerClicked" styleClass="table-edit-button">
+						<Button fx:id="buttonDisqualifyPlayer" onAction="#onButtonDisqualifyPlayerClicked" styleClass="table-edit-button">
 							<graphic>
 								<IconPane styleClass="icon-disqualify, half" />
 							</graphic>
