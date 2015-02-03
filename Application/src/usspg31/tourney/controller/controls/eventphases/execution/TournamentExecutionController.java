@@ -2,7 +2,6 @@ package usspg31.tourney.controller.controls.eventphases.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 import javafx.beans.binding.Bindings;
@@ -536,16 +535,6 @@ public class TournamentExecutionController implements TournamentUser {
             }
         }
         this.updatePairingView();
-    }
-
-    private boolean collectionContainsPlayer(Collection<Player> list, Player player) {
-        for (Player p : list) {
-            if (p.getId().equals(player.getId())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @FXML
