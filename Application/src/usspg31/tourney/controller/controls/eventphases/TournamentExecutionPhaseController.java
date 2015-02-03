@@ -136,6 +136,7 @@ public class TournamentExecutionPhaseController implements EventUser {
         this.selectionController.unloadEvent();
         this.executionController.unloadTournament();
         this.loadedEvent = null;
+        this.slideToPhase(0);
     }
 
     public void showTournamentExecutionView(Tournament tournament) {

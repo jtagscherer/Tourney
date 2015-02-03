@@ -234,6 +234,11 @@ public class TournamentExecutionController implements TournamentUser {
     @Override
     public void unloadTournament() {
         log.info("Unloading Tournament");
+        if (this.loadedTournament == null) {
+            log.warning("Trying to unload a tournament even though none was loaded");
+            return;
+        }
+
         this.pairingView.unloadTournament();
 
         // unregister undo properties
