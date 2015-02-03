@@ -134,7 +134,7 @@ public class ModifiedSwissSystem implements PairingStrategy {
                                         subScoreList
                                                 .get(subScoreList.size() - 1
                                                         - count).getPlayer());
-                                if (count == subScoreList.size()) {
+                                if (count + 1 == subScoreList.size()) {
                                     count = 0;
                                     partResult.getOpponents().add(
                                             subScoreList.get(
