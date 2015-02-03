@@ -89,30 +89,43 @@ public class PairingHelper {
         Pairing sortClone = new Pairing();
         ArrayList<Player> winningPlayers = new ArrayList<>();
         boolean isAlsoWinner = true;
+        boolean winnerFound = false;
         int count = 1;
 
         sortClone.getScoreTable().addAll(pairing.getScoreTable());
         FXCollections.sort(sortClone.getScoreTable());
 
-        winningPlayers.add(sortClone.getScoreTable()
-                .get(sortClone.getScoreTable().size() - 1).getPlayer());
+        while (!winnerFound) {
+            if (sortClone.getScoreTable()
+                    .get(sortClone.getScoreTable().size() - 1).getPlayer()
+                    .isDisqualified()) {
+                sortClone.getScoreTable().remove(
+                        sortClone.getScoreTable().size() - 1);
+            } else {
+                winningPlayers.add(sortClone.getScoreTable()
+                        .get(sortClone.getScoreTable().size() - 1).getPlayer());
+                winnerFound = true;
+            }
+        }
+
         if (count + 1 <= sortClone.getScoreTable().size()) {
             while (isAlsoWinner) {
-                sortClone
-                        .getScoreTable()
-                        .get(sortClone.getScoreTable().size() - 1 - count)
-                        .compareTo(
-                                sortClone.getScoreTable().get(
-                                        sortClone.getScoreTable().size() - 1));
+
                 if (sortClone
                         .getScoreTable()
                         .get(sortClone.getScoreTable().size() - 1 - count)
                         .compareTo(
                                 sortClone.getScoreTable().get(
                                         sortClone.getScoreTable().size() - 1)) == 0) {
-                    winningPlayers.add(sortClone.getScoreTable()
+                    if (!sortClone.getScoreTable()
                             .get(sortClone.getScoreTable().size() - 1 - count)
-                            .getPlayer());
+                            .getPlayer().isDisqualified()) {
+
+                        winningPlayers.add(sortClone
+                                .getScoreTable()
+                                .get(sortClone.getScoreTable().size() - 1
+                                        - count).getPlayer());
+                    }
                 } else {
                     isAlsoWinner = false;
                 }
@@ -179,9 +192,17 @@ public class PairingHelper {
      */
     public static ArrayList<Player> identifyLoser(Pairing pairing) {
         ArrayList<Player> result = new ArrayList<>();
+        ArrayList<Player> removeResultList = new ArrayList<>();
 
         result.addAll(pairing.getOpponents());
         result.removeAll(PairingHelper.identifyWinner(pairing));
+        for (Player chkDisqualified : result) {
+            if (chkDisqualified.isDisqualified()) {
+                removeResultList.add(chkDisqualified);
+            }
+        }
+
+        result.removeAll(removeResultList);
         return result;
     }
 
