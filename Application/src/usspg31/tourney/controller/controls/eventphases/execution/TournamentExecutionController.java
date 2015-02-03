@@ -80,6 +80,7 @@ public class TournamentExecutionController implements TournamentUser {
 
     private TournamentExecutionPhaseController superController;
     private boolean displayVictoryMessage = false;
+    private boolean displayVictoryButton = false;
 
     private ArrayList<TournamentExecutionProjectionController> projectorWindowControllers;
     private OverviewMode currentOverviewMode;
@@ -112,6 +113,9 @@ public class TournamentExecutionController implements TournamentUser {
         this.loadedTournament = tournament;
         this.loadedTournament.getRemainingPlayers().addAll(
                 this.loadedTournament.getAttendingPlayers());
+
+        this.displayVictoryButton = false;
+        this.displayVictoryMessage = false;
 
         this.labelHeader.setText(this.loadedTournament.getName());
 
@@ -254,6 +258,7 @@ public class TournamentExecutionController implements TournamentUser {
             this.iconPanePauseResume.getStyleClass().remove("icon-pause");
             this.iconPanePauseResume.getStyleClass().add("icon-play");
             this.loadedTournament.setExecutionState(ExecutionState.FINISHED);
+            this.roundTimer.pause();
 
             TournamentRound currentRound = this.loadedTournament.getRounds()
                     .get(this.loadedTournament.getRounds().size() - 1);
@@ -282,6 +287,16 @@ public class TournamentExecutionController implements TournamentUser {
             for (TournamentExecutionProjectionController controller : this.projectorWindowControllers) {
                 controller.showVictoryDialog(configuration);
             }
+
+            this.buttonAddTime.setDisable(true);
+            this.buttonCancelExecution.setDisable(true);
+            this.buttonDisqualifyPlayer.setDisable(true);
+            this.buttonEnterResult.setDisable(true);
+            this.buttonPauseResumeTime.setDisable(true);
+            this.buttonResetTime.setDisable(true);
+            this.buttonStartRound.setDisable(true);
+            this.buttonSubtractTime.setDisable(true);
+            this.buttonSwapPlayers.setDisable(true);
         }
     }
 
