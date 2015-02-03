@@ -487,6 +487,8 @@ public class TournamentExecutionController implements TournamentUser {
             this.loadedTournament.getRounds().clear();
             this.generateRound();
 
+            this.checkRoundFinished();
+
             return;
         }
 
@@ -519,6 +521,7 @@ public class TournamentExecutionController implements TournamentUser {
         this.loadedTournament.getRounds().remove(currentRound);
         this.generateRound();
         this.updatePairingView();
+        this.checkRoundFinished();
     }
 
     @FXML
