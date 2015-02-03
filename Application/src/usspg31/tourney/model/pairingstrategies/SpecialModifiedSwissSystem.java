@@ -82,6 +82,7 @@ public class SpecialModifiedSwissSystem implements PairingStrategy {
             // splitting the score table for each bracket of points
             ArrayList<PlayerScore> tmp = new ArrayList<>();
             ArrayList<PlayerScore> subTmp;
+            ArrayList<PlayerScore> removeList;
 
             subList = new ArrayList<ArrayList<PlayerScore>>();
             tmp = PairingHelper.mergeScoreRemainingPlayer(tournament);
@@ -90,17 +91,20 @@ public class SpecialModifiedSwissSystem implements PairingStrategy {
                 subTmp = new ArrayList<PlayerScore>();
                 subTmp.add(tmp.get(tmp.size() - 1));
                 tmp.remove(tmp.size() - 1);
+                removeList = new ArrayList<>();
 
                 for (PlayerScore test : tmp) {
                     if (test.getScore().get(0) == subTmp.get(0).getScore()
                             .get(0)) {
                         subTmp.add(test);
-                        tmp.remove(test);
+                        removeList.add(test);
                     } else {
                         break;
                     }
 
                 }
+
+                tmp.removeAll(removeList);
                 subList.add(subTmp);
 
             }
