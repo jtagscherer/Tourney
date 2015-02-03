@@ -33,12 +33,15 @@ import usspg31.tourney.controller.dialogs.modal.ModalDialog;
 import usspg31.tourney.controller.layout.IconPane;
 import usspg31.tourney.model.GamePhase;
 import usspg31.tourney.model.Pairing;
+import usspg31.tourney.model.PairingHelper;
 import usspg31.tourney.model.Player;
 import usspg31.tourney.model.PlayerScore;
 import usspg31.tourney.model.RoundGeneratorFactory;
 import usspg31.tourney.model.Tournament;
 import usspg31.tourney.model.Tournament.ExecutionState;
 import usspg31.tourney.model.TournamentRound;
+import usspg31.tourney.model.pairingstrategies.DoubleElimination;
+import usspg31.tourney.model.pairingstrategies.SingleElimination;
 import usspg31.tourney.model.undo.UndoManager;
 
 public class TournamentExecutionController implements TournamentUser {
@@ -364,7 +367,12 @@ public class TournamentExecutionController implements TournamentUser {
 
     @FXML
     private void onButtonEnterResultClicked(ActionEvent event) {
+        if (this.loadedTournament.getExecutionState() == ExecutionState.FINISHED) {
+            return;
+        }
+
         log.info("Enter Result Button was clicked");
+
         this.pairingScoreDialog
                 .properties(
                         new PairingEntry(this.loadedTournament,
@@ -430,8 +438,23 @@ public class TournamentExecutionController implements TournamentUser {
         this.buttonStartRound.setDisable(!roundFinished);
 
         // have we reached the last available round?
-        if (this.pairingView.getSelectedRound() >= totalRoundCount - 1
-                && roundFinished) {
+        if ((this.pairingView.getSelectedRound() >= totalRoundCount - 1 && roundFinished)
+                || (PairingHelper.findPhase(
+                        this.loadedTournament.getRounds().size() - 1,
+                        this.loadedTournament).getPhaseNumber() == this.loadedTournament
+                        .getRuleSet().getPhaseList().size() - 1 && this.loadedTournament
+                        .getRounds()
+                        .get(this.loadedTournament.getRounds().size() - 1)
+                        .getPairings().size() == 1)
+                && (this.loadedTournament
+                        .getRuleSet()
+                        .getPhaseList()
+                        .get(this.loadedTournament.getRuleSet().getPhaseList()
+                                .size() - 1).getPairingMethod() instanceof SingleElimination || this.loadedTournament
+                        .getRuleSet()
+                        .getPhaseList()
+                        .get(this.loadedTournament.getRuleSet().getPhaseList()
+                                .size() - 1).getPairingMethod() instanceof DoubleElimination)) {
             this.iconPaneStartRound.getStyleClass().setAll("icon-pane",
                     "icon-finish", "half");
             this.buttonStartRound.setDisable(false);
