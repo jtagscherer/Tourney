@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -264,9 +265,18 @@ public class TournamentExecutionController implements TournamentUser {
             this.loadedTournament.calculateTableStrength();
 
             VictoryConfiguration configuration = new VictoryConfiguration();
-            configuration.setWinningPlayer(this.loadedTournament.getRounds()
-                    .get(this.loadedTournament.getRounds().size() - 1)
-                    .getPairings().get(0).getOpponents().get(0));
+
+            /* Get the list of player scores and sort it */
+            ObservableList<PlayerScore> clonedPlayerScores = FXCollections
+                    .observableArrayList();
+            for (PlayerScore score : this.loadedTournament.getScoreTable()) {
+                clonedPlayerScores.add((PlayerScore) score.clone());
+            }
+            FXCollections.sort(clonedPlayerScores);
+
+            configuration.setWinningPlayer(clonedPlayerScores.get(
+                    clonedPlayerScores.size() - 1).getPlayer());
+
             configuration.setTournamentName(this.loadedTournament.getName());
             this.victoryDialog.properties(configuration).show();
             for (TournamentExecutionProjectionController controller : this.projectorWindowControllers) {
