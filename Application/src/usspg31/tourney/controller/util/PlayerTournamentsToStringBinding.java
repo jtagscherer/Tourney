@@ -42,6 +42,10 @@ public class PlayerTournamentsToStringBinding extends StringBinding {
             }
         }
 
+        if (ret.length() > 2) {
+            return "";
+        }
+
         return ret.substring(0, ret.length() - 2);
     }
 }
