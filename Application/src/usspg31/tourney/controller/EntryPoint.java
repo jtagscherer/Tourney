@@ -9,20 +9,24 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.application.Preloader;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import usspg31.tourney.controller.dialogs.modal.DialogButtons;
 import usspg31.tourney.controller.dialogs.modal.DialogResult;
 import usspg31.tourney.controller.dialogs.modal.SimpleDialog;
 import usspg31.tourney.model.undo.UndoManager;
 
-public class EntryPoint extends Application {
+public class EntryPoint extends Preloader {
     private static final Logger log = Logger.getLogger(EntryPoint.class
             .getName());
 
@@ -38,22 +42,6 @@ public class EntryPoint extends Application {
 
     private boolean closeRequested;
 
-    public static void main(String[] args) {
-        log.info("Starting Application");
-        log.info("Running JavaFX Version "
-                + System.getProperty("javafx.runtime.version") + " on "
-                + System.getProperty("os.name"));
-
-        try {
-            launch(args);
-        } catch (Throwable t) { // catch anything the application could throw at
-                                // us
-            log.log(Level.SEVERE, t.getMessage(), t);
-        }
-
-        applicationLocked = false;
-    }
-
     public static void lockApplication() {
         applicationLocked = true;
     }
@@ -68,7 +56,9 @@ public class EntryPoint extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        EntryPoint.unlockApplication();
         EntryPoint.primaryStage = primaryStage;
+
         try {
             root = new StackPane();
             mainWindow = MainWindow.getInstance();
@@ -81,7 +71,8 @@ public class EntryPoint extends Application {
                     Bindings.size(modalOverlay.getChildren()).greaterThan(0));
 
             // hide the modalOverlay as long it is empty
-            modalOverlay.visibleProperty().bind(Bindings.size(modalOverlay.getChildren()).greaterThan(0));
+            modalOverlay.visibleProperty().bind(
+                    Bindings.size(modalOverlay.getChildren()).greaterThan(0));
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
@@ -97,7 +88,8 @@ public class EntryPoint extends Application {
             }
 
             primaryStage.minWidthProperty().bind(mainWindow.minWidthProperty());
-            primaryStage.minHeightProperty().bind(mainWindow.minHeightProperty());
+            primaryStage.minHeightProperty().bind(
+                    mainWindow.minHeightProperty());
 
             /*
              * Catch the close event and display a warning if there is unsaved
@@ -106,7 +98,7 @@ public class EntryPoint extends Application {
             Platform.setImplicitExit(false);
             primaryStage.setOnCloseRequest(event -> {
                 event.consume();
-                // surpress the close request when the application is locked
+                // suppress the close request when the application is locked
                     if (applicationLocked) {
                         return;
                     }
@@ -127,15 +119,15 @@ public class EntryPoint extends Application {
 
             backgroundBlur = new GaussianBlur(0);
 
-            blurTransition = new Timeline(
-                    new KeyFrame(Duration.ZERO,
-                            new KeyValue(backgroundBlur.radiusProperty(), 0)),
-                    new KeyFrame(Duration.millis(300),
-                            new KeyValue(backgroundBlur.radiusProperty(), 10)));
+            blurTransition = new Timeline(new KeyFrame(Duration.ZERO,
+                    new KeyValue(backgroundBlur.radiusProperty(), 0)),
+                    new KeyFrame(Duration.millis(300), new KeyValue(
+                            backgroundBlur.radiusProperty(), 10)));
 
             mainWindow.setEffect(backgroundBlur);
 
             primaryStage.show();
+            SplashScreen.hide();
         } catch (Exception e) {
             log.log(Level.SEVERE, e.getMessage(), e);
             System.exit(1);
@@ -203,5 +195,12 @@ public class EntryPoint extends Application {
         blurTransition.setRate(-1);
         blurTransition.jumpTo(blurTransition.getTotalDuration());
         blurTransition.play();
+    }
+
+    @Override
+    public void handleStateChangeNotification(StateChangeNotification evt) {
+        if (evt.getType() == StateChangeNotification.Type.BEFORE_START) {
+            System.out.println("started");
+        }
     }
 }
