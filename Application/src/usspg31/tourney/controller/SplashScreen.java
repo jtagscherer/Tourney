@@ -4,14 +4,12 @@ import javafx.application.Preloader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -24,15 +22,21 @@ public class SplashScreen extends Preloader {
     private Scene createPreloaderScene() {
         VBox preloaderPane = new VBox();
         preloaderPane.setAlignment(Pos.CENTER);
-        preloaderPane.setSpacing(50.0f);
+        preloaderPane.setSpacing(30.0f);
 
         SplashScreen.iconView = new ImageView(new Image(this.getClass()
                 .getResourceAsStream("/ui/icon/icon-256.png")));
         preloaderPane.getChildren().add(SplashScreen.iconView);
 
-        ProgressIndicator indicator = new ProgressIndicator(-1.0f);
-        indicator.setStyle(" -fx-progress-color: white;");
-        preloaderPane.getChildren().add(indicator);
+        Label loadingLabel = new Label();
+        loadingLabel.getStylesheets().add("/ui/css/fonts.css");
+        loadingLabel.setStyle("-fx-font-family: \"Roboto Light\";"
+                + "-fx-font-weight: bold; -fx-font-size: 42;"
+                + "-fx-text-fill: white;");
+        loadingLabel.setText(PreferencesManager.getInstance().localizeString(
+                "splashscreen.loading")
+                + " Tourney...");
+        preloaderPane.getChildren().add(loadingLabel);
 
         Scene preloaderScene = new Scene(preloaderPane, 600, 400);
         preloaderPane.setBackground(new Background(new BackgroundFill(Color
