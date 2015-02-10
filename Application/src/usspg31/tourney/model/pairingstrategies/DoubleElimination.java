@@ -352,6 +352,7 @@ public class DoubleElimination implements PairingStrategy {
             log.finer("Winner bracket list size is : " + winnerBracket.size());
             log.finer("Loser bracket list size is : " + loserBracket.size());
             log.finer("WinnerLoser list size is : " + winnerLoserBracket.size());
+            log.finer("before winnerbracket bye");
             for (int i = 0; i < winnerBracket.size(); i++) {
                 partResult = new Pairing();
                 partResult.setFlag(PairingFlag.WINNER_BRACKET);
@@ -360,8 +361,11 @@ public class DoubleElimination implements PairingStrategy {
                         PairingHelper.generateEmptyScore(winnerBracket.get(i),
                                 tournament.getRuleSet().getPossibleScores()
                                         .size()));
+                log.finer("adding byes into it " + i);
+                int count = 0;
                 for (PossibleScoring byeScore : tournament.getRuleSet()
                         .getPossibleScores()) {
+                    log.finer("added " + i + ". score");
                     partResult
                             .getScoreTable()
                             .get(0)
@@ -369,10 +373,13 @@ public class DoubleElimination implements PairingStrategy {
                             .add(byeScore.getPriority(),
                                     byeScore.getByeValue(tournament,
                                             winnerBracket.get(i)));
+                    log.finer("got out");
+                    count++;
                 }
-
                 result.add(partResult);
             }
+            log.finer("before loserbracket bye");
+
             for (int i = 0; i < loserBracket.size(); i++) {
                 partResult = new Pairing();
                 partResult.setFlag(PairingFlag.LOSER_BRACKET);
@@ -394,6 +401,7 @@ public class DoubleElimination implements PairingStrategy {
 
                 result.add(partResult);
             }
+            log.finer("before winnerloserbracket bye");
 
             for (int i = 0; i < winnerLoserBracket.size(); i++) {
                 partResult = new Pairing();
@@ -417,6 +425,9 @@ public class DoubleElimination implements PairingStrategy {
 
                 result.add(partResult);
             }
+
+            log.finer("after winnerloserbracket bye");
+
             // } else {
 
             // }

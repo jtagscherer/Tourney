@@ -347,20 +347,22 @@ public class Tournament implements Cloneable {
         clonePlayerScore.addAll(this.scoreTable);
         Collections.sort(clonePlayerScore);
         int strength = 0;
+        int count = 0;
         int i = 0;
-        while (i < this.getRounds().size()) {
+        while (count < this.getRounds().size()) {
 
             if (!player.getId().equals(
                     clonePlayerScore.get(clonePlayerScore.size() - i - 1)
                             .getPlayer().getId())) {
                 strength += clonePlayerScore
                         .get(clonePlayerScore.size() - 1 - i).getScore().get(0);
-                i++;
+                count++;
             }
-
-            if (i == this.getRounds().size() - 1) {
+            i++;
+            if (i == this.rounds.size() - 1) {
                 break;
             }
+
         }
         return strength;
     }
