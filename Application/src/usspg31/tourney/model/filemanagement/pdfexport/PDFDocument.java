@@ -513,19 +513,11 @@ public class PDFDocument {
             /* The phase is still the same for this round, add it */
             if (PairingHelper.findPhase(round.getRoundNumber(), tournament) == resortedPhases
                     .get(gamePhaseIndex)) {
-                System.out.println("Adding a round with "
-                        + round.getPairings().size() + " pairings");
                 currentRounds.add(round);
             } else {
-                System.out.println("Adding phase " + gamePhaseIndex);
-                System.out.println("Adding phase "
-                        + gamePhaseIndex
-                        + "/"
-                        + PairingHelper.findPhase(round.getRoundNumber(),
-                                tournament).getPhaseNumber());
                 /* Add the old phases to the big list */
                 resortedRounds.add(currentRounds);
-                currentRounds.clear();
+                currentRounds = new ArrayList<TournamentRound>();
 
                 /* Add the new game phase */
                 resortedPhases.add(PairingHelper.findPhase(
@@ -537,6 +529,7 @@ public class PDFDocument {
         resortedRounds.add(currentRounds);
 
         /* Add the game phase in the first hierarchy level */
+        int phaseIndex = 0;
         List phaseList = new List(true, false, 15);
         for (GamePhase gamePhase : resortedPhases) {
             Chunk phaseChunk = new Chunk(
@@ -562,10 +555,13 @@ public class PDFDocument {
             ListItem phaseListItem = new ListItem(phaseChunk);
             phaseListItem.setFont(PDFExporter.SMALL_BOLD);
 
+            System.out.println("Printing "
+                    + resortedRounds.get(phaseIndex).size() + " rounds");
+
             /* Add the tournament rounds in the second hierarchy level */
             List roundList = new List(true, false, 15);
-            for (TournamentRound tournamentRound : resortedRounds.get(gamePhase
-                    .getPhaseNumber())) {
+            for (TournamentRound tournamentRound : resortedRounds
+                    .get(phaseIndex)) {
                 Chunk roundChunk = new Chunk(PreferencesManager.getInstance()
                         .localizeString("pdfoutput.tournament.history.round"),
                         PDFExporter.SMALL_BOLD);
@@ -721,6 +717,8 @@ public class PDFDocument {
             phaseListItem.add(roundList);
 
             phaseList.add(phaseListItem);
+
+            phaseIndex++;
         }
 
         parentParagraph.add(phaseList);
