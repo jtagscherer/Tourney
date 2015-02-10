@@ -178,6 +178,8 @@ public class FileLoader {
 
             newTournament.getRounds().setAll(
                     tournamentDocument.getTournamentRounds(playerList));
+            newTournament.getScoreTable().setAll(
+                    tournamentDocument.getScoreTable(playerList));
             newTournament.setRuleSet(tournamentDocument.getTournamentRules());
 
             tournamentList.add(newTournament);

@@ -211,6 +211,92 @@ public class TournamentDocument {
     }
 
     /**
+     * Append the score table of a tournament to the document
+     * 
+     * @param scoreTable
+     *            Score table to be appended
+     */
+    public void appendScoreTable(ObservableList<PlayerScore> scoreTable) {
+        Element scoreTableElement = this.document.createElement("score-table");
+
+        for (PlayerScore score : scoreTable) {
+            /* Add the current score from the list */
+            Element scoreElement = this.document.createElement("score");
+            scoreTableElement.appendChild(scoreElement);
+
+            /* Add the player's id this score belongs to */
+            Element playerId = this.document.createElement("player-id");
+            scoreElement.appendChild(playerId);
+            playerId.appendChild(this.document.createTextNode(score.getPlayer()
+                    .getId()));
+
+            Element singleScoresElement = this.document
+                    .createElement("entries");
+            scoreElement.appendChild(singleScoresElement);
+
+            for (int singleScore : score.getScore()) {
+                /* Add the current single score */
+                Element singleScoreElement = this.document
+                        .createElement("entry");
+                singleScoresElement.appendChild(singleScoreElement);
+                singleScoreElement.appendChild(this.document
+                        .createTextNode(String.valueOf(singleScore)));
+            }
+        }
+
+        this.rootElement.appendChild(scoreTableElement);
+    }
+
+    /**
+     * Extract the score table from this document
+     * 
+     * @param playerList
+     *            A list of players that may be referenced in this score table
+     * @return The score table of this document
+     */
+    public ArrayList<PlayerScore> getScoreTable(ArrayList<Player> playerList) {
+        ArrayList<PlayerScore> scoreTable = new ArrayList<PlayerScore>();
+
+        /* Get the node containing the score table */
+        Node scoreTableNode = this.document.getElementsByTagName("score-table")
+                .item(0);
+
+        if (scoreTableNode == null) {
+            return scoreTable;
+        }
+
+        /* Load all scores from the file */
+        for (Node playerScore : FileLoader.getChildNodesByTag(scoreTableNode,
+                "score")) {
+            PlayerScore newScore = new PlayerScore();
+
+            /* Add the player this score belongs to */
+            String playerId = FileLoader.getFirstChildNodeByTag(playerScore,
+                    "player-id").getTextContent();
+
+            for (Player listedPlayer : playerList) {
+                if (listedPlayer.getId().equals(playerId)) {
+                    newScore.setPlayer(listedPlayer);
+                    break;
+                }
+            }
+
+            /* Add the actual score entries */
+            Node singleScoresNode = FileLoader.getFirstChildNodeByTag(
+                    playerScore, "entries");
+            for (Node singleScoreNode : FileLoader.getChildNodesByTag(
+                    singleScoresNode, "entry")) {
+                newScore.getScore().add(
+                        Integer.parseInt(singleScoreNode.getTextContent()));
+            }
+
+            scoreTable.add(newScore);
+        }
+
+        return scoreTable;
+    }
+
+    /**
      * Append a list of references to players to this document
      * 
      * @param players

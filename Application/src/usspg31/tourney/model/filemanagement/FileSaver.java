@@ -250,6 +250,8 @@ public class FileSaver {
 
         document.appendTournamentRounds(tournament.getRounds());
 
+        document.appendScoreTable(tournament.getScoreTable());
+
         if (tournament.getRuleSet() != null) {
             document.appendTournamentRules(tournament.getRuleSet());
         }
