@@ -438,7 +438,7 @@ public class TournamentExecutionController implements TournamentUser {
         this.buttonStartRound.setDisable(!roundFinished);
 
         // have we reached the last available round?
-        if ((this.pairingView.getSelectedRound() >= totalRoundCount - 1 && roundFinished)
+        if ((this.pairingView.getSelectedRound() >= totalRoundCount && roundFinished)
                 || (PairingHelper.findPhase(
                         this.loadedTournament.getRounds().size() - 1,
                         this.loadedTournament).getPhaseNumber() == this.loadedTournament

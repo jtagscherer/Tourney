@@ -31,7 +31,7 @@ public class SplashScreen extends Preloader {
         Label loadingLabel = new Label();
         loadingLabel.getStylesheets().add("/ui/css/fonts.css");
         loadingLabel.setStyle("-fx-font-family: \"Roboto Light\";"
-                + "-fx-font-weight: bold; -fx-font-size: 42;"
+                + "-fx-font-weight: bold; -fx-font-size: 32;"
                 + "-fx-text-fill: white;");
         loadingLabel.setText(PreferencesManager.getInstance().localizeString(
                 "splashscreen.loading")
