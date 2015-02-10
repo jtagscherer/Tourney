@@ -114,8 +114,6 @@ public class TournamentExecutionController implements TournamentUser {
             this.unloadTournament();
         }
         this.loadedTournament = tournament;
-        this.loadedTournament.getRemainingPlayers().addAll(
-                this.loadedTournament.getAttendingPlayers());
 
         this.displayVictoryButton = false;
         this.displayVictoryMessage = false;
@@ -171,6 +169,8 @@ public class TournamentExecutionController implements TournamentUser {
                 this.pairingView.selectedPairingProperty().isNull());
 
         if (tournament.getRounds().size() == 0) {
+            this.loadedTournament.getRemainingPlayers().addAll(
+                    this.loadedTournament.getAttendingPlayers());
             this.generateRound();
         }
 
