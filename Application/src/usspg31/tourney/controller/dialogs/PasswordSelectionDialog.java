@@ -80,6 +80,17 @@ public class PasswordSelectionDialog extends VBox implements
         }
 
         this.retryIn = new SimpleIntegerProperty();
+
+        this.retryTimer = new Timeline(new KeyFrame(Duration.seconds(1),
+                event -> {
+                    if (this.retryIn.get() > 1) {
+                        this.retryIn.set(this.retryIn.get() - 1);
+                    } else {
+                        this.retryIn.set(0);
+                    }
+                }));
+        this.retryTimer.setCycleCount(Timeline.INDEFINITE);
+
         this.retryIn
                 .addListener((ov, o, n) -> {
                     if (n.intValue() == 0) {
@@ -113,17 +124,6 @@ public class PasswordSelectionDialog extends VBox implements
                         }
                     }
                 });
-
-        this.retryTimer = new Timeline(new KeyFrame(Duration.seconds(1),
-                event -> {
-                    if (this.retryIn.get() > 1) {
-                        this.retryIn.set(this.retryIn.get() - 1);
-                    } else {
-                        this.retryIn.set(0);
-                        this.retryTimer.stop();
-                    }
-                }));
-        this.retryTimer.setCycleCount(Timeline.INDEFINITE);
 
         // pressing enter in the repeat password field has the same effect as
         // clicking the confirm button

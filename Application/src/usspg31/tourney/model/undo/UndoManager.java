@@ -11,6 +11,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.util.Duration;
@@ -267,7 +268,7 @@ public class UndoManager {
      */
     public <T> void registerUndoProperty(ObservableList<T> list,
             boolean isAutoBatching) {
-        list.addListener(this::listChangeListener);
+        list.addListener((ListChangeListener<? super T>) this::listChangeListener);
         if (isAutoBatching) {
             this.autoBatchingProperties.add(list);
         }
@@ -280,7 +281,7 @@ public class UndoManager {
      * @param list
      */
     public <T> void unregisterUndoProperty(ObservableList<T> list) {
-        list.removeListener(this::listChangeListener);
+        list.removeListener((ListChangeListener<? super T>) this::listChangeListener);
         this.autoBatchingProperties.remove(list);
     }
 
