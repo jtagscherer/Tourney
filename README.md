@@ -8,5 +8,6 @@ Features include:
 - Data distribution for more workspaces where tournaments can be held
 - Creation of custom tournament rules including arbitrary numbers of players per pairing, tournament systems including Free-for-All, Single Elimination, Double Elimination, Swiss System or Modified Swiss System and user-defined game phases separated by a cut-off
 - Export of all event and tournament data as a PDF document
+- All parts of the software are localized
 
 Released under GPL-3.0
